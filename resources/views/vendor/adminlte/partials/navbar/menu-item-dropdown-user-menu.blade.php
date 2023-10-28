@@ -16,37 +16,7 @@
 
 <!-- Icons -->
 <!-- Notifications -->
-<?php 
-use Carbon\Carbon;  
-use App\Models\PurchaseInvoice;
-use App\Models\SalesInvoice;
-    $startDate = Carbon::today();
-    $endDate = Carbon::today()->addDays(7);
 
-    $purchaseinvoice = PurchaseInvoice::select('*')
-    ->whereBetween('purchase_invoice_due_date' ,[$startDate, $endDate])
-    ->simplePaginate(3);
-
-    $salesinvoice = SalesInvoice::select('*')
-    ->whereBetween('sales_invoice_due_date' ,[$startDate, $endDate])
-    ->simplePaginate(3);
-
-
-    $countPurchaseInv = count($purchaseinvoice);
-    $countinvoiceInv = count($salesinvoice);
-
-    $Count =  $countPurchaseInv + $countinvoiceInv;
-    // var_dump($Count);
-?>
-        
-
-<li class="nav-item dropdown user-menu">
-                    <a href='#addtstock' data-toggle='modal' name="Find" class="btn btn-info btn-sm" title="Add Data">
-                        <i class="fas fa-bell text-black"></i>
-                        <span class="badge rounded-pill badge-notification bg-danger">{{ $Count }}</span>
-                    </a>
-   
-</li>
 
 
 <li class="nav-item dropdown user-menu">
