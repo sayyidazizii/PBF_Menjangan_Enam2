@@ -95,6 +95,7 @@
                         <th width="2%" style='text-align:center'>No</th>
                         <th width="10%" style='text-align:center'>Tanggal</th>
                         <th width="15%" style='text-align:center'>No. Delivery Note</th>
+                        <th width="15%" style='text-align:center'>No. Po Customer</th>
                         <th width="10%" style='text-align:center'>Gudang</th>
                         {{-- <th width="10%" style='text-align:center'>Pelanggan</th> --}}
                         <th width="10%" style='text-align:center'>Aksi</th>
@@ -110,6 +111,7 @@
                         <td style='text-align:center'>{{$no}}</td>
                         <td>{{$item['sales_delivery_note_date']}}</td>
                         <td>{{$item['sales_delivery_note_no']}}</td>
+                        <td>{{$SalesDeliveryNote->getPOnum($item['sales_order_id'])}}</td>
                         <td>{{$SalesDeliveryNote->getInvWarehouseName($item['warehouse_id'])}}</td>
                         {{-- <td>{{$item['customer_id']}}</td> --}}
                         <td style='text-align:center'>

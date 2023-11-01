@@ -278,7 +278,7 @@ class InvItemStockController extends Controller
                 }
                 
 
-                $no++;
+                    
                 $j++;
                 $lastno = $no;
                 $lastj = $j;
