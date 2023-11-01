@@ -49,6 +49,22 @@ class HomeController extends Controller
         ->whereBetween('sales_invoice_due_date' ,[$startDate, $endDate])
         ->simplePaginate(3);
        // dd($salesinvoice);
+
+       $purchaseinvoiceCount = count($purchaseinvoice);
+       $salesinvoiceCount = count($salesinvoice);
+
+       if($purchaseinvoiceCount == 0)
+       {
+        $purchaseinvoice = PurchaseInvoice::select('*')
+        ->where('purchase_invoice_due_date' ,'<',$startDate)
+        ->simplePaginate(3);
+       }
+       if($salesinvoiceCount == 0)
+       {
+        $salesinvoice = SalesInvoice::select('*')
+        ->where('sales_invoice_due_date' ,'<',$startDate)
+        ->simplePaginate(3);
+       }
     
 
 
