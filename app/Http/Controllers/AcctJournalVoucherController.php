@@ -652,4 +652,75 @@ $tblStock4 = "
         );
         return $default_status[$account_default_status];
     }
+
+    public function getReverseState($journal_voucher_id)
+    {
+        $reverse_state = AcctJournalVoucher::where('journal_voucher_id',$journal_voucher_id)
+        ->first();
+        return $reverse_state['reverse_state'];
+    }
+
+    public function reverseJournalVoucher($journal_voucher_id)
+    {
+        $journal = AcctJournalVoucher::find($journal_voucher_id);
+        $journalItem = AcctJournalVoucher::join('acct_journal_voucher_item', 'acct_journal_voucher_item.journal_voucher_id', '=', 'acct_journal_voucher.journal_voucher_id')
+            ->select('acct_journal_voucher_item.*')
+            // ->where('acct_journal_voucher.company_id', Auth::user()->company_id)
+            ->where('acct_journal_voucher.journal_voucher_id', $journal_voucher_id);
+        $data = array(
+            // 'company_id'                    => $journal['company_id'],
+            'transaction_module_id'         => $journal['transaction_module_id'],
+            'journal_voucher_status'        => $journal['journal_voucher_status'],
+            'transaction_journal_no'        =>  $journal['transaction_journal_no'],
+            'transaction_module_code'       => $journal['transaction_module_code'],
+            'journal_voucher_date'          => date('Y-m-d'),
+            'journal_voucher_description'   =>  'HAPUS Jurnal' . $journal['journal_voucher_description'],
+            'journal_voucher_period'        => $journal['journal_voucher_period'],
+            'journal_voucher_title'         =>  'HAPUS Jurnal' . $journal['journal_voucher_title'],
+            "data_state"                    => $journal['data_state'],
+            "reverse_state"                 => 1,
+            'updated_id'                    => Auth::id(),
+            'created_id'                    => Auth::id()
+        );
+        try {
+            DB::beginTransaction();
+            AcctJournalVoucher::create($data);
+            $arr = array();
+            $journal->reverse_state = 1;
+            $journal->save();
+            $journalVoucherId = AcctJournalVoucher::orderBy('journal_voucher_id', 'DESC')->first();
+            foreach ($journalItem->get() as $key) {
+
+                $reverse_journal = array(
+                    // 'company_id'                        => $key['company_id'],
+                    'journal_voucher_id'                => $journalVoucherId['journal_voucher_id'],
+                    'account_id'                        => $key['account_id'],
+                    'journal_voucher_amount'            => $key['journal_voucher_amount'],
+                    'account_id_status'                 => (1 - $key['account_id_status']),
+                    'account_id_default_status'         => $key['account_id_default_status'],
+                    'journal_voucher_debit_amount'      => $key['journal_voucher_credit_amount'],
+                    'journal_voucher_credit_amount'     => $key['journal_voucher_debit_amount'],
+                    "data_state"                        => $key['data_state'],
+                    "reverse_state"                     => 1,
+                    'updated_id'                        => Auth::id(),
+                    'created_id'                        => Auth::id()
+                );
+                array_push($arr, $reverse_journal);
+                AcctJournalVoucherItem::create($reverse_journal);
+            }
+            $journalItem->update(['acct_journal_voucher_item.reverse_state' => 1]);
+            //     dd([$journal,$data]);
+            //     dd([$journalItem,$arr]);
+            //     dd([$data,$journal_voucher_id,$journal]);
+            //    exit;    
+            DB::commit();
+            session()->flash('msg', 'Hapus Jurnal Umum Berhasil');
+            return redirect()->route('journal');
+        } catch (\Throwable $th) {
+            dd($th);
+            DB::rollback();
+            session()->flash('msg', 'Hapus Jurnal Umum Gagal');
+            return redirect()->route('journal');
+        }
+    }
 }

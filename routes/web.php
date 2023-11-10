@@ -212,6 +212,7 @@ Route::post('/journal/process-add', [AcctJournalVoucherController::class, 'proce
 Route::get('/journal/printing', [AcctJournalVoucherController::class, 'processPrintingAcctJournalVoucher'])->name('printing-journal');
 Route::get('/journal/export', [AcctJournalVoucherController::class, 'processExportAcctJournalVoucher'])->name('export-journal');
 Route::post('/journal/elements-add', [AcctJournalVoucherController::class, 'elements_add'])->name('elements-add-journal');
+Route::get('/journal/reverse/{journal_voucher_id}', [AcctJournalVoucherController::class, 'reverseJournalVoucher'])->name('reverse-journal-voucher');
 
 
 Route::get('/journal-Purchase', [AcctJournalVoucherPurchaseController::class, 'index'])->name('journal-purchase');

@@ -470,7 +470,7 @@ class InvGoodsReceivedNoteController extends Controller
                     $item_weight_default = $item_type['item_weight_1'];
                     // dd($quantity_unit, $default_quantity, $item_weight, $item_weight_default);
                 }
-                if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_2']){
+                else if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_2']){
                     $quantity_unit = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_quantity_default_2'];
                     $default_quantity = $item_type['item_quantity_default_2'];
                     $item_weight = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_weight_2'];
@@ -478,10 +478,9 @@ class InvGoodsReceivedNoteController extends Controller
 
                     // dd($quantity_unit, $default_quantity, $item_weight, $item_weight_default);
                     
-                }
-                if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_3']){
+                }else if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_3']){
                     $quantity_unit = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_quantity_default_3'];
-                    $default_quantity = $item_type['item_quantity_default_3'];
+                    $default_quantity = $item_type['item_quantity_default_3'];  
                     $item_weight = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_weight_3'];
                     $item_weight_default = $item_type['item_weight_3'];
 
@@ -508,7 +507,7 @@ class InvGoodsReceivedNoteController extends Controller
                     'created_id'                    => Auth::id(),
                 );
 
-                // dd($invitemstock);
+                dd($invitemstock);
 
                 $data_item_stock = InvItemStock::where('item_type_id', $invitemstock['item_type_id'])
                 ->where('item_batch_number', $invitemstock['item_batch_number'])->first();

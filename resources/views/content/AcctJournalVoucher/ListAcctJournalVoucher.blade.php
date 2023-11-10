@@ -87,6 +87,7 @@
                     <th width="20%">Nama Perkiraan</th>
                     <th width="11%">Debit</th>
                     <th width="11%">Kredit</th>
+                    <th width="10%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,6 +104,7 @@
                     $totalkredit	= 0;
                     foreach ($acctjournalvoucher as $key=>$val){	
                         $id = $AcctJournalVoucher->getMinID($val['journal_voucher_id']);
+                        $reverse_state = $AcctJournalVoucher->getReverseState($val['journal_voucher_id']);
 
                         $project_name = $AcctJournalVoucher->getProjectName($val['project_id']);
 
@@ -122,6 +124,12 @@
 
 
                         if($val['journal_voucher_item_id'] === $id){
+                            $delete = ' ';
+                                    if($reverse_state==0){
+                                    $delete = "<a type='button' class='btn my-3 btn-danger btn-sm' href='".route('reverse-journal-voucher',['journal_voucher_id'=>$val['journal_voucher_id']])."' onclick='".'return confirm("Apakah Anda Yakin Ingin Menghapus Data Ini ?")'."'>Hapus</a>";
+                                    }else{
+                                        $delete = "Dihapus";
+                                    }
                             echo"
                                 <tr>			
                                     <td style='text-align:center'>".$no."</td>
@@ -132,6 +140,9 @@
                                     <td>".$val['account_name']."</td>
                                     <td align='right'>".$debet."</td>
                                     <td align='right'>".$kredit."</td>
+                                    <td style='text-align:center'>
+                                                ".$delete."
+                                            </td>
                                 </tr>
                             ";
                             $no++;
