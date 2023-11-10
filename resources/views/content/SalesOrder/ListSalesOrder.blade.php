@@ -93,6 +93,7 @@
                         <th width="20%" style='text-align:center'>Nama Pelanggan</th>
                         <th width="20%" style='text-align:center'>No SO</th>
                         <th width="10%" style='text-align:center'>Tanggal SO</th>
+                        <th width="10%" style='text-align:center'>Po. Customer</th>
                         <th width="15%" style='text-align:center'>Status</th>
                         <th width="15%" style='text-align:center'>Aksi</th>
                     </tr>
@@ -105,6 +106,7 @@
                         <td>{{$SalesOrder->getCoreCustomerName($item['customer_id'])}}</td>
                         <td>{{$item['sales_order_no']}}</td>
                         <td>{{date('d/m/Y', strtotime($item['sales_order_date']))}}</td>
+                        <td>{{$item['purchase_order_no']}}</td>
                         <?php 
                         if($item['approved']==2){
                             ?>

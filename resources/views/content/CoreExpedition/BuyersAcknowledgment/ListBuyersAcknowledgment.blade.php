@@ -93,6 +93,7 @@
                         <th width="20%" style='text-align:center'>Nama Pelanggan</th>
                         <th width="15%" style='text-align:center'>No Penerimaan</th>
                         <th width="15%" style='text-align:center'>No SO</th>
+                        <th width="15%" style='text-align:center'>Po Customer</th>
                         <th width="10%" style='text-align:center'>Tanggal SO</th>
                         <th width="10%" style='text-align:center'>Tanggal Delivery SO</th>
                         <th width="10%" style='text-align:center'>Tanggal Penerimaan</th>
@@ -107,6 +108,7 @@
                         <td>{{$BuyersAcknowledgment->getCustomerNameSalesOrderId($item['sales_order_id'])}}</td>
                         <td>{{$item['buyers_acknowledgment_no']}}</td>
                         <td>{{$BuyersAcknowledgment->getSalesOrderNo($item['sales_order_id'])}}</td>
+                        <td>{{$BuyersAcknowledgment->getPoNo($item['sales_order_id'])}}</td>
                         <td>{{date('d/m/Y', strtotime($BuyersAcknowledgment->getSalesOrderDate($item['sales_order_id'])))}}</td>
                         <td>{{date('d/m/Y', strtotime($BuyersAcknowledgment->getSalesDeliveryOrderDate($item['sales_delivery_order_id'])))}}</td>
                         <td>{{date('d/m/Y', strtotime($item['buyers_acknowledgment_date']))}}</td>

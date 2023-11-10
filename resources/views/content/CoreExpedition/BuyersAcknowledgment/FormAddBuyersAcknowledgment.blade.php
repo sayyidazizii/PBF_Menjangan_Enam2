@@ -39,7 +39,7 @@
 <div class="alert alert-info" role="alert">
     {{session('msg')}}
 </div>
-@endif
+@endif 
 @if(count($errors) > 0)
 <div class="alert alert-danger" role="alert">
     @foreach ($errors->all() as $error)
@@ -72,10 +72,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">No. Perkiraan</a>
-                        {!! Form::select('account_id',  $acctaccount, 0, ['class' => 'selection-search-clear select-form', 'id' => 'account_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!}
+                <div hidden class="col-md-6">
+                    <div hidden class="form-group">
+                        <a hidden class="text-dark">No. Perkiraan</a>
+                        {{-- {!! Form::select('account_id',  $acctaccount, 0, ['class' => 'selection-search-clear select-form', 'id' => 'account_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!} --}}
                     </div>
                 </div>
                 <div class="col-md-6">
