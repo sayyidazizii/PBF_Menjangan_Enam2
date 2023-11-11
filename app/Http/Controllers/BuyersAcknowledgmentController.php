@@ -431,8 +431,6 @@ class BuyersAcknowledgmentController extends Controller
                 ->where('purchase_order_item.item_type_id', $item_type_id['item_type_id'])
                 ->first();
 
-                // dd($harga_beli);
-
 
                 $ppn_out_amount = $salesorder['ppn_out_amount'];
                 
@@ -538,7 +536,7 @@ class BuyersAcknowledgmentController extends Controller
                         'account_id'					=> 515,
                         'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                         'journal_voucher_amount'		=> $diskonA + $diskonB,
-                        'journal_voucher_debit_amount'	=> $diskonA + $diskonB,
+                        'journal_voucher_credit_amount'	=> $diskonA + $diskonB,
                         'account_id_default_status'		=> $account_id_default_status,
                         'account_id_status'				=> 1,
                     );
@@ -605,8 +603,6 @@ class BuyersAcknowledgmentController extends Controller
                 $no++;
             }
 
-            // $msg = 'Tambah Penerimaan Pihak Pembeli Berhasil';
-            // return redirect('/buyers-acknowledgment')->with('msg',$msg);
                 DB::commit();
                 $msg = 'Tambah Penerimaan Pihak Pembeli Berhasil';
                 return redirect('/buyers-acknowledgment')->with('msg',$msg);
@@ -614,7 +610,7 @@ class BuyersAcknowledgmentController extends Controller
         } catch (\Exception $e) {
                 DB::rollback();
                 $msg = 'Tambah Penerimaan Pihak Pembeli gagal';
-                return redirect('/buyers-acknowledgment')->with('msg',$msg);
+                return redirect('/buyers-acknowledgment')->with('msg',$msg);N
         }
 
     }
