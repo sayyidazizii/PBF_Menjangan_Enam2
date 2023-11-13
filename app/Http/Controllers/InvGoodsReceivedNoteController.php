@@ -507,7 +507,7 @@ class InvGoodsReceivedNoteController extends Controller
                     'created_id'                    => Auth::id(),
                 );
 
-                dd($invitemstock);
+                // dd($invitemstock);
 
                 $data_item_stock = InvItemStock::where('item_type_id', $invitemstock['item_type_id'])
                 ->where('item_batch_number', $invitemstock['item_batch_number'])->first();
