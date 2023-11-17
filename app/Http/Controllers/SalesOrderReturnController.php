@@ -580,7 +580,7 @@ class SalesOrderReturnController extends Controller
                 //------account_id Return Penjualan BKP-----//
                 $preference_company = PreferenceCompany::first();
 
-                $account = AcctAccount::where('account_id', $preference_company['account_sales_return_id'])
+                $account = AcctAccount::where('account_id', 366)
                     ->where('data_state', 0)
                     ->first();
 
@@ -590,7 +590,7 @@ class SalesOrderReturnController extends Controller
 
                 $data_debit1 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
-                    'account_id'                    => $account['account_id'],
+                    'account_id'                    => 366,
                     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($total_amount),
                     'journal_voucher_debit_amount'    => ABS($total_amount),
@@ -603,7 +603,7 @@ class SalesOrderReturnController extends Controller
                 AcctJournalVoucherItem::create($data_debit1);
 
                 //------account_id PPN Keluar------//
-                $account         = AcctAccount::where('account_id', $preferencecompany['account_vat_out_id'])
+                $account         = AcctAccount::where('account_id',238)
                     ->where('data_state', 0)
                     ->first();
 
@@ -614,7 +614,7 @@ class SalesOrderReturnController extends Controller
 
                 $data_debit2 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
-                    'account_id'                    => $preferencecompany['account_vat_out_id'],
+                    'account_id'                    => 238,
                     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($ppn_out_amount),
                     'journal_voucher_debit_amount'    => ABS($ppn_out_amount),
@@ -626,8 +626,8 @@ class SalesOrderReturnController extends Controller
 
                 AcctJournalVoucherItem::create($data_debit2);
 
-                //------account_id Piutang Usaha------//
-                $account = AcctAccount::where('account_id', $preference_company['account_receivable_return_id'])
+                //------account_id Piutang Retur------//
+                $account = AcctAccount::where('account_id', 48)
                     ->where('data_state', 0)
                     ->first();
 
@@ -640,7 +640,7 @@ class SalesOrderReturnController extends Controller
 
                 $data_credit1 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
-                    'account_id'                    => $preferencecompany['account_receivable_return_id'],
+                    'account_id'                    => 48,
                     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($receivable),
                     'journal_voucher_credit_amount'    => ABS($receivable),
@@ -657,8 +657,8 @@ class SalesOrderReturnController extends Controller
                 //----------------------------------------------------------Journal Voucher Item2-------------------------------------------------------------------//
 
 
-                // ------account_id Persediaan Barang dagang------//
-                $account         = AcctAccount::where('account_id', $preferencecompany['account_inventory_trade_id'])
+                // ------account_id Persediaan Barang Retur------//
+                $account         = AcctAccount::where('account_id', 83)
                     ->where('data_state', 0)
                     ->first();
 
@@ -676,7 +676,7 @@ class SalesOrderReturnController extends Controller
 
                 $data_debit3 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
-                    'account_id'                    => $preferencecompany['account_inventory_trade_id'],
+                    'account_id'                    => 83,
                     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($harga_beli['total_amount']),
                     'journal_voucher_debit_amount'    => ABS($harga_beli['total_amount']),
@@ -688,8 +688,8 @@ class SalesOrderReturnController extends Controller
 
                 AcctJournalVoucherItem::create($data_debit3);
 
-                //------account_id Beban Pokok Penjualan Barang Anggota BKP------//
-                $account = AcctAccount::where('account_id', $preference_company['account_hpp_id'])
+                //------account_id Beban Pokok Penjualan Barang ------//
+                $account = AcctAccount::where('account_id', 390)
                     ->where('data_state', 0)
                     ->first();
 
@@ -703,7 +703,7 @@ class SalesOrderReturnController extends Controller
 
                 $data_credit2 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
-                    'account_id'                    => $preferencecompany['account_hpp_id'],
+                    'account_id'                    => 390,
                     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($harga_beli['total_amount']),
                     'journal_voucher_credit_amount'    => ABS($harga_beli['total_amount']),

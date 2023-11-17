@@ -404,7 +404,7 @@ class InvGoodsReceivedNoteController extends Controller
                 'branch_id'						=> 1,
                 'journal_voucher_period' 		=> $journal_voucher_period,
                 'journal_voucher_date'			=> $invgoodsreceivednote['goods_received_note_date'],
-                'journal_voucher_title'			=> 'Penerimaan Barang '.$goodsreceivednote['goods_received_note_no'],
+                'journal_voucher_title'			=> 'Pembelian '.$goodsreceivednote['goods_received_note_no'],
                 'journal_voucher_no'			=> $goodsreceivednote['goods_received_note_no'],
                 'journal_voucher_description'	=> $invgoodsreceivednote['goods_received_note_remark'],
                 'transaction_module_id'			=> $transaction_module_id,
@@ -546,7 +546,7 @@ class InvGoodsReceivedNoteController extends Controller
                 //------account_id Persediaan Barang Dagang------//
                 $preference_company = PreferenceCompany::first();
                 
-                $account = AcctAccount::where('account_id', $preference_company['account_inventory_trade_id'])
+                $account = AcctAccount::where('account_id', 82)
                 ->where('data_state', 0)
                 ->first();
 
@@ -569,7 +569,7 @@ class InvGoodsReceivedNoteController extends Controller
             }
                 
                 //------account_id PPN Masukan------//
-                $account = AcctAccount::where('account_id', $preference_company['account_vat_in_id'])
+                $account = AcctAccount::where('account_id',106)
                 ->where('data_state', 0)
                 ->first();
 
@@ -581,7 +581,7 @@ class InvGoodsReceivedNoteController extends Controller
                 
                 $data_debit2 = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> $account['account_id'],
+                    'account_id'					=> 106,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($ppn_in_amount),
                     'journal_voucher_debit_amount'	=> ABS($ppn_in_amount),
@@ -594,19 +594,18 @@ class InvGoodsReceivedNoteController extends Controller
                 AcctJournalVoucherItem::create($data_debit2);
 
                 
-                $account 		= AcctAccount::where('account_id', $preferencecompany['account_payable_id'])
+                $account 		= AcctAccount::where('account_id', 205)
                 ->where('data_state', 0)
                 ->first();
 
                 $subtotal_after_ppn_in = $purchaseorder['subtotal_after_ppn_in'];
 
-            // dd($account);
-
+                //hutang supplier
                 $account_id_default_status 		= $account['account_default_status'];
 
                 $data_credit = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> $preferencecompany['account_payable_id'],
+                    'account_id'					=> 205,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($subtotal_after_ppn_in),
                     'journal_voucher_credit_amount'	=> ABS($subtotal_after_ppn_in),

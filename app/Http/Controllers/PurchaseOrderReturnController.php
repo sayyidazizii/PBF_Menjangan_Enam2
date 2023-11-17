@@ -849,9 +849,35 @@ class PurchaseOrderReturnController extends Controller
 
                 $journal_voucher_id     = $journalvoucher['journal_voucher_id'];
 
+            //------account_id Hutang Suplier------//
+            $preference_company = PreferenceCompany::first();
 
+            $account = AcctAccount::where('account_id', 205)
+                ->where('data_state', 0)
+                ->first();
+
+            $subtotal_after_ppn_in = $purchaseorder['subtotal_after_ppn_in'];
+
+            $account_id_default_status         = $account['account_default_status'];
+
+            $data_debit1 = array(
+                'journal_voucher_id'            => $journal_voucher_id,
+                'account_id'                    => 205,
+                'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                'journal_voucher_amount'        => ABS($subtotal_after_ppn_in),
+                'journal_voucher_debit_amount'    => ABS($subtotal_after_ppn_in),
+                'account_id_default_status'        => $account_id_default_status,
+                'account_id_status'                => 1,
+            );
+            // dd($data_debit1);
+
+
+            AcctJournalVoucherItem::create($data_debit1);
+
+
+            
                 //------account_id Persedian Barang Dagang------//
-                $account         = AcctAccount::where('account_id', $preferencecompany['account_inventory_trade_id'])
+                $account         = AcctAccount::where('account_id', 82)
                     ->where('data_state', 0)
                     ->first();
 
@@ -862,7 +888,7 @@ class PurchaseOrderReturnController extends Controller
 
                 $data_credit1 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
-                    'account_id'                    => $preferencecompany['account_inventory_trade_id'],
+                    'account_id'                    => 82,
                     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($total_amount),
                     'journal_voucher_credit_amount'    => ABS($total_amount),
@@ -876,35 +902,9 @@ class PurchaseOrderReturnController extends Controller
             }
 
 
-            //------account_id Hutang Suplier------//
-            $preference_company = PreferenceCompany::first();
-
-            $account = AcctAccount::where('account_id', $preference_company['account_payable_id'])
-                ->where('data_state', 0)
-                ->first();
-
-            $subtotal_after_ppn_in = $purchaseorder['subtotal_after_ppn_in'];
-
-            $account_id_default_status         = $account['account_default_status'];
-
-            $data_debit1 = array(
-                'journal_voucher_id'            => $journal_voucher_id,
-                'account_id'                    => $account['account_id'],
-                'journal_voucher_description'    => $data_journal['journal_voucher_description'],
-                'journal_voucher_amount'        => ABS($subtotal_after_ppn_in),
-                'journal_voucher_debit_amount'    => ABS($subtotal_after_ppn_in),
-                'account_id_default_status'        => $account_id_default_status,
-                'account_id_status'                => 1,
-            );
-            // dd($data_debit1);
-
-
-            AcctJournalVoucherItem::create($data_debit1);
-
-
 
             //------account_id PPN Masukan------//
-            $account = AcctAccount::where('account_id', $preference_company['account_vat_in_id'])
+            $account = AcctAccount::where('account_id', 105)
                 ->where('data_state', 0)
                 ->first();
 
@@ -914,7 +914,7 @@ class PurchaseOrderReturnController extends Controller
 
             $data_credit2 = array(
                 'journal_voucher_id'            => $journal_voucher_id,
-                'account_id'                    => $preferencecompany['account_vat_in_id'],
+                'account_id'                    => 105,
                 'journal_voucher_description'    => $data_journal['journal_voucher_description'],
                 'journal_voucher_amount'        => ABS($ppn_in_amount),
                 'journal_voucher_credit_amount'    => ABS($ppn_in_amount),

@@ -444,7 +444,7 @@ Route::post('/sales-order/available-stock', [SalesOrderController::class, 'getAv
 Route::post('/sales-order/select-data-stock', [SalesOrderController::class, 'getSelectDataStock'])->name('select-data-stock-sales-order');
 Route::post('/sales-order/select-data-unit', [SalesOrderController::class, 'getSelectDataUnit'])->name('select-data-unit');
 
-
+    
 Route::get('/sales-order-approval', [SalesOrderApprovalController::class, 'index'])->name('sales-order-approval');
 Route::get('/sales-order-approval/approve/{sales_order_id}', [SalesOrderApprovalController::class, 'approveSalesorder'])->name('approve-sales-order-approval');
 Route::post('/sales-order-approval/process-approve', [SalesOrderApprovalController::class, 'processApproveSalesOrder'])->name('process-approve-sales-order');

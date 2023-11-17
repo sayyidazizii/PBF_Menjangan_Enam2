@@ -60,7 +60,7 @@ class AcctBalanceSheetReportController extends Controller
         ->where('data_state', 0)
         // ->where('company_id', Auth::user()->company_id)
         ->get();
-       //dd($acctbalancesheetreport_right);
+    //    dd($acctbalancesheetreport_right);
         return view('content/AcctBalanceSheetReport/ListAcctBalanceSheetReport', compact('monthlist','yearlist','month','year','acctbalancesheetreport_left','acctbalancesheetreport_right'));
     }
 
@@ -118,6 +118,7 @@ class AcctBalanceSheetReportController extends Controller
       
         $data = AcctJournalVoucher::select('acct_journal_voucher_item.account_id_status','acct_journal_voucher_item.journal_voucher_amount' , 'acct_journal_voucher_item.account_id')
         ->join('acct_journal_voucher_item','acct_journal_voucher_item.journal_voucher_id','acct_journal_voucher.journal_voucher_id')
+        // ->whereMonth('acct_journal_voucher.journal_voucher_date' ,'>=' , 1)
         ->whereMonth('acct_journal_voucher.journal_voucher_date', $month)
         ->whereYear('acct_journal_voucher.journal_voucher_date', $year)
         ->where('acct_journal_voucher.data_state',0)
@@ -127,7 +128,7 @@ class AcctBalanceSheetReportController extends Controller
         //echo json_encode($data);exit;
 
        
-        $data_first = AcctJournalVoucher::select('acct_journal_voucher_item.account_id_status')
+        $data_first = AcctJournalVoucher::select('acct_journal_voucher_item.account_id_status','acct_journal_voucher_item.account_id_default_status')
         ->join('acct_journal_voucher_item','acct_journal_voucher_item.journal_voucher_id','acct_journal_voucher.journal_voucher_id')
         ->whereMonth('acct_journal_voucher.journal_voucher_date', $month)
         ->whereYear('acct_journal_voucher.journal_voucher_date', $year)
@@ -141,13 +142,13 @@ class AcctBalanceSheetReportController extends Controller
         $amount2 = 0;
         foreach ($data as $key => $val) {
 
-            if ($val['account_id_status'] == $data_first['account_id_status']) {
+            if ($val['account_id_status'] == $data_first['account_id_default_status']) {
                 $amount1 += $val['journal_voucher_amount'];
             } else {
                 $amount2 += $val['journal_voucher_amount'];
 
             }
-            $amount = $amount1 - $amount2;
+            $amount =  $amount2;
         }
         
         return $amount;

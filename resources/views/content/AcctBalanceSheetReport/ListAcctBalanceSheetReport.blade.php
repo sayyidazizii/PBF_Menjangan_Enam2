@@ -128,13 +128,13 @@
                                 <tr>
                                     <td><?php echo $item->account_code1 ?> </td>
                                     <td><?php echo $item->account_name1 ?> </td>
-                                    <td>{{ number_format($ABSR->getAmountAccount($item->account_id1)) }}</td>
+                                    <td>{{ number_format($ABSR->getAmountAccount($item->account_id1),2) }}</td>
                                 </tr>
                                 <?php } ?>
                                 <tr class="table table-bordered table-advance table-hover">
                                     <th>Total :</th>
                                     <td></td>
-                                    <td><?php echo number_format($totalleft) ?> </td>
+                                    <td><?php echo number_format($totalleft,2) ?> </td>
                                 </tr>
                             </table>
                         </td>
@@ -155,14 +155,14 @@
                                 <tr>
                                     <td><?php echo $item->account_code2 ?> </td>
                                     <td><?php echo $item->account_name2 ?> </td>
-                                    <td>{{ number_format($ABSR->getAmountAccount($item->account_id2)) }}</td>
+                                    <td>{{ number_format($ABSR->getAmountAccount($item->account_id2),2) }}</td>
                                 </tr>
                                 
                             <?php } ?>
                             <tr class="table table-bordered table-advance table-hover">
                                 <th>Total :</th>
                                 <td></td>
-                                <td><?php echo number_format($totalright) ?> </td>
+                                <td><?php echo number_format($totalright,2  ) ?> </td>
                             </tr>
                             </table>
                         </td>

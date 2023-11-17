@@ -205,9 +205,10 @@ class AcctJournalVoucherController extends Controller
 		
     public function processAddAcctJournalVoucher(Request $request){
         $acctjournalvoucheritem = Session::get('dataarrayjournalvoucher');
-        $acctjournalvoucherprocess = Session::get('dataprocessjournalvoucher');
+        // $acctjournalvoucherprocess = Session::get('dataprocessjournalvoucher');
+        // $acctjournalvoucherprocess = $request->$acctjournalvoucherprocess['journal_voucher_date'];
 
-        $journal_voucher_period = date("Ym", strtotime($acctjournalvoucherprocess['journal_voucher_date']));
+        $journal_voucher_period = date("Ym", strtotime($request->$acctjournalvoucherprocess['journal_voucher_date']));
 
         $transaction_module_code = "JU";
 

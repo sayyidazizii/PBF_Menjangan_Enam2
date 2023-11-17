@@ -313,7 +313,7 @@ class BuyersAcknowledgmentController extends Controller
             'buyers_acknowledgment_no'                  => $request->buyers_acknowledgment_no,
             'sales_order_id'                            => $request->sales_order_id_1,
             //akun piutang usaha
-            'account_id'                                => 30,
+            'account_id'                                => 32,
             'customer_id'                               => $request->customer_id,
             'sales_delivery_order_id'                   => $request->sales_delivery_order_id,
             'sales_delivery_note_id'                    => $request->sales_delivery_note_id,
@@ -462,14 +462,14 @@ class BuyersAcknowledgmentController extends Controller
             ->where('sales_order_id', '=', $buyers_acknowledgment['sales_order_id'])
             ->sum('discount_amount_item_b');
 
-            $account 		= AcctAccount::where('account_id',42)
+            $account 		= AcctAccount::where('account_id',43)
             ->where('data_state', 0)
             ->first();
 
             $account_id_default_status 		=  $account['account_default_status'];
                 $data_debit2 = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> 42,
+                    'account_id'					=> 43,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($diskonA + $diskonB),
                     'journal_voucher_debit_amount'	=> ABS($diskonA + $diskonB),
@@ -479,14 +479,14 @@ class BuyersAcknowledgmentController extends Controller
                 AcctJournalVoucherItem::create($data_debit2);
 
                 // Penjualan Barang Dagang Usaha
-                $account 		= AcctAccount::where('account_id',321)
+                $account 		= AcctAccount::where('account_id',338)
                 ->where('data_state', 0)
                 ->first();
                 $account_id_default_status 		= $account['account_default_status'];
 
                 $data_credit1 = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> $preferencecompany['account_sales_id'],
+                    'account_id'					=> 338,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($total_amount),
                     'journal_voucher_credit_amount'	=> ABS($total_amount),
@@ -498,7 +498,7 @@ class BuyersAcknowledgmentController extends Controller
                 //PPN Keluaran
                 $preferencecompany 			= PreferenceCompany::first();
                                 
-                $account 		= AcctAccount::where('account_id',230)
+                $account 		= AcctAccount::where('account_id',238)
                 ->where('data_state', 0)
                 ->first();
 
@@ -511,7 +511,7 @@ class BuyersAcknowledgmentController extends Controller
 
                 $data_credit2 = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> 230,
+                    'account_id'					=> 238,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> $ppn_out_amount['ppn_out_amount'] ?? 0,
                     'journal_voucher_credit_amount'	=> $ppn_out_amount['ppn_out_amount'] ?? 0,
@@ -529,13 +529,13 @@ class BuyersAcknowledgmentController extends Controller
                 ->where('sales_order_id', '=', $buyers_acknowledgment['sales_order_id'])
                 ->sum('discount_amount_item_b');
 
-                $account 		= AcctAccount::where('account_id',515)
+                $account 		= AcctAccount::where('account_id',522)
                 ->where('data_state', 0)
                 ->first();
                 $account_id_default_status 		= $account['account_default_status'];
                     $data_credit3 = array (
                         'journal_voucher_id'			=> $journal_voucher_id,
-                        'account_id'					=> 515,
+                        'account_id'					=> 522,
                         'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                         'journal_voucher_amount'		=> $diskonA + $diskonB,
                         'journal_voucher_credit_amount'	=> $diskonA + $diskonB,
@@ -545,7 +545,7 @@ class BuyersAcknowledgmentController extends Controller
                     AcctJournalVoucherItem::create($data_credit3);
         
             // Beban Pokok Penjualan Barang 
-                $account 		= AcctAccount::where('account_id', 372)
+                $account 		= AcctAccount::where('account_id', 390)
                 ->where('data_state', 0)
                 ->first();
 
@@ -561,7 +561,7 @@ class BuyersAcknowledgmentController extends Controller
                 
                 $data_debit3= array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> $preferencecompany['account_hpp_id'],
+                    'account_id'					=> 390,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($harga_beli['total_amount']),
                     'journal_voucher_debit_amount'	=> ABS($harga_beli['total_amount']),
@@ -572,7 +572,7 @@ class BuyersAcknowledgmentController extends Controller
                 AcctJournalVoucherItem::create($data_debit3);
                 
             //Persediaan Barang Dagangan
-                $account = AcctAccount::where('account_id', 78)
+                $account = AcctAccount::where('account_id', 82)
                 ->where('data_state', 0)
                 ->first();
                 
@@ -586,7 +586,7 @@ class BuyersAcknowledgmentController extends Controller
                 
                 $data_credit4 = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> 78,
+                    'account_id'					=> 82,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($harga_beli['total_amount']),
                     'journal_voucher_credit_amount'	=> ABS($harga_beli['total_amount']),
