@@ -88,22 +88,7 @@
                     </select>
                 </div>
             </div> --}}
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <div class="form-group form-md-line-input">
-                        <section class="control-label">Tanggal
-                        </section>
-                        <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="journal_voucher_date" id="journal_voucher_date" onChange="function_elements_add(this.name, this.value);" value="{{$acctjournalvoucherelements == null ? '' : $acctjournalvoucherelements['journal_voucher_date']}}" style="width: 15rem;"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Uraian</a>
-                        <input class="form-control input-bb" type="text" name="journal_voucher_description" id="journal_voucher_description" onChange="function_elements_add(this.name, this.value);" value="{{$acctjournalvoucherelements == null ? '' : $acctjournalvoucherelements['journal_voucher_description']}}"/>
-                    </div>
-                </div>
-            </div>
-            <br/>
+           
             <h3 class="page-title">
                 Detail Jurnal Umum
             </h3>
@@ -137,7 +122,7 @@
                 <div class="col-md-12 ">
                     <a class="text-dark">Deskripsi</a>
                     <div class="">
-                        <textarea rows="3" type="text" class="form-control input-bb" name="journal_voucher_description_item" id="journal_voucher_description_item" onChange="function_elements_add(this.name, this.value);" ></textarea>
+                        <textarea rows="3" type="text" class="form-control input-bb" name="journal_voucher_description" id="journal_voucher_description" onChange="function_elements_add(this.name, this.value);" ></textarea>
                     </div>
                 </div>
             </div>
@@ -160,6 +145,22 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <div class="form-group form-md-line-input">
+                                    <section class="control-label">Tanggal
+                                    </section>
+                                    <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="journal_voucher_date" id="journal_voucher_date" onChange="function_elements_add(this.name, this.value);" value="{{$acctjournalvoucherelements == null ? '' : $acctjournalvoucherelements['journal_voucher_date']}}" style="width: 15rem;"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <a class="text-dark">Uraian</a>
+                                    <input class="form-control input-bb" type="text" name="journal_voucher_description" id="journal_voucher_description" onChange="function_elements_add(this.name, this.value);" value="{{$acctjournalvoucherelements == null ? '' : $acctjournalvoucherelements['journal_voucher_description']}}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover table-full-width">
                                 <thead>
@@ -175,7 +176,7 @@
                                 <tbody>
 
                                 <?php
-                                print_r($acctjournalvoucherelements);
+                                // print_r($acctjournalvoucherelements);
                                     if(empty($acctjournalvoucheritem)){
                                     } else {
                                         foreach ($acctjournalvoucheritem as $key => $val) {
