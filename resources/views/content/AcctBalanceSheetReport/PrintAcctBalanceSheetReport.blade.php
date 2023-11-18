@@ -48,9 +48,9 @@
                 <td style="width: 50%">
                     <table style="border-right: 2px solid black" class="table table-bordered table-advance table-hover">
                         <tr>
-                            <th style=" font-size:12px font-weight:bold">No.Rek </th>
-                            <th style=" font-size:12px font-weight:bold">Nama Rekening </th>
-                            <th style=" font-size:12px font-weight:bold">Rupiah </th>
+                            <th style=" font-size:10px font-weight:bold">No.Rek </th>
+                            <th style=" font-size:10px font-weight:bold">Nama Rekening </th>
+                            <th style=" font-size:10px font-weight:bold">Rupiah </th>
                         </tr>
                         <?php
                         $totalleft = 0;  
@@ -75,9 +75,9 @@
                 <td style="width: 50%">
                     <table class="table table-bordered table-advance table-hover">
                         <tr>
-                            <th style=" font-size:12px font-weight:bold">No.Rek</th>
-                            <th style=" font-size:12px font-weight:bold">Nama Rekening </th>
-                            <th style=" font-size:12px font-weight:bold">Rupiah </th>
+                            <th style=" font-size:10px font-weight:bold">No.Rek</th>
+                            <th style=" font-size:10px font-weight:bold">Nama Rekening </th>
+                            <th style=" font-size:10px font-weight:bold">Rupiah </th>
                         </tr>
                         <?php
                         $totalright = 0;  

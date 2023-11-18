@@ -142,12 +142,12 @@ class AcctBalanceSheetReportController extends Controller
         $amount2 = 0;
         foreach ($data as $key => $val) {
 
-            if ($val['account_id_status'] == $data_first['account_id_default_status']) {
-                $amount1 += $val['journal_voucher_amount'];
-            } else {
+            // if ($val['account_id_status'] == $data_first['account_id_default_status']) {
+            //     $amount1 += $val['journal_voucher_amount'];
+            // } else {
                 $amount2 += $val['journal_voucher_amount'];
 
-            }
+            // }
             $amount =  $amount2;
         }
         
