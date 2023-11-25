@@ -398,6 +398,7 @@ class SalesDeliveryNoteController extends Controller
             ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'sales_delivery_order_item.item_type_id')
             ->where('sales_delivery_order_item.sales_delivery_order_id', $request->sales_delivery_order_id)
             ->where('sales_delivery_order_item.data_state', 0)
+            ->orderBy('sales_delivery_order_item.sales_delivery_order_item_id', 'DESC')
             ->get();
 
             $no =1;
@@ -412,7 +413,9 @@ class SalesDeliveryNoteController extends Controller
                 $item_stocks = '';
 
                 $item_unit_id_unit = $item['item_unit_1'];
-
+                $quantity_unit = $dataitem['quantity_'.$no] * $item['item_quantity_default_1'];
+                $default_quantity = $item['item_quantity_default_1'];
+                $item_weight = $dataitem['quantity_'.$no] * $item['item_weight_1'];
                 if($dataitem['item_unit_id_'.$no] == $item['item_unit_1']){
                     $quantity_unit = $dataitem['quantity_'.$no] * $item['item_quantity_default_1'];
                     $default_quantity = $item['item_quantity_default_1'];
