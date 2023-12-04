@@ -20,6 +20,7 @@ use App\Http\Controllers\AcctCashDisbursementReportController;
 use App\Http\Controllers\AcctBankReceiptReportController;
 use App\Http\Controllers\AcctBankDisbursementReportController;
 use App\Http\Controllers\AcctGeneralLedgerReportController;
+use App\Http\Controllers\AcctLedgerReportController;
 use App\Http\Controllers\AcctProfitLossYearReportController;
 use App\Http\Controllers\AcctProfitLossReportController;
 use App\Http\Controllers\AcctBalanceSheetReportController;
@@ -232,10 +233,16 @@ Route::get('/journal-CashBank/printing', [AcctJournalVoucherCashBankController::
 Route::get('/journal-CashBank/export', [AcctJournalVoucherCashBankController::class, 'processExportAcctJournalVoucher'])->name('export-journal-CashBank');
 
 
-Route::get('/ledger', [AcctGeneralLedgerReportController::class, 'index'])->name('ledger');
-Route::post('/ledger/filter', [AcctGeneralLedgerReportController::class, 'filterAcctGeneralLedgerReport'])->name('filter-ledger');
-Route::get('/ledger/printing', [AcctGeneralLedgerReportController::class, 'processPrintingAcctGeneralLedgerReport'])->name('printing-ledger');
-Route::get('/ledger/export', [AcctGeneralLedgerReportController::class, 'processExportAcctGeneralLedgerReport'])->name('export-ledger');
+// Route::get('/ledger', [AcctGeneralLedgerReportController::class, 'index'])->name('ledger');
+// Route::post('/ledger/filter', [AcctGeneralLedgerReportController::class, 'filterAcctGeneralLedgerReport'])->name('filter-ledger');
+// Route::get('/ledger/printing', [AcctGeneralLedgerReportController::class, 'processPrintingAcctGeneralLedgerReport'])->name('printing-ledger');
+// Route::get('/ledger/export', [AcctGeneralLedgerReportController::class, 'processExportAcctGeneralLedgerReport'])->name('export-ledger');
+
+Route::get('/ledger-report',[AcctLedgerReportController::class, 'index'])->name('ledger-report');
+Route::post('/ledger-report/filter',[AcctLedgerReportController::class, 'filterLedgerReport'])->name('filter-ledger-report');
+Route::get('/ledger-report/reset-filter',[AcctLedgerReportController::class, 'resetFilterLedgerReport'])->name('reset-filter-ledger-report');
+Route::get('/ledger-report/print',[AcctLedgerReportController::class, 'printLedgerReport'])->name('print-ledger-report');
+Route::get('/ledger-report/export',[AcctLedgerReportController::class, 'exportLedgerReport'])->name('export-ledger-report');
 
 
 Route::get('/profit-loss-report',[AcctProfitLossReportController::class, 'index'])->name('profit-loss-report');

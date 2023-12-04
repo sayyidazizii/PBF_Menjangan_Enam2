@@ -1,4 +1,5 @@
 @inject('AcctGeneralLedgerReport', 'App\Http\Controllers\AcctGeneralLedgerReportController')
+@inject('AcctLedgerReport','App\Http\Controllers\AcctLedgerReportController')
 
 @extends('adminlte::page')
 

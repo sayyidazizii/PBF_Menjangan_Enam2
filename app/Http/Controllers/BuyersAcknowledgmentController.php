@@ -588,10 +588,10 @@ class BuyersAcknowledgmentController extends Controller
                     'journal_voucher_id'			=> $journal_voucher_id,
                     'account_id'					=> 82,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                    'journal_voucher_amount'		=> ABS($harga_beli['total_amount']),
-                    'journal_voucher_credit_amount'	=> ABS($harga_beli['total_amount']),
-                    'account_id_default_status'		=> 1,
-                    'account_id_status'				=> 1,
+                    'journal_voucher_amount'		=> $harga_beli['total_amount'],
+                    'journal_voucher_credit_amount'	=> $harga_beli['total_amount'],
+                    'account_id_default_status'		=> 0,
+                    'account_id_status'				=> 0,
                 );
             
                 

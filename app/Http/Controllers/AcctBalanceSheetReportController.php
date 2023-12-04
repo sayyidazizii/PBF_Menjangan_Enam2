@@ -136,6 +136,15 @@ class AcctBalanceSheetReportController extends Controller
         // ->where('acct_journal_voucher.company_id', Auth::user()->company_id)
         ->where('acct_journal_voucher_item.account_id', $account_id)
         ->first();
+
+        $data_first = AcctJournalVoucher::select('acct_journal_voucher_item.account_id_status','acct_journal_voucher_item.account_id_default_status')
+        ->join('acct_journal_voucher_item','acct_journal_voucher_item.journal_voucher_id','acct_journal_voucher.journal_voucher_id')
+        ->whereMonth('acct_journal_voucher.journal_voucher_date', $month)
+        ->whereYear('acct_journal_voucher.journal_voucher_date', $year)
+        ->where('acct_journal_voucher.data_state',0)
+        // ->where('acct_journal_voucher.company_id', Auth::user()->company_id)
+        ->where('acct_journal_voucher_item.account_id', $account_id)
+        ->first();
         
         $amount = 0;
         $amount1 = 0;
