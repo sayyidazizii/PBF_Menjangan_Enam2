@@ -248,37 +248,6 @@
                             echo "			
                                 </tr>";
 
-
-                            // if($val['report_type'] == 6){
-                            //     if(!empty($val['report_formula']) && !empty($val['report_operator'])){
-                            //         $report_formula 	= explode('#', $val['report_formula']);
-                            //         $report_operator 	= explode('#', $val['report_operator']);
-
-                                    
-                            //         $grand_total_account_amount1	= 0;
-                            //         for($i = 0; $i < count($report_formula); $i++){
-                            //             if($report_operator[$i] == '-'){
-                            //                 if($grand_total_account_amount1 == 0 ){
-                            //                     $grand_total_account_amount1 = $grand_total_account_amount1 + $account_amount[$report_formula[$i]];
-                            //                 } else {
-                            //                     $grand_total_account_amount1 = $grand_total_account_amount1 - $account_amount[$report_formula[$i]];
-                            //                 }
-                            //             } else if($report_operator[$i] == '+'){
-                            //                 if($grand_total_account_amount1 == 0){
-                            //                     $grand_total_account_amount1 = $grand_total_account_amount1 + $account_amount[$report_formula[$i]];
-                            //                 } else {
-                            //                     $grand_total_account_amount1 = $grand_total_account_amount1 + $account_amount[$report_formula[$i]];
-                            //                 }
-                            //             }
-                            //         }
-
-                            //         echo "
-                            //             <td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
-                            //             <td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($grand_total_account_amount1, 2)."</div></td>
-                            //             ";
-                            //     }
-                                
-                            // }
                             echo "
                                 </tr>";
 
@@ -303,19 +272,11 @@
                                 <tr>";
                          ?>
                     @endforeach
-                    <tr>
-                        <td colspan='2'></td>
-                    </tr>
-                    <?php $no = 1; 
-                         
-                    ?>
                    
-                        <td colspan='2'></td>
-                    </tr>
-                    {{-- <tr>
+                    <tr>
                         <th style="width: 80%">RUGI / LABA</th>
-                        <th style="width: 20%; text-align: right">{{ number_format($grand_total_account_amount1 - $grand_total_account_amount2,2,'.',',') }}</th>
-                    </tr> --}}
+                        <th style="width: 20%; text-align: right">{{ number_format($expenditure_subtotal,2,'.',',') }}</th>
+                    </tr> 
                 </tbody>
             </table>
 

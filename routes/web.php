@@ -249,7 +249,7 @@ Route::get('/profit-loss-report',[AcctProfitLossReportController::class, 'index'
 Route::post('/profit-loss-report/filter',[AcctProfitLossReportController::class, 'filterProfitLossReport'])->name('filter-profit-loss-report');
 Route::get('/profit-loss-report/reset-filter',[AcctProfitLossReportController::class, 'resetFilterProfitLossReport'])->name('reset-filter-profit-loss-report');
 Route::get('/profit-loss-report/print',[AcctProfitLossReportController::class, 'printProfitLossReport'])->name('print-profit-loss-report');
-Route::get('/profit-loss-report/export',[AcctProfitLossReportController::class, 'export'])->name('export-profit-loss-report');
+Route::get('/profit-loss-report/export',[AcctProfitLossReportController::class, 'exportProfitLossReport'])->name('export-profit-loss-report');
 
 
 Route::get('balance-sheet-report',[AcctBalanceSheetReportController::class, 'index'])->name('balance-sheet-report');
