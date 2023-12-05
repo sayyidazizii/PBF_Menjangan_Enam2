@@ -124,7 +124,50 @@
                         <th style="text-align: center" colspan="5">Saldo Awal</th>
                         <td></td>
                         <td></td>
-                       
+                        <?php 
+                            // if($account['account_default_status']==0 || $accountbalancedetail_old['last_balance'] >= 0){  
+                            //     // if (isset($accountbalancedetail_old['last_balance'])) {
+                            //     //     if($accountbalancedetail_old['last_balance'] >= 0){
+                            //     //         echo "
+                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old?? '' ['last_balance'],2,'.',',')."</td>
+                            //     //             <td style='text-align: right'>0.00</td>
+                            //     //         ";
+                            //     //     } else {
+                            //     //         echo "
+                            //     //             <td style='text-align: right'>0.00</td>
+                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
+                            //     //         ";
+                            //     //     }
+                            //     // } else {
+                            //     //     echo "
+                            //     //         <td style='text-align: right'>0.00</td>
+                            //     //         <td style='text-align: right'>0.00</td>
+                            //     //     ";
+                            //     // }
+                                
+                            
+                            // } else {
+                            //     // if (isset($accountbalancedetail_old['last_balance'])) {
+                            //     //     if($accountbalancedetail_old['last_balance'] >= 0){
+                            //     //         echo "
+                            //     //             <td style='text-align: right'>0.00</td>
+                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
+                                            
+                            //     //         ";
+                            //     //     } else {
+                            //     //         echo "
+                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
+                            //     //             <td style='text-align: right'>0.00</td>
+                            //     //         ";
+                            //     //     }
+                            //     // } else {
+                            //     //     echo "
+                            //     //         <td style='text-align: right'>0.00</td>
+                            //     //         <td style='text-align: right'>0.00</td>
+                            //     //     ";
+                            //     // }
+                            // }
+                        ?>
                     </tr>
                     
                         <?php
