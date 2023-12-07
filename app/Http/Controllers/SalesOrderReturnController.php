@@ -407,95 +407,60 @@ class SalesOrderReturnController extends Controller
             'sales_delivery_note_id'        => $request->sales_delivery_note_id,
             'sales_order_return_date'       => $request->sales_order_return_date,
             'sales_order_return_remark'     => $request->sales_order_return_remark,
-            'customer_id'                     => $request->customer_id,
-            'no_retur_barang'                 => $request->no_retur_barang,
-            'nota_retur_pajak'                 => $request->nota_retur_pajak,
-            'barang_kembali'                 => $request->barang_kembali,
+            'customer_id'                   => $request->customer_id,
+            'no_retur_barang'               => $request->no_retur_barang,
+            'nota_retur_pajak'              => $request->nota_retur_pajak,
+            'barang_kembali'                => $request->barang_kembali,
             // 'branch_id'                     => Auth::user()->branch_id,
             'created_id'                    => Auth::id(),
         );
 
 
-        if (SalesOrderReturn::create($salesorderreturn)) {
+        if(SalesOrderReturn::create($salesorderreturn)) {
             $sales_order_return_id = SalesOrderReturn::select('sales_order_return_id', 'sales_order_return_no')
                 ->orderBy('created_at', 'DESC')
                 ->first();
 
-            // dd($sales_order_return_id);
+            $salesinvoiceNo = SalesInvoice::select('sales_invoice_no')
+            ->where('sales_invoice_id',$request->sales_invoice_id)
+            ->first();
+
 
             $salesinvoiceitem = SalesInvoiceItem::select('sales_invoice_item.*', 'sales_delivery_note_item_stock.item_stock_id', 'sales_delivery_note_item_stock.quantity')
                 ->join('sales_delivery_note_item_stock', 'sales_delivery_note_item_stock.sales_delivery_note_item_id', 'sales_invoice_item.sales_delivery_note_item_id')
                 ->where('sales_invoice_item.sales_order_id', $request->sales_order_id)
                 ->get();
-            // dd($salesinvoiceitem);
             $no = 1;
 
             $dataitem = $request->all();
 
 
-            // //----------------------------------------------------------Journal Voucher-------------------------------------------------------------------//
-
-            $preferencecompany             = PreferenceCompany::first();
-
-            $transaction_module_code     = "SOR";
-
-            $transactionmodule             = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
-                ->first();
-
-
-            $transaction_module_id         = $transactionmodule['transaction_module_id'];
-
-            $journal_voucher_period     = date("Ym", strtotime($salesorderreturn['sales_order_return_date']));
-
-            $data_journal = array(
-                'branch_id'                        => 1,
-                'journal_voucher_period'         => $journal_voucher_period,
-                'journal_voucher_date'            => $salesorderreturn['sales_order_return_date'],
-                'journal_voucher_title'            => 'Return Penjualan Barang ' . $sales_order_return_id['sales_order_return_no'],
-                'journal_voucher_no'            => $sales_order_return_id['sales_order_return_no'],
-                'journal_voucher_description'    => $salesorderreturn['sales_order_return_remark'],
-                'transaction_module_id'            => $transaction_module_id,
-                'transaction_module_code'        => $transaction_module_code,
-                'transaction_journal_id'         => $sales_order_return_id['sales_order_return_id'],
-                'transaction_journal_no'         => $sales_order_return_id['sales_order_return_no'],
-                'created_id'                     => Auth::id(),
-            );
-
-            // dd($data_journal);
-            AcctJournalVoucher::create($data_journal);
-
-
-            //---------------------------------------------------------End Journal Voucher----------------------------------------------------------------//
-
-
             foreach ($salesinvoiceitem as $item) {
                 $item = SalesOrderReturnItem::create([
-                    'sales_delivery_order_id'        => $sales_order_return_id['sales_delivery_order_id'],
-                    'sales_order_return_id'            => $sales_order_return_id['sales_order_return_id'],
-                    'sales_invoice_id'                 => $dataitem['sales_invoice_id'],
-                    'sales_delivery_note_id'         => $dataitem['sales_delivery_note_id'],
+                    'sales_delivery_order_id'       => $sales_order_return_id['sales_delivery_order_id'],
+                    'sales_order_return_id'         => $sales_order_return_id['sales_order_return_id'],
+                    'sales_invoice_id'              => $dataitem['sales_invoice_id'],
+                    'sales_delivery_note_id'        => $dataitem['sales_delivery_note_id'],
                     'sales_delivery_note_item_id'   => $dataitem['sales_delivery_note_item_id_' . $no],
-                    'sales_order_id'                 => $dataitem['sales_order_id'],
-                    'sales_order_item_id'             => $dataitem['sales_order_item_id_' . $no],
-                    'item_id'                         => $dataitem['item_id_' . $no],
+                    'sales_order_id'                => $dataitem['sales_order_id'],
+                    'sales_order_item_id'           => $dataitem['sales_order_item_id_' . $no],
+                    'item_id'                       => $dataitem['item_id_' . $no],
                     'item_stock_id'                 => $item['item_stock_id'],
-                    'item_type_id'                     => $dataitem['item_type_id_' . $no],
-                    'item_unit_id'                     => $dataitem['item_unit_id_' . $no],
-                    'item_unit_price'                 => $dataitem['item_unit_price_' . $no],
-                    'subtotal_price'                 => $dataitem['quantity_return_' . $no] * $dataitem['item_unit_price_' . $no],
-                    'quantity'                        => $dataitem['quantity_' . $no],
-                    'quantity_return'                => $dataitem['quantity_return_' . $no],
+                    'item_type_id'                  => $dataitem['item_type_id_' . $no],
+                    'item_unit_id'                  => $dataitem['item_unit_id_' . $no],
+                    'item_unit_price'               => $dataitem['item_unit_price_' . $no],
+                    'subtotal_price'                => $dataitem['quantity_return_' . $no] * $dataitem['item_unit_price_' . $no],
+                    'quantity'                      => $dataitem['quantity_' . $no],
+                    'quantity_return'               => $dataitem['quantity_return_' . $no],
                     'created_id'                    => Auth::id(),
                 ]);
 
-                //dd($item);
 
                 $salesdeliverynote = SalesInvoice::findOrFail($dataitem['sales_invoice_id']);
                 $salesdeliverynote->return_status = 1;
                 $salesdeliverynote->save();
 
                 $itemstock = InvItemStock::findOrfail($item['item_stock_id']);
-                //dd($itemstock);
 
                 if ($dataitem['barang_kembali'] == 0) {
                     InvItemStock::create([
@@ -529,7 +494,6 @@ class SalesOrderReturnController extends Controller
 
                     ]);
                 } else {
-                    //dd($inv_stock_note);
                     InvItemStock::create([
                         'goods_received_note_id'            =>   $itemstock['goods_received_note_id'],
                         'goods_received_note_item_id'       =>   $itemstock['goods_received_note_item_id'],
@@ -561,7 +525,38 @@ class SalesOrderReturnController extends Controller
                 }
 
 
-                //----------------------------------------------------------Journal Voucher Item-------------------------------------------------------------------//
+//----------------------------------------------------------Journal Voucher Item Barang Belum Datang-------------------------------------------------------------------//
+if ($dataitem['barang_kembali'] == 0) {
+                //----------------------------------------------------------Journal Voucher-------------------------------------------------------------------//
+
+            $preferencecompany           = PreferenceCompany::first();
+
+            $transaction_module_code     = "SOR";
+
+            $transactionmodule           = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
+                ->first();
+
+            $transaction_module_id      = $transactionmodule['transaction_module_id'];
+
+            $journal_voucher_period     = date("Ym", strtotime($salesorderreturn['sales_order_return_date']));
+
+            $data_journal = array(
+                'branch_id'                      => 1,
+                'journal_voucher_period'         => $journal_voucher_period,
+                'journal_voucher_date'           => $salesorderreturn['sales_order_return_date'],
+                'journal_voucher_title'          => 'Return Penjualan Barang Belum Datang' . $salesinvoiceNo,
+                'journal_voucher_no'             => $salesinvoiceNo,
+                'journal_voucher_description'    => $salesorderreturn['sales_order_return_remark'],
+                'transaction_module_id'          => $transaction_module_id,
+                'transaction_module_code'        => $transaction_module_code,
+                'transaction_journal_id'         => $sales_order_return_id['sales_order_return_id'],
+                'transaction_journal_no'         => $salesinvoiceNo,
+                'created_id'                     => Auth::id(),
+            );
+
+            AcctJournalVoucher::create($data_journal);
+
+//---------------------------------------------------------End Journal Voucher----------------------------------------------------------------//
 
 
                 $salesorderitem          = SalesOrderItem::where('sales_order_item_id', $item['sales_order_item_id_' . $no])
@@ -573,11 +568,9 @@ class SalesOrderReturnController extends Controller
                     ->orderBy('journal_voucher_id', 'DESC')
                     ->first();
 
-
                 $journal_voucher_id     = $journalvoucher['journal_voucher_id'];
 
-
-                //------account_id Return Penjualan BKP-----//
+                // 1. ------Return Penjualan Barang-----//
                 $preference_company = PreferenceCompany::first();
 
                 $account = AcctAccount::where('account_id', 366)
@@ -586,23 +579,21 @@ class SalesOrderReturnController extends Controller
 
                 $total_amount = $item['item_unit_price'] * $item['quantity_return'];
 
-                $account_id_default_status         = $account['account_default_status'];
+                $account_id_default_status          = $account['account_default_status'];
 
                 $data_debit1 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
                     'account_id'                    => 366,
-                    'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                    'journal_voucher_description'   => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($total_amount),
-                    'journal_voucher_debit_amount'    => ABS($total_amount),
-                    'account_id_default_status'        => $account_id_default_status,
-                    'account_id_status'                => 1,
+                    'journal_voucher_debit_amount'  => ABS($total_amount),
+                    'account_id_default_status'     => $account_id_default_status,
+                    'account_id_status'             => 1,
                 );
-
-                // dd($data_debit1);
 
                 AcctJournalVoucherItem::create($data_debit1);
 
-                //------account_id PPN Keluar------//
+                // 2.------PPN Keluaran------//
                 $account         = AcctAccount::where('account_id',238)
                     ->where('data_state', 0)
                     ->first();
@@ -610,23 +601,21 @@ class SalesOrderReturnController extends Controller
                 // $total_amount = $item['item_unit_price'] * $item['quantity_return'];
 
                 $ppn_out_amount = $salesorder['ppn_out_amount'];
-                // dd($account_id_default_status);
 
                 $data_debit2 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
                     'account_id'                    => 238,
-                    'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                    'journal_voucher_description'   => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($ppn_out_amount),
-                    'journal_voucher_debit_amount'    => ABS($ppn_out_amount),
-                    'account_id_default_status'        => $account_id_default_status,
-                    'account_id_status'                => 1,
+                    'journal_voucher_debit_amount'  => ABS($ppn_out_amount),
+                    'account_id_default_status'     => $account_id_default_status,
+                    'account_id_status'             => 1,
                 );
 
-                // dd($data_debit2);
 
                 AcctJournalVoucherItem::create($data_debit2);
 
-                //------account_id Piutang Retur------//
+                // 3.------ Piutang Retur------//
                 $account = AcctAccount::where('account_id', 48)
                     ->where('data_state', 0)
                     ->first();
@@ -635,29 +624,20 @@ class SalesOrderReturnController extends Controller
 
                 $receivable = $ppn_out_amount + $total_amount;
 
-
-                $account_id_default_status         = $account['account_default_status'];
-
+                $account_id_default_status          = $account['account_default_status'];
                 $data_credit1 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
                     'account_id'                    => 48,
-                    'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                    'journal_voucher_description'   => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($receivable),
-                    'journal_voucher_credit_amount'    => ABS($receivable),
-                    'account_id_default_status'        => $account_id_default_status,
-                    'account_id_status'                => 0,
+                    'journal_voucher_credit_amount' => ABS($receivable),
+                    'account_id_default_status'     => $account_id_default_status,
+                    'account_id_status'             => 0,
                 );
 
-                // dd($data_credit1);
-
                 AcctJournalVoucherItem::create($data_credit1);
-                //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//
 
-
-                //----------------------------------------------------------Journal Voucher Item2-------------------------------------------------------------------//
-
-
-                // ------account_id Persediaan Barang Retur------//
+                // 4. ------Persediaan Barang Retur Penj Instransit------//
                 $account         = AcctAccount::where('account_id', 83)
                     ->where('data_state', 0)
                     ->first();
@@ -672,23 +652,18 @@ class SalesOrderReturnController extends Controller
                     ->first();
 
                 // $ppn_out_amount = $salesorder['ppn_out_amount'];
-                // dd($account_id_default_status);
-
                 $data_debit3 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
                     'account_id'                    => 83,
-                    'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                    'journal_voucher_description'   => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($harga_beli['total_amount']),
-                    'journal_voucher_debit_amount'    => ABS($harga_beli['total_amount']),
-                    'account_id_default_status'        => $account_id_default_status,
-                    'account_id_status'                => 1,
+                    'journal_voucher_debit_amount'  => ABS($harga_beli['total_amount']),
+                    'account_id_default_status'     => $account_id_default_status,
+                    'account_id_status'             => 1,
                 );
-
-                // dd($data_debit3);
-
                 AcctJournalVoucherItem::create($data_debit3);
 
-                //------account_id Beban Pokok Penjualan Barang ------//
+                // 5. ------Beban Pokok Penjualan Barang ------//
                 $account = AcctAccount::where('account_id', 390)
                     ->where('data_state', 0)
                     ->first();
@@ -698,24 +673,114 @@ class SalesOrderReturnController extends Controller
                     ->where('purchase_order_item.item_type_id', $item_type_id['item_type_id'])
                     ->first();
 
-
-                $account_id_default_status         = $account['account_default_status'];
-
+                $account_id_default_status          = $account['account_default_status'];
                 $data_credit2 = array(
                     'journal_voucher_id'            => $journal_voucher_id,
                     'account_id'                    => 390,
-                    'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                    'journal_voucher_description'   => $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'        => ABS($harga_beli['total_amount']),
-                    'journal_voucher_credit_amount'    => ABS($harga_beli['total_amount']),
-                    'account_id_default_status'        => $account_id_default_status,
-                    'account_id_status'                => 0,
+                    'journal_voucher_credit_amount' => ABS($harga_beli['total_amount']),
+                    'account_id_default_status'     => $account_id_default_status,
+                    'account_id_status'             => 0,
                 );
 
-                // dd($data_credit2);
-
                 AcctJournalVoucherItem::create($data_credit2);
-                //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//
+//--------------------------------------------------------End Journal Voucher Item-----------------------------------------------------------------//
+            }else{
+                //----------------------------------------------------------Journal Voucher-------------------------------------------------------------------//
 
+            $preferencecompany           = PreferenceCompany::first();
+
+            $transaction_module_code     = "SOR";
+
+            $transactionmodule           = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
+                ->first();
+
+            $transaction_module_id      = $transactionmodule['transaction_module_id'];
+
+            $journal_voucher_period     = date("Ym", strtotime($salesorderreturn['sales_order_return_date']));
+
+            $data_journal = array(
+                'branch_id'                      => 1,
+                'journal_voucher_period'         => $journal_voucher_period,
+                'journal_voucher_date'           => $salesorderreturn['sales_order_return_date'],
+                'journal_voucher_title'          => 'Return Penjualan Barang Datang' . $salesinvoiceNo,
+                'journal_voucher_no'             => $salesinvoiceNo,
+                'journal_voucher_description'    => $salesorderreturn['sales_order_return_remark'],
+                'transaction_module_id'          => $transaction_module_id,
+                'transaction_module_code'        => $transaction_module_code,
+                'transaction_journal_id'         => $sales_order_return_id['sales_order_return_id'],
+                'transaction_journal_no'         => $salesinvoiceNo,
+                'created_id'                     => Auth::id(),
+            );
+
+            AcctJournalVoucher::create($data_journal);
+
+//---------------------------------------------------------End Journal Voucher----------------------------------------------------------------//
+//----------------------------------------------------------Journal Voucher Item Barang Datang-------------------------------------------------------------------//
+                $salesorderitem          = SalesOrderItem::where('sales_order_item_id', $item['sales_order_item_id_' . $no])
+                ->first();
+
+                $salesorder              = SalesOrder::findOrFail($salesorderreturn['sales_order_id']);
+
+                $journalvoucher = AcctJournalVoucher::where('created_id', Auth::id())
+                ->orderBy('journal_voucher_id', 'DESC')
+                ->first();
+
+                $journal_voucher_id     = $journalvoucher['journal_voucher_id'];
+
+                        // 1. ------Persediaan Barang Dagangan-----//
+                        $preference_company = PreferenceCompany::first();
+
+                        $account = AcctAccount::where('account_id', 82)
+                            ->where('data_state', 0)
+                            ->first();
+
+                        $total_amount = $item['item_unit_price'] * $item['quantity_return'];
+
+                        $account_id_default_status          = $account['account_default_status'];
+
+                        $data_debit1 = array(
+                            'journal_voucher_id'            => $journal_voucher_id,
+                            'account_id'                    => 82,
+                            'journal_voucher_description'   => $data_journal['journal_voucher_description'],
+                            'journal_voucher_amount'        => ABS($total_amount),
+                            'journal_voucher_debit_amount'  => ABS($total_amount),
+                            'account_id_default_status'     => $account_id_default_status,
+                            'account_id_status'             => 1,
+                        );
+
+                        AcctJournalVoucherItem::create($data_debit1);
+
+                        // 2. ------Persediaan Barang Retur Penj Instransit------//
+                                $account         = AcctAccount::where('account_id', 83)
+                                ->where('data_state', 0)
+                                ->first();
+            
+                            $item_type_id = SalesOrderItem::select('item_type_id')
+                                ->where('sales_order_item_id', $item['sales_order_item_id'])
+                                ->first();
+            
+                            $harga_beli = PurchaseOrderItem::select('purchase_order.total_amount')
+                                ->join('purchase_order', 'purchase_order.purchase_order_id', '=', 'purchase_order_item.purchase_order_id')
+                                ->where('purchase_order_item.item_type_id', $item_type_id['item_type_id'])
+                                ->first();
+            
+                            // $ppn_out_amount = $salesorder['ppn_out_amount'];
+                            $data_credit = array(
+                                'journal_voucher_id'            => $journal_voucher_id,
+                                'account_id'                    => 83,
+                                'journal_voucher_description'   => $data_journal['journal_voucher_description'],
+                                'journal_voucher_amount'        => ABS($harga_beli['total_amount']),
+                                'journal_voucher_credit_amount' => ABS($harga_beli['total_amount']),
+                                'account_id_default_status'     => $account_id_default_status,
+                                'account_id_status'             => 1,
+                            );
+                            AcctJournalVoucherItem::create($data_credit);
+                
+
+//----------------------------------------------------------End Journal Voucher Item -------------------------------------------------------------------//
+            }
 
 
                 $no++;
@@ -793,7 +858,7 @@ class SalesOrderReturnController extends Controller
         $salesorderreturn->barang_kembali = $request->barang_kembali;
         $salesorderreturn->warehouse_id = $request->warehouse_id;
         $salesorderreturn->save();
-        //  dd($request->all());
+
         $dataitem = $request->all();
 
         $sales_order_return_id = SalesOrderReturn::select('sales_order_return_id', 'sales_order_return_no')
@@ -802,26 +867,24 @@ class SalesOrderReturnController extends Controller
             ->first();
 
 
+//----------------------------------------------------------Journal Voucher Header-------------------------------------------------------------------//
 
-                        // //----------------------------------------------------------Journal Voucher-------------------------------------------------------------------//
+                        $preferencecompany          = PreferenceCompany::first();
 
-                        $preferencecompany             = PreferenceCompany::first();
+                        $transaction_module_code    = "SOR";
 
-                        $transaction_module_code     = "SOR";
-
-                        $transactionmodule             = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
+                        $transactionmodule          = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
                             ->first();
 
-
-                        $transaction_module_id         = $transactionmodule['transaction_module_id'];
+                        $transaction_module_id      = $transactionmodule['transaction_module_id'];
 
                         $journal_voucher_period     = date("Ym", strtotime($salesorderreturn['sales_order_return_date']));
 
                         $data_journal = array(
-                            'branch_id'                        => 1,
+                            'branch_id'                      => 1,
                             'journal_voucher_period'         => $journal_voucher_period,
-                            'journal_voucher_date'            => $salesorderreturn['sales_order_return_date'],
-                            'journal_voucher_title'          => 'Return Penjualan Barang ' . $sales_order_return_id['sales_order_return_no'],
+                            'journal_voucher_date'           => $salesorderreturn['sales_order_return_date'],
+                            'journal_voucher_title'          => 'Return Penjualan Barang Kembali' . $sales_order_return_id['sales_order_return_no'],
                             'journal_voucher_no'             => $sales_order_return_id['sales_order_return_no'],
                             'journal_voucher_description'    => $salesorderreturn['sales_order_return_remark'],
                             'transaction_module_id'          => $transaction_module_id,
@@ -831,21 +894,15 @@ class SalesOrderReturnController extends Controller
                             'created_id'                     => Auth::id(),
                         );
 
-                        // dd($data_journal);
                         AcctJournalVoucher::create($data_journal);
 
-
-                        //---------------------------------------------------------End Journal Voucher----------------------------------------------------------------//
-
+//---------------------------------------------------------End Journal Voucher header----------------------------------------------------------------//
 
 
+        $total_no = $request->total_no;
+        for ($i = 1; $i <= $total_no; $i++) {
 
-
-
-                        $total_no = $request->total_no;
-                        for ($i = 1; $i <= $total_no; $i++) {
-
-                //----------------------------------------------------------Journal Voucher Item-------------------------------------------------------------------//
+//----------------------------------------------------------Journal Voucher Item-------------------------------------------------------------------//
 
 
                 $salesorderitem          = SalesOrderItem::where('sales_order_item_id', $dataitem['sales_order_item_id_'.$i])
@@ -861,10 +918,10 @@ class SalesOrderReturnController extends Controller
                 $journal_voucher_id     = $journalvoucher['journal_voucher_id'];
 
 
-                //------account_id Return Penjualan BKP-----//
+                // 1. ------Persediaan Barang dagang------//
                 $preference_company = PreferenceCompany::first();
 
-                $account = AcctAccount::where('account_id', $preference_company['account_sales_return_id'])
+                $account = AcctAccount::where('account_id', 82)
                 ->where('data_state', 0)
                 ->first();
 
@@ -872,81 +929,50 @@ class SalesOrderReturnController extends Controller
 
                 $account_id_default_status         = $account['account_default_status'];
 
-
-                //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//
-
-
-                //----------------------------------------------------------Journal Voucher Item2-------------------------------------------------------------------//
-
-
-                // ------account_id Persediaan Barang dagang------//
-                $account         = AcctAccount::where('account_id', $preferencecompany['account_inventory_trade_id'])
-                ->where('data_state', 0)
-                ->first();
-
-                //  $item_type_id = SalesOrderItem::select('item_type_id')
-                //  ->where('sales_order_item_id', $dataitem['sales_order_item_id'])
-                //  ->first(); 
-
-                //  $harga_beli = PurchaseOrderItem::select('purchase_order.total_amount')
-                //  ->join('purchase_order', 'purchase_order.purchase_order_id', '=', 'purchase_order_item.purchase_order_id')
-                //  ->where('purchase_order_item.item_type_id', $item_type_id['item_type_id'])
-                //  ->first();
-
-                // $ppn_out_amount = $salesorder['ppn_out_amount'];
-                // dd($account_id_default_status);
-
                 $data_debit3 = array(
                 'journal_voucher_id'            => $journal_voucher_id,
-                'account_id'                    => $preferencecompany['account_inventory_after_trade_id'],
-                'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                'account_id'                    => 82,
+                'journal_voucher_description'   => $data_journal['journal_voucher_description'],
                 'journal_voucher_amount'        => ABS($dataitem['harga_beli_'.$i]),
-                'journal_voucher_debit_amount'    => ABS($dataitem['harga_beli_'.$i]),
-                'account_id_default_status'        => $account_id_default_status,
-                'account_id_status'                => 1,
+                'journal_voucher_debit_amount'  => ABS($dataitem['harga_beli_'.$i]),
+                'account_id_default_status'     => $account_id_default_status,
+                'account_id_status'             => 1,
                 );
-
-                // dd($data_debit3);
 
                 AcctJournalVoucherItem::create($data_debit3);
 
-                //------account_id Beban Pokok Penjualan Barang Anggota BKP------//
-                $account = AcctAccount::where('account_id', $preference_company['account_hpp_id'])
+                // 2. ------Persediaan Barang Retur Penj Instransit------//
+                $account         = AcctAccount::where('account_id', 83)
                 ->where('data_state', 0)
                 ->first();
 
-                //  $harga_beli = PurchaseOrderItem::select('purchase_order.total_amount')
-                //  ->join('purchase_order', 'purchase_order.purchase_order_id', '=', 'purchase_order_item.purchase_order_id')
-                //  ->where('purchase_order_item.item_type_id', $item_type_id['item_type_id'])
-                //  ->first();
+            // $item_type_id = SalesOrderItem::select('item_type_id')
+            //     ->where('sales_order_item_id', $item['sales_order_item_id'])
+            //     ->first();
 
+            // $harga_beli = PurchaseOrderItem::select('purchase_order.total_amount')
+            //     ->join('purchase_order', 'purchase_order.purchase_order_id', '=', 'purchase_order_item.purchase_order_id')
+            //     ->where('purchase_order_item.item_type_id', $item_type_id['item_type_id'])
+            //     ->first();
 
-                $account_id_default_status         = $account['account_default_status'];
-
-                $data_credit2 = array(
+            // $ppn_out_amount = $salesorder['ppn_out_amount'];
+            $data_credit = array(
                 'journal_voucher_id'            => $journal_voucher_id,
-                'account_id'                    => $preferencecompany['account_inventory_trade_id'],
-                'journal_voucher_description'    => $data_journal['journal_voucher_description'],
+                'account_id'                    => 83,
+                'journal_voucher_description'   => $data_journal['journal_voucher_description'],
                 'journal_voucher_amount'        => ABS($dataitem['harga_beli_'.$i]),
-                'journal_voucher_credit_amount'    => ABS($dataitem['harga_beli_'.$i]),
-                'account_id_default_status'        => $account_id_default_status,
-                'account_id_status'                => 0,
-                );
-
-                // dd($data_credit2);
-
-                AcctJournalVoucherItem::create($data_credit2);
-                //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//
+                'journal_voucher_credit_amount' => ABS($dataitem['harga_beli_'.$i]),
+                'account_id_default_status'     => $account_id_default_status,
+                'account_id_status'             => 1,
+            );
+            AcctJournalVoucherItem::create($data_credit);
+//--------------------------------------------------------End Journal Voucher Item-----------------------------------------------------------------//
 
 
-
-
+            //Update Warehouse
             $itemstock               = InvItemStock::findOrFail($dataitem['item_stock_id_'.$i]);
             $itemstock->warehouse_id = $dataitem['warehouse_id'];
             $itemstock->save();
-
-
-           
 
         }
 

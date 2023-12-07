@@ -18,7 +18,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
         <li class="breadcrumb-item"><a href="{{ url('sales-order-return') }}">Daftar Return Penjualan</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('sales-order-return/search-sales-delivery-note') }}">Daftar Sales Delivery Note</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('sales-order-return/search-sales-invoice') }}">Daftar Sales Invoice</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah Return Penjualan</li>
     </ol>
 </nav>
@@ -93,8 +93,8 @@
                             <a class="text-dark">Barang Sudah Kembali<a class='red'> *</a></a>
                             <br/>
                              <select class="selection-search-clear" name="barang_kembali" id="barang_kembali" style="width: 100% !important">
-                                <option value="1">Sudah</option>
                                 <option value="0">Belum</option>
+                                <option value="1">Sudah</option>
                             </select>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='quantity_".$no."' id='quantity_".$no."' value='".$val['quantity']."'/>
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='sales_invoice_id' id='sales_invoice_id' value='".$val['sales_invoice_id']."'/>
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='sales_delivery_note_id' id='sales_delivery_note_id' value='".$val['sales_delivery_note_id']."'/>
-                                                    <input class='form-control' style='text-align:right;'type='' name='sales_delivery_note_item_id_".$no."' id='sales_delivery_note_item_id_".$no."' value='".$val['sales_delivery_note_item_id']."'/>
+                                                    <input class='form-control' style='text-align:right;'type='hidden' name='sales_delivery_note_item_id_".$no."' id='sales_delivery_note_item_id_".$no."' value='".$val['sales_delivery_note_item_id']."'/>
                                                 </td>";
                                                 echo"
                                             </tr>

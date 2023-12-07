@@ -837,19 +837,16 @@ class PurchaseOrderReturnController extends Controller
                 // $purchaseorderitem          = PurchaseOrderItem::where('purchase_order_item_id', $temprequest['purchase_order_item_id_'.$i])
                 $purchaseorderitem          = PurchaseOrderItem::where('purchase_order_item_id', $temprequest['purchase_order_item_id_' . $i])
                     ->first();
-                //dd($purchaseorderitem);
 
                 $purchaseorder              = PurchaseOrder::findOrFail($purchaseorderreturn['purchase_order_id']);
-                //dd($purchaseorderitem,$purchaseorder);
 
                 $journalvoucher = AcctJournalVoucher::where('created_id', Auth::id())
                     ->orderBy('journal_voucher_id', 'DESC')
                     ->first();
-                //dd($data_journal);
 
                 $journal_voucher_id     = $journalvoucher['journal_voucher_id'];
 
-            //------account_id Hutang Suplier------//
+            //------Hutang Suplier------//
             $preference_company = PreferenceCompany::first();
 
             $account = AcctAccount::where('account_id', 205)
@@ -869,14 +866,11 @@ class PurchaseOrderReturnController extends Controller
                 'account_id_default_status'         => $account_id_default_status,
                 'account_id_status'                 => 1,
             );
-            // dd($data_debit1);
-
-
             AcctJournalVoucherItem::create($data_debit1);
 
 
             
-                //------account_id Persedian Barang Dagang------//
+                //------Persedian Barang Dagang------//
                 $account         = AcctAccount::where('account_id', 82)
                     ->where('data_state', 0)
                     ->first();
@@ -884,7 +878,6 @@ class PurchaseOrderReturnController extends Controller
                 $total_amount               = $temprequest['quantity_return_' . $i] * $purchaseorderitem['item_unit_cost'];
 
                 $account_id_default_status         = $account['account_default_status'];
-                // dd($account_id_default_status);
 
                 $data_credit1 = array(
                     'journal_voucher_id'                => $journal_voucher_id,
@@ -896,14 +889,12 @@ class PurchaseOrderReturnController extends Controller
                     'account_id_status'                 => 0,
                 );
 
-                //dd($data_credit1);
-
                 AcctJournalVoucherItem::create($data_credit1);
             }
 
 
 
-            //------account_id PPN Masukan------//
+            //------PPN Masukan------//
             $account = AcctAccount::where('account_id', 105)
                 ->where('data_state', 0)
                 ->first();
@@ -921,8 +912,6 @@ class PurchaseOrderReturnController extends Controller
                 'account_id_default_status'         => $account_id_default_status,
                 'account_id_status'                 => 0,
             );
-
-            //dd($data_debit1,$data_credit1,$data_credit2);
 
             AcctJournalVoucherItem::create($data_credit2);
             //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//

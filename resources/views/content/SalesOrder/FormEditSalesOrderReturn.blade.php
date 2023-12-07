@@ -221,7 +221,7 @@
 
 
 
-                                                    <input class='form-control' style='text-align:right;'type='' name='harga_beli_".$no."' id='harga_beli_".$no."' value='".$SalesOrderReturn->getIntemUnitCost($val['item_type_id'])."'/>
+                                                    <input class='form-control' style='text-align:right;'type='hidden' name='harga_beli_".$no."' id='harga_beli_".$no."' value='".$SalesOrderReturn->getIntemUnitCost($val['item_type_id'])."'/>
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='sales_order_id_".$no."' id='sales_order_id_".$no."' value='".$val['sales_order_id']."'/>  
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='sales_order_item_id_".$no."' id='sales_order_item_id_".$no."' value='".$val['sales_order_item_id']."'/>  
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='customer_id_".$no."' id='customer_id_".$no."' value='".$val['customer_id']."'/>  
