@@ -96,7 +96,7 @@ class AcctBankDisbursementController extends Controller
         $corecustomer           = CoreCustomer::where('data_state','=',0)->pluck('customer_name', 'customer_id');
 
 
-        return view('content/AcctBAnkDisbursement/FormAddAcctBAnkDisbursement', compact('corecustomer', 'salescustomer', 'acctaccount', 'acctaccountcashbank', 'acctdisbursementitem', 'acctdisbursementelements'));
+        return view('content/AcctBankDisbursement/FormAddAcctBankDisbursement', compact('corecustomer', 'salescustomer', 'acctaccount', 'acctaccountcashbank', 'acctdisbursementitem', 'acctdisbursementelements'));
     }
 
     public function elements_add(Request $request){
