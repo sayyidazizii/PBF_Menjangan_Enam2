@@ -312,8 +312,8 @@ class BuyersAcknowledgmentController extends Controller
             'warehouse_id'                              => $request->warehouse_id,
             'buyers_acknowledgment_no'                  => $request->buyers_acknowledgment_no,
             'sales_order_id'                            => $request->sales_order_id_1,
-            //akun piutang usaha
-            'account_id'                                => 32,
+            //akun piutang non anggota
+            'account_id'                                => 42,
             'customer_id'                               => $request->customer_id,
             'sales_delivery_order_id'                   => $request->sales_delivery_order_id,
             'sales_delivery_note_id'                    => $request->sales_delivery_note_id,
@@ -440,7 +440,7 @@ class BuyersAcknowledgmentController extends Controller
                 
                 $piutang = $ppn_out_amount + $total_amount;
 
-            //Piutang Usaha
+            //Piutang Usaha(non anggota)
                 $account_id_default_status 		= $account['account_default_status'];
                 $data_debit = array (
                     'journal_voucher_id'			=> $journal_voucher_id,

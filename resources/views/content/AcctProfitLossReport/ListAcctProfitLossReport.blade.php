@@ -273,10 +273,7 @@
                          ?>
                     @endforeach
                    
-                    <tr>
-                        <th style="width: 80%">RUGI / LABA</th>
-                        <th style="width: 20%; text-align: right">{{ number_format($expenditure_subtotal,2,'.',',') }}</th>
-                    </tr> 
+                    
                 </tbody>
             </table>
 

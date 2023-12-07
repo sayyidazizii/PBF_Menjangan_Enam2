@@ -751,17 +751,17 @@ class PurchaseOrderReturnController extends Controller
             $journal_voucher_period     = date("Ym", strtotime($purchaseorderreturn['purchase_order_return_date']));
 
             $data_journal = array(
-                'branch_id'                        => 1,
-                'journal_voucher_period'         => $journal_voucher_period,
-                'journal_voucher_date'            => $purchaseorderreturn['purchase_order_return_date'],
-                'journal_voucher_title'            => 'Return Pembelian Barang ' . $first_po_return['purchase_order_return_no'],
-                'journal_voucher_no'            => $first_po_return['purchase_order_return_no'],
-                'journal_voucher_description'    => $purchaseorderreturn['purchase_order_return_remark'],
-                'transaction_module_id'            => $transaction_module_id,
-                'transaction_module_code'        => $transaction_module_code,
-                'transaction_journal_id'         => $first_po_return['purchase_order_return_id'],
-                'transaction_journal_no'         => $first_po_return['purchase_order_return_no'],
-                'created_id'                     => Auth::id(),
+                'branch_id'                         => 1,
+                'journal_voucher_period'            => $journal_voucher_period,
+                'journal_voucher_date'              => $purchaseorderreturn['purchase_order_return_date'],
+                'journal_voucher_title'             => 'Return Pembelian Barang ' . $first_po_return['purchase_order_return_no'],
+                'journal_voucher_no'                => $first_po_return['purchase_order_return_no'],
+                'journal_voucher_description'       => $purchaseorderreturn['purchase_order_return_remark'],
+                'transaction_module_id'             => $transaction_module_id,
+                'transaction_module_code'           => $transaction_module_code,
+                'transaction_journal_id'            => $first_po_return['purchase_order_return_id'],
+                'transaction_journal_no'            => $first_po_return['purchase_order_return_no'],
+                'created_id'                        => Auth::id(),
             );
 
             AcctJournalVoucher::create($data_journal);
@@ -776,14 +776,14 @@ class PurchaseOrderReturnController extends Controller
             for ($i = 1; $i <= $total_no; $i++) {
                 $purchaseorderreturnitem = array(
                     'purchase_order_return_id'              => $first_po_return['purchase_order_return_id'],
-                    'purchase_order_id'                        => $temprequest['purchase_order_id_' . $i],
+                    'purchase_order_id'                     => $temprequest['purchase_order_id_' . $i],
                     'purchase_order_item_id'                => $temprequest['purchase_order_item_id_' . $i],
-                    'item_category_id'                        => $temprequest['item_category_id_' . $i],
-                    'item_type_id'                            => $temprequest['item_type_id_' . $i],
-                    'item_unit_id'                            => $temprequest['item_unit_id_' . $i],
-                    'quantity'                                => $temprequest['quantity_return_' . $i],
-                    'quantity_ordered'                        => $temprequest['quantity_return_' . $i],
-                    'quantity_return'                        => $temprequest['quantity_return_' . $i],
+                    'item_category_id'                      => $temprequest['item_category_id_' . $i],
+                    'item_type_id'                          => $temprequest['item_type_id_' . $i],
+                    'item_unit_id'                          => $temprequest['item_unit_id_' . $i],
+                    'quantity'                              => $temprequest['quantity_return_' . $i],
+                    'quantity_ordered'                      => $temprequest['quantity_return_' . $i],
+                    'quantity_return'                       => $temprequest['quantity_return_' . $i],
                     'item_batch_number'                     => $temprequest['item_batch_number_' . $i],
                     'item_expired_date'                     => $temprequest['item_expired_date_' . $i],
                     'created_id'                            => Auth::id(),
@@ -861,13 +861,13 @@ class PurchaseOrderReturnController extends Controller
             $account_id_default_status         = $account['account_default_status'];
 
             $data_debit1 = array(
-                'journal_voucher_id'            => $journal_voucher_id,
-                'account_id'                    => 205,
-                'journal_voucher_description'    => $data_journal['journal_voucher_description'],
-                'journal_voucher_amount'        => ABS($subtotal_after_ppn_in),
-                'journal_voucher_debit_amount'    => ABS($subtotal_after_ppn_in),
-                'account_id_default_status'        => $account_id_default_status,
-                'account_id_status'                => 1,
+                'journal_voucher_id'                => $journal_voucher_id,
+                'account_id'                        => 205,
+                'journal_voucher_description'       => $data_journal['journal_voucher_description'],
+                'journal_voucher_amount'            => ABS($subtotal_after_ppn_in),
+                'journal_voucher_debit_amount'      => ABS($subtotal_after_ppn_in),
+                'account_id_default_status'         => $account_id_default_status,
+                'account_id_status'                 => 1,
             );
             // dd($data_debit1);
 
@@ -887,13 +887,13 @@ class PurchaseOrderReturnController extends Controller
                 // dd($account_id_default_status);
 
                 $data_credit1 = array(
-                    'journal_voucher_id'            => $journal_voucher_id,
-                    'account_id'                    => 82,
-                    'journal_voucher_description'    => $data_journal['journal_voucher_description'],
-                    'journal_voucher_amount'        => ABS($total_amount),
-                    'journal_voucher_credit_amount'    => ABS($total_amount),
-                    'account_id_default_status'        => $account_id_default_status,
-                    'account_id_status'                => 0,
+                    'journal_voucher_id'                => $journal_voucher_id,
+                    'account_id'                        => 82,
+                    'journal_voucher_description'       => $data_journal['journal_voucher_description'],
+                    'journal_voucher_amount'            => ABS($total_amount),
+                    'journal_voucher_credit_amount'     => ABS($total_amount),
+                    'account_id_default_status'         => $account_id_default_status,
+                    'account_id_status'                 => 0,
                 );
 
                 //dd($data_credit1);
@@ -913,13 +913,13 @@ class PurchaseOrderReturnController extends Controller
             $account_id_default_status         = $account['account_default_status'];
 
             $data_credit2 = array(
-                'journal_voucher_id'            => $journal_voucher_id,
-                'account_id'                    => 105,
-                'journal_voucher_description'    => $data_journal['journal_voucher_description'],
-                'journal_voucher_amount'        => ABS($ppn_in_amount),
-                'journal_voucher_credit_amount'    => ABS($ppn_in_amount),
-                'account_id_default_status'        => $account_id_default_status,
-                'account_id_status'                => 0,
+                'journal_voucher_id'                => $journal_voucher_id,
+                'account_id'                        => 105,
+                'journal_voucher_description'       => $data_journal['journal_voucher_description'],
+                'journal_voucher_amount'            => ABS($ppn_in_amount),
+                'journal_voucher_credit_amount'     => ABS($ppn_in_amount),
+                'account_id_default_status'         => $account_id_default_status,
+                'account_id_status'                 => 0,
             );
 
             //dd($data_debit1,$data_credit1,$data_credit2);

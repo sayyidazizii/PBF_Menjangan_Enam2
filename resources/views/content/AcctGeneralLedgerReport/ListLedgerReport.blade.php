@@ -2,7 +2,7 @@
 @extends('adminlte::page')
 
 @section('title',  "PBF | Koperasi Menjangan Enam")
-
+<link rel="shortcut icon" href="{{ asset('resources/assets/logo_pbf.ico') }}" />
 @section('content_header')
     
 <nav aria-label="breadcrumb">

@@ -580,6 +580,7 @@ class SalesOrderController extends Controller
         $itemstock  = InvItemStock::where('inv_item_stock.data_state', 0)
         // ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'inv_item_stock.item_type_id')
         ->where('inv_item_stock.item_type_id', $item_type_id)
+        ->where('warehouse_id',6)
         ->sum('quantity_unit');
 
         $itemunitsecond = InvItemStock::join('inv_item_unit', 'inv_item_stock.item_unit_id', '=', 'inv_item_unit.item_unit_id')

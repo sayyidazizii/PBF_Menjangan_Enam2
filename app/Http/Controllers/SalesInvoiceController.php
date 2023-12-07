@@ -249,14 +249,14 @@ class SalesInvoiceController extends Controller
         // ->where('sales_delivery_note.data_state', 0)
         // ->first();
 
-        $buyersAcknowledgment = BuyersAcknowledgment::select('buyers_acknowledgment.*', 'sales_order.*', 'inv_warehouse.*', 'sales_delivery_note.*')
+        $buyersAcknowledgment = BuyersAcknowledgment::select('buyers_acknowledgment.*', 'sales_order.*', 'sales_delivery_note.*')
             ->where('buyers_acknowledgment.buyers_acknowledgment_id', $buyers_acknowledgment_id)
             ->join('sales_delivery_note', 'sales_delivery_note.sales_delivery_note_id', 'buyers_acknowledgment.sales_delivery_note_id')
             ->join('sales_order', 'sales_order.sales_order_id', 'buyers_acknowledgment.sales_order_id')
-            ->join('inv_warehouse', 'inv_warehouse.warehouse_id', 'buyers_acknowledgment.warehouse_id')
+            // ->join('inv_warehouse', 'inv_warehouse.warehouse_id', 'buyers_acknowledgment.warehouse_id')
             ->where('buyers_acknowledgment.data_state', 0)
             ->first();
-	//dd($buyersAcknowledgment);
+	// dd($buyersAcknowledgment);
 
         $coreexpedition = CoreExpedition::where('expedition_id', $buyersAcknowledgment['expedition_id'])
             ->first();
@@ -464,7 +464,7 @@ class SalesInvoiceController extends Controller
             // $buyersAcknowledgment->sales_invoice_status = 1;
             // $buyersAcknowledgment->save();
             DB::table('buyers_acknowledgment')
-		->where('buyers_acknowledgment_id',$request->buyers_acknowledgment_id)
+		        ->where('buyers_acknowledgment_id',$request->buyers_acknowledgment_id)
                 ->update(['sales_invoice_status' => 1]);
 
 

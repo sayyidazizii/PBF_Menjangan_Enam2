@@ -256,7 +256,7 @@ Route::get('balance-sheet-report',[AcctBalanceSheetReportController::class, 'ind
 Route::post('balance-sheet-report/filter',[AcctBalanceSheetReportController::class, 'filterAcctBalanceSheetReport'])->name('filter-balance-sheet-report');
 Route::get('balance-sheet-report/reset-filter',[AcctBalanceSheetReportController::class, 'resetFilterAcctBalanceSheetReport'])->name('reset-filter-balance-sheet-report');
 Route::get('balance-sheet-report/print',[AcctBalanceSheetReportController::class, 'printAcctBalanceSheetReport'])->name('print-balance-sheet-report');
-Route::get('balance-sheet-report/export',[AcctBalanceSheetReportController::class, 'export'])->name('export-balance-sheet-report');
+Route::get('balance-sheet-report/export',[AcctBalanceSheetReportController::class, 'exportAcctBalanceSheetReport'])->name('export-balance-sheet-report');
 
 
 Route::get('/core-grade', [CoreGradeController::class, 'index'])->name('core-grade');

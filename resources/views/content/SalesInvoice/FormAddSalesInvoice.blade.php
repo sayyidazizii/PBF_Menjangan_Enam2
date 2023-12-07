@@ -169,12 +169,7 @@
                     <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="sales_invoice_due_date" id="sales_invoice_due_date" onChange="elements_add(this.name, this.value);" value=""/>
                 </div>
 
-                <div class="col-md-6">
-                    <section class="control-label">Gudang
-                    </section>
-                    <input class="form-control input-bb" type="text"  value="{{$buyersAcknowledgment['warehouse_name']}}" readonly/>
                     <input class="form-control input-bb" type="hidden" name="warehouse_id" id="warehouse_id" value="{{$buyersAcknowledgment == null ? : $buyersAcknowledgment['warehouse_id']}}" />
-                </div>
 
                 <div class="col-md-6">
                     <section class="control-label">No Faktur Pajak
@@ -220,7 +215,7 @@
                                 <th style='text-align:center'>Diskon A</th>
                                 <th style='text-align:center'>Subtotal Setelah Diskon A</th>
                                 <th style='text-align:center'>Diskon B</th>
-     				<th style='text-align:center'>PPN Item</th>
+     				            <th style='text-align:center'>PPN Item</th>
                                 <th style='text-align:center'>Subtotal Setelah Diskon B</th>
                             </tr>
                         </thead>
@@ -237,7 +232,7 @@
                                 @php
                                      $total_discount += $SalesInvoice->getDiscount($val['sales_order_item_id']);
                                      $totalA = $val['quantity_received']*$val['item_unit_price']-$SalesInvoice->getDiscount($val['sales_order_item_id']);
-                                     $totalB = $totalA - ($SalesInvoice->getDiscountB($val['sales_order_item_id']) + $SalesInvoice->getPpnItem($val['sales_order_item_id']));
+                                     $totalB = $totalA + ($SalesInvoice->getDiscountB($val['sales_order_item_id']) + $SalesInvoice->getPpnItem($val['sales_order_item_id']));
                                 @endphp
                                
                                         <tr>
@@ -267,7 +262,7 @@
                                             <td style='text-align  : left !important;'>
                                                 <input class='form-control' type='text' name='discount_B_{{ $no }}' id='discount_B_{{ $no }}' value='{{$SalesInvoice->getDiscountB($val['sales_order_item_id'])}}' readonly/>  
                                             </td>
-					    <td style='text-align  : left !important;'>	
+					                        <td style='text-align  : left !important;'>	
                                                 <input class='form-control' type='text' name='ppn_item_{{ $no }}' id='ppn_item_{{ $no }}' value='{{$SalesInvoice->getPpnItem($val['sales_order_item_id'])}}' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>

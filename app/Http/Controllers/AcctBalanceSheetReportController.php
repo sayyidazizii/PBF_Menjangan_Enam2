@@ -652,7 +652,7 @@ class AcctBalanceSheetReportController extends Controller
                                             }
                                         }
 
-                                        $grand_total_account_amount2 = $grand_total_account_amount2 + $total_account_amount2;
+                                        $grand_total_account_amount2 = $grand_total_account_amount2 + $total_account_amount2 + $expenditure_subtotal;
 
                                         $tblitem_right5 = "
                                             <tr>
@@ -666,9 +666,21 @@ class AcctBalanceSheetReportController extends Controller
                                     $tblitem_right5 = "";
                                 }
 
+                                if($valRight['report_type2']	== 5){
+                                    
+                                    $tblitem_right6 = "
+                                            <tr>
+                                                <td><div style=\"font-weight:".$report_bold2."\">".$report_tab2."".$valRight['account_name2']."</div></td>
+                                                <td style=\"text-align:right;\"><div style=\"font-weight:".$report_bold2."\">".number_format($expenditure_subtotal, 2)."</div></td>
+                                            </tr>";
+
+                                }else {
+                                    $tblitem_right6 = "";
+                                }
 
 
-                                $tblitem_right .= $tblitem_right1.$tblitem_right2.$tblitem_right3.$tblitem_right10.$tblitem_right8.$tblitem_right7.$tblitem_right5;
+
+                                $tblitem_right .= $tblitem_right1.$tblitem_right2.$tblitem_right3.$tblitem_right10.$tblitem_right8.$tblitem_right7.$tblitem_right5.$tblitem_right6;
 
                                 
                             }
@@ -733,12 +745,12 @@ class AcctBalanceSheetReportController extends Controller
         // // ->where('company_id', Auth::user()->company_id)
         ->get();
 
-        $hidden = AcctBalanceSheetReport::select('report_tab2','report_bold2','report_type2','account_name2','account_code2','report_no','report_formula2','report_operator2','account_id2')
-        ->where('data_state', 0)
-        // // ->where('company_id', Auth::user()->company_id)
-        ->where('data_hidden',1)
-        ->whereIn('report_type2',[10,12])
+        $income = AcctProfitLossReport::select('report_tab','report_bold','report_type','account_name','account_id','account_code','report_no','report_formula','report_operator')
+        ->where('data_state',0)
+        // ->where('account_type_id',2)
+        // ->where('company_id', Auth::user()->company_id)
         ->get();
+
 
         if(!empty($acctbalancesheetreport_left && $acctbalancesheetreport_right)){
             $spreadsheet = new Spreadsheet();
@@ -775,6 +787,55 @@ class AcctBalanceSheetReportController extends Controller
             // $spreadsheet->getActiveSheet()->setCellValue('B2',$preferencecompany['company_name']);	
             $spreadsheet->getActiveSheet()->setCellValue('B2',"Periode Januari - ".$this->getMonthName($month)." ".$year."");	
             
+// --------------------------------------------------SHU Berjalan-------------------------------------------------------
+            $no = 1;
+            foreach ($income as $keyTop => $valTop) {
+                if($valTop['report_type']	== 3){
+                    $account_subtotal 	= app('App\Http\Controllers\AcctProfitLossReportController')->getAmountAccount($valTop['account_id']);
+
+                    $account_amount[$valTop['report_no']] = $account_subtotal;
+
+                } 
+                if($valTop['report_type'] == 5){
+                    if(!empty($valTop['report_formula']) && !empty($valTop['report_operator'])){
+                        $report_formula 	= explode('#', $valTop['report_formula']);
+                        $report_operator 	= explode('#', $valTop['report_operator']);
+
+                        $total_account_amount	= 0;
+                        for($i = 0; $i < count($report_formula); $i++){
+                            if($report_operator[$i] == '-'){
+                                if($total_account_amount == 0 ){
+                                    $total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+                                } else {
+                                    $total_account_amount = $total_account_amount - $account_amount[$report_formula[$i]];
+                                }
+                            } else if($report_operator[$i] == '+'){
+                                if($total_account_amount == 0){
+                                    $total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+                                } else {
+                                    $total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+                                }
+                            }
+                        }
+                        
+                    } 
+                } 
+
+                if($valTop['report_type']	== 6){
+                
+                    $expenditure_subtotal 	= $total_account_amount;
+
+                    $account_amount[$valTop['report_no']] = $expenditure_subtotal;
+                   
+                }
+
+            }
+// --------------------------------------------------End SHU Berjalan-------------------------------------------------------
+
+
+
+
+
             $j = 4;
             $no = 0;
             $grand_total = 0;
@@ -903,7 +964,7 @@ class AcctBalanceSheetReportController extends Controller
                     }
                     
 
-                    if($valLeft['report_type1'] == 5){
+                    if($valLeft['report_type1'] == 4){
                         if(!empty($valLeft['report_formula1']) && !empty($valLeft['report_operator1'])){
                             $report_formula1 	= explode('#', $valLeft['report_formula1']);
                             $report_operator1 	= explode('#', $valLeft['report_operator1']);
@@ -924,12 +985,12 @@ class AcctBalanceSheetReportController extends Controller
                                     }
                                 }
                             }
+                            $grand_total_account_amount1 +=  $total_account_amount1;
 
                             $spreadsheet->getActiveSheet()->setCellValue('B'.$j, $report_tab1.$valLeft['account_name1']);
                             // $spreadsheet->getActiveSheet()->setCellValue('C'.$j, $report_tab1.($total_account_amount1+$total_account_amount10));
-                            $spreadsheet->getActiveSheet()->setCellValue('C'.$j, $report_tab1.($total_account_amount1));
+                            $spreadsheet->getActiveSheet()->setCellValue('C'.$j, $report_tab1.($grand_total_account_amount1));
                             
-                            $grand_total_account_amount1 +=  $total_account_amount1;
 
                             
                         } else {
@@ -1171,7 +1232,7 @@ class AcctBalanceSheetReportController extends Controller
                     }
                     
 
-                    if($valRight['report_type2'] == 5){
+                    if($valRight['report_type2'] == 4){
                         if(!empty($valRight['report_formula2']) && !empty($valRight['report_operator2'])){
                             $report_formula2 	= explode('#', $valRight['report_formula2']);
                             $report_operator2 	= explode('#', $valRight['report_operator2']);
@@ -1197,9 +1258,10 @@ class AcctBalanceSheetReportController extends Controller
 
                             
                             $grand_total_account_amount2 += $total_account_amount2;
+                            $grand_total_account_amount2_shu = $grand_total_account_amount2 + $expenditure_subtotal; 
                             $spreadsheet->getActiveSheet()->setCellValue('D'.$j, $report_tab2.$valRight['account_name2']);
                             // $spreadsheet->getActiveSheet()->setCellValue('E'.$j, $report_tab2.$total_account_amount2+$total_account_amount210);
-                            $spreadsheet->getActiveSheet()->setCellValue('E'.$j, $report_tab2.$grand_total_account_amount2);
+                            $spreadsheet->getActiveSheet()->setCellValue('E'.$j, $report_tab2.$grand_total_account_amount2_shu);
 
                             
                         } else {
@@ -1238,6 +1300,16 @@ class AcctBalanceSheetReportController extends Controller
                         
                     }	
 
+                    if($valRight['report_type2']	== 5){
+                       
+
+                        $spreadsheet->getActiveSheet()->setCellValue('D'.$j, $report_tab2.$valRight['account_name2']);
+                        $spreadsheet->getActiveSheet()->setCellValue('E'.$j, $report_tab2.$expenditure_subtotal);
+
+                    } else {
+
+                    }
+
                 }else{
                     continue;
                 }
@@ -1265,7 +1337,7 @@ class AcctBalanceSheetReportController extends Controller
             $spreadsheet->getActiveSheet()->setCellValue('C'.$total_row_left, $report_tab1.$grand_total_account_amount1);
 
             $spreadsheet->getActiveSheet()->setCellValue('D'.$total_row_right, $report_tab2.$valRight['account_name2']);
-            $spreadsheet->getActiveSheet()->setCellValue('E'.$total_row_right, $report_tab2.$grand_total_account_amount2);
+            $spreadsheet->getActiveSheet()->setCellValue('E'.$total_row_right, $report_tab2.$grand_total_account_amount2 + $expenditure_subtotal);
 
         
             $filename='Laporan_Neraca_01_'.$month.'_'.$year.'.xls';

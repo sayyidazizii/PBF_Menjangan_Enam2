@@ -247,10 +247,6 @@
                          ?>
                     @endforeach
                    
-                    <tr>
-                        <th style="width: 80%">RUGI / LABA</th>
-                        <th style="width: 20%; text-align: right">{{ number_format($expenditure_subtotal,2,'.',',') }}</th>
-                    </tr> 
                 </tbody>
             </table>
 
@@ -725,7 +721,7 @@
                                                         
                                                     }
 
-                                                    $grand_total_account_amount2 = $grand_total_account_amount2 + $total_account_amount2;
+                                                    $grand_total_account_amount2 = $grand_total_account_amount2 + $total_account_amount2 + $expenditure_subtotal;
 
                                                     echo "
                                                         <td><div style='font-weight:".$report_bold2."'>".$report_tab2."".$val['account_name2']."</div></td>
@@ -744,17 +740,12 @@
                                             <tr>";
 
                                             if($val['report_type2'] == 5){
-                                                if(!empty($val['report_formula2']) && !empty($val['report_operator2'])){
 
                                                    
                                                     echo "
                                                         <td><div style='font-weight:".$report_bold2."'>".$report_tab2."".$val['account_name2']."</div></td>
                                                         <td style='text-align:right'><div style='font-weight:".$report_bold2."'>".number_format($expenditure_subtotal, 2)."</div></td>
                                                         ";
-
-
-                                                    
-                                                }	
                                             }
 
                                         echo "			
