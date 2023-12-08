@@ -101,6 +101,10 @@
                         <a class="text-dark">Tanggal Jatuh Tempo<a class='red'> *</a></a>
                         <input class="form-control input-bb" type="text" name="purchase_invoice_due_date" id="purchase_invoice_due_date" onChange="function_elements_add(this.name, this.value);" value="{{date('d/m/Y', strtotime($purchaseinvoice['purchase_invoice_due_date']))}}" readonly/>
                     </div>
+                    <div class="form-group">
+                    <a class="text-dark">Faktur Tax No</a>
+                    <input class="form-control input-bb" type="text" name="faktur_tax_no" id="faktur_tax_no" value="{{$purchaseinvoice['faktur_tax_no']}}" readonly/>
+                </div>
                 </div>
             </div>
             <div class="row form-group">
@@ -161,6 +165,7 @@
                                         $no++;
                                         $total_price += $val['subtotal_amount'];
                                         $total_item  += $val['quantity'];
+                                        $totalAfterPpn = $val['subtotal_amount'] + $purchaseorder->ppn_in_amount;
                                     @endphp
                                 @endforeach
                                 <th style='text-align  : center' colspan='2'>Total</th>
@@ -187,7 +192,7 @@
                                     <td style='text-align  : center'><b>:</b></td>
                                     <td colspan='3'></td>
                                     <td style='text-align  : center'>
-                                        <input type="text" style='text-align  : right' class="form-control" name="subtotal_after_ppn_in" id="subtotal_after_ppn_in" value="{{number_format($purchaseorder->subtotal_after_ppn_in,2,',','.')}}" readonly>
+                                        <input type="text" style='text-align  : right' class="form-control" name="subtotal_after_ppn_in" id="subtotal_after_ppn_in" value="{{number_format($totalAfterPpn,2,',','.')}}" readonly>
                                     </td>
                                 </tr>
                             @endif

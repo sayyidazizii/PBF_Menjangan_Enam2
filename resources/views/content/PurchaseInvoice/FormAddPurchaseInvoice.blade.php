@@ -179,7 +179,8 @@
                                         @php
                                             $no++;
                                             $total_price += $purchaseorderitem['item_unit_cost']*$val['quantity'];
-                                            $total_item  += $purchaseorderitem['quantity'];
+                                            $total_item  += $val['quantity'];
+                                            $totalafterPpn = $total_price + $purchaseorder->ppn_in_amount;
                                         @endphp
                                     @endforeach
                                     <th style='text-align  : center' colspan='2'>Total</th>
@@ -206,7 +207,7 @@
                                         <td style='text-align  : center'><b>:</b></td>
                                         <td colspan='3'></td>
                                         <td style='text-align  : center'>
-                                            <input type="text" style='text-align  : right' class="form-control" name="subtotal_after_ppn_in" id="subtotal_after_ppn_in" value="{{number_format($purchaseorder->subtotal_after_ppn_in,2,',','.')}}" readonly>
+                                            <input type="text" style='text-align  : right' class="form-control" name="subtotal_after_ppn_in" id="subtotal_after_ppn_in" value="{{number_format($totalafterPpn,2,',','.')}}" readonly>
                                         </td>
                                     </tr>
                                 @endif
