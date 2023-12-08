@@ -1,6 +1,6 @@
 /*
 SQLyog Professional v13.1.1 (64 bit)
-MySQL - 10.4.28-MariaDB : Database - ciptapro_pbf_menjangan_enam
+MySQL - 8.0.30 : Database - ciptapro_pbf_menjangan_enam
 *********************************************************************
 */
 
@@ -12,6 +12,8 @@ MySQL - 10.4.28-MariaDB : Database - ciptapro_pbf_menjangan_enam
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ciptapro_pbf_menjangan_enam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
 USE `ciptapro_pbf_menjangan_enam`;
 
 /*Table structure for table `acct_account` */
@@ -19,33 +21,33 @@ USE `ciptapro_pbf_menjangan_enam`;
 DROP TABLE IF EXISTS `acct_account`;
 
 CREATE TABLE `acct_account` (
-  `account_id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_type_id` int(11) DEFAULT 0,
+  `account_id` int NOT NULL AUTO_INCREMENT,
+  `account_type_id` int DEFAULT '0',
   `account_code` varchar(20) DEFAULT '',
   `account_name` varchar(100) DEFAULT '',
   `account_group` varchar(20) DEFAULT '',
-  `account_suspended` decimal(1,0) DEFAULT 0 COMMENT '1 : Yes, 0 : No',
-  `parent_account_status` int(11) NOT NULL DEFAULT 0,
-  `parent_account_id` int(11) DEFAULT 0,
-  `top_parent_account_id` int(11) DEFAULT 0,
+  `account_suspended` decimal(1,0) DEFAULT '0' COMMENT '1 : Yes, 0 : No',
+  `parent_account_status` int NOT NULL DEFAULT '0',
+  `parent_account_id` int DEFAULT '0',
+  `top_parent_account_id` int DEFAULT '0',
   `account_has_child` enum('1','0') DEFAULT '0',
-  `opening_debit_balance` decimal(20,2) DEFAULT 0.00,
-  `opening_credit_balance` decimal(20,2) DEFAULT 0.00,
-  `debit_change` decimal(20,2) DEFAULT 0.00,
-  `credit_change` decimal(20,2) DEFAULT 0.00,
-  `account_default_status` int(11) NOT NULL DEFAULT 0,
-  `account_remark` text DEFAULT NULL,
-  `account_status` decimal(1,0) DEFAULT 1,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) NOT NULL DEFAULT 0,
+  `opening_debit_balance` decimal(20,2) DEFAULT '0.00',
+  `opening_credit_balance` decimal(20,2) DEFAULT '0.00',
+  `debit_change` decimal(20,2) DEFAULT '0.00',
+  `credit_change` decimal(20,2) DEFAULT '0.00',
+  `account_default_status` int NOT NULL DEFAULT '0',
+  `account_remark` text,
+  `account_status` decimal(1,0) DEFAULT '1',
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_id`),
   KEY `FK_acct_account_account_type_id` (`account_type_id`),
   KEY `account_code` (`account_code`),
   KEY `parent_account_id` (`parent_account_id`),
   KEY `account_group` (`account_group`)
-) ENGINE=InnoDB AUTO_INCREMENT=535 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=535 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account` */
 
@@ -590,143 +592,108 @@ insert  into `acct_account`(`account_id`,`account_type_id`,`account_code`,`accou
 DROP TABLE IF EXISTS `acct_account_balance`;
 
 CREATE TABLE `acct_account_balance` (
-  `account_balance_id` int(11) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `last_balance` decimal(20,2) DEFAULT 0.00,
+  `account_balance_id` int NOT NULL AUTO_INCREMENT,
+  `company_id` int NOT NULL DEFAULT '2',
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `last_balance` decimal(20,2) DEFAULT '0.00',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_balance_id`),
   KEY `FK_acct_account_balance_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_balance` */
 
-insert  into `acct_account_balance`(`account_balance_id`,`branch_id`,`account_id`,`last_balance`,`created_at`,`updated_at`) values 
-(63,1,5,8793889.00,NULL,'2023-11-17 17:01:01'),
-(64,1,6,5000000.00,NULL,'2023-11-17 17:01:01'),
-(65,1,11,335436548.76,NULL,'2023-11-17 17:01:01'),
-(66,1,42,5630280327.69,NULL,'2023-11-17 17:01:01'),
-(67,1,43,1831508007.00,NULL,'2023-11-17 17:01:01'),
-(68,1,48,610509433.00,NULL,'2023-11-17 17:01:01'),
-(69,1,50,4166754288.63,NULL,'2023-11-17 17:01:01'),
-(70,1,51,22665463.00,NULL,'2023-11-17 17:01:01'),
-(71,1,56,329188076.00,NULL,'2023-11-17 17:01:02'),
-(72,1,58,1961780.00,NULL,'2023-11-17 17:01:02'),
-(73,1,78,27353500.00,NULL,'2023-11-17 17:01:02'),
-(74,1,79,8513500.00,NULL,'2023-11-17 17:01:02'),
-(75,1,82,18887442763.00,NULL,'2023-11-17 17:01:02'),
-(76,1,83,113602606.00,NULL,'2023-11-17 17:01:02'),
-(77,1,90,-104137.50,NULL,'2023-11-17 17:01:02'),
-(78,1,100,30000.00,NULL,'2023-11-17 17:01:02'),
-(79,1,105,16097306661.00,NULL,'2023-11-17 17:01:02'),
-(80,1,106,62410787.00,NULL,'2023-11-17 17:01:02'),
-(81,1,161,1533840000.00,NULL,'2023-11-17 17:01:02'),
-(82,1,163,1699353510.00,NULL,'2023-11-17 17:01:02'),
-(83,1,164,282805000.00,NULL,'2023-11-17 17:01:02'),
-(84,1,166,19706545.00,NULL,'2023-11-17 17:01:02'),
-(85,1,168,238592760.00,NULL,'2023-11-17 17:01:02'),
-(86,1,171,-311548143.52,NULL,'2023-11-17 17:01:02'),
-(87,1,173,-18064332.92,NULL,'2023-11-17 17:01:02'),
-(88,1,175,-163141260.22,NULL,'2023-11-17 17:01:02'),
-(89,1,186,1100000.00,NULL,'2023-11-17 17:01:02'),
-(90,1,205,30646360403.80,NULL,'2023-11-17 17:01:02'),
-(91,1,238,13719345322.00,NULL,'2023-11-17 17:01:02'),
-(92,1,252,30595.00,NULL,'2023-11-17 17:01:02'),
-(93,1,256,9173522.00,NULL,'2023-11-17 17:01:02'),
-(94,1,272,350000.00,NULL,'2023-11-17 17:01:02'),
-(95,1,280,1002864442.99,NULL,'2023-11-17 17:01:02'),
-(96,1,291,100000000.00,NULL,'2023-11-17 17:01:02'),
-(97,1,296,2998030003.33,NULL,'2023-11-17 17:01:02'),
-(98,1,316,2945351556.80,NULL,'2023-11-17 17:01:02');
+insert  into `acct_account_balance`(`account_balance_id`,`company_id`,`branch_id`,`account_id`,`last_balance`,`created_id`,`created_at`,`updated_at`) values 
+(130,2,0,82,10000.00,3,NULL,'2023-12-06 12:00:39'),
+(131,2,0,106,1100.00,3,NULL,'2023-12-06 12:00:39'),
+(132,2,0,205,0.00,3,NULL,'2023-12-06 12:00:39'),
+(133,2,0,105,-1100.00,3,NULL,'2023-12-06 12:02:23'),
+(134,2,0,42,-5000.00,3,NULL,'2023-12-06 14:28:08'),
+(135,2,0,43,0.00,3,NULL,'2023-12-06 14:28:08'),
+(136,2,0,338,-5000.00,3,NULL,'2023-12-06 14:28:08'),
+(137,2,0,238,0.00,3,NULL,'2023-12-06 14:28:08'),
+(138,2,0,522,0.00,3,NULL,'2023-12-06 14:28:08'),
+(139,2,0,390,-20000.00,3,NULL,'2023-12-06 14:28:08'),
+(140,2,0,366,-4000.00,3,NULL,'2023-12-07 11:58:41'),
+(141,2,0,48,-4000.00,3,NULL,'2023-12-07 11:58:41'),
+(143,2,0,83,10000.00,3,NULL,'2023-12-07 13:20:17');
 
 /*Table structure for table `acct_account_balance_detail` */
 
 DROP TABLE IF EXISTS `acct_account_balance_detail`;
 
 CREATE TABLE `acct_account_balance_detail` (
-  `account_balance_detail_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `transaction_type` int(11) DEFAULT NULL,
+  `account_balance_detail_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `company_id` int NOT NULL DEFAULT '2',
+  `transaction_type` int DEFAULT NULL,
   `transaction_code` varchar(20) DEFAULT NULL,
   `transaction_date` date DEFAULT NULL,
-  `transaction_id` bigint(20) DEFAULT NULL,
-  `account_id` int(11) DEFAULT NULL,
-  `opening_balance` decimal(20,2) DEFAULT 0.00,
-  `account_in` decimal(20,2) DEFAULT 0.00,
-  `account_out` decimal(20,2) DEFAULT 0.00,
-  `cash_in` decimal(20,2) DEFAULT 0.00,
-  `cash_out` decimal(20,2) DEFAULT 0.00,
-  `bank_in` decimal(20,2) DEFAULT 0.00,
-  `bank_out` decimal(20,2) DEFAULT 0.00,
-  `last_balance` decimal(20,2) DEFAULT 0.00,
+  `transaction_id` bigint DEFAULT NULL,
+  `account_id` int DEFAULT NULL,
+  `opening_balance` decimal(20,2) DEFAULT '0.00',
+  `account_in` decimal(20,2) DEFAULT '0.00',
+  `account_out` decimal(20,2) DEFAULT '0.00',
+  `cash_in` decimal(20,2) DEFAULT '0.00',
+  `cash_out` decimal(20,2) DEFAULT '0.00',
+  `bank_in` decimal(20,2) DEFAULT '0.00',
+  `bank_out` decimal(20,2) DEFAULT '0.00',
+  `last_balance` decimal(20,2) DEFAULT '0.00',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_id` int DEFAULT NULL,
   PRIMARY KEY (`account_balance_detail_id`),
   KEY `FK_acct_account_balance_detail_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_balance_detail` */
 
-insert  into `acct_account_balance_detail`(`account_balance_detail_id`,`branch_id`,`transaction_type`,`transaction_code`,`transaction_date`,`transaction_id`,`account_id`,`opening_balance`,`account_in`,`account_out`,`cash_in`,`cash_out`,`bank_in`,`bank_out`,`last_balance`,`created_at`,`updated_at`) values 
-(69,1,64,'JU',NULL,13,5,0.00,8793889.00,0.00,0.00,0.00,0.00,0.00,8793889.00,NULL,'2023-11-17 17:01:01'),
-(70,1,64,'JU',NULL,13,6,0.00,5000000.00,0.00,0.00,0.00,0.00,0.00,5000000.00,NULL,'2023-11-17 17:01:01'),
-(71,1,64,'JU',NULL,13,11,0.00,335436548.76,0.00,0.00,0.00,0.00,0.00,335436548.76,NULL,'2023-11-17 17:01:01'),
-(72,1,64,'JU',NULL,13,42,0.00,5630280327.69,0.00,0.00,0.00,0.00,0.00,5630280327.69,NULL,'2023-11-17 17:01:01'),
-(73,1,64,'JU',NULL,13,43,0.00,1831508007.00,0.00,0.00,0.00,0.00,0.00,1831508007.00,NULL,'2023-11-17 17:01:01'),
-(74,1,64,'JU',NULL,13,48,0.00,610509433.00,0.00,0.00,0.00,0.00,0.00,610509433.00,NULL,'2023-11-17 17:01:01'),
-(75,1,64,'JU',NULL,13,50,0.00,4166754288.63,0.00,0.00,0.00,0.00,0.00,4166754288.63,NULL,'2023-11-17 17:01:01'),
-(76,1,64,'JU',NULL,13,51,0.00,22665463.00,0.00,0.00,0.00,0.00,0.00,22665463.00,NULL,'2023-11-17 17:01:01'),
-(77,1,64,'JU',NULL,13,56,0.00,329188076.00,0.00,0.00,0.00,0.00,0.00,329188076.00,NULL,'2023-11-17 17:01:02'),
-(78,1,64,'JU',NULL,13,58,0.00,1961780.00,0.00,0.00,0.00,0.00,0.00,1961780.00,NULL,'2023-11-17 17:01:02'),
-(79,1,64,'JU',NULL,13,78,0.00,27353500.00,0.00,0.00,0.00,0.00,0.00,27353500.00,NULL,'2023-11-17 17:01:02'),
-(80,1,64,'JU',NULL,13,79,0.00,8513500.00,0.00,0.00,0.00,0.00,0.00,8513500.00,NULL,'2023-11-17 17:01:02'),
-(81,1,64,'JU',NULL,13,82,0.00,18887442763.00,0.00,0.00,0.00,0.00,0.00,18887442763.00,NULL,'2023-11-17 17:01:02'),
-(82,1,64,'JU',NULL,13,83,0.00,113602606.00,0.00,0.00,0.00,0.00,0.00,113602606.00,NULL,'2023-11-17 17:01:02'),
-(83,1,64,'JU',NULL,13,90,0.00,0.00,104137.50,0.00,0.00,0.00,0.00,-104137.50,NULL,'2023-11-17 17:01:02'),
-(84,1,64,'JU',NULL,13,100,0.00,30000.00,0.00,0.00,0.00,0.00,0.00,30000.00,NULL,'2023-11-17 17:01:02'),
-(85,1,64,'JU',NULL,13,105,0.00,16097306661.00,0.00,0.00,0.00,0.00,0.00,16097306661.00,NULL,'2023-11-17 17:01:02'),
-(86,1,64,'JU',NULL,13,106,0.00,62410787.00,0.00,0.00,0.00,0.00,0.00,62410787.00,NULL,'2023-11-17 17:01:02'),
-(87,1,64,'JU',NULL,13,161,0.00,1533840000.00,0.00,0.00,0.00,0.00,0.00,1533840000.00,NULL,'2023-11-17 17:01:02'),
-(88,1,64,'JU',NULL,13,163,0.00,1699353510.00,0.00,0.00,0.00,0.00,0.00,1699353510.00,NULL,'2023-11-17 17:01:02'),
-(89,1,64,'JU',NULL,13,164,0.00,282805000.00,0.00,0.00,0.00,0.00,0.00,282805000.00,NULL,'2023-11-17 17:01:02'),
-(90,1,64,'JU',NULL,13,166,0.00,19706545.00,0.00,0.00,0.00,0.00,0.00,19706545.00,NULL,'2023-11-17 17:01:02'),
-(91,1,64,'JU',NULL,13,168,0.00,238592760.00,0.00,0.00,0.00,0.00,0.00,238592760.00,NULL,'2023-11-17 17:01:02'),
-(92,1,64,'JU',NULL,13,171,0.00,-311548143.52,0.00,0.00,0.00,0.00,0.00,-311548143.52,NULL,'2023-11-17 17:01:02'),
-(93,1,64,'JU',NULL,13,173,0.00,-18064332.92,0.00,0.00,0.00,0.00,0.00,-18064332.92,NULL,'2023-11-17 17:01:02'),
-(94,1,64,'JU',NULL,13,175,0.00,-163141260.22,0.00,0.00,0.00,0.00,0.00,-163141260.22,NULL,'2023-11-17 17:01:02'),
-(95,1,64,'JU',NULL,13,186,0.00,1100000.00,0.00,0.00,0.00,0.00,0.00,1100000.00,NULL,'2023-11-17 17:01:02'),
-(96,1,64,'JU',NULL,13,205,0.00,30646360403.80,0.00,0.00,0.00,0.00,0.00,30646360403.80,NULL,'2023-11-17 17:01:02'),
-(97,1,64,'JU',NULL,13,238,0.00,13719345322.00,0.00,0.00,0.00,0.00,0.00,13719345322.00,NULL,'2023-11-17 17:01:02'),
-(98,1,64,'JU',NULL,13,252,0.00,30595.00,0.00,0.00,0.00,0.00,0.00,30595.00,NULL,'2023-11-17 17:01:02'),
-(99,1,64,'JU',NULL,13,256,0.00,9173522.00,0.00,0.00,0.00,0.00,0.00,9173522.00,NULL,'2023-11-17 17:01:02'),
-(100,1,64,'JU',NULL,13,272,0.00,350000.00,0.00,0.00,0.00,0.00,0.00,350000.00,NULL,'2023-11-17 17:01:02'),
-(101,1,64,'JU',NULL,13,280,0.00,1002864442.99,0.00,0.00,0.00,0.00,0.00,1002864442.99,NULL,'2023-11-17 17:01:02'),
-(102,1,64,'JU',NULL,13,291,0.00,100000000.00,0.00,0.00,0.00,0.00,0.00,100000000.00,NULL,'2023-11-17 17:01:02'),
-(103,1,64,'JU',NULL,13,296,0.00,2998030003.33,0.00,0.00,0.00,0.00,0.00,2998030003.33,NULL,'2023-11-17 17:01:02'),
-(104,1,64,'JU',NULL,13,316,0.00,2945351556.80,0.00,0.00,0.00,0.00,0.00,2945351556.80,NULL,'2023-11-17 17:01:02');
+insert  into `acct_account_balance_detail`(`account_balance_detail_id`,`branch_id`,`company_id`,`transaction_type`,`transaction_code`,`transaction_date`,`transaction_id`,`account_id`,`opening_balance`,`account_in`,`account_out`,`cash_in`,`cash_out`,`bank_in`,`bank_out`,`last_balance`,`created_at`,`updated_at`,`created_id`) values 
+(164,0,2,20,'GRN','2023-12-06',43,82,0.00,5000.00,0.00,0.00,0.00,0.00,0.00,5000.00,NULL,'2023-12-06 12:00:39',3),
+(165,0,2,20,'GRN','2023-12-06',43,106,0.00,1100.00,0.00,0.00,0.00,0.00,0.00,1100.00,NULL,'2023-12-06 12:00:39',3),
+(166,0,2,20,'GRN','2023-12-06',43,205,0.00,11100.00,0.00,0.00,0.00,0.00,0.00,11100.00,NULL,'2023-12-06 12:00:39',3),
+(167,0,2,60,'POR','2023-12-06',44,205,11100.00,0.00,11100.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-06 12:02:23',3),
+(168,0,2,60,'POR','2023-12-06',44,82,5000.00,0.00,5000.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-06 12:02:23',3),
+(169,0,2,60,'POR','2023-12-06',44,105,0.00,0.00,1100.00,0.00,0.00,0.00,0.00,-1100.00,NULL,'2023-12-06 12:02:23',3),
+(170,0,2,63,'PPP','2023-12-06',45,42,0.00,0.00,5000.00,0.00,0.00,0.00,0.00,-5000.00,NULL,'2023-12-06 14:28:08',3),
+(171,0,2,63,'PPP','2023-12-06',45,43,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-06 14:28:08',3),
+(172,0,2,63,'PPP','2023-12-06',45,338,0.00,0.00,5000.00,0.00,0.00,0.00,0.00,-5000.00,NULL,'2023-12-06 14:28:08',3),
+(173,0,2,63,'PPP','2023-12-06',45,238,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-06 14:28:08',3),
+(174,0,2,63,'PPP','2023-12-06',45,522,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-06 14:28:08',3),
+(175,0,2,63,'PPP','2023-12-06',45,390,0.00,0.00,10000.00,0.00,0.00,0.00,0.00,-10000.00,NULL,'2023-12-06 14:28:08',3),
+(176,0,2,63,'PPP','2023-12-06',45,82,0.00,0.00,10000.00,0.00,0.00,0.00,0.00,-10000.00,NULL,'2023-12-06 14:28:08',3),
+(177,0,2,61,'SOR','2023-12-07',46,366,0.00,0.00,4000.00,0.00,0.00,0.00,0.00,-4000.00,NULL,'2023-12-07 11:58:41',3),
+(178,0,2,61,'SOR','2023-12-07',46,238,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-07 11:58:41',3),
+(179,0,2,61,'SOR','2023-12-07',46,48,0.00,0.00,4000.00,0.00,0.00,0.00,0.00,-4000.00,NULL,'2023-12-07 11:58:41',3),
+(180,0,2,61,'SOR','2023-12-07',46,83,0.00,10000.00,0.00,0.00,0.00,0.00,0.00,10000.00,NULL,'2023-12-07 11:58:41',3),
+(181,0,2,61,'SOR','2023-12-07',46,390,-10000.00,0.00,10000.00,0.00,0.00,0.00,0.00,-20000.00,NULL,'2023-12-07 11:58:41',3),
+(183,0,2,61,'SOR','2023-12-07',48,82,0.00,10000.00,0.00,0.00,0.00,0.00,0.00,10000.00,NULL,'2023-12-07 13:20:17',3),
+(184,0,2,61,'SOR','2023-12-07',48,83,0.00,10000.00,0.00,0.00,0.00,0.00,0.00,10000.00,NULL,'2023-12-07 13:20:17',3);
 
 /*Table structure for table `acct_account_mutation` */
 
 DROP TABLE IF EXISTS `acct_account_mutation`;
 
 CREATE TABLE `acct_account_mutation` (
-  `account_mutation_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `mutation_in_amount` decimal(20,2) DEFAULT 0.00,
-  `mutation_out_amount` decimal(20,2) DEFAULT 0.00,
-  `last_balance` decimal(20,2) DEFAULT 0.00,
+  `account_mutation_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `mutation_in_amount` decimal(20,2) DEFAULT '0.00',
+  `mutation_out_amount` decimal(20,2) DEFAULT '0.00',
+  `last_balance` decimal(20,2) DEFAULT '0.00',
   `month_period` varchar(2) DEFAULT '0',
-  `year_period` year(4) DEFAULT NULL,
+  `year_period` year DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_mutation_id`),
   KEY `FK_acct_account_mutation_branch_id` (`branch_id`),
   KEY `F_acct_account_mutation_account_id` (`account_id`),
   KEY `project_type_id` (`project_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_mutation` */
 
@@ -735,18 +702,18 @@ CREATE TABLE `acct_account_mutation` (
 DROP TABLE IF EXISTS `acct_account_opening_balance`;
 
 CREATE TABLE `acct_account_opening_balance` (
-  `account_opening_balance_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `opening_balance` decimal(20,2) DEFAULT 0.00,
+  `account_opening_balance_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `opening_balance` decimal(20,2) DEFAULT '0.00',
   `month_period` varchar(2) DEFAULT '0',
-  `year_period` year(4) DEFAULT NULL,
+  `year_period` year DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_opening_balance_id`),
   KEY `FK_acct_account_opening_balance_branch_id` (`branch_id`),
   KEY `FK_acct_account_opening_balance_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_opening_balance` */
 
@@ -755,18 +722,18 @@ CREATE TABLE `acct_account_opening_balance` (
 DROP TABLE IF EXISTS `acct_account_setting`;
 
 CREATE TABLE `acct_account_setting` (
-  `account_setting_id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) DEFAULT 0,
+  `account_setting_id` int NOT NULL AUTO_INCREMENT,
+  `account_id` int DEFAULT '0',
   `account_setting_code` varchar(20) DEFAULT '',
   `account_setting_description` varchar(50) DEFAULT '',
   `account_setting_name` varchar(50) DEFAULT '',
-  `account_setting_status` decimal(1,0) DEFAULT 0 COMMENT '1 = Debit, 0 = Credit',
-  `account_status` decimal(1,0) DEFAULT 0,
-  `data_state` decimal(1,0) DEFAULT 0,
+  `account_setting_status` decimal(1,0) DEFAULT '0' COMMENT '1 = Debit, 0 = Credit',
+  `account_status` decimal(1,0) DEFAULT '0',
+  `data_state` decimal(1,0) DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_setting_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_setting` */
 
@@ -873,16 +840,16 @@ insert  into `acct_account_setting`(`account_setting_id`,`account_id`,`account_s
 DROP TABLE IF EXISTS `acct_account_type`;
 
 CREATE TABLE `acct_account_type` (
-  `account_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_type_id` int NOT NULL AUTO_INCREMENT,
   `account_type_name` varchar(50) DEFAULT '',
-  `account_type_status` decimal(1,0) DEFAULT 0 COMMENT '1 : Active, 0 : Not Active',
-  `default_value` decimal(1,0) DEFAULT 0 COMMENT '1 : Debet, 0 : Credit',
+  `account_type_status` decimal(1,0) DEFAULT '0' COMMENT '1 : Active, 0 : Not Active',
+  `default_value` decimal(1,0) DEFAULT '0' COMMENT '1 : Debet, 0 : Credit',
   `data_state` enum('0','1','2','3') DEFAULT '0',
   `created_by` varchar(20) DEFAULT '',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_type` */
 
@@ -916,38 +883,38 @@ insert  into `acct_account_type`(`account_type_id`,`account_type_name`,`account_
 DROP TABLE IF EXISTS `acct_asset`;
 
 CREATE TABLE `acct_asset` (
-  `asset_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `asset_type_id` int(11) DEFAULT 0,
-  `location_id` int(11) DEFAULT 0,
-  `item_category_id` int(11) NOT NULL DEFAULT 0,
-  `item_id` int(11) NOT NULL DEFAULT 0,
-  `asset_depreciation_type` int(11) DEFAULT 0,
+  `asset_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `asset_type_id` int DEFAULT '0',
+  `location_id` int DEFAULT '0',
+  `item_category_id` int NOT NULL DEFAULT '0',
+  `item_id` int NOT NULL DEFAULT '0',
+  `asset_depreciation_type` int DEFAULT '0',
   `asset_code` varchar(20) DEFAULT '',
   `asset_name` varchar(30) DEFAULT '',
-  `asset_description` text DEFAULT NULL,
-  `asset_location_detail` text DEFAULT NULL,
-  `asset_quantity` decimal(10,0) DEFAULT 0,
+  `asset_description` text,
+  `asset_location_detail` text,
+  `asset_quantity` decimal(10,0) DEFAULT '0',
   `asset_purchase_date` date DEFAULT NULL,
-  `asset_purchase_value` decimal(20,2) DEFAULT 0.00,
+  `asset_purchase_value` decimal(20,2) DEFAULT '0.00',
   `asset_disposal_date` date DEFAULT NULL,
-  `asset_disposal_value` decimal(20,2) DEFAULT 0.00,
+  `asset_disposal_value` decimal(20,2) DEFAULT '0.00',
   `asset_usage_date` date DEFAULT NULL,
-  `asset_estimated_lifespan` decimal(10,2) DEFAULT 0.00,
-  `asset_book_value` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_value` decimal(20,2) DEFAULT 0.00,
-  `asset_salvage_value` decimal(20,2) DEFAULT 0.00,
-  `voided` decimal(1,0) DEFAULT 0,
-  `voided_id` int(11) DEFAULT 0,
+  `asset_estimated_lifespan` decimal(10,2) DEFAULT '0.00',
+  `asset_book_value` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_value` decimal(20,2) DEFAULT '0.00',
+  `asset_salvage_value` decimal(20,2) DEFAULT '0.00',
+  `voided` decimal(1,0) DEFAULT '0',
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`asset_id`),
   KEY `FK_acct_asset_location_id` (`location_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_asset` */
 
@@ -956,30 +923,30 @@ CREATE TABLE `acct_asset` (
 DROP TABLE IF EXISTS `acct_asset_depreciation`;
 
 CREATE TABLE `acct_asset_depreciation` (
-  `asset_depreciation_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `asset_id` bigint(20) DEFAULT 0,
-  `branch_id` int(11) DEFAULT 0,
+  `asset_depreciation_id` bigint NOT NULL AUTO_INCREMENT,
+  `asset_id` bigint DEFAULT '0',
+  `branch_id` int DEFAULT '0',
   `asset_depreciation_no` varchar(20) DEFAULT '',
   `asset_depreciation_date` date DEFAULT NULL,
-  `asset_depreciation_duration` decimal(10,0) DEFAULT 0,
-  `asset_depreciation_start_month` decimal(10,0) DEFAULT 0,
-  `asset_depreciation_start_year` decimal(10,0) DEFAULT 0,
-  `asset_depreciation_end_month` decimal(10,0) DEFAULT 0,
-  `asset_depreciation_end_year` decimal(10,0) DEFAULT 0,
-  `asset_depreciation_book_value` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_beginning_book_value` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_ending_book_value` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_salvage_value` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_status` decimal(1,0) DEFAULT 0,
-  `asset_depreciation_type` decimal(1,0) DEFAULT 0,
-  `asset_depreciation_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `asset_depreciation_duration` decimal(10,0) DEFAULT '0',
+  `asset_depreciation_start_month` decimal(10,0) DEFAULT '0',
+  `asset_depreciation_start_year` decimal(10,0) DEFAULT '0',
+  `asset_depreciation_end_month` decimal(10,0) DEFAULT '0',
+  `asset_depreciation_end_year` decimal(10,0) DEFAULT '0',
+  `asset_depreciation_book_value` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_beginning_book_value` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_ending_book_value` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_salvage_value` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_status` decimal(1,0) DEFAULT '0',
+  `asset_depreciation_type` decimal(1,0) DEFAULT '0',
+  `asset_depreciation_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`asset_depreciation_id`),
   KEY `FK_acct_asset_depreciation_asset_id` (`asset_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_asset_depreciation` */
 
@@ -988,21 +955,21 @@ CREATE TABLE `acct_asset_depreciation` (
 DROP TABLE IF EXISTS `acct_asset_depreciation_item`;
 
 CREATE TABLE `acct_asset_depreciation_item` (
-  `asset_depreciation_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `asset_depreciation_id` bigint(20) DEFAULT 0,
-  `asset_depreciation_item_year_to` int(11) DEFAULT 0,
-  `asset_depreciation_item_month` decimal(10,0) DEFAULT 0,
-  `asset_depreciation_item_year` decimal(10,0) DEFAULT 0,
-  `asset_depreciation_item_amount` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_item_accumulation_amount` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_item_book_value` decimal(20,2) DEFAULT 0.00,
-  `asset_depreciation_item_journal_status` int(11) DEFAULT 0,
+  `asset_depreciation_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `asset_depreciation_id` bigint DEFAULT '0',
+  `asset_depreciation_item_year_to` int DEFAULT '0',
+  `asset_depreciation_item_month` decimal(10,0) DEFAULT '0',
+  `asset_depreciation_item_year` decimal(10,0) DEFAULT '0',
+  `asset_depreciation_item_amount` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_item_accumulation_amount` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_item_book_value` decimal(20,2) DEFAULT '0.00',
+  `asset_depreciation_item_journal_status` int DEFAULT '0',
   `asset_depreciation_item_journal_date` date DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`asset_depreciation_item_id`),
   KEY `FK_acct_asset_depreciation_item_asset_depreciation_id` (`asset_depreciation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_asset_depreciation_item` */
 
@@ -1011,17 +978,17 @@ CREATE TABLE `acct_asset_depreciation_item` (
 DROP TABLE IF EXISTS `acct_asset_type`;
 
 CREATE TABLE `acct_asset_type` (
-  `asset_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `asset_type_id` int NOT NULL AUTO_INCREMENT,
   `asset_type_code` varchar(20) DEFAULT '',
   `asset_type_name` varchar(50) DEFAULT '',
-  `asset_type_description` text DEFAULT NULL,
-  `asset_type_parent` int(11) DEFAULT 0,
-  `asset_type_parent_status` decimal(1,0) DEFAULT 0,
-  `data_state` decimal(1,0) DEFAULT 0,
+  `asset_type_description` text,
+  `asset_type_parent` int DEFAULT '0',
+  `asset_type_parent_status` decimal(1,0) DEFAULT '0',
+  `data_state` decimal(1,0) DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`asset_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_asset_type` */
 
@@ -1035,262 +1002,263 @@ insert  into `acct_asset_type`(`asset_type_id`,`asset_type_code`,`asset_type_nam
 DROP TABLE IF EXISTS `acct_balance_sheet_report`;
 
 CREATE TABLE `acct_balance_sheet_report` (
-  `balance_sheet_report_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `report_no` int(11) DEFAULT 0,
-  `account_id1` int(11) DEFAULT 0,
+  `balance_sheet_report_id` bigint NOT NULL AUTO_INCREMENT,
+  `report_no` int DEFAULT '0',
+  `account_id1` int DEFAULT '0',
   `account_code1` varchar(20) DEFAULT '',
   `account_name1` varchar(100) DEFAULT '',
-  `account_id2` int(11) DEFAULT 0,
+  `account_id2` int DEFAULT '0',
   `account_code2` varchar(20) DEFAULT '',
   `account_name2` varchar(100) DEFAULT '',
-  `report_formula1` varchar(255) DEFAULT '',
+  `report_formula1` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '',
   `report_operator1` varchar(255) DEFAULT '',
-  `report_type1` int(11) DEFAULT 0,
-  `report_tab1` int(11) DEFAULT 0,
-  `report_bold1` int(11) DEFAULT 0,
-  `report_formula2` varchar(255) DEFAULT '',
-  `report_operator2` varchar(255) DEFAULT '',
-  `report_type2` int(11) DEFAULT 0,
-  `report_tab2` int(11) DEFAULT 0,
-  `report_bold2` int(11) DEFAULT 0,
+  `report_type1` int DEFAULT '0',
+  `report_tab1` int DEFAULT '0',
+  `report_bold1` int DEFAULT '0',
+  `report_formula2` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '',
+  `report_operator2` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '',
+  `report_type2` int DEFAULT '0',
+  `report_tab2` int DEFAULT '0',
+  `report_bold2` int DEFAULT '0',
   `report_formula3` varchar(255) DEFAULT '',
   `report_operator3` varchar(255) DEFAULT '',
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` time DEFAULT '00:00:00',
   PRIMARY KEY (`balance_sheet_report_id`),
   KEY `account_id1` (`account_id1`),
   KEY `account_id2` (`account_id2`)
-) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_balance_sheet_report` */
 
 insert  into `acct_balance_sheet_report`(`balance_sheet_report_id`,`report_no`,`account_id1`,`account_code1`,`account_name1`,`account_id2`,`account_code2`,`account_name2`,`report_formula1`,`report_operator1`,`report_type1`,`report_tab1`,`report_bold1`,`report_formula2`,`report_operator2`,`report_type2`,`report_tab2`,`report_bold2`,`report_formula3`,`report_operator3`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,'10000000','Aset',187,'20000000','Kewajiban','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(2,2,2,'11000000','Aset Lancar',188,'21000000','Kewajiban Lancar','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(3,3,3,'11010000','Kas dan Bank',189,'21010000','Simpanan Anggota','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(4,4,4,'11010100','Kas',190,'21010100','Simpanan Anggota Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(5,5,5,'11010101','Kas',191,'21010101','Simpanan Sukarela Anggota Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(6,6,6,'11010102','Kas Kecil Penjualan',192,'21010102','Simpanan Berencana Simpatik Anggota Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(7,7,7,'11010103','Kas Bendahara',193,'21010103','Simpanan Masa Depan Anggota Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(8,8,8,'11010200','Bank',194,'21010104','SHU Tidak Dibagi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(9,9,9,'11010201','Bank Mandiri 136-00-76630034',195,'21020000','Dana SHU','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(10,10,10,'11010202','Bank Mandiri 136.00.00131000',196,'21020100','Dana SHU Anggota','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(11,11,11,'11010203','Bank Mandiri 136-00-76632709',197,'21020101','Dana SHU Anggota Simpin','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(12,12,12,'11010204','Bank Danamon Syariah',198,'21020102','Dana SHU Pengurus','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(13,13,13,'11010205','Bank Jateng',199,'21020104','Dana SHU Karyawan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(14,14,14,'11010206','Bank BRI Syariah',200,'21020105','Dana SHU Pendidikan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(15,15,15,'11010207','Bank BII',201,'21020106','Dana SHU Sosial','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(16,16,16,'11010208','Bank Mandiri 135.00.00131001',202,'21020107','Dana SHU Anggota','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(17,17,17,'11010209','Bank BCA',203,'21030000','Hutang Usaha','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(18,18,18,'11010210','Bank Mandiri 135-00-00132009',204,'21030100','Hutang Suplier','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(19,19,19,'11010211','Bank Mandiri 135.00.00.131092',205,'21030101','Hutang Suplier','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(20,20,20,'11010212','Bank Sinarmas Syariah',206,'21030200','Hutang Sewa','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(21,21,21,'11010213','Bank BTPN Syariah',207,'21030201','Hutang Sewa Mobil','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(22,22,22,'11010214','Bank Syariah Indonesia',208,'21030202','Hutang Sewa Gen Set','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(23,23,23,'11010215','Bank Mandiri 135.00.00.131027',209,'21030203','Hutang Sewa Fotocopy','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(24,24,24,'11010216','Bank Mandiri 135.00.00.131035',210,'21030204','Hutang Apotek','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(25,25,25,'11010217','Bank Banten 00138254',211,'21030205','Hutang PBF','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(26,26,26,'11010218','Bank Sinarmas Syariah 9930686457',212,'21030206','Hutang Induk','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(27,27,27,'11010300','Deposito',213,'21030300','Hutang Properti','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(28,28,28,'11010301','Deposito Bank',214,'21030301','Hutang Properti','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(29,29,29,'11020000','Investasi Jangka Pendek',215,'21040000','Hutang Jangka Pendek','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(30,30,30,'11020100','Surat Berharga',216,'21040100','Hutang Bank Jangka Pendek','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(31,31,31,'11020101','Surat Berharga',217,'21040101','Hutang Bank Jangka Pendek Toko','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(32,32,32,'11030000','Piutang Usaha',218,'21050000','Biaya Yang Masih Harus Dibayar','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(33,33,33,'11030100','Piutang Anggota',219,'21050100','Hutang Bunga','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(34,34,34,'11030101','Piutang Uang',220,'21050101','Hutang Bunga Simpin','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(35,35,35,'11030102','Piutang Elektronik',221,'21050200','Hutang Voucher Belanja','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(36,36,36,'11030103','Piutang SIM / STNK',222,'21050201','Hutang Voucher Belanja','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(37,37,37,'11030104','Piutang Konsinyasi',223,'21050300','Hutang Biaya Pengurusan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(38,38,38,'11030105','Piutang Listrik Air',224,'21050301','Hutang Biaya Pengurusan Perumahan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(39,39,39,'11030106','Piutang Toko',225,'21050302','Hutang Sertifikasi Tanah','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(40,40,40,'11030107','Piutang Sepeda',226,'21050400','Hutang Biaya Listrik, PDAM & Telepon','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(41,41,41,'11030200','Piutang Non Anggota',227,'21050401','Hutang Biaya Listrik, PDAM, Telp','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(42,42,42,'11030201','Piutang Non Anggota',228,'21050500','Hutang Biaya CSR','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(43,43,43,'11030202','Piutang Non Anggota Diskon',229,'21050501','Hutang Biaya CSR','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(44,44,44,'11030203','Piutang Non Anggota Unit Jasa Sewa Mobil',230,'21050600','Hutang Pajak','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(45,45,45,'11030204','Piutang Non Anggota Unit Jasa Sewa Genset',231,'21050601','Hutang PPh 21','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(46,46,46,'11030205','Piutang Non Anggota Unit Jasa Fotocopy',232,'21050602','Hutang PPh 4 (2)','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(47,47,47,'11030206','Piutang Non Anggota Unit Jasa Perumahan',233,'21050603','Hutang PPh 29','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(48,48,48,'11030207','Piutang Retur Penjualan',234,'21050604','Hutang PPh 23','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(49,49,49,'11030208','Piutang Non Anggota Unit Alfamart',235,'21050605','Hutang PPh 25','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(50,50,50,'11030209','Piutang Non Anggota Promosi',236,'21050606','Hutang Pajak Alfamart','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(51,51,51,'11030210','Piutang PT Phapros',237,'21050700','PPN Keluaran','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(52,52,52,'11030211','Piutang Lain - Lain',238,'21050701','PPN Keluaran','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(53,53,53,'11030212','Piutang PT Mesm',239,'21050702','PPN Keluaran Belum Diterima','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(54,54,54,'11030213','Piutang Sertifikasi',240,'21050800','PPN Kurang Bayar','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(55,55,55,'11030214','Piutang Investasi',241,'21050801','PPN Kurang Bayar','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(56,56,56,'11030215','Piutang Apotik',242,'21060000','Pendapatan Diterima Dimuka','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(57,57,57,'11030216','Piutang QRIS',243,'21060100','Sewa Diterima Dimuka','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(58,58,58,'11030217','Piutang Biaya Kirim - Kimia Farma',244,'21060101','Sewa Mobil Diterima Dimuka','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(59,59,59,'11030300','Ayat Silang',245,'21060102','Sewa Gen Set Diterima Dimuka','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(60,60,60,'11030301','Ayat Silang',246,'21060200','Uang Muka Penjualan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(61,61,61,'11030302','Ayat Silang Hutang',247,'21060201','Uang Muka Penjualan Perumahan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(62,62,62,'11030400','Piutang/Hutang Unit',248,'21070000','Hutang Pihak Ketiga','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(63,63,63,'11030401','Piutang/Hutang Toko',249,'21070100','Hutang Pihak Ketiga Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(64,64,64,'11030402','Piutang/Hutang Simpin',250,'21070101','Hutang SPPH','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(65,65,65,'11030403','Piutang/Hutang Apotik',251,'21070102','Hutang Olahraga','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(66,66,66,'11030404','Piutang/Hutang PBF',252,'21070103','Hutang Jamsostek','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(67,67,67,'11030405','Piutang/Hutang Alfamart',253,'21070200','Hutang Pihak Ketiga Lainnya','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(68,68,68,'11030406','Piutang/Hutang Jasa',254,'21070201','Hutang Phapros','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(69,69,69,'11030407','Piutang/Hutang Induk',255,'21070202','Hutang Konsinyasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(70,70,70,'11040000','Cadangan Kerugian Piutang',256,'21070203','Hutang Lain - Lain','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(71,71,71,'11040100','Cadangan Kerugian Piutang Anggota',257,'21070204','Pajak Tangguhan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(72,72,72,'11040101','Cad. Kerugian Piutang Anggota',258,'21070205','Hutang Biaya','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(73,73,73,'11040102','Penyisihan Piutang Tak Tertagih',259,'21070206','Hutang KME','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(74,74,74,'11040200','Cadangan Kerugian Piutang Non Anggota',260,'21070207','Hutang Gaji','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(75,75,75,'11040201','Cad. Kerugian Piutang Non Anggota',261,'21070208','Hutang BPJS Ketenagakerjaan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(76,76,76,'11050000','Perlengkapan',262,'21070209','Hutang BPJS Kesehatan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(77,77,77,'11050100','Perlengkapan Habis Pakai',263,'21070210','Hutang THR','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(78,78,78,'11050101','Perlengkapan Habis Pakai',264,'21070211','Hutang KME','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(79,79,79,'11050102','Perlengkapan Kemas',265,'21070212','Hutang Kompensasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(80,80,80,'11060000','Persediaan Barang',266,'21070213','Hutang SHU','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(81,81,81,'11060100','Persediaan Barang Dagang',267,'21070214','Hutang Dividen KME','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(82,82,82,'11060101','Persediaan Barang Dagang',268,'21070215','Hutang Dividen Minoritas','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(83,83,83,'11060102','Persediaan Barang Retur Penjualan Intransit',269,'21070216','Hutang Asuransi Jiwa','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(84,84,84,'11060200','Persediaan Barang Dalam Proses',270,'21080000','Hutang Dana Pensiun','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(85,85,85,'11060201','Persediaan Dalam Proses Unit Jasa Perumahan',271,'21080100','Hutang Dana Pensiun Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(86,86,86,'11060300','Persediaan Barang Dalam Perjalanan',272,'21080101','Hutang Dana Pensiun','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(87,87,87,'11060301','Persediaan Barang Dalam Perjalanan',273,'22000000','Kewajiban Jangka Panjang','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(88,88,88,'11070000','Biaya Dibayar Dimuka',274,'22010000','Hutang Bank Jangka Panjang','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(89,89,89,'11070100','Asuransi Dibayar Dimuka',275,'22010100','Hutang Bank Jangka Panjang Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(90,90,90,'11070101','Asuransi Dibayar Dimuka',276,'22010101','Hutang Bank BII Jangka Panjang Simpin','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(91,91,91,'11070102','Franchise Fee Dibayar Dimuka',277,'22010102','Hutang Bank Jateng Jangka Panjang Simpin','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(92,92,92,'11070103','Biaya Dibayar Dimuka',278,'22010103','Hutang BRI Syariah Jangka Panjang Simpin','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(93,93,93,'11070200','Uang Muka Pembelian Karyawan',279,'22010104','Hutang Bank Danamon Syariah Jangka Panjang Simpin','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(94,94,94,'11070201','Uang Muka Pembelian Karyawan',280,'22010105','Hutang Bank Mandiri','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(95,95,95,'11070202','Deposit Ubrg',281,'22010200','Hutang Jangka Panjang Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(96,96,96,'11070203','Uang Muka SHU',282,'22010201','Hutang Imbalan Pasca Kerja','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(97,97,97,'11070300','Pajak Penghasilan Dibayar Dimuka',283,'22010202','Hutang Karyawan Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(98,98,98,'11070301','PPh Dibayar Dimuka Ps. 21',284,'22020000','Hutang Dana Pensiun','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(99,99,99,'11070302','PPh Dibayar Dimuka Ps. 22',285,'22020100','Hutang Dana Pensiun Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(100,100,100,'11070303','PPh Dibayar Dimuka Ps. 23',286,'22020101','Hutang Dana Pensiun','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(101,101,101,'11070304','PPh Dibayar Dimuka Ps. 25',287,'30000000','Ekuitas','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(102,102,102,'11070305','Pajak Dibayar Dimuka Alfamart',288,'31000000','Modal Usaha','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(103,103,103,'11070306','Piutang PPh Ps. 29',289,'31010000','Modal Disetor','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(104,104,104,'11070400','PPN Masukan',290,'31010100','Modal Disetor Unit Usaha','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(105,105,105,'11070401','PPN Masukan',291,'31010101','Modal Disetor Unit Usaha','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(106,106,106,'11070402','PPN Masukan Belum Diterima',292,'31010200','Modal Disetor Unit Usaha Lainnya','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(107,107,107,'11070500','PPN Lebih Bayar',293,'31010201','Modal Disetor Unit Usaha Alfamart','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(108,108,108,'11070501','PPN Lebih Bayar',294,'31010202','Modal Saham','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(109,109,109,'11080000','Pendapatan Yang Masih Harus Diterima',295,'31010203','Hutang Non Pengendali','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(110,110,110,'11080100','Piutang Pendapatan Bunga',296,'31010204','Modal Tetap Tambahan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(111,111,111,'11080101','Piutang Pendapatan Bunga',297,'31020000','Modal Simpanan Anggota','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(112,112,112,'11080102','Piutang Pendapatan Bunga Unit Jasa Sewa Mobil',298,'31020100','Modal Simpanan Pokok','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(113,113,113,'11080103','Piutang Pendapatan Bunga Unit Jasa Sewa Gen Set',299,'31020101','Modal Simpanan Pokok Anggota','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(114,114,114,'11080104','Piutang Tenan',300,'31020200','Modal Simpanan Wajib','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(115,115,115,'11080200','Piutang Bunga Deposito',301,'31020201','Modal Simpanan Wajib Anggota','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(116,116,116,'11080201','Piutang Bunga Deposito',302,'31020202','Laba Unit Usaha Alfamart','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(117,117,117,'11080300','Piutang Deviden',303,'31020203','Donasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(118,118,118,'11080301','Piutang Deviden',304,'31020204','Laba Unit Usaha Alfamart Dibagi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(119,119,119,'12000000','Aset Tidak Lancar',305,'31020205','Simpanan Wajib Khusus','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(120,120,120,'12010000','Investasi Jangka Panjang',306,'31020206','Laba Unit Usaha Alfamart Diterima','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(121,121,121,'12010100','Investasi Jangka Panjang Saham',307,'32000000','Cadangan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(122,122,122,'12010101','Investasi Jangka Panjang Saham PT.Phapros',308,'32010000','Cadangan Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(123,123,123,'12010102','Investasi Dalam Pelaksanaan',309,'32010100','Cadangan SHU Koperasi Tidak Dibagi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(124,124,124,'12010103','Investasi Emas Batangan',310,'32010101','Cadangan SHU Koperasi Tidak Dibagi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(125,125,125,'12010200','Investasi Jangka Panjang Franchise',311,'32010200','Cadangan THR Karyawan Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(126,126,126,'12010201','Investasi Tanah Alfamart',312,'32010201','Cadangan THR Karyawan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(127,127,127,'12010202','Investasi Bangunan Alfamart',313,'33000000','Sisa Hasil Usaha','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(128,128,128,'12010203','Investasi Inventaris Alfamart',314,'33010000','Sisa Hasil Usaha Koperasi','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(129,129,129,'12010204','Investasi Modal Alfamart',315,'33010100','Sisa Hasil Usaha Koperasi Tahun Berjalan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(130,130,130,'12010300','Investasi Jangka Panjang Unit Jasa',316,'33010101','Sisa Hasil Usaha Koperasi Tahun Berjalan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(131,131,131,'12010301','Investasi Mobil Unit Jasa',317,'33010300','Sisa Hasil Usaha Koperasi Ditahan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(132,132,132,'12010302','Investasi Gen Set Unit Jasa',318,'33010301','Sisa Hasil Usaha Koperasi Ditahan','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(133,133,133,'12010303','Investasi Perumahan',319,'33010302','Laba Ditahan Pengendali','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(134,134,134,'12010304','Investasi PT MESM',320,'33010303','Laba Ditahan Non Pengendali','','',3,0,0,'','',3,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(135,135,135,'12010400','Modal Disetor',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(136,136,136,'12010401','Modal Disetor Unit Toko',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(137,137,137,'12010402','Modal Disetor Unit Simpan Pinjam',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(138,138,138,'12010403','Modal Disetor Unit Apotek',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(139,139,139,'12010404','Modal Disetor Unit PBF',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(140,140,140,'12010405','Modal Disetor Unit Alfamart',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(141,141,141,'12010406','Modal Disetor Unit Jasa',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(142,142,142,'12010407','Modal Disetor Unit PT MESM',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(143,143,143,'12010500','Modal Tetap Tambahan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(144,144,144,'12010501','Modal Tetap Tambahan Unit Toko',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(145,145,145,'12010502','Modal Tetap Tambahan Unit Simpan Pinjam',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(146,146,146,'12010503','Modal Tetap Tambahan Unit Apotek',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(147,147,147,'12010504','Modal Tetap Tambahan Unit PBF',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(148,148,148,'12010505','Modal Tetap Tambahan Unit Alfamart',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(149,149,149,'12010506','Modal Tetap Tambahan Unit Jasa',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(150,150,150,'12010507','Modal Tetap Tambahan PT MESM',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(151,151,151,'12010508','Modal Tetap Tambahan Unit Induk',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(152,152,152,'12020000','Akumulasi Penyusutan Investasi',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(153,153,153,'12020100','Akumulasi Penyusutan Investasi Alfamart',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(154,154,154,'12020101','Akumulasi Penyusutan Bangunan Alfamart',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(155,155,155,'12020102','Akumulasi Penyusutan Inventaris Alfamart',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(156,156,156,'12020103','Akumulasi Penyusutan Investasi Unit Jasa',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(157,157,157,'12020104','Akumulasi Penyusutan Mobil Unit Jasa',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(158,158,158,'12020105','Akumulasi Penyusutan Gen Set Unit Jasa',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(159,159,159,'12030000','Aset Tetap',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(160,160,160,'12030100','Tanah',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(161,161,161,'12030101','Tanah',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(162,162,162,'12030200','Bangunan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(163,163,163,'12030201','Bangunan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(164,164,164,'12030202','Bangunan Dalam Proses',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(165,165,165,'12030300','Kendaraan Operasional',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(166,166,166,'12030301','Kendaraan Operasional',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(167,167,167,'12030400','Inventaris Kantor',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(168,168,168,'12030401','Inventaris Kantor',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(169,169,169,'12040000','Akumulasi Penyusutan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(170,170,170,'12040100','Akumulasi Penyusutan Bangunan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(171,171,171,'12040101','Akm. Penyusutan Bangunan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(172,172,172,'12040200','Akumulasi Penyusutan Kendaraan Operasional',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(173,173,173,'12040201','Akm. Penyusutan Kendaraan Operasional',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(174,174,174,'12040300','Akumulasi Penyusutan Investaris Kantor',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(175,175,175,'12040301','Akm. Penyusutan Investaris Kantor',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(176,176,176,'12050000','Aset Tidak Berwujud',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(177,177,177,'12050100','Aset Tidak Berwujud Franchise',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(178,178,178,'12050101','Aset Tidak Berwujud Franchise Alfamart 5 tahunan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(179,179,179,'12050200','Aset Tidak Berwujud Lainnya',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(180,180,180,'12050201','Software Dalam Proses',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(181,181,181,'12060000','Akumulasi Amortisasi Aset Tidak Berwujud',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(182,182,182,'12060100','Akumulasi Amortisasi Aset Tidak Berwujud Franchise',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(183,183,183,'12060101','Akm. Amortisasi Aset Tidak Berwujud Franchise Alfa',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(184,184,184,'12070000','Aset Tidak Lancar Lainnya',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(185,185,185,'12070100','Peralatan',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
-(186,186,186,'12070101','Peralatan Kantor',0,'','','','',3,0,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00');
+(1,1,1,'10000000','Aset',187,'20000000','Kewajiban','','',1,0,1,'','',1,0,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(2,2,2,'11000000','Aset Lancar',188,'21000000','Kewajiban Lancar','','',1,2,1,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(3,3,3,'11010000','Kas dan Bank',189,'21010000','Simpanan Anggota','','',1,3,1,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(4,4,4,'11010100','Kas',190,'21010100','Simpanan Anggota Koperasi','','',1,3,1,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(5,5,5,'11010101','Kas',191,'21010101','Simpanan Sukarela Anggota Koperasi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(6,6,6,'11010102','Kas Kecil Penjualan',192,'21010102','Simpanan Berencana Simpatik Anggota Koperasi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(7,7,7,'11010103','Kas Bendahara',193,'21010103','Simpanan Masa Depan Anggota Koperasi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(8,8,8,'11010200','Bank',194,'21010104','SHU Tidak Dibagi','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(9,9,9,'11010201','Bank Mandiri 136-00-76630034',195,'21020000','Dana SHU','','',3,3,0,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(10,10,10,'11010202','Bank Mandiri 136.00.00131000',196,'21020100','Dana SHU Anggota','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(11,11,11,'11010203','Bank Mandiri 136-00-76632709',197,'21020101','Dana SHU Anggota Simpin','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(12,12,12,'11010204','Bank Danamon Syariah',198,'21020102','Dana SHU Pengurus','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(13,13,13,'11010205','Bank Jateng',199,'21020104','Dana SHU Karyawan','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(14,14,14,'11010206','Bank BRI Syariah',200,'21020105','Dana SHU Pendidikan','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(15,15,15,'11010207','Bank BII',201,'21020106','Dana SHU Sosial','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(16,16,16,'11010208','Bank Mandiri 135.00.00131001',202,'21020107','Dana SHU Anggota','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(17,17,17,'11010209','Bank BCA',203,'21030000','Hutang Usaha','','',3,3,0,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(18,18,18,'11010210','Bank Mandiri 135-00-00132009',204,'21030100','Hutang Suplier','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(19,19,19,'11010211','Bank Mandiri 135.00.00.131092',205,'21030101','Hutang Suplier','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(20,20,20,'11010212','Bank Sinarmas Syariah',206,'21030200','Hutang Sewa','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(21,21,21,'11010213','Bank BTPN Syariah',207,'21030201','Hutang Sewa Mobil','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(22,22,22,'11010214','Bank Syariah Indonesia',208,'21030202','Hutang Sewa Gen Set','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(23,23,23,'11010215','Bank Mandiri 135.00.00.131027',209,'21030203','Hutang Sewa Fotocopy','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(24,24,24,'11010216','Bank Mandiri 135.00.00.131035',210,'21030204','Hutang Apotek','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(25,25,25,'11010217','Bank Banten 00138254',211,'21030205','Hutang PBF','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(26,26,26,'11010218','Bank Sinarmas Syariah 9930686457',212,'21030206','Hutang Induk','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(27,27,27,'11010300','Deposito',213,'21030300','Hutang Properti','','',1,1,1,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(28,28,28,'11010301','Deposito Bank',214,'21030301','Hutang Properti','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(29,29,29,'11020000','Investasi Jangka Pendek',215,'21040000','Hutang Jangka Pendek','','',1,1,1,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(30,30,30,'11020100','Surat Berharga',216,'21040100','Hutang Bank Jangka Pendek','','',1,2,1,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(31,31,31,'11020101','Surat Berharga',217,'21040101','Hutang Bank Jangka Pendek Toko','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(32,32,32,'11030000','Piutang Usaha',218,'21050000','Biaya Yang Masih Harus Dibayar','','',1,1,1,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(33,33,33,'11030100','Piutang Anggota',219,'21050100','Hutang Bunga','','',1,2,1,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(34,34,34,'11030101','Piutang Uang',220,'21050101','Hutang Bunga Simpin','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(35,35,35,'11030102','Piutang Elektronik',221,'21050200','Hutang Voucher Belanja','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(36,36,36,'11030103','Piutang SIM / STNK',222,'21050201','Hutang Voucher Belanja','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(37,37,37,'11030104','Piutang Konsinyasi',223,'21050300','Hutang Biaya Pengurusan','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(38,38,38,'11030105','Piutang Listrik Air',224,'21050301','Hutang Biaya Pengurusan Perumahan','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(39,39,39,'11030106','Piutang Toko',225,'21050302','Hutang Sertifikasi Tanah','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(40,40,40,'11030107','Piutang Sepeda',226,'21050400','Hutang Biaya Listrik, PDAM & Telepon','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(41,41,41,'11030200','Piutang Non Anggota',227,'21050401','Hutang Biaya Listrik, PDAM, Telp','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(42,42,42,'11030201','Piutang Non Anggota',228,'21050500','Hutang Biaya CSR','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(43,43,43,'11030202','Piutang Non Anggota Diskon',229,'21050501','Hutang Biaya CSR','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(44,44,44,'11030203','Piutang Non Anggota Unit Jasa Sewa Mobil',230,'21050600','Hutang Pajak','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(45,45,45,'11030204','Piutang Non Anggota Unit Jasa Sewa Genset',231,'21050601','Hutang PPh 21','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(46,46,46,'11030205','Piutang Non Anggota Unit Jasa Fotocopy',232,'21050602','Hutang PPh 4 (2)','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(47,47,47,'11030206','Piutang Non Anggota Unit Jasa Perumahan',233,'21050603','Hutang PPh 29','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(48,48,48,'11030207','Piutang Retur Penjualan',234,'21050604','Hutang PPh 23','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(49,49,49,'11030208','Piutang Non Anggota Unit Alfamart',235,'21050605','Hutang PPh 25','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(50,50,50,'11030209','Piutang Non Anggota Promosi',236,'21050606','Hutang Pajak Alfamart','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(51,51,51,'11030210','Piutang PT Phapros',237,'21050700','PPN Keluaran','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(52,52,52,'11030211','Piutang Lain - Lain',238,'21050701','PPN Keluaran','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(53,53,53,'11030212','Piutang PT Mesm',239,'21050702','PPN Keluaran Belum Diterima','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(54,54,54,'11030213','Piutang Sertifikasi',240,'21050800','PPN Kurang Bayar','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(55,55,55,'11030214','Piutang Investasi',241,'21050801','PPN Kurang Bayar','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(56,56,56,'11030215','Piutang Apotik',242,'21060000','Pendapatan Diterima Dimuka','','',3,3,0,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(57,57,57,'11030216','Piutang QRIS',243,'21060100','Sewa Diterima Dimuka','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(58,58,58,'11030217','Piutang Biaya Kirim - Kimia Farma',244,'21060101','Sewa Mobil Diterima Dimuka','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(59,59,59,'11030300','Ayat Silang',245,'21060102','Sewa Gen Set Diterima Dimuka','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(60,60,60,'11030301','Ayat Silang',246,'21060200','Uang Muka Penjualan','','',1,2,1,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(61,61,61,'11030302','Ayat Silang Hutang',247,'21060201','Uang Muka Penjualan Perumahan','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(62,62,62,'11030400','Piutang/Hutang Unit',248,'21070000','Hutang Pihak Ketiga','','',1,1,1,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(63,63,63,'11030401','Piutang/Hutang Toko',249,'21070100','Hutang Pihak Ketiga Koperasi','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(64,64,64,'11030402','Piutang/Hutang Simpin',250,'21070101','Hutang SPPH','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(65,65,65,'11030403','Piutang/Hutang Apotik',251,'21070102','Hutang Olahraga','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(66,66,66,'11030404','Piutang/Hutang PBF',252,'21070103','Hutang Jamsostek','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(67,67,67,'11030405','Piutang/Hutang Alfamart',253,'21070200','Hutang Pihak Ketiga Lainnya','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(68,68,68,'11030406','Piutang/Hutang Jasa',254,'21070201','Hutang Phapros','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(69,69,69,'11030407','Piutang/Hutang Induk',255,'21070202','Hutang Konsinyasi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(70,70,70,'11040000','Cadangan Kerugian Piutang',256,'21070203','Hutang Lain - Lain','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(71,71,71,'11040100','Cadangan Kerugian Piutang Anggota',257,'21070204','Pajak Tangguhan','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(72,72,72,'11040101','Cad. Kerugian Piutang Anggota',258,'21070205','Hutang Biaya','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(73,73,73,'11040102','Penyisihan Piutang Tak Tertagih',259,'21070206','Hutang KME','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(74,74,74,'11040200','Cadangan Kerugian Piutang Non Anggota',260,'21070207','Hutang Gaji','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(75,75,75,'11040201','Cad. Kerugian Piutang Non Anggota',261,'21070208','Hutang BPJS Ketenagakerjaan','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(76,76,76,'11050000','Perlengkapan',262,'21070209','Hutang BPJS Kesehatan','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(77,77,77,'11050100','Perlengkapan Habis Pakai',263,'21070210','Hutang THR','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(78,78,78,'11050101','Perlengkapan Habis Pakai',264,'21070211','Hutang KME','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(79,79,79,'11050102','Perlengkapan Kemas',265,'21070212','Hutang Kompensasi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(80,80,80,'11060000','Persediaan Barang',266,'21070213','Hutang SHU','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(81,81,81,'11060100','Persediaan Barang Dagang',267,'21070214','Hutang Dividen KME','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(82,82,82,'11060101','Persediaan Barang Dagang',268,'21070215','Hutang Dividen Minoritas','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(83,83,83,'11060102','Persediaan Barang Retur Penjualan Intransit',269,'21070216','Hutang Asuransi Jiwa','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(84,84,84,'11060200','Persediaan Barang Dalam Proses',270,'21080000','Hutang Dana Pensiun','','',1,2,1,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(85,85,85,'11060201','Persediaan Dalam Proses Unit Jasa Perumahan',271,'21080100','Hutang Dana Pensiun Koperasi','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(86,86,86,'11060300','Persediaan Barang Dalam Perjalanan',272,'21080101','Hutang Dana Pensiun','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(87,87,87,'11060301','Persediaan Barang Dalam Perjalanan',273,'22000000','Kewajiban Jangka Panjang','','',3,3,0,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(88,88,88,'11070000','Biaya Dibayar Dimuka',274,'22010000','Hutang Bank Jangka Panjang','','',1,1,1,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(89,89,89,'11070100','Asuransi Dibayar Dimuka',275,'22010100','Hutang Bank Jangka Panjang Koperasi','','',1,2,1,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(90,90,90,'11070101','Asuransi Dibayar Dimuka',276,'22010101','Hutang Bank BII Jangka Panjang Simpin','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(91,91,91,'11070102','Franchise Fee Dibayar Dimuka',277,'22010102','Hutang Bank Jateng Jangka Panjang Simpin','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(92,92,92,'11070103','Biaya Dibayar Dimuka',278,'22010103','Hutang BRI Syariah Jangka Panjang Simpin','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(93,93,93,'11070200','Uang Muka Pembelian Karyawan',279,'22010104','Hutang Bank Danamon Syariah Jangka Panjang Simpin','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(94,94,94,'11070201','Uang Muka Pembelian Karyawan',280,'22010105','Hutang Bank Mandiri','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(95,95,95,'11070202','Deposit Ubrg',281,'22010200','Hutang Jangka Panjang Koperasi','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(96,96,96,'11070203','Uang Muka SHU',282,'22010201','Hutang Imbalan Pasca Kerja','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(97,97,97,'11070300','Pajak Penghasilan Dibayar Dimuka',283,'22010202','Hutang Karyawan Koperasi','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(98,98,98,'11070301','PPh Dibayar Dimuka Ps. 21',284,'22020000','Hutang Dana Pensiun','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(99,99,99,'11070302','PPh Dibayar Dimuka Ps. 22',285,'22020100','Hutang Dana Pensiun Koperasi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(100,100,100,'11070303','PPh Dibayar Dimuka Ps. 23',286,'22020101','Hutang Dana Pensiun','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(101,101,101,'11070304','PPh Dibayar Dimuka Ps. 25',287,'30000000','Ekuitas','','',3,3,0,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(102,102,102,'11070305','Pajak Dibayar Dimuka Alfamart',288,'31000000','Modal Usaha','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(103,103,103,'11070306','Piutang PPh Ps. 29',289,'31010000','Modal Disetor','','',3,3,0,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(104,104,104,'11070400','PPN Masukan',290,'31010100','Modal Disetor Unit Usaha','','',1,1,1,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(105,105,105,'11070401','PPN Masukan',291,'31010101','Modal Disetor Unit Usaha','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(106,106,106,'11070402','PPN Masukan Belum Diterima',292,'31010200','Modal Disetor Unit Usaha Lainnya','','',3,3,0,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(107,107,107,'11070500','PPN Lebih Bayar',293,'31010201','Modal Disetor Unit Usaha Alfamart','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(108,108,108,'11070501','PPN Lebih Bayar',294,'31010202','Modal Saham','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(109,109,109,'11080000','Pendapatan Yang Masih Harus Diterima',295,'31010203','Hutang Non Pengendali','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(110,110,110,'11080100','Piutang Pendapatan Bunga',296,'31010204','Modal Tetap Tambahan','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(111,111,111,'11080101','Piutang Pendapatan Bunga',297,'31020000','Modal Simpanan Anggota','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(112,112,112,'11080102','Piutang Pendapatan Bunga Unit Jasa Sewa Mobil',298,'31020100','Modal Simpanan Pokok','','',3,3,0,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(113,113,113,'11080103','Piutang Pendapatan Bunga Unit Jasa Sewa Gen Set',299,'31020101','Modal Simpanan Pokok Anggota','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(114,114,114,'11080104','Piutang Tenan',300,'31020200','Modal Simpanan Wajib','','',3,3,0,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(115,115,115,'11080200','Piutang Bunga Deposito',301,'31020201','Modal Simpanan Wajib Anggota','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(116,116,116,'11080201','Piutang Bunga Deposito',302,'31020202','Laba Unit Usaha Alfamart','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(117,117,117,'11080300','Piutang Deviden',303,'31020203','Donasi','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(118,118,118,'11080301','Piutang Deviden',304,'31020204','Laba Unit Usaha Alfamart Dibagi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(119,119,119,'12000000','Aset Tidak Lancar',305,'31020205','Simpanan Wajib Khusus','','',1,1,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(120,120,120,'12010000','Investasi Jangka Panjang',306,'31020206','Laba Unit Usaha Alfamart Diterima','','',1,2,1,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(121,121,121,'12010100','Investasi Jangka Panjang Saham',307,'32000000','Cadangan','','',1,3,1,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(122,122,122,'12010101','Investasi Jangka Panjang Saham PT.Phapros',308,'32010000','Cadangan Koperasi','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(123,123,123,'12010102','Investasi Dalam Pelaksanaan',309,'32010100','Cadangan SHU Koperasi Tidak Dibagi','','',3,3,0,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(124,124,124,'12010103','Investasi Emas Batangan',310,'32010101','Cadangan SHU Koperasi Tidak Dibagi','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(125,125,125,'12010200','Investasi Jangka Panjang Franchise',311,'32010200','Cadangan THR Karyawan Koperasi','','',1,3,1,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(126,126,126,'12010201','Investasi Tanah Alfamart',312,'32010201','Cadangan THR Karyawan','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(127,127,127,'12010202','Investasi Bangunan Alfamart',313,'33000000','Sisa Hasil Usaha','','',3,3,0,'','',1,1,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(128,128,128,'12010203','Investasi Inventaris Alfamart',314,'33010000','Sisa Hasil Usaha Koperasi','','',3,3,0,'','',1,2,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(129,129,129,'12010204','Investasi Modal Alfamart',315,'33010100','Sisa Hasil Usaha Koperasi Tahun Berjalan','','',3,3,0,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(130,130,130,'12010300','Investasi Jangka Panjang Unit Jasa',316,'33010101','Sisa Hasil Usaha Koperasi Tahun Berjalan','','',3,3,1,'','',5,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(131,131,131,'12010301','Investasi Mobil Unit Jasa',317,'33010300','Sisa Hasil Usaha Koperasi Ditahan','','',3,3,0,'','',1,3,1,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(132,132,132,'12010302','Investasi Gen Set Unit Jasa',318,'33010301','Sisa Hasil Usaha Koperasi Ditahan','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(133,133,133,'12010303','Investasi Perumahan',319,'33010302','Laba Ditahan Pengendali','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(134,134,134,'12010304','Investasi PT MESM',320,'33010303','Laba Ditahan Non Pengendali','','',3,3,0,'','',3,3,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(135,135,135,'12010400','Modal Disetor',0,'','','','',1,3,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(136,136,136,'12010401','Modal Disetor Unit Toko',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(137,137,137,'12010402','Modal Disetor Unit Simpan Pinjam',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(138,138,138,'12010403','Modal Disetor Unit Apotek',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(139,139,139,'12010404','Modal Disetor Unit PBF',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(140,140,140,'12010405','Modal Disetor Unit Alfamart',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(141,141,141,'12010406','Modal Disetor Unit Jasa',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(142,142,142,'12010407','Modal Disetor Unit PT MESM',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(143,143,143,'12010500','Modal Tetap Tambahan',0,'','','','',1,3,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(144,144,144,'12010501','Modal Tetap Tambahan Unit Toko',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(145,145,145,'12010502','Modal Tetap Tambahan Unit Simpan Pinjam',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(146,146,146,'12010503','Modal Tetap Tambahan Unit Apotek',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(147,147,147,'12010504','Modal Tetap Tambahan Unit PBF',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(148,148,148,'12010505','Modal Tetap Tambahan Unit Alfamart',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(149,149,149,'12010506','Modal Tetap Tambahan Unit Jasa',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(150,150,150,'12010507','Modal Tetap Tambahan PT MESM',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(151,151,151,'12010508','Modal Tetap Tambahan Unit Induk',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(152,152,152,'12020000','Akumulasi Penyusutan Investasi',0,'','','','',1,1,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(153,153,153,'12020100','Akumulasi Penyusutan Investasi Alfamart',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(154,154,154,'12020101','Akumulasi Penyusutan Bangunan Alfamart',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(155,155,155,'12020102','Akumulasi Penyusutan Inventaris Alfamart',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(156,156,156,'12020103','Akumulasi Penyusutan Investasi Unit Jasa',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(157,157,157,'12020104','Akumulasi Penyusutan Mobil Unit Jasa',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(158,158,158,'12020105','Akumulasi Penyusutan Gen Set Unit Jasa',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(159,159,159,'12030000','Aset Tetap',0,'','','','',1,1,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(160,160,160,'12030100','Tanah',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(161,161,161,'12030101','Tanah',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(162,162,162,'12030200','Bangunan',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(163,163,163,'12030201','Bangunan',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(164,164,164,'12030202','Bangunan Dalam Proses',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(165,165,165,'12030300','Kendaraan Operasional',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(166,166,166,'12030301','Kendaraan Operasional',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(167,167,167,'12030400','Inventaris Kantor',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(168,168,168,'12030401','Inventaris Kantor',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(169,169,169,'12040000','Akumulasi Penyusutan',0,'','','','',1,1,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(170,170,170,'12040100','Akumulasi Penyusutan Bangunan',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(171,171,171,'12040101','Akm. Penyusutan Bangunan',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(172,172,172,'12040200','Akumulasi Penyusutan Kendaraan Operasional',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(173,173,173,'12040201','Akm. Penyusutan Kendaraan Operasional',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(174,174,174,'12040300','Akumulasi Penyusutan Investaris Kantor',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(175,175,175,'12040301','Akm. Penyusutan Investaris Kantor',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(176,176,176,'12050000','Aset Tidak Berwujud',0,'','','','',1,1,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(177,177,177,'12050100','Aset Tidak Berwujud Franchise',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(178,178,178,'12050101','Aset Tidak Berwujud Franchise Alfamart 5 tahunan',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(179,179,179,'12050200','Aset Tidak Berwujud Lainnya',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(180,180,180,'12050201','Software Dalam Proses',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(181,181,181,'12060000','Akumulasi Amortisasi Aset Tidak Berwujud',0,'','','','',1,1,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(182,182,182,'12060100','Akumulasi Amortisasi Aset Tidak Berwujud Franchise',0,'','','','',1,2,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(183,183,183,'12060101','Akm. Amortisasi Aset Tidak Berwujud Franchise Alfa',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(184,184,184,'12070000','Aset Tidak Lancar Lainnya',0,'','','','',1,1,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(185,185,185,'12070100','Peralatan',0,'','','','',1,1,1,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(186,186,186,'12070101','Peralatan Kantor',0,'','','','',3,3,0,'','',0,0,0,'','',0,0,'0000-00-00 00:00:00','00:00:00'),
+(187,187,0,'','Jumlah Aset',0,'','Jumlah Kewajiban','5#6#7#9#10#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#28#31#34#35#36#37#38#39#40#42#43#44#45#46#47#48#49#50#51#52#53#54#55#56#57#58#61#63#64#65#66#67#68#69#72#73#75#78#79#82#83#85#87#90#91#92#94#95#96#98#99#100#101#102#103#105#106#108#111#112#113#114#116#118#122#123#124#126#127#128#129#131#132#133#134#136#137#138#139#140#141#142#144#145#146#147#148#149#150#151#154#155#156#157#158#161#163#164#166#168#171#173#175#178#180#183#186','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+',4,0,1,'5#6#7#8#11#12#13#14#15#16#19#21#22#23#24#25#26#28#31#34#36#38#39#41#43#45#46#47#48#49#50#52#53#55#58#59#61#64#65#66#68#69#70#71#72#73#74#75#76#77#78#79#80#81#82#83#86#90#91#92#93#94#96#97#98#99#100#105#107#108#109#110#113#115#116#117#118#119#120#124#126#132#133#134','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+',4,0,1,'','',0,0,'2023-12-05 14:46:02','00:00:00');
 
 /*Table structure for table `acct_bank_disbursement` */
 
 DROP TABLE IF EXISTS `acct_bank_disbursement`;
 
 CREATE TABLE `acct_bank_disbursement` (
-  `bank_disbursement_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `project_id` int(11) NOT NULL DEFAULT 0,
-  `customer_id` int(11) NOT NULL DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
+  `bank_disbursement_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `project_id` int NOT NULL DEFAULT '0',
+  `customer_id` int NOT NULL DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
   `bank_disbursement_date` date DEFAULT NULL,
   `bank_disbursement_title` varchar(200) DEFAULT NULL,
   `bank_disbursement_no` varchar(30) DEFAULT '',
-  `bank_disbursement_description` text DEFAULT NULL,
-  `bank_disbursement_amount_total` decimal(20,2) DEFAULT 0.00,
+  `bank_disbursement_description` text,
+  `bank_disbursement_amount_total` decimal(20,2) DEFAULT '0.00',
   `bank_disbursement_token` varchar(100) DEFAULT NULL,
   `bank_disbursement_token_void` varchar(250) DEFAULT NULL,
-  `posted` decimal(10,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT 0,
+  `posted` decimal(10,0) DEFAULT '0',
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `unposted_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `unposted_id` int DEFAULT '0',
   `unposted_on` datetime DEFAULT NULL,
-  `unposted_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `unposted_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`bank_disbursement_id`),
   KEY `FK_acct_disbursement_account_id` (`account_id`),
   KEY `project_type_id` (`project_type_id`),
   KEY `disbursement_token` (`bank_disbursement_token`),
   KEY `disbursement_token_void` (`bank_disbursement_token_void`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_bank_disbursement` */
 
@@ -1299,21 +1267,21 @@ CREATE TABLE `acct_bank_disbursement` (
 DROP TABLE IF EXISTS `acct_bank_disbursement_item`;
 
 CREATE TABLE `acct_bank_disbursement_item` (
-  `bank_disbursement_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `bank_disbursement_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `bank_disbursement_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `bank_disbursement_id` bigint DEFAULT '0',
+  `account_id` int DEFAULT '0',
   `bank_disbursement_item_title` varchar(200) DEFAULT '',
-  `bank_disbursement_item_amount` decimal(20,2) DEFAULT 0.00,
+  `bank_disbursement_item_amount` decimal(20,2) DEFAULT '0.00',
   `bank_disbursement_item_token` varchar(200) DEFAULT NULL,
   `bank_disbursement_item_token_void` varbinary(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`bank_disbursement_item_id`),
   KEY `FK_acct_disbursement_item_account_id` (`account_id`),
   KEY `disbursement_item_token` (`bank_disbursement_item_token`),
   KEY `disbursement_item_token_void` (`bank_disbursement_item_token_void`),
   KEY `FK_acct_disbursement_item_disbursement_id` (`bank_disbursement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_bank_disbursement_item` */
 
@@ -1322,38 +1290,38 @@ CREATE TABLE `acct_bank_disbursement_item` (
 DROP TABLE IF EXISTS `acct_bank_receipt`;
 
 CREATE TABLE `acct_bank_receipt` (
-  `bank_receipt_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `customer_id` int(11) DEFAULT NULL,
-  `project_id` int(11) NOT NULL DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
+  `bank_receipt_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `customer_id` int DEFAULT NULL,
+  `project_id` int NOT NULL DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
   `bank_receipt_date` date DEFAULT NULL,
   `bank_receipt_no` varchar(30) DEFAULT '',
   `bank_receipt_title` varchar(200) DEFAULT NULL,
-  `bank_receipt_description` text DEFAULT NULL,
-  `bank_receipt_amount_total` decimal(20,2) DEFAULT 0.00,
+  `bank_receipt_description` text,
+  `bank_receipt_amount_total` decimal(20,2) DEFAULT '0.00',
   `bank_receipt_token` varchar(250) DEFAULT NULL,
   `bank_receipt_token_void` varchar(250) DEFAULT NULL,
-  `posted` decimal(1,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT 0,
+  `posted` decimal(1,0) DEFAULT '0',
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
+  `voided_remark` text,
   `unposted_id` varchar(20) DEFAULT '',
   `unposted_on` datetime DEFAULT NULL,
-  `unposted_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `unposted_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`bank_receipt_id`),
   UNIQUE KEY `receipt_token` (`bank_receipt_token`),
   UNIQUE KEY `receipt_token_void` (`bank_receipt_token_void`),
   KEY `FK_acct_receipt_account_id` (`account_id`),
   KEY `project_type_id` (`project_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_bank_receipt` */
 
@@ -1362,21 +1330,21 @@ CREATE TABLE `acct_bank_receipt` (
 DROP TABLE IF EXISTS `acct_bank_receipt_item`;
 
 CREATE TABLE `acct_bank_receipt_item` (
-  `bank_receipt_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `bank_receipt_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `bank_receipt_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `bank_receipt_id` bigint DEFAULT '0',
+  `account_id` int DEFAULT '0',
   `bank_receipt_item_title` varchar(200) DEFAULT '',
-  `bank_receipt_item_amount` decimal(20,2) DEFAULT 0.00,
+  `bank_receipt_item_amount` decimal(20,2) DEFAULT '0.00',
   `bank_receipt_item_token` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `careated_id` int(11) DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `careated_id` int DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`bank_receipt_item_id`),
   UNIQUE KEY `receipt_item_token` (`bank_receipt_item_token`),
   KEY `FK_acct_receipt_item_receipt_id` (`bank_receipt_id`),
   KEY `FK_acct_receipt_item_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_bank_receipt_item` */
 
@@ -1385,38 +1353,38 @@ CREATE TABLE `acct_bank_receipt_item` (
 DROP TABLE IF EXISTS `acct_cash_disbursement`;
 
 CREATE TABLE `acct_cash_disbursement` (
-  `cash_disbursement_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `project_id` int(11) NOT NULL DEFAULT 0,
-  `customer_id` int(11) NOT NULL DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
+  `cash_disbursement_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `project_id` int NOT NULL DEFAULT '0',
+  `customer_id` int NOT NULL DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
   `cash_disbursement_date` date DEFAULT NULL,
   `cash_disbursement_title` varchar(200) DEFAULT NULL,
   `cash_disbursement_no` varchar(30) DEFAULT '',
-  `cash_disbursement_description` text DEFAULT NULL,
-  `cash_disbursement_amount_total` decimal(20,2) DEFAULT 0.00,
+  `cash_disbursement_description` text,
+  `cash_disbursement_amount_total` decimal(20,2) DEFAULT '0.00',
   `cash_disbursement_token` varchar(100) DEFAULT NULL,
   `cash_disbursement_token_void` varchar(250) DEFAULT NULL,
-  `posted` decimal(10,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT 0,
+  `posted` decimal(10,0) DEFAULT '0',
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `unposted_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `unposted_id` int DEFAULT '0',
   `unposted_on` datetime DEFAULT NULL,
-  `unposted_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `unposted_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cash_disbursement_id`),
   KEY `FK_acct_disbursement_account_id` (`account_id`),
   KEY `project_type_id` (`project_type_id`),
   KEY `disbursement_token` (`cash_disbursement_token`),
   KEY `disbursement_token_void` (`cash_disbursement_token_void`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_cash_disbursement` */
 
@@ -1425,21 +1393,21 @@ CREATE TABLE `acct_cash_disbursement` (
 DROP TABLE IF EXISTS `acct_cash_disbursement_item`;
 
 CREATE TABLE `acct_cash_disbursement_item` (
-  `cash_disbursement_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `cash_disbursement_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `cash_disbursement_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `cash_disbursement_id` bigint DEFAULT '0',
+  `account_id` int DEFAULT '0',
   `cash_disbursement_item_title` varchar(200) DEFAULT '',
-  `cash_disbursement_item_amount` decimal(20,2) DEFAULT 0.00,
+  `cash_disbursement_item_amount` decimal(20,2) DEFAULT '0.00',
   `cash_disbursement_item_token` varchar(200) DEFAULT NULL,
   `cash_disbursement_item_token_void` varbinary(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cash_disbursement_item_id`),
   KEY `FK_acct_disbursement_item_account_id` (`account_id`),
   KEY `disbursement_item_token` (`cash_disbursement_item_token`),
   KEY `disbursement_item_token_void` (`cash_disbursement_item_token_void`),
   KEY `FK_acct_disbursement_item_disbursement_id` (`cash_disbursement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_cash_disbursement_item` */
 
@@ -1448,38 +1416,38 @@ CREATE TABLE `acct_cash_disbursement_item` (
 DROP TABLE IF EXISTS `acct_cash_receipt`;
 
 CREATE TABLE `acct_cash_receipt` (
-  `cash_receipt_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) DEFAULT NULL,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `project_id` int(11) NOT NULL DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
+  `cash_receipt_id` bigint NOT NULL AUTO_INCREMENT,
+  `customer_id` int DEFAULT NULL,
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `project_id` int NOT NULL DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
   `cash_receipt_date` date DEFAULT NULL,
   `cash_receipt_no` varchar(30) DEFAULT '',
   `cash_receipt_title` varchar(200) DEFAULT NULL,
-  `cash_receipt_description` text DEFAULT NULL,
-  `cash_receipt_amount_total` decimal(20,2) DEFAULT 0.00,
+  `cash_receipt_description` text,
+  `cash_receipt_amount_total` decimal(20,2) DEFAULT '0.00',
   `cash_receipt_token` varchar(250) DEFAULT NULL,
   `cash_receipt_token_void` varchar(250) DEFAULT NULL,
-  `posted` decimal(1,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT 0,
+  `posted` decimal(1,0) DEFAULT '0',
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
+  `voided_remark` text,
   `unposted_id` varchar(20) DEFAULT '',
   `unposted_on` datetime DEFAULT NULL,
-  `unposted_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `unposted_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cash_receipt_id`),
   UNIQUE KEY `receipt_token` (`cash_receipt_token`),
   UNIQUE KEY `receipt_token_void` (`cash_receipt_token_void`),
   KEY `FK_acct_receipt_account_id` (`account_id`),
   KEY `project_type_id` (`project_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_cash_receipt` */
 
@@ -1488,21 +1456,21 @@ CREATE TABLE `acct_cash_receipt` (
 DROP TABLE IF EXISTS `acct_cash_receipt_item`;
 
 CREATE TABLE `acct_cash_receipt_item` (
-  `cash_receipt_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `cash_receipt_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `cash_receipt_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `cash_receipt_id` bigint DEFAULT '0',
+  `account_id` int DEFAULT '0',
   `cash_receipt_item_title` varchar(200) DEFAULT '',
-  `cash_receipt_item_amount` decimal(20,2) DEFAULT 0.00,
+  `cash_receipt_item_amount` decimal(20,2) DEFAULT '0.00',
   `cash_receipt_item_token` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cash_receipt_item_id`),
   UNIQUE KEY `receipt_item_token` (`cash_receipt_item_token`),
   KEY `FK_acct_receipt_item_receipt_id` (`cash_receipt_id`),
   KEY `FK_acct_receipt_item_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_cash_receipt_item` */
 
@@ -1511,153 +1479,128 @@ CREATE TABLE `acct_cash_receipt_item` (
 DROP TABLE IF EXISTS `acct_check_disbursement`;
 
 CREATE TABLE `acct_check_disbursement` (
-  `check_disbursement_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `customer_id` int(11) DEFAULT NULL,
-  `project_id` int(11) NOT NULL DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
+  `check_disbursement_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `customer_id` int DEFAULT NULL,
+  `project_id` int NOT NULL DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
   `check_disbursement_date` date DEFAULT NULL,
   `check_disbursement_due_date` date DEFAULT NULL,
   `check_number` varchar(50) DEFAULT NULL,
   `check_disbursement_no` varchar(30) DEFAULT '',
   `check_disbursement_title` varchar(200) DEFAULT NULL,
-  `check_disbursement_description` text DEFAULT NULL,
-  `check_disbursement_amount_total` decimal(20,2) DEFAULT 0.00,
+  `check_disbursement_description` text,
+  `check_disbursement_amount_total` decimal(20,2) DEFAULT '0.00',
   `check_disbursement_token` varchar(250) DEFAULT NULL,
   `check_disbursement_token_void` varchar(250) DEFAULT NULL,
-  `posted` decimal(1,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT 0,
+  `posted` decimal(1,0) DEFAULT '0',
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
+  `voided_remark` text,
   `unposted_id` varchar(20) DEFAULT '',
   `unposted_on` datetime DEFAULT NULL,
-  `unposted_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `unposted_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`check_disbursement_id`),
   KEY `FK_acct_receipt_account_id` (`account_id`),
   KEY `project_type_id` (`project_type_id`),
   KEY `receipt_token` (`check_disbursement_token`),
   KEY `receipt_token_void` (`check_disbursement_token_void`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_check_disbursement` */
-
-insert  into `acct_check_disbursement`(`check_disbursement_id`,`branch_id`,`account_id`,`customer_id`,`project_id`,`project_type_id`,`check_disbursement_date`,`check_disbursement_due_date`,`check_number`,`check_disbursement_no`,`check_disbursement_title`,`check_disbursement_description`,`check_disbursement_amount_total`,`check_disbursement_token`,`check_disbursement_token_void`,`posted`,`posted_id`,`posted_on`,`voided_id`,`voided_on`,`voided_remark`,`unposted_id`,`unposted_on`,`unposted_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,NULL,3,0,0,'2023-05-14',NULL,NULL,'BGK23050001',NULL,'dsdsgs',100000.00,'cf162483d8d6cf6bb21f140a2207fd6b',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-14 12:18:32','2023-06-23 10:52:20'),
-(2,1,NULL,3,0,0,'2023-05-14',NULL,NULL,'BGK23050002',NULL,'dsdsgs',100000.00,'e75ff1512d1b00eef444819d3eea3729',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-14 12:19:26','2023-06-23 10:52:20'),
-(3,1,NULL,3,0,0,'2023-05-14',NULL,NULL,'BGK23050003',NULL,'dsdsgs',100000.00,'a9b565082b33c1efe3fbf60ed8b74380',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-14 12:19:30','2023-06-23 10:52:20'),
-(4,1,10,2,0,0,'2023-05-16',NULL,NULL,'BGK23050004','ffdfdfd','fdfdfd',4100000.00,'00924e04cd9ddfff9f1f165c4ef2698e',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-14 12:24:44','2023-06-23 10:52:20'),
-(5,1,2,2,0,0,'2023-05-14','2023-05-14','97797979000','BGK23050005','ffdfdfd','gfgfgfgffff',12000000.00,'74e01d96da4eb50bdfda60e1229d012e',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-14 12:36:25','2023-06-23 10:52:20');
 
 /*Table structure for table `acct_check_disbursement_item` */
 
 DROP TABLE IF EXISTS `acct_check_disbursement_item`;
 
 CREATE TABLE `acct_check_disbursement_item` (
-  `check_disbursement_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `check_disbursement_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `check_disbursement_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `check_disbursement_id` bigint DEFAULT '0',
+  `account_id` int DEFAULT '0',
   `check_disbursement_item_title` varchar(200) DEFAULT '',
-  `check_disbursement_item_amount` decimal(20,2) DEFAULT 0.00,
+  `check_disbursement_item_amount` decimal(20,2) DEFAULT '0.00',
   `check_disbursement_item_token` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`check_disbursement_item_id`),
   KEY `FK_acct_receipt_item_account_id` (`account_id`),
   KEY `receipt_item_token` (`check_disbursement_item_token`),
   KEY `FK_acct_receipt_item_receipt_id` (`check_disbursement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_check_disbursement_item` */
-
-insert  into `acct_check_disbursement_item`(`check_disbursement_item_id`,`check_disbursement_id`,`account_id`,`check_disbursement_item_title`,`check_disbursement_item_amount`,`check_disbursement_item_token`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,2,7,'dgdgddg',100000.00,'e75ff1512d1b00eef444819d3eea372970',0,NULL,'2023-05-14 12:19:26','2023-06-23 10:52:20'),
-(2,3,7,'dgdgddg',100000.00,'a9b565082b33c1efe3fbf60ed8b7438070',0,NULL,'2023-05-14 12:19:30','2023-06-23 10:52:20'),
-(3,4,7,'dgdgddg',100000.00,'00924e04cd9ddfff9f1f165c4ef2698e70',0,NULL,'2023-05-14 12:24:44','2023-06-23 10:52:20'),
-(4,4,2,'dgdgddg',4000000.00,'00924e04cd9ddfff9f1f165c4ef2698e21',0,NULL,'2023-05-14 19:24:44','2023-06-23 10:52:20'),
-(5,5,3,'dgdgddg',4000000.00,'74e01d96da4eb50bdfda60e1229d012e30',0,NULL,'2023-05-14 12:36:25','2023-06-23 10:52:20'),
-(6,5,3,'dgdgddg',4000000.00,'74e01d96da4eb50bdfda60e1229d012e31',0,NULL,'2023-05-14 19:36:25','2023-06-23 10:52:20'),
-(7,5,3,'dgdgddg',4000000.00,'74e01d96da4eb50bdfda60e1229d012e32',0,NULL,'2023-05-14 19:36:25','2023-06-23 10:52:20');
 
 /*Table structure for table `acct_check_receipt` */
 
 DROP TABLE IF EXISTS `acct_check_receipt`;
 
 CREATE TABLE `acct_check_receipt` (
-  `check_receipt_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
-  `customer_id` int(11) DEFAULT NULL,
-  `project_id` int(11) NOT NULL DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
+  `check_receipt_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
+  `customer_id` int DEFAULT NULL,
+  `project_id` int NOT NULL DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
   `check_receipt_date` date DEFAULT NULL,
   `check_receipt_due_date` date DEFAULT NULL,
   `check_number` varchar(50) DEFAULT NULL,
   `check_receipt_no` varchar(30) DEFAULT '',
   `check_receipt_title` varchar(200) DEFAULT NULL,
-  `check_receipt_description` text DEFAULT NULL,
-  `check_receipt_amount_total` decimal(20,2) DEFAULT 0.00,
+  `check_receipt_description` text,
+  `check_receipt_amount_total` decimal(20,2) DEFAULT '0.00',
   `check_receipt_token` varchar(250) DEFAULT NULL,
   `check_receipt_token_void` varchar(250) DEFAULT NULL,
-  `posted` decimal(1,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT 0,
+  `posted` decimal(1,0) DEFAULT '0',
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
+  `voided_remark` text,
   `unposted_id` varchar(20) DEFAULT '',
   `unposted_on` datetime DEFAULT NULL,
-  `unposted_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `unposted_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`check_receipt_id`),
   KEY `FK_acct_receipt_account_id` (`account_id`),
   KEY `project_type_id` (`project_type_id`),
   KEY `receipt_token` (`check_receipt_token`),
   KEY `receipt_token_void` (`check_receipt_token_void`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_check_receipt` */
-
-insert  into `acct_check_receipt`(`check_receipt_id`,`branch_id`,`account_id`,`customer_id`,`project_id`,`project_type_id`,`check_receipt_date`,`check_receipt_due_date`,`check_number`,`check_receipt_no`,`check_receipt_title`,`check_receipt_description`,`check_receipt_amount_total`,`check_receipt_token`,`check_receipt_token_void`,`posted`,`posted_id`,`posted_on`,`voided_id`,`voided_on`,`voided_remark`,`unposted_id`,`unposted_on`,`unposted_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,7,3,0,0,'2023-05-13',NULL,'6767676776','','fdfdfd','dfdfd',5000000.00,'6a31a3ac1b1e8b10df24c79e28de5270',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-13 06:15:08','2023-06-23 10:52:20'),
-(2,1,2,3,0,0,'2023-05-13',NULL,'43434343','','fdfdfd','sffsf',700000.00,'9ac93a84ec8879e9c1c6f6f19a9d6446',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-13 06:17:25','2023-06-23 10:52:20'),
-(3,1,2,3,0,0,'2023-05-13',NULL,'97797979000','','fdfdfd','fgfgfg',1000000.00,'e38840e60af9c816d8d3919cfe701370',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-13 06:19:07','2023-06-23 10:52:20'),
-(4,1,1,2,0,0,'2023-05-11',NULL,'6767676776','','fdfdfd','sasas',1000000.00,'04f0b6df09930082fa6839ae7d05ceef',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-13 06:21:11','2023-06-23 10:52:20'),
-(5,1,2,2,0,0,'2023-05-13',NULL,'6767676776','',NULL,'ddadadad',1000000.00,'084ba28d1fd5a46e15f9e8b3a979712e',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-13 06:23:28','2023-06-23 10:52:20'),
-(6,1,3,2,0,0,'2023-05-13','2023-05-31','6767676776','',NULL,'gjgjgj',700000.00,'0d72ce36281d678a38c04d43c1946cfb',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-13 06:25:17','2023-06-23 10:52:20'),
-(7,1,2,2,0,0,'2023-05-13','2023-05-13','43434343','BGM23050001','fdfdfd','adadad',1000000.00,'be53407cfa5f6494e954f778a7bf362d',NULL,0,0,NULL,0,NULL,NULL,'',NULL,NULL,0,3,'2023-05-13 06:28:34','2023-06-23 10:52:20');
 
 /*Table structure for table `acct_check_receipt_item` */
 
 DROP TABLE IF EXISTS `acct_check_receipt_item`;
 
 CREATE TABLE `acct_check_receipt_item` (
-  `check_receipt_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `check_receipt_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `check_receipt_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `check_receipt_id` bigint DEFAULT '0',
+  `account_id` int DEFAULT '0',
   `check_receipt_item_title` varchar(200) DEFAULT '',
-  `check_receipt_item_amount` decimal(20,2) DEFAULT 0.00,
+  `check_receipt_item_amount` decimal(20,2) DEFAULT '0.00',
   `check_receipt_item_token` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`check_receipt_item_id`),
   KEY `FK_acct_receipt_item_account_id` (`account_id`),
   KEY `receipt_item_token` (`check_receipt_item_token`),
   KEY `FK_acct_receipt_item_receipt_id` (`check_receipt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_check_receipt_item` */
 
@@ -1666,123 +1609,113 @@ CREATE TABLE `acct_check_receipt_item` (
 DROP TABLE IF EXISTS `acct_journal_voucher`;
 
 CREATE TABLE `acct_journal_voucher` (
-  `journal_voucher_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `project_id` int(11) DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
-  `transaction_module_id` int(11) DEFAULT 0,
-  `transaction_journal_id` bigint(20) DEFAULT 0,
+  `journal_voucher_id` bigint NOT NULL AUTO_INCREMENT,
+  `company_id` int NOT NULL DEFAULT '2',
+  `branch_id` int DEFAULT '0',
+  `project_id` int DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
+  `transaction_module_id` int DEFAULT '0',
+  `transaction_journal_id` bigint DEFAULT '0',
   `transaction_journal_no` varchar(100) DEFAULT '',
   `journal_voucher_title` varchar(50) DEFAULT '',
   `journal_voucher_no` varchar(50) DEFAULT '',
-  `journal_voucher_period` decimal(20,0) DEFAULT 0,
+  `journal_voucher_period` decimal(20,0) DEFAULT '0',
   `journal_voucher_date` date DEFAULT NULL,
   `journal_voucher_description` varchar(200) DEFAULT '',
   `journal_voucher_token` varchar(250) DEFAULT NULL,
   `journal_voucher_token_void` varchar(250) DEFAULT NULL,
-  `journal_voucher_type_id` int(11) DEFAULT 1,
+  `journal_voucher_type_id` int DEFAULT '1',
   `transaction_module_code` varchar(20) DEFAULT '',
-  `posted` decimal(1,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT 0,
+  `posted` decimal(1,0) DEFAULT '0',
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `voided` decimal(1,0) DEFAULT 0,
-  `voided_id` int(11) DEFAULT 0,
+  `voided` decimal(1,0) DEFAULT '0',
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `reverse_state` int(11) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `reverse_state` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`journal_voucher_id`),
   UNIQUE KEY `journal_voucher_token` (`journal_voucher_token`),
   UNIQUE KEY `journal_voucher_token_void` (`journal_voucher_token_void`),
   KEY `transaction_journal_no` (`transaction_journal_no`),
   KEY `project_id` (`project_id`),
   KEY `project_type_id` (`project_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher` */
 
-insert  into `acct_journal_voucher`(`journal_voucher_id`,`branch_id`,`project_id`,`project_type_id`,`transaction_module_id`,`transaction_journal_id`,`transaction_journal_no`,`journal_voucher_title`,`journal_voucher_no`,`journal_voucher_period`,`journal_voucher_date`,`journal_voucher_description`,`journal_voucher_token`,`journal_voucher_token_void`,`journal_voucher_type_id`,`transaction_module_code`,`posted`,`posted_id`,`posted_on`,`voided`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`,`reverse_state`) values 
-(13,1,0,0,64,0,'',NULL,NULL,197001,'2023-11-17',NULL,'eafe98b5d2a602c25be8302e23808b09',NULL,1,'JU',0,0,NULL,0,0,NULL,NULL,0,75,'2023-11-17 10:01:01','2023-11-17 10:01:01',0);
+insert  into `acct_journal_voucher`(`journal_voucher_id`,`company_id`,`branch_id`,`project_id`,`project_type_id`,`transaction_module_id`,`transaction_journal_id`,`transaction_journal_no`,`journal_voucher_title`,`journal_voucher_no`,`journal_voucher_period`,`journal_voucher_date`,`journal_voucher_description`,`journal_voucher_token`,`journal_voucher_token_void`,`journal_voucher_type_id`,`transaction_module_code`,`posted`,`posted_id`,`posted_on`,`voided`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`,`reverse_state`) values 
+(43,2,1,0,0,20,13,'0001/IGRN/XII/2023','Pembelian 0001/IGRN/XII/2023','0001/JV/XII/2023',202312,'2023-12-06',NULL,NULL,NULL,1,'GRN',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-06 05:00:39','2023-12-06 05:00:39',0),
+(44,2,1,0,0,60,45,'0001/PR/XII/2023','Return Pembelian Barang 0001/PR/XII/2023','0002/JV/XII/2023',202312,'2023-12-06',NULL,NULL,NULL,1,'POR',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-06 05:02:23','2023-12-06 05:02:23',0),
+(45,2,1,0,0,63,8,'0001/BPB/2023','Penjualan PO - 0001/PO/XII/2023','0003/JV/XII/2023',202312,'2023-12-06',NULL,NULL,NULL,1,'PPP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(46,2,1,0,0,61,115,NULL,'Return Penjualan Barang Belum Datang','0004/JV/XII/2023',202312,'2023-12-07',NULL,NULL,NULL,1,'SOR',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-07 04:58:40','2023-12-07 04:58:40',0),
+(48,2,1,0,0,61,115,NULL,'Return Penjualan Barang Kembali','0005/JV/XII/2023',202312,'2023-12-07',NULL,NULL,NULL,1,'SOR',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-07 06:20:17','2023-12-07 06:20:17',0);
 
 /*Table structure for table `acct_journal_voucher_item` */
 
 DROP TABLE IF EXISTS `acct_journal_voucher_item`;
 
 CREATE TABLE `acct_journal_voucher_item` (
-  `journal_voucher_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `journal_voucher_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `journal_voucher_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `journal_voucher_id` bigint DEFAULT '0',
+  `company_id` int NOT NULL DEFAULT '2',
+  `account_id` int DEFAULT '0',
   `journal_voucher_description` varchar(200) DEFAULT '',
-  `journal_voucher_amount` decimal(20,2) DEFAULT 0.00,
-  `account_id_status` decimal(1,0) DEFAULT 0,
-  `account_id_default_status` decimal(1,0) DEFAULT 0,
-  `journal_voucher_debit_amount` decimal(20,2) DEFAULT 0.00,
-  `journal_voucher_credit_amount` decimal(20,2) DEFAULT 0.00,
+  `journal_voucher_amount` decimal(20,2) DEFAULT '0.00',
+  `account_id_status` decimal(1,0) DEFAULT '0',
+  `account_id_default_status` decimal(1,0) DEFAULT '0',
+  `journal_voucher_debit_amount` decimal(20,2) DEFAULT '0.00',
+  `journal_voucher_credit_amount` decimal(20,2) DEFAULT '0.00',
   `journal_voucher_item_token` varchar(250) DEFAULT NULL,
   `journal_voucher_item_token_void` varchar(250) DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
+  `data_state` decimal(1,0) DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `reverse_state` int(11) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `reverse_state` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`journal_voucher_item_id`),
   UNIQUE KEY `journal_voucher_item_token` (`journal_voucher_item_token`),
   UNIQUE KEY `journal_voucher_item_token_void` (`journal_voucher_item_token_void`),
   KEY `FK_acct_journal_voucher_item_journal_voucher_id` (`journal_voucher_id`) USING BTREE,
   KEY `FK_acct_journal_voucher_item_account_id` (`account_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher_item` */
 
-insert  into `acct_journal_voucher_item`(`journal_voucher_item_id`,`journal_voucher_id`,`account_id`,`journal_voucher_description`,`journal_voucher_amount`,`account_id_status`,`account_id_default_status`,`journal_voucher_debit_amount`,`journal_voucher_credit_amount`,`journal_voucher_item_token`,`journal_voucher_item_token_void`,`data_state`,`created_at`,`updated_at`,`reverse_state`) values 
-(69,13,5,NULL,8793889.00,1,0,8793889.00,0.00,'eafe98b5d2a602c25be8302e23808b09202311170947565',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(70,13,6,NULL,5000000.00,1,0,5000000.00,0.00,'eafe98b5d2a602c25be8302e23808b09202311170948216',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(71,13,11,NULL,335436548.76,1,0,335436548.76,0.00,'eafe98b5d2a602c25be8302e23808b092023111709484511',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(72,13,42,NULL,5630280327.69,1,0,5630280327.69,0.00,'eafe98b5d2a602c25be8302e23808b092023111709490942',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(73,13,43,NULL,1831508007.00,1,0,1831508007.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709492543',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(74,13,48,NULL,610509433.00,1,0,610509433.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709493948',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(75,13,50,NULL,4166754288.63,1,0,4166754288.63,0.00,'eafe98b5d2a602c25be8302e23808b092023111709495750',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(76,13,51,NULL,22665463.00,1,0,22665463.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709501251',NULL,0,'2023-11-17 10:01:01','2023-11-17 10:01:01',0),
-(77,13,56,NULL,329188076.00,1,0,329188076.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709502856',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(78,13,58,NULL,1961780.00,1,0,1961780.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709504758',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(79,13,78,NULL,27353500.00,1,0,27353500.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709510578',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(80,13,79,NULL,8513500.00,1,0,8513500.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709512479',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(81,13,82,NULL,18887442763.00,1,0,18887442763.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709514282',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(82,13,83,NULL,113602606.00,1,0,113602606.00,0.00,'eafe98b5d2a602c25be8302e23808b092023111709520083',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(83,13,90,NULL,104137.50,1,0,104137.50,0.00,'eafe98b5d2a602c25be8302e23808b092023111709523590',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(84,13,100,NULL,30000.00,1,0,30000.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095252100',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(85,13,105,NULL,16097306661.00,1,0,16097306661.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095326105',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(86,13,106,NULL,62410787.00,1,0,62410787.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095343106',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(87,13,161,NULL,1533840000.00,1,0,1533840000.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095410161',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(88,13,163,NULL,1699353510.00,1,0,1699353510.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095440163',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(89,13,164,NULL,282805000.00,1,0,282805000.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095456164',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(90,13,166,NULL,19706545.00,1,0,19706545.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095525166',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(91,13,168,NULL,238592760.00,1,0,238592760.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095544168',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(92,13,171,NULL,-311548143.52,0,0,0.00,-311548143.52,'eafe98b5d2a602c25be8302e23808b0920231117095608171',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(93,13,173,NULL,-18064332.92,0,0,0.00,-18064332.92,'eafe98b5d2a602c25be8302e23808b0920231117095637173',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(94,13,175,NULL,-163141260.22,0,0,0.00,-163141260.22,'eafe98b5d2a602c25be8302e23808b0920231117095653175',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(95,13,186,NULL,1100000.00,1,0,1100000.00,0.00,'eafe98b5d2a602c25be8302e23808b0920231117095720186',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(96,13,205,NULL,30646360403.80,0,0,0.00,30646360403.80,'eafe98b5d2a602c25be8302e23808b0920231117095747205',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(97,13,238,NULL,13719345322.00,0,0,0.00,13719345322.00,'eafe98b5d2a602c25be8302e23808b0920231117095812238',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(98,13,252,NULL,30595.00,0,0,0.00,30595.00,'eafe98b5d2a602c25be8302e23808b0920231117095839252',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(99,13,256,NULL,9173522.00,0,0,0.00,9173522.00,'eafe98b5d2a602c25be8302e23808b0920231117095856256',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(100,13,272,NULL,350000.00,0,0,0.00,350000.00,'eafe98b5d2a602c25be8302e23808b0920231117095920272',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(101,13,280,NULL,1002864442.99,0,0,0.00,1002864442.99,'eafe98b5d2a602c25be8302e23808b0920231117095945280',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(102,13,291,NULL,100000000.00,0,0,0.00,100000000.00,'eafe98b5d2a602c25be8302e23808b0920231117100004291',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(103,13,296,NULL,2998030003.33,0,0,0.00,2998030003.33,'eafe98b5d2a602c25be8302e23808b0920231117100021296',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0),
-(104,13,316,NULL,2945351556.80,0,0,0.00,2945351556.80,'eafe98b5d2a602c25be8302e23808b0920231117100048316',NULL,0,'2023-11-17 10:01:02','2023-11-17 10:01:02',0);
+insert  into `acct_journal_voucher_item`(`journal_voucher_item_id`,`journal_voucher_id`,`company_id`,`account_id`,`journal_voucher_description`,`journal_voucher_amount`,`account_id_status`,`account_id_default_status`,`journal_voucher_debit_amount`,`journal_voucher_credit_amount`,`journal_voucher_item_token`,`journal_voucher_item_token_void`,`data_state`,`created_at`,`updated_at`,`reverse_state`) values 
+(220,43,2,82,NULL,5000.00,1,1,5000.00,0.00,NULL,NULL,0,'2023-12-06 05:00:39','2023-12-06 05:00:39',0),
+(221,43,2,106,NULL,1100.00,1,1,1100.00,0.00,NULL,NULL,0,'2023-12-06 05:00:39','2023-12-06 05:00:39',0),
+(222,43,2,205,NULL,11100.00,0,0,0.00,11100.00,NULL,NULL,0,'2023-12-06 05:00:39','2023-12-06 05:00:39',0),
+(223,44,2,205,NULL,11100.00,1,0,11100.00,0.00,NULL,NULL,0,'2023-12-06 05:02:23','2023-12-06 05:02:23',0),
+(224,44,2,82,NULL,5000.00,0,1,0.00,5000.00,NULL,NULL,0,'2023-12-06 05:02:23','2023-12-06 05:02:23',0),
+(225,44,2,105,NULL,1100.00,0,1,0.00,1100.00,NULL,NULL,0,'2023-12-06 05:02:23','2023-12-06 05:02:23',0),
+(226,45,2,42,NULL,5000.00,0,1,5000.00,0.00,NULL,NULL,0,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(227,45,2,43,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(228,45,2,338,NULL,5000.00,1,0,0.00,5000.00,NULL,NULL,0,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(229,45,2,238,NULL,0.00,1,1,0.00,0.00,NULL,NULL,0,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(230,45,2,522,NULL,0.00,1,0,0.00,0.00,NULL,NULL,0,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(231,45,2,390,NULL,10000.00,0,0,10000.00,0.00,NULL,NULL,0,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(232,45,2,82,NULL,10000.00,0,0,0.00,10000.00,NULL,NULL,0,'2023-12-06 07:28:08','2023-12-06 07:28:08',0),
+(233,46,2,366,NULL,4000.00,1,0,4000.00,0.00,NULL,NULL,0,'2023-12-07 04:58:41','2023-12-07 04:58:41',0),
+(234,46,2,238,NULL,0.00,1,0,0.00,0.00,NULL,NULL,0,'2023-12-07 04:58:41','2023-12-07 04:58:41',0),
+(235,46,2,48,NULL,4000.00,0,1,0.00,4000.00,NULL,NULL,0,'2023-12-07 04:58:41','2023-12-07 04:58:41',0),
+(236,46,2,83,NULL,10000.00,1,1,10000.00,0.00,NULL,NULL,0,'2023-12-07 04:58:41','2023-12-07 04:58:41',0),
+(237,46,2,390,NULL,10000.00,0,1,0.00,10000.00,NULL,NULL,0,'2023-12-07 04:58:41','2023-12-07 04:58:41',0),
+(239,48,2,82,NULL,10000.00,1,1,10000.00,0.00,NULL,NULL,0,'2023-12-07 06:20:17','2023-12-07 06:20:17',0),
+(240,48,2,83,NULL,10000.00,1,1,0.00,10000.00,NULL,NULL,0,'2023-12-07 06:20:17','2023-12-07 06:20:17',0);
 
 /*Table structure for table `acct_journal_voucher_type` */
 
 DROP TABLE IF EXISTS `acct_journal_voucher_type`;
 
 CREATE TABLE `acct_journal_voucher_type` (
-  `acct_journal_voucher_type_id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_name` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `acct_journal_voucher_type_id` int NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`acct_journal_voucher_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -1799,21 +1732,21 @@ insert  into `acct_journal_voucher_type`(`acct_journal_voucher_type_id`,`type_na
 DROP TABLE IF EXISTS `acct_payment_schedule`;
 
 CREATE TABLE `acct_payment_schedule` (
-  `payment_schedule_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
+  `payment_schedule_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
   `payment_schedule_name` varchar(200) DEFAULT '',
-  `payment_schedule_repeat_every` int(11) DEFAULT 0,
+  `payment_schedule_repeat_every` int DEFAULT '0',
   `payment_schedule_start_date` date DEFAULT NULL,
   `payment_schedule_next_date` date DEFAULT NULL,
   `payment_schedule_last_date` date DEFAULT NULL,
-  `payment_schedule_status` int(11) DEFAULT 0,
-  `status` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `payment_schedule_status` int DEFAULT '0',
+  `status` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`payment_schedule_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_payment_schedule` */
 
@@ -1826,309 +1759,301 @@ insert  into `acct_payment_schedule`(`payment_schedule_id`,`branch_id`,`payment_
 DROP TABLE IF EXISTS `acct_profit_loss`;
 
 CREATE TABLE `acct_profit_loss` (
-  `profit_loss_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `profit_loss_amount` decimal(20,2) DEFAULT 0.00,
+  `profit_loss_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `profit_loss_amount` decimal(20,2) DEFAULT '0.00',
   `month_period` varchar(2) DEFAULT '0',
-  `year_period` year(4) DEFAULT NULL,
+  `year_period` year DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`profit_loss_id`),
   KEY `FK_acct_profit_loss_branch_id` (`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_profit_loss` */
-
-insert  into `acct_profit_loss`(`profit_loss_id`,`branch_id`,`profit_loss_amount`,`month_period`,`year_period`,`created_at`,`updated_at`) values 
-(3,1,3679831891.20,'12',2018,NULL,'2023-06-23 10:52:20'),
-(4,1,3028890664.84,'12',2019,NULL,'2023-06-23 10:52:20'),
-(5,1,0.00,'09',2021,NULL,'2023-06-23 10:52:20');
 
 /*Table structure for table `acct_profit_loss_report` */
 
 DROP TABLE IF EXISTS `acct_profit_loss_report`;
 
 CREATE TABLE `acct_profit_loss_report` (
-  `profit_loss_report_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `report_no` int(11) DEFAULT 0,
-  `account_type_id` int(11) DEFAULT 0,
-  `account_id` int(11) DEFAULT 0,
+  `profit_loss_report_id` bigint NOT NULL AUTO_INCREMENT,
+  `report_no` int DEFAULT '0',
+  `account_type_id` int DEFAULT '0',
+  `account_id` int DEFAULT '0',
   `account_code` varchar(20) DEFAULT '',
   `account_name` varchar(100) DEFAULT '',
-  `report_formula` text DEFAULT NULL,
-  `report_operator` text DEFAULT NULL,
-  `report_type` int(11) DEFAULT 0 COMMENT '1 : TITLE, 2 : SUBTITLE, 3 : LOOP, 4 : OPENING, 5 :SUBTOTAL, 6 : TOTAL',
-  `report_tab` int(11) DEFAULT 0,
-  `report_bold` int(11) DEFAULT 0,
-  `amount_tab` int(11) NOT NULL DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `report_formula` text,
+  `report_operator` text,
+  `report_type` int DEFAULT '0' COMMENT '1 : TITLE, 2 : SUBTITLE, 3 : LOOP, 4 : OPENING, 5 :SUBTOTAL, 6 : TOTAL',
+  `report_tab` int DEFAULT '0',
+  `report_bold` int DEFAULT '0',
+  `amount_tab` int NOT NULL DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`profit_loss_report_id`),
   KEY `account_type_id` (`account_type_id`),
   KEY `account_id` (`account_id`),
   KEY `report_no` (`report_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_profit_loss_report` */
 
 insert  into `acct_profit_loss_report`(`profit_loss_report_id`,`report_no`,`account_type_id`,`account_id`,`account_code`,`account_name`,`report_formula`,`report_operator`,`report_type`,`report_tab`,`report_bold`,`amount_tab`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,0,321,'40000000','Pendapatan','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(2,2,0,322,'41000000','Pendapatan Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(3,3,0,323,'41010000','Penjualan Barang Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(4,4,0,324,'41010100','Penjualan Barang Dagang Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(5,5,0,325,'41010101','Penjualan Barang Dagang Anggota - BKP','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(6,6,0,326,'41010102','Penjualan Barang Dagang Anggota - Non BKP','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(7,7,0,327,'41020000','Pendapatan Jasa Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(8,8,0,328,'41020100','Pendapatan Jasa Anggota Koperasi','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(9,9,0,329,'41020101','Pendapatan Jasa Pembayaran PLN/PDAM/Telp','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(10,10,0,330,'41020102','Pendapatan Jasa Pembayaran Surat Kendaraan','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(11,11,0,331,'41020103','Pendapatan Jasa Bunga Simpin','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(12,12,0,332,'41020104','Pendapatan Jasa Sewa Mobil Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(13,13,0,333,'41020105','Pendapatan Jasa Elektronik','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(14,14,0,334,'41020106','Pendapatan Jasa Uang Barang','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(15,15,0,335,'42000000','Pendapatan Non Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(16,16,0,336,'42010000','Penjualan Barang Non Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(17,17,0,337,'42010100','Penjualan Barang Dagang Non Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(18,18,0,338,'42010101','Penjualan Barang Dagang Non Anggota Apotek','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(19,19,0,339,'42010102','Penjualan Barang Dagang Non Anggota - Non BKP','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(20,20,0,340,'42020000','Pendapatan Jasa Non Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(21,21,0,341,'42020100','Pendapatan Jasa Non Anggota Koperasi','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(22,22,0,342,'42020101','Pendapatan Jasa Non Anggota Sewa Mobil','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(23,23,0,343,'42020102','Pendapatan Jasa Non Anggota Sewa Gen Set','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(24,24,0,344,'42020103','Pendapatan Jasa Non Anggota Fotocopy','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(25,25,0,345,'42020104','Pendapatan Jasa Non Anggota Perumahan','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(26,26,0,346,'42020105','Pendapatan Jasa Non Anggota Alfamart','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(27,27,0,347,'43000000','Pendapatan Usaha Lainnya','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(28,28,0,348,'43010000','Pendapatan Usaha Lainnya Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(29,29,0,349,'43010100','Pendapatan Usaha Lainnya Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(30,30,0,350,'43010101','Pendapatan Adm Pinjaman','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(31,31,0,351,'43020000','Pendapatan Usaha Lainnya Non Anggota','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(32,32,0,352,'43020001','Pendapatan Jasa Non Anggota Lainnya','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(33,33,0,353,'43020100','Pendapatan Usaha Lainnya Non Anggota Alfamart','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(34,34,0,354,'43020101','Pendapatan Usaha Lainnya Alfamart Selisih Kas','0','0',1,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(35,35,0,355,'44000000','Retur Penjualan & Potongan Penjualan Anggota','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(36,36,0,356,'44010000','Retur Penjualan & Potongan Penjualan Barang Anggot','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(37,37,0,357,'44010100','Retur Penjualan Barang Anggota','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(38,38,0,358,'44010101','Retur Penjualan Anggota Barang BKP','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(39,39,0,359,'44010102','Retur Penjualan Anggota Barang Non BKP','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(40,40,0,360,'44010200','Potongan Penjualan Barang Anggota','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(41,41,0,361,'44010201','Potongan Penjualan Anggota Barang BKP','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(42,42,0,362,'44010202','Potongan Penjualan Anggota Barang Non BKP','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(43,43,0,363,'45000000','Retur Penjualan & Potongan Penjualan Non Anggota','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(44,44,0,364,'45010000','Retur Penjualan & Potongan Penjualan Barang Non An','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(45,45,0,365,'45010100','Retur Penjualan Barang Non Anggota','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(46,46,0,366,'45010101','Retur Penjualan Barang Non Anggota Apotek','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(47,47,0,367,'45010200','Potongan Penjualan Barang Non Anggota','0','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(48,48,0,368,'45010201','Potongan Penjualan Barang Non Anggota Apotek','','0',2,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(49,49,0,369,'49999999','Total Pendapatan Usaha','1#2#3#4#5#6#7#8#9#10#11#12#13#14#15#16#17#18#19#20','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#-#-#-#-#-#',0,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(50,50,0,370,'50000000','Beban Pokok','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(51,51,0,371,'51000000','Beban Pokok Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(52,52,0,372,'51010000','Beban Pokok Penjualan Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(53,53,0,373,'51010100','Beban Pokok Penjualan Barang Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(54,54,0,374,'51010101','Beban Pokok Penjualan Barang Anggota BKP','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(55,55,0,375,'51010102','Beban Pokok Penjualan Barang Anggota Non BK','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(56,56,0,376,'51010103','Beban Penghapusan Persediaan Barang Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(57,57,0,377,'51020000','Beban Pokok Pelayanan Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(58,58,0,378,'51020100','Beban Pokok Pelayanan Jasa Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(59,59,0,379,'51020101','Beban Pokok Pelayanan Jasa Anggota Simpin','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(60,60,0,380,'51030000','Beban Bunga Simpanan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(61,61,0,381,'51030100','Beban Bunga Simpanan Pajak','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(62,62,0,382,'51030101','Beban Bunga Simpanan Pajak','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(63,63,0,383,'51030200','Beban Bunga Simpanan Non Pajak','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(64,64,0,384,'51030201','Beban Bunga Simpanan Non Pajak','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(65,65,0,385,'51040000','Beban Bunga Pinjaman Bank','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(66,66,0,386,'51040100','Beban Bunga Pinjaman Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(67,67,0,387,'52000000','Beban Pokok Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(68,68,0,388,'52010000','Beban Pokok Penjualan Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(69,69,0,389,'52010100','Beban Pokok Penjualan Barang Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(70,70,0,390,'52010101','Beban Pokok Penjualan Barang Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(71,71,0,391,'52010102','Beban Penghapusan Persediaan Barang Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(72,72,0,392,'52010200','Beban Pokok Penjualan Perumahan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(73,73,0,393,'52010201','Beban Pokok Penjualan Perumahan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(74,74,0,394,'52020000','Beban Pokok Pelayanan Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(75,75,0,395,'52020100','Beban Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(76,76,0,396,'52020101','Beban Sewa Mobil','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(77,77,0,397,'52020102','Beban Sewa Mesin Fotocopy','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(78,78,0,398,'52020200','Beban Asuransi','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(79,79,0,399,'52020201','Beban Asuransi Mobil Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(80,80,0,400,'52020202','Beban Asuransi Gen Set Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(81,81,0,401,'52020300','Beban Penyusutan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(82,82,0,402,'52020301','Beban Penyusutan Mobil Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(83,83,0,403,'52020302','Beban Penyusutan Gen Set Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(84,84,0,404,'52020500','Beban Pajak','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(85,85,0,405,'52020501','Beban Pajak Mobil Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(86,86,0,406,'52020600','Beban Perlengkapan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(87,87,0,407,'52020601','Beban Perlengkapan Habis Pakai Fotocopy','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(88,88,0,408,'52020700','Beban Pemeliharaan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(89,89,0,409,'52020701','Beban Pemeliharaan Mobil Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(90,90,0,410,'52020702','Beban Pemeliharaan Gen Set Sewa','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(91,91,0,411,'52020800','Beban Bunga Pinjaman Bank','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(92,92,0,412,'52020801','Beban Bunga Pinjaman Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(93,93,0,413,'53000000','Beban Pokok Usaha Lainnya','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(94,94,0,414,'53010000','Beban Pokok Usaha Lainnya Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(95,95,0,415,'53020000','Beban Pokok Usaha Lainnya Non Anggota','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(96,96,0,416,'53020001','Beban Gaji/THR/Bonus','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(97,97,0,417,'53020002','Beban BPJS Ketenagakerjaan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(98,98,0,418,'53020004','Beban BPJS Kesehatan','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(99,99,0,419,'53020005','Beban Seragam Kerja','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(100,100,0,420,'53020006','Beban Kompensasi','0','0',3,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(101,101,0,421,'59999998','Total HPP','49#50#51#52#53#54#55#56#57#58#59#60#61#62#63#64#65','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#',0,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(102,102,0,422,'59999999','Total Laba Kotor','48#99','-#-',0,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(103,103,0,423,'60000000','Beban Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(104,104,0,424,'61000000','Beban Usaha','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(105,105,0,425,'61010000','Beban Tenaga Kerja','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(106,106,0,426,'61010100','Beban Gaji, Upah, dan Bonus','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(107,107,0,427,'61010101','Beban Gaji, Upah, dan Bonus','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(108,108,0,428,'61010200','Beban Tunjangan Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(109,109,0,429,'61010201','Beban Tunjangan PPh ps.21 Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(110,110,0,430,'61010202','Beban Tunjangan BPJS Kesehatan Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(111,111,0,431,'61010203','Beban Tunjangan BPJS Ketenagakerjaan Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(112,112,0,432,'61010204','Beban Tunjangan Seragam Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(113,113,0,433,'61010205','Beban Tunjangan Hari Raya Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(114,114,0,434,'61010206','Beban Tunjangan Pensiun Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(115,115,0,435,'61010207','Beban Tunjangan Rekreasi Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(116,116,0,436,'61010208','Beban Tunjangan Pendidikan Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(117,117,0,437,'62000000','Beban Administrasi','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(118,118,0,438,'62010000','Beban Administrasi','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(119,119,0,439,'62010100','Beban Alat Tulis Kantor','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(120,120,0,440,'62010101','Beban Alat Tulis Kantor','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(121,121,0,441,'62010200','Beban Perizinan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(122,122,0,442,'62010201','Beban Perizinan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(123,123,0,443,'62010300','Beban Materai','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(124,124,0,444,'62010301','Beban Materai','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(125,125,0,445,'62010302','Beban Kirim Surat / Barang','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(126,126,0,446,'62010303','Beban Fotocopy','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(127,127,0,447,'62010400','Beban Administrasi Kantor','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(128,128,0,448,'62010401','Beban Administrasi Kantor','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(129,129,0,449,'62010500','Beban Listrik, Air, dan Telepon','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(130,130,0,450,'62010501','Beban Listrik, Air, dan Telepon','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(131,131,0,451,'62010600','Beban Transportasi Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(132,132,0,452,'62010601','Beban Transportasi Karyawan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(133,133,0,453,'62010700','Beban Sumbangan dan Iuran','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(134,134,0,454,'62010701','Beban Sumbangan dan Iuran','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(135,135,0,455,'62010800','Beban Perlengkapan Habis Pakai','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(136,136,0,456,'62010801','Beban Perlengkapan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(137,137,0,457,'62010802','Beban Pengemasan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(138,138,0,458,'62010900','Beban Sewa Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(139,139,0,459,'62010901','Beban Sewa Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(140,140,0,460,'62011000','Beban Pajak','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(141,141,0,461,'62011001','Beban Sanksi Adminitrasi Pajak','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(142,142,0,462,'62011002','Beban PPh 4 (2)','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(143,143,0,463,'62011003','Beban PPh 29','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(144,144,0,464,'62011100','Beban Penyisihan Kerugian Piutang','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(145,145,0,465,'62011101','Beban Penyisihan Kerugian Piutang','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(146,146,0,466,'62011102','Beban Penghapusan Persediaan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(147,147,0,467,'62011103','Beban Penyisihan Piutang Tak Tertagih','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(148,148,0,468,'62011200','Beban Iklan dan Promosi','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(149,149,0,469,'62011201','Beban Iklan dan Promosi','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(150,150,0,470,'62011202','Beban Hadiah','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(151,151,0,471,'62011300','Beban Administrasi Lain-lain','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(152,152,0,472,'62011301','Beban Administrasi Lain-lain','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(153,153,0,473,'63000000','Beban Perkoperasian','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(154,154,0,474,'63010000','Beban Perkoperasian Anggota','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(155,155,0,475,'63010100','Beban Perkoperasian Anggota','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(156,156,0,476,'63010101','Beban Rapat dan RAT','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(157,157,0,477,'63010200','Beban Perjalanan Dinas Luar Kota/Luar Negeri','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(158,158,0,478,'63010201','Beban Perjalanan Dinas Luar Kota/Luar Negeri','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(159,159,0,479,'63010300','Beban Honor Pengurus','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(160,160,0,480,'63010301','Beban Honor Pengurus','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(161,161,0,481,'63010400','Beban Fee Manajemen/Profesional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(162,162,0,482,'63010401','Beban Fee Manajemen/Profesional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(163,163,0,483,'64000000','Beban Aset','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(164,164,0,484,'64010000','Beban Pemeliharaan Gedung','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(165,165,0,485,'64010100','Beban Pemeliharaan Gedung','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(166,166,0,486,'64010101','Beban Pemeliharaan Gedung','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(167,167,0,487,'64010200','Beban Pemeliharaan Kendaraan Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(168,168,0,488,'64010201','Beban Pemeliharaan Kendaraan Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(169,169,0,489,'64010300','Beban Pemeliharaan Inventaris','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(170,170,0,490,'64010301','Beban Pemeliharaan Inventaris','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(171,171,0,491,'64010400','Beban Penyusutan Bangunan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(172,172,0,492,'64010401','Beban Penyusutan Bangunan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(173,173,0,493,'64010500','Beban Penyusutan Kendaraan Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(174,174,0,494,'64010501','Beban Penyusutan Kendaraan Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(175,175,0,495,'64010600','Beban Penyusutan Inventaris Kantor','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(176,176,0,496,'64010601','Beban Penyusutan Inventaris Kantor','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(177,177,0,497,'64010700','Beban Asuransi','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(178,178,0,498,'64010701','Beban Asuransi','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(179,179,0,499,'64010800','Beban Pajak Kendaraan Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(180,180,0,500,'64010801','Beban Pajak Kendaraan Operasional','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(181,181,0,501,'64010900','Beban Aset Lainnya','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(182,182,0,502,'64010901','Beban Penyusutan Bangunan','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(183,183,0,503,'64010902','Beban Penyusutan Inventaris','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(184,184,0,504,'64010903','Beban Penyusutan Francise','0','0',4,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(185,185,0,505,'69999998','Total Biaya Usaha','101#102#103#104#105#106#107#108#109#110#111#112#11','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#',0,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(186,186,0,506,'69999999','SHU Sebelum Lain-Lain','100#183','-#-',0,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(187,187,0,507,'70000000','Pendapatan dan Beban Diluar Usaha','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(188,188,0,508,'71000000','Pendapatan Diluar Usaha','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(189,189,0,509,'71010000','Pendapatan Diluar Usaha Lainnya','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(190,190,0,510,'71010100','Pendapatan Bunga dan Jasa Giro Bank','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(191,191,0,511,'71010101','Pendapatan Bunga dan Jasa Giro Bank','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(192,192,0,512,'71010200','Pendapatan Display Barang','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(193,193,0,513,'71010201','Pendapatan Display Barang','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(194,194,0,514,'71010300','Laba (Rugi) Penjualan Aset Tetap dan Investasi','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(195,195,0,515,'71010301','Laba (Rugi) Penjualan Aset Tetap dan Investasi','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(196,196,0,516,'71010400','Pendapatan Deviden dan Investasi','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(197,197,0,517,'71010401','Pendapatan Deviden','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(198,198,0,518,'71010402','Pendapatan Investasi','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(199,199,0,519,'71019900','Pendapatan Lain-lain','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(200,200,0,520,'71019901','Pendapatan Lain-lain','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(201,201,0,521,'71019902','Pendapatan Pinalty dan Tutup Rekening','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(202,202,0,522,'71019903','Pendapatan Diskon Pabrikan','0','0',5,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(203,203,0,523,'72000000','Beban Diluar Usaha','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(204,204,0,524,'72010000','Beban Diluar Usaha Lainnya','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(205,205,0,525,'72010100','Beban Pajak Bunga Bank','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(206,206,0,526,'72010101','Beban Pajak Bunga Bank','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(207,207,0,527,'72010200','Beban Administrasi Bank','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(208,208,0,528,'72010201','Beban Administrasi Bank','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(209,209,0,529,'72010300','Beban Bunga Pinjaman','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(210,210,0,530,'72010301','Beban Bunga Pinjaman','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(211,211,0,531,'72010400','Beban Lain-lain','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(212,212,0,532,'72010401','Beban Lain-lain','0','0',6,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
-(213,213,0,533,'79999998','Pendapatan & Biaya Lainnya','185#186#187#188#189#190#191#192#193#194#195#196#19','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+',0,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-24 10:52:20'),
-(214,214,0,534,'79999999','SHU Tahun Berjalan','184#210','+#+',0,0,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20');
+(1,1,0,321,'40000000','Pendapatan','0','0',1,1,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(2,2,0,322,'41000000','Pendapatan Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(3,3,0,323,'41010000','Penjualan Barang Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(4,4,0,324,'41010100','Penjualan Barang Dagang Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(5,5,0,325,'41010101','Penjualan Barang Dagang Anggota - BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(6,6,0,326,'41010102','Penjualan Barang Dagang Anggota - Non BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(7,7,0,327,'41020000','Pendapatan Jasa Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(8,8,0,328,'41020100','Pendapatan Jasa Anggota Koperasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(9,9,0,329,'41020101','Pendapatan Jasa Pembayaran PLN/PDAM/Telp','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(10,10,0,330,'41020102','Pendapatan Jasa Pembayaran Surat Kendaraan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(11,11,0,331,'41020103','Pendapatan Jasa Bunga Simpin','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(12,12,0,332,'41020104','Pendapatan Jasa Sewa Mobil Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(13,13,0,333,'41020105','Pendapatan Jasa Elektronik','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(14,14,0,334,'41020106','Pendapatan Jasa Uang Barang','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(15,15,0,335,'42000000','Pendapatan Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(16,16,0,336,'42010000','Penjualan Barang Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(17,17,0,337,'42010100','Penjualan Barang Dagang Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(18,18,0,338,'42010101','Penjualan Barang Dagang Non Anggota Apotek','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(19,19,0,339,'42010102','Penjualan Barang Dagang Non Anggota - Non BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(20,20,0,340,'42020000','Pendapatan Jasa Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(21,21,0,341,'42020100','Pendapatan Jasa Non Anggota Koperasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(22,22,0,342,'42020101','Pendapatan Jasa Non Anggota Sewa Mobil','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(23,23,0,343,'42020102','Pendapatan Jasa Non Anggota Sewa Gen Set','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(24,24,0,344,'42020103','Pendapatan Jasa Non Anggota Fotocopy','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(25,25,0,345,'42020104','Pendapatan Jasa Non Anggota Perumahan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(26,26,0,346,'42020105','Pendapatan Jasa Non Anggota Alfamart','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(27,27,0,347,'43000000','Pendapatan Usaha Lainnya','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(28,28,0,348,'43010000','Pendapatan Usaha Lainnya Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(29,29,0,349,'43010100','Pendapatan Usaha Lainnya Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(30,30,0,350,'43010101','Pendapatan Adm Pinjaman','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(31,31,0,351,'43020000','Pendapatan Usaha Lainnya Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(32,32,0,352,'43020001','Pendapatan Jasa Non Anggota Lainnya','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(33,33,0,353,'43020100','Pendapatan Usaha Lainnya Non Anggota Alfamart','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(34,34,0,354,'43020101','Pendapatan Usaha Lainnya Alfamart Selisih Kas','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(35,35,0,355,'44000000','Retur Penjualan & Potongan Penjualan Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(36,36,0,356,'44010000','Retur Penjualan & Potongan Penjualan Barang Anggot','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(37,37,0,357,'44010100','Retur Penjualan Barang Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(38,38,0,358,'44010101','Retur Penjualan Anggota Barang BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(39,39,0,359,'44010102','Retur Penjualan Anggota Barang Non BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(40,40,0,360,'44010200','Potongan Penjualan Barang Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(41,41,0,361,'44010201','Potongan Penjualan Anggota Barang BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(42,42,0,362,'44010202','Potongan Penjualan Anggota Barang Non BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(43,43,0,363,'45000000','Retur Penjualan & Potongan Penjualan Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(44,44,0,364,'45010000','Retur Penjualan & Potongan Penjualan Barang Non An','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(45,45,0,365,'45010100','Retur Penjualan Barang Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(46,46,0,366,'45010101','Retur Penjualan Barang Non Anggota Apotek','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(47,47,0,367,'45010200','Potongan Penjualan Barang Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(48,48,0,368,'45010201','Potongan Penjualan Barang Non Anggota Apotek','','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(49,49,0,369,'49999999','Total Pendapatan Usaha','2#3#4#5#6#7#8#9#10#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#27#28#29#30#31#32#33#34#35#36#37#38#39#40#41#42#43#44#45#46#47#48','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+',5,0,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(50,50,0,370,'50000000','Beban Pokok','0','0',1,1,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(51,51,0,371,'51000000','Beban Pokok Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(52,52,0,372,'51010000','Beban Pokok Penjualan Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(53,53,0,373,'51010100','Beban Pokok Penjualan Barang Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(54,54,0,374,'51010101','Beban Pokok Penjualan Barang Anggota BKP','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(55,55,0,375,'51010102','Beban Pokok Penjualan Barang Anggota Non BK','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(56,56,0,376,'51010103','Beban Penghapusan Persediaan Barang Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(57,57,0,377,'51020000','Beban Pokok Pelayanan Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(58,58,0,378,'51020100','Beban Pokok Pelayanan Jasa Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(59,59,0,379,'51020101','Beban Pokok Pelayanan Jasa Anggota Simpin','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(60,60,0,380,'51030000','Beban Bunga Simpanan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(61,61,0,381,'51030100','Beban Bunga Simpanan Pajak','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(62,62,0,382,'51030101','Beban Bunga Simpanan Pajak','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(63,63,0,383,'51030200','Beban Bunga Simpanan Non Pajak','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(64,64,0,384,'51030201','Beban Bunga Simpanan Non Pajak','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(65,65,0,385,'51040000','Beban Bunga Pinjaman Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(66,66,0,386,'51040100','Beban Bunga Pinjaman Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(67,67,0,387,'52000000','Beban Pokok Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(68,68,0,388,'52010000','Beban Pokok Penjualan Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(69,69,0,389,'52010100','Beban Pokok Penjualan Barang Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(70,70,0,390,'52010101','Beban Pokok Penjualan Barang Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(71,71,0,391,'52010102','Beban Penghapusan Persediaan Barang Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(72,72,0,392,'52010200','Beban Pokok Penjualan Perumahan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(73,73,0,393,'52010201','Beban Pokok Penjualan Perumahan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(74,74,0,394,'52020000','Beban Pokok Pelayanan Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(75,75,0,395,'52020100','Beban Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(76,76,0,396,'52020101','Beban Sewa Mobil','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(77,77,0,397,'52020102','Beban Sewa Mesin Fotocopy','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(78,78,0,398,'52020200','Beban Asuransi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(79,79,0,399,'52020201','Beban Asuransi Mobil Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(80,80,0,400,'52020202','Beban Asuransi Gen Set Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(81,81,0,401,'52020300','Beban Penyusutan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(82,82,0,402,'52020301','Beban Penyusutan Mobil Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(83,83,0,403,'52020302','Beban Penyusutan Gen Set Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(84,84,0,404,'52020500','Beban Pajak','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(85,85,0,405,'52020501','Beban Pajak Mobil Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(86,86,0,406,'52020600','Beban Perlengkapan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(87,87,0,407,'52020601','Beban Perlengkapan Habis Pakai Fotocopy','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(88,88,0,408,'52020700','Beban Pemeliharaan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(89,89,0,409,'52020701','Beban Pemeliharaan Mobil Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(90,90,0,410,'52020702','Beban Pemeliharaan Gen Set Sewa','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(91,91,0,411,'52020800','Beban Bunga Pinjaman Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(92,92,0,412,'52020801','Beban Bunga Pinjaman Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(93,93,0,413,'53000000','Beban Pokok Usaha Lainnya','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(94,94,0,414,'53010000','Beban Pokok Usaha Lainnya Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(95,95,0,415,'53020000','Beban Pokok Usaha Lainnya Non Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(96,96,0,416,'53020001','Beban Gaji/THR/Bonus','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(97,97,0,417,'53020002','Beban BPJS Ketenagakerjaan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(98,98,0,418,'53020004','Beban BPJS Kesehatan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(99,99,0,419,'53020005','Beban Seragam Kerja','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(100,100,0,420,'53020006','Beban Kompensasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(101,101,0,421,'59999998','Total HPP','51#52#53#54#55#56#57#58#59#60#61#62#63#64#65#66#67#68#69#70#71#72#73#74#75#76#77#78#79#80#81#82#83#84#85#86#87#88#89#90#91#92#93#94#95#96#97#98#99#100','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+',5,0,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(102,102,0,422,'59999999','Total Laba Kotor','2#3#4#5#6#7#8#9#10#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#27#28#29#30#31#32#33#34#35#36#37#38#39#40#41#42#43#44#45#46#47#48#51#52#53#54#55#56#57#58#59#60#61#62#63#64#65#66#67#68#69#70#71#72#73#74#75#76#77#78#79#80#81#82#83#84#85#86#87#88#89#90#91#92#93#94#95#96#97#98#99#100','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+',5,0,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(103,103,0,423,'60000000','Beban Operasional','0','0',1,1,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(104,104,0,424,'61000000','Beban Usaha','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(105,105,0,425,'61010000','Beban Tenaga Kerja','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(106,106,0,426,'61010100','Beban Gaji, Upah, dan Bonus','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(107,107,0,427,'61010101','Beban Gaji, Upah, dan Bonus','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(108,108,0,428,'61010200','Beban Tunjangan Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(109,109,0,429,'61010201','Beban Tunjangan PPh ps.21 Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(110,110,0,430,'61010202','Beban Tunjangan BPJS Kesehatan Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(111,111,0,431,'61010203','Beban Tunjangan BPJS Ketenagakerjaan Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(112,112,0,432,'61010204','Beban Tunjangan Seragam Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(113,113,0,433,'61010205','Beban Tunjangan Hari Raya Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(114,114,0,434,'61010206','Beban Tunjangan Pensiun Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(115,115,0,435,'61010207','Beban Tunjangan Rekreasi Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(116,116,0,436,'61010208','Beban Tunjangan Pendidikan Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(117,117,0,437,'62000000','Beban Administrasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(118,118,0,438,'62010000','Beban Administrasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(119,119,0,439,'62010100','Beban Alat Tulis Kantor','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(120,120,0,440,'62010101','Beban Alat Tulis Kantor','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(121,121,0,441,'62010200','Beban Perizinan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(122,122,0,442,'62010201','Beban Perizinan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(123,123,0,443,'62010300','Beban Materai','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(124,124,0,444,'62010301','Beban Materai','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(125,125,0,445,'62010302','Beban Kirim Surat / Barang','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(126,126,0,446,'62010303','Beban Fotocopy','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(127,127,0,447,'62010400','Beban Administrasi Kantor','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(128,128,0,448,'62010401','Beban Administrasi Kantor','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(129,129,0,449,'62010500','Beban Listrik, Air, dan Telepon','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(130,130,0,450,'62010501','Beban Listrik, Air, dan Telepon','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(131,131,0,451,'62010600','Beban Transportasi Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(132,132,0,452,'62010601','Beban Transportasi Karyawan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(133,133,0,453,'62010700','Beban Sumbangan dan Iuran','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(134,134,0,454,'62010701','Beban Sumbangan dan Iuran','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(135,135,0,455,'62010800','Beban Perlengkapan Habis Pakai','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(136,136,0,456,'62010801','Beban Perlengkapan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(137,137,0,457,'62010802','Beban Pengemasan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(138,138,0,458,'62010900','Beban Sewa Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(139,139,0,459,'62010901','Beban Sewa Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(140,140,0,460,'62011000','Beban Pajak','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(141,141,0,461,'62011001','Beban Sanksi Adminitrasi Pajak','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(142,142,0,462,'62011002','Beban PPh 4 (2)','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(143,143,0,463,'62011003','Beban PPh 29','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(144,144,0,464,'62011100','Beban Penyisihan Kerugian Piutang','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(145,145,0,465,'62011101','Beban Penyisihan Kerugian Piutang','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(146,146,0,466,'62011102','Beban Penghapusan Persediaan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(147,147,0,467,'62011103','Beban Penyisihan Piutang Tak Tertagih','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(148,148,0,468,'62011200','Beban Iklan dan Promosi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(149,149,0,469,'62011201','Beban Iklan dan Promosi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(150,150,0,470,'62011202','Beban Hadiah','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(151,151,0,471,'62011300','Beban Administrasi Lain-lain','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(152,152,0,472,'62011301','Beban Administrasi Lain-lain','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(153,153,0,473,'63000000','Beban Perkoperasian','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(154,154,0,474,'63010000','Beban Perkoperasian Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(155,155,0,475,'63010100','Beban Perkoperasian Anggota','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(156,156,0,476,'63010101','Beban Rapat dan RAT','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(157,157,0,477,'63010200','Beban Perjalanan Dinas Luar Kota/Luar Negeri','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(158,158,0,478,'63010201','Beban Perjalanan Dinas Luar Kota/Luar Negeri','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(159,159,0,479,'63010300','Beban Honor Pengurus','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(160,160,0,480,'63010301','Beban Honor Pengurus','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(161,161,0,481,'63010400','Beban Fee Manajemen/Profesional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(162,162,0,482,'63010401','Beban Fee Manajemen/Profesional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(163,163,0,483,'64000000','Beban Aset','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(164,164,0,484,'64010000','Beban Pemeliharaan Gedung','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(165,165,0,485,'64010100','Beban Pemeliharaan Gedung','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(166,166,0,486,'64010101','Beban Pemeliharaan Gedung','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(167,167,0,487,'64010200','Beban Pemeliharaan Kendaraan Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(168,168,0,488,'64010201','Beban Pemeliharaan Kendaraan Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(169,169,0,489,'64010300','Beban Pemeliharaan Inventaris','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(170,170,0,490,'64010301','Beban Pemeliharaan Inventaris','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(171,171,0,491,'64010400','Beban Penyusutan Bangunan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(172,172,0,492,'64010401','Beban Penyusutan Bangunan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(173,173,0,493,'64010500','Beban Penyusutan Kendaraan Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(174,174,0,494,'64010501','Beban Penyusutan Kendaraan Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(175,175,0,495,'64010600','Beban Penyusutan Inventaris Kantor','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(176,176,0,496,'64010601','Beban Penyusutan Inventaris Kantor','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(177,177,0,497,'64010700','Beban Asuransi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(178,178,0,498,'64010701','Beban Asuransi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(179,179,0,499,'64010800','Beban Pajak Kendaraan Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(180,180,0,500,'64010801','Beban Pajak Kendaraan Operasional','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(181,181,0,501,'64010900','Beban Aset Lainnya','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(182,182,0,502,'64010901','Beban Penyusutan Bangunan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(183,183,0,503,'64010902','Beban Penyusutan Inventaris','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(184,184,0,504,'64010903','Beban Penyusutan Francise','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(185,185,0,505,'69999998','Total Biaya Usaha','104#105#106#107#108#109#110#111#112#113#114#115#116#117#118#119#120#121#122#123#124#125#126#127#128#129#130#131#132#133#134#135#136#137#138#139#140#141#142#143#144#145#146#147#148#149#150#151#152#153#154#155#156#157#158#159#160#161#162#163#164#165#166#167#168#169#170#171#172#173#174#175#176#177#178#179#180#181#182#183#184','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+',5,0,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(186,186,0,506,'69999999','SHU Sebelum Lain-Lain','2#3#4#5#6#7#8#9#10#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#27#28#29#30#31#32#33#34#35#36#37#38#39#40#41#42#43#44#45#46#47#48#51#52#53#54#55#56#57#58#59#60#61#62#63#64#65#66#67#68#69#70#71#72#73#74#75#76#77#78#79#80#81#82#83#84#85#86#87#88#89#90#91#92#93#94#95#96#97#98#99#100#104#105#106#107#108#109#110#111#112#113#114#115#116#117#118#119#120#121#122#123#124#125#126#127#128#129#130#131#132#133#134#135#136#137#138#139#140#141#142#143#144#145#146#147#148#149#150#151#152#153#154#155#156#157#158#159#160#161#162#163#164#165#166#167#168#169#170#171#172#173#174#175#176#177#178#179#180#181#182#183#184','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+',5,0,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(187,187,0,507,'70000000','Pendapatan dan Beban Diluar Usaha','0','0',1,1,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(188,188,0,508,'71000000','Pendapatan Diluar Usaha','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(189,189,0,509,'71010000','Pendapatan Diluar Usaha Lainnya','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(190,190,0,510,'71010100','Pendapatan Bunga dan Jasa Giro Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(191,191,0,511,'71010101','Pendapatan Bunga dan Jasa Giro Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(192,192,0,512,'71010200','Pendapatan Display Barang','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(193,193,0,513,'71010201','Pendapatan Display Barang','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(194,194,0,514,'71010300','Laba (Rugi) Penjualan Aset Tetap dan Investasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(195,195,0,515,'71010301','Laba (Rugi) Penjualan Aset Tetap dan Investasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(196,196,0,516,'71010400','Pendapatan Deviden dan Investasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(197,197,0,517,'71010401','Pendapatan Deviden','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(198,198,0,518,'71010402','Pendapatan Investasi','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(199,199,0,519,'71019900','Pendapatan Lain-lain','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(200,200,0,520,'71019901','Pendapatan Lain-lain','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(201,201,0,521,'71019902','Pendapatan Pinalty dan Tutup Rekening','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(202,202,0,522,'71019903','Pendapatan Diskon Pabrikan','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(203,203,0,523,'72000000','Beban Diluar Usaha','0','0',1,1,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(204,204,0,524,'72010000','Beban Diluar Usaha Lainnya','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(205,205,0,525,'72010100','Beban Pajak Bunga Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(206,206,0,526,'72010101','Beban Pajak Bunga Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(207,207,0,527,'72010200','Beban Administrasi Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(208,208,0,528,'72010201','Beban Administrasi Bank','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(209,209,0,529,'72010300','Beban Bunga Pinjaman','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(210,210,0,530,'72010301','Beban Bunga Pinjaman','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(211,211,0,531,'72010400','Beban Lain-lain','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(212,212,0,532,'72010401','Beban Lain-lain','0','0',3,3,0,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(213,213,0,533,'79999998','Pendapatan & Biaya Lainnya','188#189#190#191#192#193#194#195#196#197#198#199#200#201#202#204#205#206#207#208#209#210#211#212','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+',5,0,1,0,0,0,'0000-00-00 00:00:00','2023-06-24 10:52:20'),
+(214,214,0,534,'79999999','SHU Tahun Berjalan','2#3#4#5#6#7#8#9#10#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#27#28#29#30#31#32#33#34#35#36#37#38#39#40#41#42#43#44#45#46#47#48#51#52#53#54#55#56#57#58#59#60#61#62#63#64#65#66#67#68#69#70#71#72#73#74#75#76#77#78#79#80#81#82#83#84#85#86#87#88#89#90#91#92#93#94#95#96#97#98#99#100#104#105#106#107#108#109#110#111#112#113#114#115#116#117#118#119#120#121#122#123#124#125#126#127#128#129#130#131#132#133#134#135#136#137#138#139#140#141#142#143#144#145#146#147#148#149#150#151#152#153#154#155#156#157#158#159#160#161#162#163#164#165#166#167#168#169#170#171#172#173#174#175#176#177#178#179#180#181#182#183#184#188#189#190#191#192#193#194#195#196#197#198#199#200#201#202#204#205#206#207#208#209#210#211#212','+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#-#+#+#+#+#+#+#+#+#+',5,0,1,0,0,0,'0000-00-00 00:00:00','2023-06-23 10:52:20'),
+(215,215,0,0,'','RUGI LABA','214','+',6,0,1,0,0,0,NULL,'2023-12-06 15:35:51');
 
 /*Table structure for table `acct_recalculate_log` */
 
 DROP TABLE IF EXISTS `acct_recalculate_log`;
 
 CREATE TABLE `acct_recalculate_log` (
-  `recalculate_log_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
+  `recalculate_log_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
   `month_period` varchar(2) DEFAULT '0',
-  `year_period` year(4) DEFAULT NULL,
-  `created_id` int(11) DEFAULT 0,
+  `year_period` year DEFAULT NULL,
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`recalculate_log_id`),
   KEY `branch_id` (`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_recalculate_log` */
-
-insert  into `acct_recalculate_log`(`recalculate_log_id`,`branch_id`,`month_period`,`year_period`,`created_id`,`created_at`,`updated_at`) values 
-(1,NULL,'12',2019,123,'2020-04-01 13:42:07','2023-06-23 10:52:20'),
-(2,1,'09',2021,3,'2021-09-13 13:47:44','2023-06-23 10:52:20');
 
 /*Table structure for table `acct_report` */
 
 DROP TABLE IF EXISTS `acct_report`;
 
 CREATE TABLE `acct_report` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_no` int(11) DEFAULT NULL,
-  `id_report` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_no` int DEFAULT NULL,
+  `id_report` int DEFAULT NULL,
   `field_name` varchar(100) DEFAULT NULL,
   `account_id` varchar(50) DEFAULT NULL,
   `formula` varchar(100) DEFAULT NULL,
   `operator` varchar(100) DEFAULT NULL,
   `type` enum('title','subtitle','loop','sum','grantotal','parent') DEFAULT NULL,
-  `status` int(11) DEFAULT 1,
-  `indent_tab` int(11) DEFAULT NULL,
-  `indent_bold` int(11) DEFAULT 0,
+  `status` int DEFAULT '1',
+  `indent_tab` int DEFAULT NULL,
+  `indent_bold` int DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=723 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=723 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_report` */
 
@@ -2218,18 +2143,18 @@ insert  into `acct_report`(`id`,`id_no`,`id_report`,`field_name`,`account_id`,`f
 DROP TABLE IF EXISTS `acct_report_backup`;
 
 CREATE TABLE `acct_report_backup` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_no` int(11) DEFAULT NULL,
-  `id_report` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_no` int DEFAULT NULL,
+  `id_report` int DEFAULT NULL,
   `field_name` varchar(100) DEFAULT NULL,
   `account_id` varchar(50) DEFAULT NULL,
   `formula` varchar(100) DEFAULT NULL,
   `operator` varchar(100) DEFAULT NULL,
   `type` enum('title','subtitle','loop','sum','grantotal','parent') DEFAULT NULL,
-  `indent_tab` int(11) DEFAULT NULL,
-  `indent_bold` int(11) DEFAULT 0,
+  `indent_tab` int DEFAULT NULL,
+  `indent_bold` int DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=332 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=332 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_report_backup` */
 
@@ -2305,84 +2230,84 @@ insert  into `acct_report_backup`(`id`,`id_no`,`id_report`,`field_name`,`account
 DROP TABLE IF EXISTS `buyers_acknowledgment`;
 
 CREATE TABLE `buyers_acknowledgment` (
-  `buyers_acknowledgment_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `account_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `warehouse_id` bigint(20) DEFAULT 8,
-  `customer_id` int(11) DEFAULT NULL,
-  `buyers_acknowledgment_no` varchar(255) DEFAULT NULL,
+  `buyers_acknowledgment_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `account_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `warehouse_id` bigint DEFAULT '8',
+  `customer_id` int DEFAULT NULL,
+  `buyers_acknowledgment_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `buyers_acknowledgment_date` date DEFAULT NULL,
-  `buyers_acknowledgment_remark` text DEFAULT NULL,
-  `sales_invoice_status` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `buyers_acknowledgment_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `sales_invoice_status` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`buyers_acknowledgment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `buyers_acknowledgment` */
 
 insert  into `buyers_acknowledgment`(`buyers_acknowledgment_id`,`sales_delivery_note_id`,`sales_delivery_order_id`,`account_id`,`sales_order_id`,`warehouse_id`,`customer_id`,`buyers_acknowledgment_no`,`buyers_acknowledgment_date`,`buyers_acknowledgment_remark`,`sales_invoice_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,32,1,0,1,'BPB-1233242','2023-11-17',NULL,0,0,75,'2023-11-17 07:23:58','2023-11-17 07:23:58');
+(44,8,5,42,5,0,1,'0001/BPB/2023','2023-12-06',NULL,1,0,3,'2023-12-06 07:28:08','2023-12-06 07:28:08');
 
 /*Table structure for table `buyers_acknowledgment_item` */
 
 DROP TABLE IF EXISTS `buyers_acknowledgment_item`;
 
 CREATE TABLE `buyers_acknowledgment_item` (
-  `buyers_acknowledgment_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `buyers_acknowledgment_id` bigint(20) DEFAULT NULL,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_note_item_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_order_item_id` int(11) DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `supplier_id` int(11) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT NULL,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_stock_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
+  `buyers_acknowledgment_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `buyers_acknowledgment_id` bigint DEFAULT NULL,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_note_item_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_order_item_id` int DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
+  `supplier_id` int DEFAULT NULL,
+  `item_category_id` int DEFAULT NULL,
+  `item_type_id` int DEFAULT NULL,
+  `item_stock_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
   `quantity` decimal(10,0) DEFAULT NULL,
   `quantity_received` decimal(10,0) DEFAULT NULL,
   `item_unit_price` decimal(10,0) DEFAULT NULL,
   `subtotal_price` decimal(10,0) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`buyers_acknowledgment_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `buyers_acknowledgment_item` */
 
 insert  into `buyers_acknowledgment_item`(`buyers_acknowledgment_item_id`,`buyers_acknowledgment_id`,`sales_delivery_note_id`,`sales_delivery_note_item_id`,`sales_order_id`,`sales_order_item_id`,`warehouse_id`,`supplier_id`,`item_category_id`,`item_type_id`,`item_stock_id`,`item_unit_id`,`quantity`,`quantity_received`,`item_unit_price`,`subtotal_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,1,1,1,NULL,NULL,NULL,1,5,1,100,100,3500,350000,0,75,'2023-11-17 07:23:58','2023-11-17 07:23:58');
+(58,44,8,8,5,5,NULL,NULL,NULL,24,24,5,5,5,2000,10000,0,3,'2023-12-06 07:28:08','2023-12-06 07:28:08');
 
 /*Table structure for table `core_agency` */
 
 DROP TABLE IF EXISTS `core_agency`;
 
 CREATE TABLE `core_agency` (
-  `agency_id` int(11) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
+  `agency_id` int NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
   `agency_code` varchar(20) DEFAULT '',
   `agency_name` varchar(100) DEFAULT '',
   `agency_phone_number` varchar(25) DEFAULT '',
   `agency_contact_person` varchar(100) DEFAULT '',
-  `agency_address` text DEFAULT NULL,
+  `agency_address` text,
   `agency_email` varchar(100) DEFAULT '',
-  `agency_profit_sharing_percentage` decimal(10,2) DEFAULT 0.00,
-  `agency_remark` text DEFAULT NULL,
-  `mou_status` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `agency_profit_sharing_percentage` decimal(10,2) DEFAULT '0.00',
+  `agency_remark` text,
+  `mou_status` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`agency_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_agency` */
 
@@ -2395,19 +2320,19 @@ insert  into `core_agency`(`agency_id`,`branch_id`,`agency_code`,`agency_name`,`
 DROP TABLE IF EXISTS `core_bank`;
 
 CREATE TABLE `core_bank` (
-  `bank_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bank_id` int NOT NULL AUTO_INCREMENT,
   `bank_code` varchar(20) DEFAULT '',
   `bank_name` varchar(50) DEFAULT '',
-  `account_id` int(11) DEFAULT NULL,
-  `bank_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `account_id` int DEFAULT NULL,
+  `bank_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`bank_id`),
   KEY `FK_core_bank_created_id` (`created_id`),
   KEY `FK_core_bank_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_bank` */
 
@@ -2420,20 +2345,20 @@ insert  into `core_bank`(`bank_id`,`bank_code`,`bank_name`,`account_id`,`bank_re
 DROP TABLE IF EXISTS `core_branch`;
 
 CREATE TABLE `core_branch` (
-  `branch_id` int(11) NOT NULL AUTO_INCREMENT,
+  `branch_id` int NOT NULL AUTO_INCREMENT,
   `branch_code` varchar(50) DEFAULT '',
   `branch_name` varchar(250) DEFAULT '',
-  `branch_address` text DEFAULT NULL,
+  `branch_address` text,
   `branch_manager` varchar(100) DEFAULT NULL,
-  `branch_status` int(11) DEFAULT 0,
-  `branch_parent_id` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `branch_status` int DEFAULT '0',
+  `branch_parent_id` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`branch_id`),
   KEY `branch_parent_id` (`branch_parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_branch` */
 
@@ -2445,19 +2370,19 @@ insert  into `core_branch`(`branch_id`,`branch_code`,`branch_name`,`branch_addre
 DROP TABLE IF EXISTS `core_city`;
 
 CREATE TABLE `core_city` (
-  `city_id` int(11) NOT NULL AUTO_INCREMENT,
+  `city_id` int NOT NULL AUTO_INCREMENT,
   `city_code` char(4) NOT NULL,
-  `province_id` int(11) DEFAULT 0,
+  `province_id` int DEFAULT '0',
   `province_code` char(2) NOT NULL,
   `city_name` varchar(255) NOT NULL,
   `province_no` varchar(20) DEFAULT '',
   `city_no` varchar(20) DEFAULT '',
-  `data_state` int(11) NOT NULL DEFAULT 0,
+  `data_state` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`city_id`),
   KEY `regencies_province_id_index` (`province_code`),
   KEY `city_id` (`city_id`),
   KEY `FK_core_city_province_id` (`province_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1449 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1449 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_city` */
 
@@ -2981,9 +2906,9 @@ insert  into `core_city`(`city_id`,`city_code`,`province_id`,`province_code`,`ci
 DROP TABLE IF EXISTS `core_customer`;
 
 CREATE TABLE `core_customer` (
-  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `province_id` int(11) DEFAULT NULL,
-  `city_id` int(11) DEFAULT NULL,
+  `customer_id` int NOT NULL AUTO_INCREMENT,
+  `province_id` int DEFAULT NULL,
+  `city_id` int DEFAULT NULL,
   `customer_code` varchar(255) DEFAULT NULL,
   `customer_name` varchar(255) DEFAULT NULL,
   `customer_tax_no` varchar(255) DEFAULT NULL,
@@ -2995,17 +2920,17 @@ CREATE TABLE `core_customer` (
   `customer_fax_number` varchar(255) DEFAULT NULL,
   `customer_contact_person` varchar(255) DEFAULT NULL,
   `customer_payment_terms` decimal(10,0) DEFAULT NULL,
-  `customer_remark` text DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `customer_remark` text,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `data_dump` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`customer_id`),
   KEY `customer_id` (`customer_id`),
   KEY `FK_core_customer_province_id` (`province_id`),
   KEY `FK_core_customer_city_id` (`city_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_customer` */
 
@@ -3150,39 +3075,42 @@ insert  into `core_customer`(`customer_id`,`province_id`,`city_id`,`customer_cod
 (138,71,1028,NULL,'PT. MIDI UTAMA INDONESIA.DC BOYOLALI',NULL,'JL. NASIONAL 16 \r\n(JL. SEMARANG SURAKARTA)\r\nKEL.WINONG , KEC. BOYOLALI\r\nKAB.BOYOLALI, JAWA TENGAH',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-10-20 03:48:27','2023-10-20 03:48:27',NULL),
 (139,64,956,NULL,'PT.INTI CAKRAWALA CITRA. IDG TANGERANG',NULL,'JL. GATOT SUBROTO KM. 5 NO. 4\r\nJATI UWUNG\r\nTANGERANG 15138',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-10-25 08:38:46','2023-10-25 08:38:46',NULL),
 (140,67,976,NULL,'PT.PANEN SELARAS ADIPERKASA.BOOTS GOLF ISLAND BATAVIA PIK',NULL,'Rukan Beach View Batavia Golf Island Blok.A No.80\r\nJl. Pantai Indah Kapuk, Kel. Kamal Muara\r\nKec. Penjaringan, Kota Administrasi Jakarta Utara\r\nProv. DKI Jakarta 14470',NULL,'Apj. Asep Kurnia (081287854074)',NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-10-26 06:17:18','2023-10-26 06:17:18',NULL),
-(141,72,1077,NULL,'PT. INTI CAKRAWALA MAJU DC.MALANG',NULL,'JL. S . SUPRIADI No 170 A\r\nKEL. KEBONSARI  KEC. SUKUN MALANG\r\nMALANG JAWA TIMUR',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-11-04 02:28:23','2023-11-04 02:28:23',NULL);
+(141,72,1077,NULL,'PT. INTI CAKRAWALA MAJU DC.MALANG',NULL,'JL. S . SUPRIADI No 170 A\r\nKEL. KEBONSARI  KEC. SUKUN MALANG\r\nMALANG JAWA TIMUR',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-11-04 02:28:23','2023-11-04 02:28:23',NULL),
+(142,95,1427,NULL,'PT.INDOMARCO PRISMATAMA DC STABAT',NULL,'JL. LINTAS SUMATERA  KEL. KARANG REJO\r\nKEC. STABAT KOTA STABAT\r\nKAB.LANGKAT SUMUT 20811',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-11-06 07:58:54','2023-11-06 07:58:54',NULL),
+(143,67,976,NULL,'PT.PANEN SELARAS ADIPERKASA.BOOTS KELAPA GADING MALL',NULL,'Mall Kelapa Gading,lantai Ground G-73B\r\nJl. Bulevard Kelapa Gading Blok M,Rt 13/ Rw 18\r\nKel, Kelapa Gading Timur. Kec, Kelapa Gading\r\nKota Adm Jakarta Utara, DKI Jakarta 14241',NULL,'Apj. Maitri Vimala  (082350208680)',NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-11-11 03:06:15','2023-11-11 03:06:15',NULL),
+(144,64,955,NULL,'WAREHOUSE WATSONS',NULL,'KOMPLEK PERGUDANGAN NIHON SEIMA BLOK H \r\n JL. GATOT SUBROTO KM.8 \r\nDesa Kadujaya, Kec.Curug, Kab. Tangerang',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,75,'2023-11-21 04:10:02','2023-11-21 04:10:02',NULL);
 
 /*Table structure for table `core_expedition` */
 
 DROP TABLE IF EXISTS `core_expedition`;
 
 CREATE TABLE `core_expedition` (
-  `expedition_id` int(11) NOT NULL AUTO_INCREMENT,
+  `expedition_id` int NOT NULL AUTO_INCREMENT,
   `expedition_code` varchar(20) DEFAULT '',
   `expedition_name` varchar(50) DEFAULT '',
   `expedition_route` varchar(50) DEFAULT '',
-  `expedition_address` text DEFAULT NULL,
-  `expedition_city` int(11) DEFAULT NULL,
+  `expedition_address` text,
+  `expedition_city` int DEFAULT NULL,
   `expedition_home_phone` varchar(50) DEFAULT '',
   `expedition_mobile_phone1` varchar(50) DEFAULT '',
   `expedition_mobile_phone2` varchar(50) DEFAULT '',
   `expedition_fax_number` varchar(50) DEFAULT '',
   `expedition_email` varchar(50) DEFAULT '',
   `expedition_person_in_charge` varchar(50) DEFAULT '',
-  `expedition_status` decimal(1,0) DEFAULT 0,
-  `expedition_remark` text DEFAULT NULL,
-  `expedition_acct_invoice` int(11) DEFAULT 0,
-  `expedition_acct_payable` int(11) DEFAULT 0,
-  `expedition_acct_claim` int(11) DEFAULT 0,
-  `expedition_acct_receivable` int(11) DEFAULT 0,
+  `expedition_status` decimal(1,0) DEFAULT '0',
+  `expedition_remark` text,
+  `expedition_acct_invoice` int DEFAULT '0',
+  `expedition_acct_payable` int DEFAULT '0',
+  `expedition_acct_claim` int DEFAULT '0',
+  `expedition_acct_receivable` int DEFAULT '0',
   `expedition_token` varchar(250) DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`expedition_id`),
   KEY `FK_core_expedition_expedition_city` (`expedition_city`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `core_expedition` */
 
@@ -3197,14 +3125,14 @@ insert  into `core_expedition`(`expedition_id`,`expedition_code`,`expedition_nam
 DROP TABLE IF EXISTS `core_grade`;
 
 CREATE TABLE `core_grade` (
-  `grade_id` int(11) NOT NULL AUTO_INCREMENT,
+  `grade_id` int NOT NULL AUTO_INCREMENT,
   `grade_name` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`grade_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_grade` */
 
@@ -3235,14 +3163,14 @@ insert  into `core_grade`(`grade_id`,`grade_name`,`data_state`,`created_id`,`cre
 DROP TABLE IF EXISTS `core_package`;
 
 CREATE TABLE `core_package` (
-  `package_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `package_id` bigint NOT NULL AUTO_INCREMENT,
   `package_name` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`package_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_package` */
 
@@ -3254,23 +3182,23 @@ insert  into `core_package`(`package_id`,`package_name`,`data_state`,`created_id
 DROP TABLE IF EXISTS `core_project`;
 
 CREATE TABLE `core_project` (
-  `project_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `project_type_id` int(11) DEFAULT 0,
-  `project_category_id` bigint(20) DEFAULT 0,
-  `customer_id` bigint(20) DEFAULT 0,
+  `project_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `project_type_id` int DEFAULT '0',
+  `project_category_id` bigint DEFAULT '0',
+  `customer_id` bigint DEFAULT '0',
   `project_code` varchar(20) DEFAULT '',
   `project_name` varchar(50) DEFAULT '',
-  `project_tender` decimal(20,2) DEFAULT 0.00,
-  `project_remark` text DEFAULT NULL,
+  `project_tender` decimal(20,2) DEFAULT '0.00',
+  `project_remark` text,
   `project_date` date DEFAULT NULL,
   `project_status` varchar(10) DEFAULT '0',
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_on` datetime DEFAULT NULL,
-  `last_update` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_project` */
 
@@ -3282,15 +3210,15 @@ insert  into `core_project`(`project_id`,`branch_id`,`project_type_id`,`project_
 DROP TABLE IF EXISTS `core_project_category`;
 
 CREATE TABLE `core_project_category` (
-  `project_category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_category_id` int NOT NULL AUTO_INCREMENT,
   `project_category_code` varchar(20) DEFAULT '',
   `project_category_name` varchar(250) DEFAULT '',
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_on` datetime DEFAULT NULL,
-  `last_update` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`project_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_project_category` */
 
@@ -3299,14 +3227,14 @@ CREATE TABLE `core_project_category` (
 DROP TABLE IF EXISTS `core_province`;
 
 CREATE TABLE `core_province` (
-  `province_id` int(11) NOT NULL AUTO_INCREMENT,
+  `province_id` int NOT NULL AUTO_INCREMENT,
   `province_code` char(2) NOT NULL,
   `province_name` varchar(255) NOT NULL,
   `province_no` varchar(20) DEFAULT '',
-  `data_state` int(11) NOT NULL DEFAULT 0,
+  `data_state` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`province_id`),
   KEY `province_id` (`province_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_province` */
 
@@ -3351,14 +3279,14 @@ insert  into `core_province`(`province_id`,`province_code`,`province_name`,`prov
 DROP TABLE IF EXISTS `core_supplier`;
 
 CREATE TABLE `core_supplier` (
-  `supplier_id` int(11) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 1,
-  `province_id` int(11) NOT NULL DEFAULT 0,
-  `city_id` int(11) NOT NULL DEFAULT 0,
+  `supplier_id` int NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '1',
+  `province_id` int NOT NULL DEFAULT '0',
+  `city_id` int NOT NULL DEFAULT '0',
   `supplier_code` varchar(20) DEFAULT '',
   `supplier_name` varchar(50) DEFAULT '',
   `supplier_id_number` varchar(30) DEFAULT '',
-  `supplier_address` text DEFAULT NULL,
+  `supplier_address` text,
   `supplier_city` varchar(50) DEFAULT '',
   `supplier_home_phone` varchar(200) DEFAULT '',
   `supplier_mobile_phone1` varchar(200) DEFAULT '',
@@ -3370,22 +3298,22 @@ CREATE TABLE `core_supplier` (
   `supplier_bank_acct_no` varchar(30) DEFAULT '',
   `supplier_tax_no` varchar(30) DEFAULT '',
   `supplier_npwp_no` varchar(255) DEFAULT NULL,
-  `supplier_npwp_address` text DEFAULT NULL,
-  `supplier_payment_terms` decimal(10,0) DEFAULT 0,
-  `supplier_status` decimal(1,0) DEFAULT 0 COMMENT '1 : Active, 0 : Suspended',
-  `supplier_remark` text DEFAULT NULL,
-  `advance_account_id` int(11) DEFAULT 0,
-  `giro_account_id` int(11) DEFAULT 0,
-  `payable_account_id` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `supplier_npwp_address` text,
+  `supplier_payment_terms` decimal(10,0) DEFAULT '0',
+  `supplier_status` decimal(1,0) DEFAULT '0' COMMENT '1 : Active, 0 : Suspended',
+  `supplier_remark` text,
+  `advance_account_id` int DEFAULT '0',
+  `giro_account_id` int DEFAULT '0',
+  `payable_account_id` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_state` int DEFAULT '0',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`supplier_id`),
   KEY `FK_core_supplier_province_id` (`province_id`),
   KEY `FK_core_supplier_city_id` (`city_id`),
   KEY `FK_core_supplier_branch_id` (`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `core_supplier` */
 
@@ -3401,13 +3329,13 @@ insert  into `core_supplier`(`supplier_id`,`branch_id`,`province_id`,`city_id`,`
 DROP TABLE IF EXISTS `failed_jobs`;
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) NOT NULL,
-  `connection` text NOT NULL,
-  `queue` text NOT NULL,
-  `payload` longtext NOT NULL,
-  `exception` longtext NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3419,27 +3347,27 @@ CREATE TABLE `failed_jobs` (
 DROP TABLE IF EXISTS `inv_goods_received_note`;
 
 CREATE TABLE `inv_goods_received_note` (
-  `goods_received_note_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `purchase_order_id` bigint(20) DEFAULT 0,
-  `supplier_id` int(11) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
+  `goods_received_note_id` bigint NOT NULL AUTO_INCREMENT,
+  `purchase_order_id` bigint DEFAULT '0',
+  `supplier_id` int DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
   `goods_received_note_no` varchar(20) DEFAULT '',
   `goods_received_note_date` date DEFAULT NULL,
   `goods_received_note_expired_date` date DEFAULT NULL,
-  `goods_received_note_remark` text DEFAULT NULL,
-  `goods_received_note_status_invoice` decimal(1,0) NOT NULL DEFAULT 0,
+  `goods_received_note_remark` text,
+  `goods_received_note_status_invoice` decimal(1,0) NOT NULL DEFAULT '0',
   `receipt_image` varchar(500) DEFAULT NULL,
   `delivery_note_no` varchar(250) DEFAULT NULL,
   `faktur_no` varchar(255) DEFAULT NULL,
-  `subtotal_item` decimal(20,0) DEFAULT 0,
-  `item_type` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `voided_remark` text DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `subtotal_item` decimal(20,0) DEFAULT '0',
+  `item_type` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `voided_remark` text,
+  `voided_id` int DEFAULT '0',
   `voided_at` datetime DEFAULT NULL,
-  `created_id` int(11) DEFAULT 0,
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`goods_received_note_id`),
   KEY `data_state` (`data_state`),
   KEY `created_id` (`created_id`),
@@ -3450,30 +3378,29 @@ CREATE TABLE `inv_goods_received_note` (
   CONSTRAINT `FK_inv_goods_received_note_purchase_order_id` FOREIGN KEY (`purchase_order_id`) REFERENCES `purchase_order` (`purchase_order_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_inv_goods_received_note_supplier_id` FOREIGN KEY (`supplier_id`) REFERENCES `core_supplier` (`supplier_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_inv_goods_received_note_warehouse_id` FOREIGN KEY (`warehouse_id`) REFERENCES `inv_warehouse` (`warehouse_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_goods_received_note` */
 
 insert  into `inv_goods_received_note`(`goods_received_note_id`,`purchase_order_id`,`supplier_id`,`warehouse_id`,`goods_received_note_no`,`goods_received_note_date`,`goods_received_note_expired_date`,`goods_received_note_remark`,`goods_received_note_status_invoice`,`receipt_image`,`delivery_note_no`,`faktur_no`,`subtotal_item`,`item_type`,`data_state`,`voided_remark`,`voided_id`,`voided_at`,`created_id`,`created_at`,`updated_at`) values 
-(3,209,2,6,'0001/IGRN/XI/2023','2023-11-17',NULL,NULL,0,'',NULL,'11111',100,0,0,NULL,0,NULL,75,'2023-11-17 06:56:04','2023-11-17 06:56:04'),
-(4,211,2,6,'0002/IGRN/XI/2023','2023-11-25',NULL,NULL,0,'',NULL,'11111',100,0,0,NULL,0,NULL,75,'2023-11-17 08:58:27','2023-11-17 08:58:27');
+(13,235,8,6,'0001/IGRN/XII/2023','2023-12-06',NULL,NULL,0,'',NULL,'11',5,0,0,NULL,0,NULL,3,'2023-12-06 05:00:39','2023-12-06 05:00:39');
 
 /*Table structure for table `inv_goods_received_note_batch_number` */
 
 DROP TABLE IF EXISTS `inv_goods_received_note_batch_number`;
 
 CREATE TABLE `inv_goods_received_note_batch_number` (
-  `goods_received_note_batch_number_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `goods_received_note_id` bigint(20) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
+  `goods_received_note_batch_number_id` bigint NOT NULL AUTO_INCREMENT,
+  `goods_received_note_id` bigint DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_id` int DEFAULT '0',
   `item_batch_number` varchar(50) DEFAULT '',
-  `quantity_batch_number` decimal(10,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `quantity_batch_number` decimal(10,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`goods_received_note_batch_number_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_goods_received_note_batch_number` */
 
@@ -3482,24 +3409,24 @@ CREATE TABLE `inv_goods_received_note_batch_number` (
 DROP TABLE IF EXISTS `inv_goods_received_note_item`;
 
 CREATE TABLE `inv_goods_received_note_item` (
-  `goods_received_note_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `goods_received_note_id` bigint(20) DEFAULT 0,
-  `purchase_order_id` bigint(20) DEFAULT 0,
-  `purchase_order_item_id` bigint(20) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_stock_id` bigint(20) DEFAULT 0,
-  `quantity` decimal(10,0) DEFAULT 0,
-  `quantity_received` decimal(10,0) DEFAULT 0,
+  `goods_received_note_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `goods_received_note_id` bigint DEFAULT '0',
+  `purchase_order_id` bigint DEFAULT '0',
+  `purchase_order_item_id` bigint DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
+  `item_stock_id` bigint DEFAULT '0',
+  `quantity` decimal(10,0) DEFAULT '0',
+  `quantity_received` decimal(10,0) DEFAULT '0',
   `item_batch_number` varchar(250) DEFAULT '',
   `item_expired_date` date DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `voided_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `voided_id` int DEFAULT '0',
   `voided_at` datetime DEFAULT NULL,
-  `created_id` int(11) DEFAULT 0,
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`goods_received_note_item_id`),
   KEY `data_state` (`data_state`),
   KEY `item_category_id` (`item_category_id`),
@@ -3512,52 +3439,51 @@ CREATE TABLE `inv_goods_received_note_item` (
   KEY `FK_goods_received_note_item_purchase_order_id` (`purchase_order_id`),
   KEY `FK_goods_received_note_item_purchase_order_item_id` (`purchase_order_item_id`),
   KEY `FK_invt_goods_received_note_item_item_stock_id` (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=496 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_goods_received_note_item` */
 
 insert  into `inv_goods_received_note_item`(`goods_received_note_item_id`,`goods_received_note_id`,`purchase_order_id`,`purchase_order_item_id`,`item_category_id`,`item_type_id`,`item_unit_id`,`item_stock_id`,`quantity`,`quantity_received`,`item_batch_number`,`item_expired_date`,`data_state`,`voided_id`,`voided_at`,`created_id`,`created_at`,`updated_at`) values 
-(3,3,209,1,1,1,1,0,100,100,'100','2025-11-29',0,0,NULL,75,'2023-11-17 06:56:04','2023-11-17 06:56:04'),
-(4,4,211,4,1,1,1,0,100,100,'50','2023-11-17',0,0,NULL,75,'2023-11-17 08:58:27','2023-11-17 08:58:27');
+(495,13,235,10,2,24,5,0,5,5,'1','2023-12-06',0,0,NULL,3,'2023-12-06 05:00:39','2023-12-06 05:00:39');
 
 /*Table structure for table `inv_item` */
 
 DROP TABLE IF EXISTS `inv_item`;
 
 CREATE TABLE `inv_item` (
-  `item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT 0,
-  `grade_id` int(11) DEFAULT NULL,
-  `item_parent_id` int(11) DEFAULT 0,
+  `item_id` int NOT NULL AUTO_INCREMENT,
+  `item_type_id` int DEFAULT NULL,
+  `item_category_id` int DEFAULT '0',
+  `grade_id` int DEFAULT NULL,
+  `item_parent_id` int DEFAULT '0',
   `item_code` varchar(20) DEFAULT '',
   `item_name` varchar(100) DEFAULT '',
-  `purchase_account_id` int(11) NOT NULL DEFAULT 0,
-  `purchase_return_account_id` int(11) NOT NULL DEFAULT 0,
-  `purchase_discount_account_id` int(11) NOT NULL DEFAULT 0,
-  `sales_account_id` int(11) NOT NULL DEFAULT 0,
-  `sales_return_account_id` int(11) NOT NULL DEFAULT 0,
-  `sales_discount_account_id` int(11) NOT NULL DEFAULT 0,
-  `inv_account_id` int(11) NOT NULL DEFAULT 0,
-  `inv_return_account_id` int(11) NOT NULL DEFAULT 0,
-  `inv_discount_account_id` int(11) NOT NULL DEFAULT 0,
-  `hpp_account_id` int(11) NOT NULL DEFAULT 0,
-  `hpp_amount` int(11) NOT NULL DEFAULT 0,
-  `inventory_account_id` int(11) NOT NULL DEFAULT 0,
-  `wip_account_id` int(11) NOT NULL DEFAULT 0,
-  `item_status` decimal(1,0) DEFAULT 0,
-  `item_remark` text DEFAULT NULL,
+  `purchase_account_id` int NOT NULL DEFAULT '0',
+  `purchase_return_account_id` int NOT NULL DEFAULT '0',
+  `purchase_discount_account_id` int NOT NULL DEFAULT '0',
+  `sales_account_id` int NOT NULL DEFAULT '0',
+  `sales_return_account_id` int NOT NULL DEFAULT '0',
+  `sales_discount_account_id` int NOT NULL DEFAULT '0',
+  `inv_account_id` int NOT NULL DEFAULT '0',
+  `inv_return_account_id` int NOT NULL DEFAULT '0',
+  `inv_discount_account_id` int NOT NULL DEFAULT '0',
+  `hpp_account_id` int NOT NULL DEFAULT '0',
+  `hpp_amount` int NOT NULL DEFAULT '0',
+  `inventory_account_id` int NOT NULL DEFAULT '0',
+  `wip_account_id` int NOT NULL DEFAULT '0',
+  `item_status` decimal(1,0) DEFAULT '0',
+  `item_remark` text,
   `item_barcode` varchar(50) DEFAULT '',
-  `item_reorder_point` decimal(10,0) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_default_quantity` decimal(10,0) DEFAULT 0,
-  `item_unit_price` decimal(10,0) DEFAULT 0,
-  `item_unit_cost` decimal(10,0) DEFAULT 0,
+  `item_reorder_point` decimal(10,0) DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
+  `item_default_quantity` decimal(10,0) DEFAULT '0',
+  `item_unit_price` decimal(10,0) DEFAULT '0',
+  `item_unit_cost` decimal(10,0) DEFAULT '0',
   `item_picture` varchar(50) DEFAULT '',
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_id`),
   KEY `FK_invt_item_item_category_id` (`item_category_id`),
   KEY `FK_invt_item_item_parent_id` (`item_parent_id`),
@@ -3574,26 +3500,23 @@ CREATE TABLE `inv_item` (
   KEY `FK_inv_item_inv_return_account_id` (`inv_return_account_id`),
   KEY `FK_inv_item_inv_discount_account_id` (`inv_discount_account_id`),
   KEY `FK_inv_item_hpp_account_id` (`hpp_account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item` */
-
-insert  into `inv_item`(`item_id`,`item_type_id`,`item_category_id`,`grade_id`,`item_parent_id`,`item_code`,`item_name`,`purchase_account_id`,`purchase_return_account_id`,`purchase_discount_account_id`,`sales_account_id`,`sales_return_account_id`,`sales_discount_account_id`,`inv_account_id`,`inv_return_account_id`,`inv_discount_account_id`,`hpp_account_id`,`hpp_amount`,`inventory_account_id`,`wip_account_id`,`item_status`,`item_remark`,`item_barcode`,`item_reorder_point`,`item_unit_id`,`item_default_quantity`,`item_unit_price`,`item_unit_cost`,`item_picture`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(18,9,6,NULL,0,'','',6767,6767,6767,6767,6767,6767,6767,6767,6767,6767,0,0,0,0,NULL,NULL,0,49,0,0,0,'',0,3,'2023-03-27 07:01:03','2023-06-23 10:52:21');
 
 /*Table structure for table `inv_item_category` */
 
 DROP TABLE IF EXISTS `inv_item_category`;
 
 CREATE TABLE `inv_item_category` (
-  `item_category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_category_id` int NOT NULL AUTO_INCREMENT,
   `item_category_name` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_category` */
 
@@ -3606,18 +3529,18 @@ insert  into `inv_item_category`(`item_category_id`,`item_category_name`,`data_s
 DROP TABLE IF EXISTS `inv_item_old`;
 
 CREATE TABLE `inv_item_old` (
-  `item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `item_category_id` bigint(20) DEFAULT NULL,
-  `item_type_id` bigint(20) DEFAULT NULL,
-  `grade_id` bigint(20) DEFAULT NULL,
-  `item_price` bigint(20) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `item_id` bigint NOT NULL AUTO_INCREMENT,
+  `item_category_id` bigint DEFAULT NULL,
+  `item_type_id` bigint DEFAULT NULL,
+  `grade_id` bigint DEFAULT NULL,
+  `item_price` bigint DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_id`),
   KEY `FK_core_product_grade_id` (`grade_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_old` */
 
@@ -3626,64 +3549,63 @@ CREATE TABLE `inv_item_old` (
 DROP TABLE IF EXISTS `inv_item_stock`;
 
 CREATE TABLE `inv_item_stock` (
-  `item_stock_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `goods_received_note_id` int(11) DEFAULT NULL,
-  `goods_received_note_item_id` int(11) DEFAULT NULL,
+  `item_stock_id` bigint NOT NULL AUTO_INCREMENT,
+  `goods_received_note_id` int DEFAULT NULL,
+  `goods_received_note_item_id` int DEFAULT NULL,
   `item_stock_date` date DEFAULT NULL,
   `item_stock_expired_date` date DEFAULT NULL,
   `item_batch_number` varchar(250) DEFAULT '',
-  `purchase_order_item_id` bigint(20) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
+  `purchase_order_item_id` bigint DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
   `purchase_order_no` varchar(255) NOT NULL,
   `buyers_acknowledgment_no` varchar(255) NOT NULL,
   `no_retur_barang` varchar(255) NOT NULL,
   `nota_retur_pajak` varchar(255) NOT NULL,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 1,
-  `item_total` decimal(10,0) DEFAULT 0,
-  `item_unit_id_default` int(11) DEFAULT NULL,
+  `item_category_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT '0',
+  `item_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '1',
+  `item_total` decimal(10,0) DEFAULT '0',
+  `item_unit_id_default` int DEFAULT NULL,
   `item_default_quantity_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
   `quantity_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
-  `item_weight_default` int(11) DEFAULT NULL,
+  `item_weight_default` int DEFAULT NULL,
   `item_weight_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
-  `package_id` int(11) DEFAULT NULL,
-  `package_total` decimal(10,0) DEFAULT 0,
-  `package_unit_id` int(11) DEFAULT 0,
-  `package_price` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `package_id` int DEFAULT NULL,
+  `package_total` decimal(10,0) DEFAULT '0',
+  `package_unit_id` int DEFAULT '0',
+  `package_price` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_stock` */
 
 insert  into `inv_item_stock`(`item_stock_id`,`goods_received_note_id`,`goods_received_note_item_id`,`item_stock_date`,`item_stock_expired_date`,`item_batch_number`,`purchase_order_item_id`,`warehouse_id`,`purchase_order_no`,`buyers_acknowledgment_no`,`no_retur_barang`,`nota_retur_pajak`,`item_category_id`,`item_type_id`,`item_id`,`item_unit_id`,`item_total`,`item_unit_id_default`,`item_default_quantity_unit`,`quantity_unit`,`item_weight_default`,`item_weight_unit`,`package_id`,`package_total`,`package_unit_id`,`package_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,'2023-11-17','2023-12-30','100',1,6,'','','','',1,1,0,1,300,1,'1','240',NULL,'',NULL,0,0,0,0,75,'2023-11-17 06:46:12','2023-11-17 07:23:33'),
-(2,0,0,'2023-11-17','2023-11-17','50',3,7,'','','','',1,1,0,1,100,1,'1','200',0,'',0,0,0,0,0,75,'2023-11-17 07:06:31','2023-11-17 08:58:27'),
-(3,0,0,'2023-11-17','2023-11-17','100',3,7,'','','','',1,1,0,1,0,1,'1','100',0,'',0,0,0,0,0,75,'2023-11-17 07:13:00','2023-11-17 07:13:00'),
-(4,0,0,'2023-11-17','2029-10-31','50',3,7,'','','','',1,1,0,1,0,1,'1','100',0,'',0,0,0,0,0,75,'2023-11-17 07:14:57','2023-11-17 07:14:57'),
-(5,1,1,'2023-11-17','2023-12-30','100',1,8,'PO-171123','','','',1,1,0,1,300,1,'1','-40',NULL,'',NULL,0,0,0,0,75,'2023-11-17 07:23:34','2023-11-17 07:23:58');
+(22,13,495,'2023-12-06','2023-12-06','1',10,6,'','','','',2,24,0,5,5,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-06 05:00:39','2023-12-06 07:24:40'),
+(23,0,0,'2023-12-06','2023-12-06','1',10,7,'','','','',2,24,0,5,0,5,'1','5',0,'',0,0,0,0,0,3,'2023-12-06 05:02:23','2023-12-06 05:02:23'),
+(24,13,495,'2023-12-06','2023-12-06','1',10,7,'0001/PO/XII/2023','','','',2,24,0,5,5,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-06 07:24:40','2023-12-07 06:20:17'),
+(25,13,495,'2023-12-07','2023-12-06','1',10,9,'','0001/BPB/2023','1','1',2,24,0,5,5,5,'1','2',NULL,'',NULL,0,0,0,0,3,'2023-12-06 07:24:40','2023-12-07 04:58:41');
 
 /*Table structure for table `inv_item_stock_adjustment` */
 
 DROP TABLE IF EXISTS `inv_item_stock_adjustment`;
 
 CREATE TABLE `inv_item_stock_adjustment` (
-  `stock_adjustment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `stock_adjustment_date` varchar(225) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `updated_id` int(11) DEFAULT NULL,
+  `stock_adjustment_id` int NOT NULL AUTO_INCREMENT,
+  `warehouse_id` int DEFAULT NULL,
+  `stock_adjustment_date` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `updated_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`stock_adjustment_id`),
   KEY `FK_warehouse_adjustment` (`warehouse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `inv_item_stock_adjustment` */
 
@@ -3692,22 +3614,22 @@ CREATE TABLE `inv_item_stock_adjustment` (
 DROP TABLE IF EXISTS `inv_item_stock_adjustment_item`;
 
 CREATE TABLE `inv_item_stock_adjustment_item` (
-  `stock_adjustment_item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `stock_adjustment_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `item_stock_id` varchar(225) DEFAULT NULL,
-  `item_first_amount` varchar(225) DEFAULT NULL,
-  `item_adjustment_amount` varchar(225) DEFAULT NULL,
-  `item_last_amount` varchar(225) DEFAULT NULL,
-  `item_adjustment_remark` varchar(225) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `updated_id` int(11) DEFAULT NULL,
+  `stock_adjustment_item_id` int NOT NULL AUTO_INCREMENT,
+  `stock_adjustment_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `item_stock_id` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `item_first_amount` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `item_adjustment_amount` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `item_last_amount` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `item_adjustment_remark` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `updated_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`stock_adjustment_item_id`),
   KEY `FK_adjustment_id` (`stock_adjustment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `inv_item_stock_adjustment_item` */
 
@@ -3716,33 +3638,33 @@ CREATE TABLE `inv_item_stock_adjustment_item` (
 DROP TABLE IF EXISTS `inv_item_stock_card`;
 
 CREATE TABLE `inv_item_stock_card` (
-  `item_stock_card_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `item_stock_id` int(11) DEFAULT 0,
-  `section_id` int(11) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
-  `supplier_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_stock_type` decimal(1,0) DEFAULT 0,
+  `item_stock_card_id` bigint NOT NULL AUTO_INCREMENT,
+  `item_stock_id` int DEFAULT '0',
+  `section_id` int DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
+  `supplier_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
+  `item_stock_type` decimal(1,0) DEFAULT '0',
   `item_batch_number` varchar(20) DEFAULT '',
   `item_color` varchar(20) DEFAULT '',
-  `item_size` int(11) DEFAULT 0,
-  `transaction_id` decimal(10,0) DEFAULT 0,
-  `transaction_type` decimal(10,0) DEFAULT 0,
+  `item_size` int DEFAULT '0',
+  `transaction_id` decimal(10,0) DEFAULT '0',
+  `transaction_type` decimal(10,0) DEFAULT '0',
   `transaction_code` varchar(250) DEFAULT '0',
   `transaction_date` date DEFAULT NULL,
-  `opening_balance` decimal(20,0) DEFAULT 0,
-  `opening_balance_unfinished` decimal(20,0) DEFAULT 0,
-  `item_stock_card_in` decimal(20,0) DEFAULT 0,
-  `item_stock_card_out` decimal(20,0) DEFAULT 0,
-  `item_unit_default_quantity` decimal(10,0) DEFAULT 0,
-  `last_balance` decimal(20,0) DEFAULT 0,
-  `last_balance_unfinished` decimal(20,0) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `opening_balance` decimal(20,0) DEFAULT '0',
+  `opening_balance_unfinished` decimal(20,0) DEFAULT '0',
+  `item_stock_card_in` decimal(20,0) DEFAULT '0',
+  `item_stock_card_out` decimal(20,0) DEFAULT '0',
+  `item_unit_default_quantity` decimal(10,0) DEFAULT '0',
+  `last_balance` decimal(20,0) DEFAULT '0',
+  `last_balance_unfinished` decimal(20,0) DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_stock_card_id`),
   KEY `FK_inv_item_stock_card_item_id` (`item_type_id`),
   KEY `FK_inv_item_stock_card_supplier_id` (`supplier_id`),
@@ -3751,32 +3673,29 @@ CREATE TABLE `inv_item_stock_card` (
   KEY `FK_inv_item_stock_card_item_unit_id` (`item_unit_id`),
   KEY `FK_inv_item_stock_card_section_id` (`section_id`),
   KEY `item_batch_number` (`item_batch_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=74925 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_stock_card` */
 
 insert  into `inv_item_stock_card`(`item_stock_card_id`,`item_stock_id`,`section_id`,`item_category_id`,`item_type_id`,`warehouse_id`,`supplier_id`,`item_unit_id`,`item_stock_type`,`item_batch_number`,`item_color`,`item_size`,`transaction_id`,`transaction_type`,`transaction_code`,`transaction_date`,`opening_balance`,`opening_balance_unfinished`,`item_stock_card_in`,`item_stock_card_out`,`item_unit_default_quantity`,`last_balance`,`last_balance_unfinished`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,0,1,1,6,0,1,0,'100','',0,1,1,'INVT_GDS_RCV_NOTE','2023-11-17',0,0,40,60,0,100,0,0,NULL,'2023-11-17 13:46:12','2023-11-17 13:46:12'),
-(2,1,0,1,1,6,0,1,0,'100','',0,2,1,'INVT_GDS_RCV_NOTE','2023-11-17',100,0,40,60,0,200,0,0,NULL,'2023-11-17 13:52:42','2023-11-17 13:52:42'),
-(3,1,0,1,1,6,0,1,0,'100','',0,3,1,'INVT_GDS_RCV_NOTE','2023-11-17',200,0,40,60,0,300,0,0,NULL,'2023-11-17 13:56:04','2023-11-17 13:56:04'),
-(4,4,0,1,1,6,0,1,0,'50','',0,4,1,'INVT_GDS_RCV_NOTE','2023-11-25',0,0,100,0,0,100,0,0,NULL,'2023-11-17 15:58:27','2023-11-17 15:58:27');
+(74924,16,0,2,24,6,0,5,0,'1','',0,13,1,'INVT_GDS_RCV_NOTE','2023-12-06',0,0,5,0,0,5,0,0,NULL,'2023-12-06 12:00:39','2023-12-06 12:00:39');
 
 /*Table structure for table `inv_item_stock_package` */
 
 DROP TABLE IF EXISTS `inv_item_stock_package`;
 
 CREATE TABLE `inv_item_stock_package` (
-  `item_stock_package_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `item_stock_id` bigint(20) DEFAULT NULL,
-  `package_stock_id` bigint(20) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `package_unit_id` int(11) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `item_stock_package_id` bigint NOT NULL AUTO_INCREMENT,
+  `item_stock_id` bigint DEFAULT NULL,
+  `package_stock_id` bigint DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `package_unit_id` int DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_stock_package_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_stock_package` */
 
@@ -3785,11 +3704,11 @@ CREATE TABLE `inv_item_stock_package` (
 DROP TABLE IF EXISTS `inv_item_type`;
 
 CREATE TABLE `inv_item_type` (
-  `item_type_id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_category_id` int(11) DEFAULT NULL,
+  `item_type_id` int NOT NULL AUTO_INCREMENT,
+  `item_category_id` int DEFAULT NULL,
   `item_type_name` varchar(250) DEFAULT NULL,
-  `item_type_expired_time` int(11) DEFAULT NULL,
-  `item_package_status` int(11) DEFAULT 0 COMMENT '0 = warehouse-out, 1 = grading',
+  `item_type_expired_time` int DEFAULT NULL,
+  `item_package_status` int DEFAULT '0' COMMENT '0 = warehouse-out, 1 = grading',
   `item_unit_1` varchar(250) DEFAULT NULL,
   `item_quantity_default_1` varchar(250) DEFAULT NULL,
   `item_weight_1` varchar(250) DEFAULT NULL,
@@ -3799,21 +3718,21 @@ CREATE TABLE `inv_item_type` (
   `item_unit_3` varchar(250) DEFAULT NULL,
   `item_quantity_default_3` varchar(250) DEFAULT NULL,
   `item_weight_3` varchar(250) DEFAULT NULL,
-  `purchase_account_id` int(11) DEFAULT NULL,
-  `purchase_return_account_id` int(11) DEFAULT NULL,
-  `purchase_discount_account_id` int(11) DEFAULT NULL,
-  `sales_account_id` int(11) DEFAULT NULL,
-  `sales_return_account_id` int(11) DEFAULT NULL,
-  `sales_discount_account_id` int(11) DEFAULT NULL,
-  `inv_account_id` int(11) DEFAULT NULL,
-  `inv_return_account_id` int(11) DEFAULT NULL,
-  `inv_discount_account_id` int(11) DEFAULT NULL,
-  `hpp_account_id` int(11) DEFAULT NULL,
-  `hpp_amount` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `purchase_account_id` int DEFAULT NULL,
+  `purchase_return_account_id` int DEFAULT NULL,
+  `purchase_discount_account_id` int DEFAULT NULL,
+  `sales_account_id` int DEFAULT NULL,
+  `sales_return_account_id` int DEFAULT NULL,
+  `sales_discount_account_id` int DEFAULT NULL,
+  `inv_account_id` int DEFAULT NULL,
+  `inv_return_account_id` int DEFAULT NULL,
+  `inv_discount_account_id` int DEFAULT NULL,
+  `hpp_account_id` int DEFAULT NULL,
+  `hpp_amount` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_type_id`),
   KEY `FK_core_product_type_product_catedory_id` (`item_category_id`),
   KEY `FK_inv_item_type_purchase_account_id` (`purchase_account_id`),
@@ -3825,7 +3744,7 @@ CREATE TABLE `inv_item_type` (
   KEY `FK_inv_item_type_inv_account_id` (`inv_account_id`),
   KEY `FK_inv_item_type_inv_return_account_id` (`inv_return_account_id`),
   KEY `FK_inv_item_type_inv_discount_account_id` (`inv_discount_account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_type` */
 
@@ -3852,7 +3771,7 @@ insert  into `inv_item_type`(`item_type_id`,`item_category_id`,`item_type_name`,
 (20,2,'Bedak Salicyl 2% 60gr',1095,0,'5','1','0.08','5','1','0.08','5','1','0.08',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','2023-08-14 07:07:00'),
 (21,2,'Citamin Cplus 1000 mg EFF',1095,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
 (22,2,'Enkasari Herbal @120 ml BJN',1095,0,'4','1','0.17','4','1','0.17','4','1','0.17',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','2023-08-14 07:09:36'),
-(23,2,'Marcks Active Natural Beige (New)',1095,0,'5','1','0.06','5',NULL,'0.06','5','1','0.06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','2023-08-14 07:10:02'),
+(23,2,'Marcks Active Natural Beige (New)',1095,0,'5','1','0.06','5','1','0.06','5','1','0.06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','2023-11-24 14:59:17'),
 (24,2,'Marcks classic creme 40gr (New)',1095,0,'5','1','0.07','5','1','0.07','5','1','0.07',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','2023-08-14 07:10:22'),
 (25,2,'Marcks Teens CP Cr?me (New)',1095,0,'5','1','0.08','5','1','0.08','5','1','0.08',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','2023-08-14 07:10:49'),
 (26,2,'Marcks Active creme 20gr (New)',1095,0,'5','1','0.06','5','1','0.06','5','1','0.06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,74,'0000-00-00 00:00:00','2023-08-14 07:11:13'),
@@ -3883,17 +3802,17 @@ insert  into `inv_item_type`(`item_type_id`,`item_category_id`,`item_type_name`,
 DROP TABLE IF EXISTS `inv_item_unit`;
 
 CREATE TABLE `inv_item_unit` (
-  `item_unit_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_unit_id` int NOT NULL AUTO_INCREMENT,
   `item_unit_code` varchar(20) DEFAULT '',
   `item_unit_name` varchar(50) DEFAULT '',
-  `item_unit_default_quantity` decimal(10,0) DEFAULT 1,
-  `item_unit_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `item_unit_default_quantity` decimal(10,0) DEFAULT '1',
+  `item_unit_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_unit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_unit` */
 
@@ -3916,31 +3835,32 @@ insert  into `inv_item_unit`(`item_unit_id`,`item_unit_code`,`item_unit_name`,`i
 (16,NULL,'botol',NULL,NULL,0,75,'2023-10-20 02:13:42','2023-10-20 02:13:42'),
 (17,NULL,'botol',NULL,NULL,0,75,'2023-10-20 02:14:44','2023-10-20 02:14:44'),
 (18,NULL,'btl',NULL,NULL,0,75,'2023-11-04 01:38:59','2023-11-04 01:38:59'),
-(19,NULL,'btl',NULL,NULL,0,75,'2023-11-04 01:39:41','2023-11-04 01:39:41');
+(19,NULL,'btl',NULL,NULL,0,75,'2023-11-04 01:39:41','2023-11-04 01:39:41'),
+(20,NULL,'PCS',NULL,NULL,0,75,'2023-11-17 02:57:01','2023-11-17 02:57:01');
 
 /*Table structure for table `inv_item_unit_cost` */
 
 DROP TABLE IF EXISTS `inv_item_unit_cost`;
 
 CREATE TABLE `inv_item_unit_cost` (
-  `item_unit_cost_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
+  `item_unit_cost_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
+  `item_id` int DEFAULT '0',
   `item_batch_number` varchar(50) DEFAULT '',
-  `quantity` decimal(10,2) DEFAULT 0.00,
-  `last_balance_stock` decimal(10,2) DEFAULT 0.00,
-  `item_unit_cost` decimal(20,2) DEFAULT 0.00,
-  `total_amount` decimal(20,2) NOT NULL DEFAULT 0.00,
-  `last_balance` decimal(20,2) NOT NULL DEFAULT 0.00,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `quantity` decimal(10,2) DEFAULT '0.00',
+  `last_balance_stock` decimal(10,2) DEFAULT '0.00',
+  `item_unit_cost` decimal(20,2) DEFAULT '0.00',
+  `total_amount` decimal(20,2) NOT NULL DEFAULT '0.00',
+  `last_balance` decimal(20,2) NOT NULL DEFAULT '0.00',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_on` datetime DEFAULT NULL,
-  `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_unit_cost_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_unit_cost` */
 
@@ -3949,21 +3869,21 @@ CREATE TABLE `inv_item_unit_cost` (
 DROP TABLE IF EXISTS `inv_warehouse`;
 
 CREATE TABLE `inv_warehouse` (
-  `warehouse_id` int(11) NOT NULL AUTO_INCREMENT,
-  `warehouse_location_id` int(11) DEFAULT NULL,
+  `warehouse_id` int NOT NULL AUTO_INCREMENT,
+  `warehouse_location_id` int DEFAULT NULL,
   `warehouse_code` varchar(20) DEFAULT '',
   `warehouse_type` varchar(10) DEFAULT NULL,
   `warehouse_name` varchar(50) DEFAULT '',
-  `warehouse_address` text DEFAULT NULL,
+  `warehouse_address` text,
   `warehouse_phone` varchar(50) DEFAULT NULL,
-  `warehouse_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `warehouse_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_id`),
   KEY `FK_inv_warehouse_warehouse_location` (`warehouse_location_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse` */
 
@@ -3978,54 +3898,43 @@ insert  into `inv_warehouse`(`warehouse_id`,`warehouse_location_id`,`warehouse_c
 DROP TABLE IF EXISTS `inv_warehouse_in`;
 
 CREATE TABLE `inv_warehouse_in` (
-  `warehouse_in_id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_in_id` int NOT NULL AUTO_INCREMENT,
   `warehouse_in_no` varchar(50) DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `warehouse_in_type_id` int(11) DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
+  `warehouse_in_type_id` int DEFAULT NULL,
   `warehouse_in_date` date DEFAULT NULL,
-  `warehouse_in_remark` text DEFAULT NULL,
-  `warehouse_in_status` int(11) DEFAULT 0,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `warehouse_in_remark` text,
+  `warehouse_in_status` int DEFAULT '0',
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_in_id`),
   KEY `FK_inv_warehouse_out_warehouse_id` (`warehouse_id`),
   KEY `FK_inv_warehouse_out_warehouse_out_type_id` (`warehouse_in_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_in` */
-
-insert  into `inv_warehouse_in`(`warehouse_in_id`,`warehouse_in_no`,`warehouse_id`,`warehouse_in_type_id`,`warehouse_in_date`,`warehouse_in_remark`,`warehouse_in_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(3,'0001/WI/II/2023',7,1,'2023-02-27','BArang reject',0,1,3,'2023-02-27 07:30:43','2023-06-23 10:52:21'),
-(4,'0002/WI/II/2023',7,1,'2023-02-27','Barang reject',1,0,3,'2023-02-27 07:34:11','2023-06-23 10:52:21'),
-(5,'0003/WI/II/2023',7,1,'2023-02-27','sdsdsd',2,0,3,'2023-02-27 07:36:49','2023-06-23 10:52:21'),
-(6,'0004/WI/II/2023',7,1,'2023-02-28','xxxxxxxx',0,1,3,'2023-02-28 03:01:59','2023-06-23 10:52:21'),
-(7,'0005/WI/II/2023',7,1,'2023-02-28',NULL,0,1,3,'2023-02-28 03:03:56','2023-06-23 10:52:21'),
-(8,'0006/WI/II/2023',7,1,'2023-02-28','dgdgd',0,1,3,'2023-02-28 04:11:23','2023-06-23 10:52:21'),
-(9,'0007/WI/II/2023',7,1,'2023-02-28','1212112',1,0,3,'2023-02-28 06:33:32','2023-06-23 10:52:21'),
-(10,'0008/WI/II/2023',7,1,'2023-02-28',NULL,2,0,3,'2023-02-28 06:53:42','2023-06-23 10:52:21'),
-(11,'0009/WI/II/2023',7,1,'2023-02-28','dsdsdsdsd',0,0,3,'2023-02-28 07:14:25','2023-06-23 10:52:21');
 
 /*Table structure for table `inv_warehouse_in_item` */
 
 DROP TABLE IF EXISTS `inv_warehouse_in_item`;
 
 CREATE TABLE `inv_warehouse_in_item` (
-  `warehouse_in_item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `warehouse_in_id` int(11) DEFAULT NULL,
-  `item_stock_id` bigint(20) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `warehouse_in_item_id` int NOT NULL AUTO_INCREMENT,
+  `warehouse_in_id` int DEFAULT NULL,
+  `item_stock_id` bigint DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_in_item_id`),
   KEY `FK_inv_warehouse_out_item_item_stock_id` (`item_stock_id`),
   KEY `FK_inv_warehouse_out_item_item_unit_id` (`item_unit_id`),
   KEY `FK_inv_warehouse_out_item_warehouse_out_id` (`warehouse_in_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_in_item` */
 
@@ -4034,15 +3943,15 @@ CREATE TABLE `inv_warehouse_in_item` (
 DROP TABLE IF EXISTS `inv_warehouse_in_type`;
 
 CREATE TABLE `inv_warehouse_in_type` (
-  `warehouse_in_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_in_type_id` int NOT NULL AUTO_INCREMENT,
   `warehouse_in_type_name` varchar(250) DEFAULT NULL,
-  `warehouse_in_type_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `warehouse_in_type_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_in_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_in_type` */
 
@@ -4054,44 +3963,44 @@ insert  into `inv_warehouse_in_type`(`warehouse_in_type_id`,`warehouse_in_type_n
 DROP TABLE IF EXISTS `inv_warehouse_location`;
 
 CREATE TABLE `inv_warehouse_location` (
-  `warehouse_location_id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_location_id` int NOT NULL AUTO_INCREMENT,
   `warehouse_location_code` varchar(20) DEFAULT '',
-  `province_id` int(11) DEFAULT NULL,
-  `city_id` int(11) DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `province_id` int DEFAULT NULL,
+  `city_id` int DEFAULT NULL,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_location_id`),
   KEY `FK_warehouse_location_province_id` (`province_id`),
   KEY `FK_warehouse_location_city_id` (`city_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_location` */
 
 insert  into `inv_warehouse_location`(`warehouse_location_id`,`warehouse_location_code`,`province_id`,`city_id`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(6,'GOME',71,1048,0,3,'2023-02-27 06:40:33','2023-06-23 10:52:21');
+(6,'SMG',71,1048,0,3,'2023-02-27 06:40:33','2023-06-23 10:52:21');
 
 /*Table structure for table `inv_warehouse_out` */
 
 DROP TABLE IF EXISTS `inv_warehouse_out`;
 
 CREATE TABLE `inv_warehouse_out` (
-  `warehouse_out_id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_out_id` int NOT NULL AUTO_INCREMENT,
   `warehouse_out_no` varchar(50) DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `warehouse_out_type_id` int(11) DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
+  `warehouse_out_type_id` int DEFAULT NULL,
   `warehouse_out_date` date DEFAULT NULL,
-  `warehouse_out_remark` text DEFAULT NULL,
-  `warehouse_out_status` int(11) DEFAULT 0,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `warehouse_out_remark` text,
+  `warehouse_out_status` int DEFAULT '0',
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_out_id`),
   KEY `FK_inv_warehouse_out_warehouse_id` (`warehouse_id`),
   KEY `FK_inv_warehouse_out_warehouse_out_type_id` (`warehouse_out_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_out` */
 
@@ -4103,20 +4012,20 @@ insert  into `inv_warehouse_out`(`warehouse_out_id`,`warehouse_out_no`,`warehous
 DROP TABLE IF EXISTS `inv_warehouse_out_item`;
 
 CREATE TABLE `inv_warehouse_out_item` (
-  `warehouse_out_item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `warehouse_out_id` int(11) DEFAULT NULL,
-  `item_stock_id` bigint(20) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `warehouse_out_item_id` int NOT NULL AUTO_INCREMENT,
+  `warehouse_out_id` int DEFAULT NULL,
+  `item_stock_id` bigint DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_out_item_id`),
   KEY `FK_inv_warehouse_out_item_item_stock_id` (`item_stock_id`),
   KEY `FK_inv_warehouse_out_item_item_unit_id` (`item_unit_id`),
   KEY `FK_inv_warehouse_out_item_warehouse_out_id` (`warehouse_out_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_out_item` */
 
@@ -4132,15 +4041,15 @@ insert  into `inv_warehouse_out_item`(`warehouse_out_item_id`,`warehouse_out_id`
 DROP TABLE IF EXISTS `inv_warehouse_out_type`;
 
 CREATE TABLE `inv_warehouse_out_type` (
-  `warehouse_out_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_out_type_id` int NOT NULL AUTO_INCREMENT,
   `warehouse_out_type_name` varchar(250) DEFAULT NULL,
-  `warehouse_out_type_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `warehouse_out_type_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_out_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_out_type` */
 
@@ -4154,25 +4063,25 @@ insert  into `inv_warehouse_out_type`(`warehouse_out_type_id`,`warehouse_out_typ
 DROP TABLE IF EXISTS `inv_warehouse_transfer`;
 
 CREATE TABLE `inv_warehouse_transfer` (
-  `warehouse_transfer_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `expedition_id` int(11) DEFAULT NULL,
+  `warehouse_transfer_id` bigint NOT NULL AUTO_INCREMENT,
+  `expedition_id` int DEFAULT NULL,
   `warehouse_transfer_no` varchar(250) DEFAULT NULL,
   `warehouse_transfer_date` date DEFAULT NULL,
-  `warehouse_transfer_remark` text DEFAULT NULL,
-  `warehouse_transfer_from` int(11) DEFAULT NULL,
-  `warehouse_transfer_to` int(11) DEFAULT NULL,
-  `warehouse_transfer_type_id` int(11) DEFAULT NULL,
-  `warehouse_transfer_status` int(11) DEFAULT 0 COMMENT '0 = belum diterima, 1 = diterima',
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `warehouse_transfer_remark` text,
+  `warehouse_transfer_from` int DEFAULT NULL,
+  `warehouse_transfer_to` int DEFAULT NULL,
+  `warehouse_transfer_type_id` int DEFAULT NULL,
+  `warehouse_transfer_status` int DEFAULT '0' COMMENT '0 = belum diterima, 1 = diterima',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_transfer_id`),
   KEY `FK_inv_warehouse_transfer_warehouse_transfer_from` (`warehouse_transfer_from`),
   KEY `FK_inv_warehouse_transfer_warehouse_transform_to` (`warehouse_transfer_to`),
   KEY `FK_inv_warehouse_transfer_warehouse_transfer_type_id` (`warehouse_transfer_type_id`),
   KEY `FK_inv_warehouse_transfer_expedition_id` (`expedition_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_transfer` */
 
@@ -4181,20 +4090,20 @@ CREATE TABLE `inv_warehouse_transfer` (
 DROP TABLE IF EXISTS `inv_warehouse_transfer_item`;
 
 CREATE TABLE `inv_warehouse_transfer_item` (
-  `warehouse_transfer_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `warehouse_transfer_id` bigint(20) DEFAULT 0,
-  `purchase_invoice_id` bigint(20) DEFAULT 0,
-  `item_id` bigint(20) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_stock_id` int(11) DEFAULT 0,
-  `quantity` decimal(10,2) DEFAULT 0.00,
+  `warehouse_transfer_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `warehouse_transfer_id` bigint DEFAULT '0',
+  `purchase_invoice_id` bigint DEFAULT '0',
+  `item_id` bigint DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT '0',
+  `item_stock_id` int DEFAULT '0',
+  `quantity` decimal(10,2) DEFAULT '0.00',
   `warehouse_transfer_item_remark` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_transfer_item_id`),
   KEY `FK_invt_warehouse_transfer_item_warehouse_transfer_id` (`warehouse_transfer_id`),
   KEY `FK_inv_warehouse_transfer_item_purchase_invoice_id` (`purchase_invoice_id`),
@@ -4202,71 +4111,58 @@ CREATE TABLE `inv_warehouse_transfer_item` (
   KEY `FK_inv_warehouse_transfer_item_type_id` (`item_type_id`),
   KEY `FK_inv_warehouse_transfer_item_item_unit_id` (`item_unit_id`),
   KEY `FK_inv_warehouse_transfer_item_item_stock_id` (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_transfer_item` */
-
-insert  into `inv_warehouse_transfer_item`(`warehouse_transfer_item_id`,`warehouse_transfer_id`,`purchase_invoice_id`,`item_id`,`item_category_id`,`item_type_id`,`item_unit_id`,`item_stock_id`,`quantity`,`warehouse_transfer_item_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,0,14,1,4,48,8,24.00,NULL,0,3,'2022-02-08 05:43:22','2023-06-23 10:52:22'),
-(2,1,0,13,1,4,48,7,53.00,NULL,0,3,'2022-02-08 05:43:22','2023-06-23 10:52:22'),
-(3,1,0,9,1,4,48,3,129.00,NULL,0,3,'2022-02-08 05:43:22','2023-06-23 10:52:22'),
-(4,1,0,11,1,4,48,5,162.00,NULL,0,3,'2022-02-08 05:43:22','2023-06-23 10:52:22'),
-(5,1,0,10,1,4,48,4,102.00,NULL,0,3,'2022-02-08 05:43:22','2023-06-23 10:52:22'),
-(6,1,0,12,1,4,48,6,9.00,NULL,0,3,'2022-02-08 05:43:22','2023-06-23 10:52:22'),
-(7,2,0,0,2,1,1,31,10.00,'tes',0,3,'2023-02-10 08:47:47','2023-06-23 10:52:22');
 
 /*Table structure for table `inv_warehouse_transfer_received_note` */
 
 DROP TABLE IF EXISTS `inv_warehouse_transfer_received_note`;
 
 CREATE TABLE `inv_warehouse_transfer_received_note` (
-  `warehouse_transfer_received_note_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `warehouse_transfer_id` bigint(20) DEFAULT NULL,
+  `warehouse_transfer_received_note_id` bigint NOT NULL AUTO_INCREMENT,
+  `warehouse_transfer_id` bigint DEFAULT NULL,
   `warehouse_transfer_received_note_no` varchar(250) DEFAULT NULL,
   `warehouse_transfer_received_note_date` date DEFAULT NULL,
   `warehouse_transfer_received_note_remark` varchar(250) DEFAULT NULL,
-  `goods_received_note_id` bigint(20) DEFAULT NULL,
+  `goods_received_note_id` bigint DEFAULT NULL,
   `goods_received_note_date` date DEFAULT NULL,
-  `warehouse_transfer_to` int(11) DEFAULT NULL,
-  `warehouse_transfer_from` int(11) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `warehouse_transfer_to` int DEFAULT NULL,
+  `warehouse_transfer_from` int DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_transfer_received_note_id`),
   KEY `FK_received_note_warehouse_transfer_id` (`warehouse_transfer_id`),
   KEY `FK_received_note_goods_received_note_id` (`goods_received_note_id`),
   KEY `FK_received_note_warehouse_transfer_to` (`warehouse_transfer_to`),
   KEY `FK_received_note_warehouse_transfer_from` (`warehouse_transfer_from`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_transfer_received_note` */
-
-insert  into `inv_warehouse_transfer_received_note`(`warehouse_transfer_received_note_id`,`warehouse_transfer_id`,`warehouse_transfer_received_note_no`,`warehouse_transfer_received_note_date`,`warehouse_transfer_received_note_remark`,`goods_received_note_id`,`goods_received_note_date`,`warehouse_transfer_to`,`warehouse_transfer_from`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,'0001/WTRN/II/2022','2022-02-08',NULL,NULL,NULL,4,3,0,3,'2022-02-08 05:44:02','2023-06-23 10:52:22'),
-(2,2,'0001/WTRN/II/2023','2023-02-10',NULL,NULL,NULL,4,3,0,3,'2023-02-10 08:47:58','2023-06-23 10:52:22');
 
 /*Table structure for table `inv_warehouse_transfer_received_note_item` */
 
 DROP TABLE IF EXISTS `inv_warehouse_transfer_received_note_item`;
 
 CREATE TABLE `inv_warehouse_transfer_received_note_item` (
-  `warehouse_transfer_received_note_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `warehouse_transfer_item_id` bigint(20) DEFAULT NULL,
-  `warehouse_transfer_received_note_id` bigint(20) DEFAULT 0,
-  `item_id` int(11) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_stock_id` int(11) DEFAULT NULL,
-  `quantity` decimal(10,2) DEFAULT 0.00,
+  `warehouse_transfer_received_note_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `warehouse_transfer_item_id` bigint DEFAULT NULL,
+  `warehouse_transfer_received_note_id` bigint DEFAULT '0',
+  `item_id` int DEFAULT NULL,
+  `item_category_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
+  `item_stock_id` int DEFAULT NULL,
+  `quantity` decimal(10,2) DEFAULT '0.00',
   `item_batch_number` varchar(250) DEFAULT '',
-  `data_state` int(11) DEFAULT 0,
-  `voided_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `voided_id` int DEFAULT '0',
   `voided_at` datetime DEFAULT NULL,
-  `created_id` int(11) DEFAULT 0,
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_transfer_received_note_item_id`),
   KEY `data_state` (`data_state`),
   KEY `item_category_id` (`item_category_id`),
@@ -4278,37 +4174,28 @@ CREATE TABLE `inv_warehouse_transfer_received_note_item` (
   KEY `FK_received_note_item_warehouse_transfer_item_id` (`warehouse_transfer_item_id`),
   KEY `FK_received_note_item_warehouse_transfer_received_note_id` (`warehouse_transfer_received_note_id`),
   KEY `FK_received_note_item_item_stock_id` (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_transfer_received_note_item` */
-
-insert  into `inv_warehouse_transfer_received_note_item`(`warehouse_transfer_received_note_item_id`,`warehouse_transfer_item_id`,`warehouse_transfer_received_note_id`,`item_id`,`item_category_id`,`item_type_id`,`item_unit_id`,`item_stock_id`,`quantity`,`item_batch_number`,`data_state`,`voided_id`,`voided_at`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,14,1,4,48,9,24.00,NULL,0,0,NULL,3,'2022-02-08 05:44:02','2023-06-23 10:52:22'),
-(2,2,1,13,1,4,48,10,53.00,NULL,0,0,NULL,3,'2022-02-08 05:44:02','2023-06-23 10:52:22'),
-(3,3,1,9,1,4,48,11,129.00,NULL,0,0,NULL,3,'2022-02-08 05:44:02','2023-06-23 10:52:22'),
-(4,4,1,11,1,4,48,12,162.00,NULL,0,0,NULL,3,'2022-02-08 05:44:02','2023-06-23 10:52:22'),
-(5,5,1,10,1,4,48,13,102.00,NULL,0,0,NULL,3,'2022-02-08 05:44:02','2023-06-23 10:52:22'),
-(6,6,1,12,1,4,48,14,9.00,NULL,0,0,NULL,3,'2022-02-08 05:44:02','2023-06-23 10:52:22'),
-(7,7,2,0,2,1,1,32,10.00,'0002/BATCH/II/2023',0,0,NULL,3,'2023-02-10 08:47:58','2023-06-23 10:52:22');
 
 /*Table structure for table `inv_warehouse_transfer_type` */
 
 DROP TABLE IF EXISTS `inv_warehouse_transfer_type`;
 
 CREATE TABLE `inv_warehouse_transfer_type` (
-  `warehouse_transfer_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_transfer_type_id` int NOT NULL AUTO_INCREMENT,
   `warehouse_transfer_type_name` varchar(50) DEFAULT '',
-  `warehouse_transfer_type_remark` text DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `warehouse_transfer_type_remark` text,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `deleted_id` int(11) DEFAULT 0,
+  `deleted_id` int DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`warehouse_transfer_type_id`),
   KEY `data_state` (`data_state`),
   KEY `created_id` (`created_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_warehouse_transfer_type` */
 
@@ -4321,9 +4208,9 @@ insert  into `inv_warehouse_transfer_type`(`warehouse_transfer_type_id`,`warehou
 DROP TABLE IF EXISTS `migrations`;
 
 CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) NOT NULL,
-  `batch` int(11) NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -4341,7 +4228,7 @@ insert  into `migrations`(`id`,`migration`,`batch`) values
 DROP TABLE IF EXISTS `p_p_o_b_s`;
 
 CREATE TABLE `p_p_o_b_s` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -4354,8 +4241,8 @@ CREATE TABLE `p_p_o_b_s` (
 DROP TABLE IF EXISTS `password_resets`;
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   KEY `password_resets_email_index` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4370,12 +4257,12 @@ insert  into `password_resets`(`email`,`token`,`created_at`) values
 DROP TABLE IF EXISTS `personal_access_tokens`;
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` bigint(20) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint unsigned NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -4403,48 +4290,48 @@ insert  into `personal_access_tokens`(`id`,`tokenable_type`,`tokenable_id`,`name
 DROP TABLE IF EXISTS `preference_company`;
 
 CREATE TABLE `preference_company` (
-  `company_id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int NOT NULL AUTO_INCREMENT,
   `company_name` varchar(50) DEFAULT '',
-  `company_address` text DEFAULT NULL,
+  `company_address` text,
   `company_phone_number` varchar(30) DEFAULT '',
   `company_mobile_number` varchar(30) DEFAULT '',
   `company_email` varchar(250) DEFAULT '',
   `company_website` varchar(250) DEFAULT '',
   `company_tax_number` varchar(250) DEFAULT '',
-  `company_account_receivable_due_date` int(11) DEFAULT 0,
-  `company_account_payable_due_date` int(11) DEFAULT 0,
-  `company_logo` longblob DEFAULT NULL,
+  `company_account_receivable_due_date` int DEFAULT '0',
+  `company_account_payable_due_date` int DEFAULT '0',
+  `company_logo` longblob,
   `CDBO_no` varchar(255) DEFAULT NULL,
   `distribution_no` varchar(255) DEFAULT NULL,
-  `account_inventory_trade_id` int(11) NOT NULL DEFAULT 0,
-  `account_vat_in_id` int(11) NOT NULL DEFAULT 0,
-  `account_vat_out_id` int(11) NOT NULL DEFAULT 0,
-  `account_payable_id` int(11) NOT NULL DEFAULT 0,
-  `account_bank_or_cash_id` int(11) NOT NULL,
-  `account_pdp_id` int(11) NOT NULL,
-  `account_bank_cash_hpp_id` int(11) NOT NULL,
-  `account_receivable_id` int(11) NOT NULL DEFAULT 0,
-  `account_shortover_id` int(11) DEFAULT 0,
-  `account_sales_id` int(11) NOT NULL,
-  `ppn_amount_in` decimal(20,0) DEFAULT 10,
-  `ppn_amount_out` decimal(20,0) DEFAULT 10,
-  `sales_discount_id` int(11) NOT NULL DEFAULT 0,
-  `purchase_discount_id` int(11) NOT NULL DEFAULT 0,
+  `account_inventory_trade_id` int NOT NULL DEFAULT '0',
+  `account_vat_in_id` int NOT NULL DEFAULT '0',
+  `account_vat_out_id` int NOT NULL DEFAULT '0',
+  `account_payable_id` int NOT NULL DEFAULT '0',
+  `account_bank_or_cash_id` int NOT NULL,
+  `account_pdp_id` int NOT NULL,
+  `account_bank_cash_hpp_id` int NOT NULL,
+  `account_receivable_id` int NOT NULL DEFAULT '0',
+  `account_shortover_id` int DEFAULT '0',
+  `account_sales_id` int NOT NULL,
+  `ppn_amount_in` decimal(20,0) DEFAULT '10',
+  `ppn_amount_out` decimal(20,0) DEFAULT '10',
+  `sales_discount_id` int NOT NULL DEFAULT '0',
+  `purchase_discount_id` int NOT NULL DEFAULT '0',
   `pharmacist_license_no` varchar(255) DEFAULT NULL,
-  `account_sales_return_id` int(11) NOT NULL,
-  `account_hpp_id` int(11) NOT NULL,
-  `account_bank_id` int(11) NOT NULL,
-  `account_cash_id` int(11) NOT NULL DEFAULT 0,
-  `account_cash_on_way_id` int(11) DEFAULT 0,
-  `account_delivery_id` int(11) DEFAULT 0,
-  `account_expense_id` int(11) NOT NULL DEFAULT 0,
+  `account_sales_return_id` int NOT NULL,
+  `account_hpp_id` int NOT NULL,
+  `account_bank_id` int NOT NULL,
+  `account_cash_id` int NOT NULL DEFAULT '0',
+  `account_cash_on_way_id` int DEFAULT '0',
+  `account_delivery_id` int DEFAULT '0',
+  `account_expense_id` int NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`company_id`),
   KEY `FK_preference_company_account_payable_id` (`account_payable_id`),
   KEY `FK_preference_company_account_receivable_id` (`account_receivable_id`),
   KEY `FK_preference_company_account_shortover_id` (`account_shortover_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `preference_company` */
 
@@ -4456,18 +4343,18 @@ insert  into `preference_company`(`company_id`,`company_name`,`company_address`,
 DROP TABLE IF EXISTS `preference_transaction_module`;
 
 CREATE TABLE `preference_transaction_module` (
-  `transaction_module_id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_module_id` int NOT NULL AUTO_INCREMENT,
   `transaction_module_name` varchar(50) DEFAULT '',
   `transaction_module_code` varchar(50) DEFAULT '',
-  `transaction_id` decimal(10,0) DEFAULT 0,
+  `transaction_id` decimal(10,0) DEFAULT '0',
   `transaction_controller` varchar(200) DEFAULT '',
   `status` enum('1','0') DEFAULT '0',
   `created_by` varchar(20) DEFAULT '',
   `data_state` enum('0','1','2','3') DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`transaction_module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `preference_transaction_module` */
 
@@ -4534,56 +4421,55 @@ insert  into `preference_transaction_module`(`transaction_module_id`,`transactio
 (60,'Purchase Order Return','POR',0,'Purchase Order Return','0','','0',NULL,'2023-06-23 10:52:22'),
 (61,'Sales Order Return','SOR',0,'Sales Order Return','0','','0',NULL,'2023-06-23 10:52:22'),
 (62,'PDP Lost On Expedition','PDP_LOE',0,'PDP Lost On Expedition','0','','0',NULL,'2023-06-23 10:52:22'),
-(63,'Pengakuan Pihak Pembeli','PPP',0,'Pengakuan Pihak Pembeli','0','','0',NULL,'2023-06-23 10:52:22'),
-(64,'Jurnal Umum','JU',0,'Jurnal Umum','0','','0',NULL,'2023-11-16 15:15:26');
+(63,'Pengakuan Pihak Pembeli','PPP',0,'Pengakuan Pihak Pembeli','0','','0',NULL,'2023-06-23 10:52:22');
 
 /*Table structure for table `purchase_invoice` */
 
 DROP TABLE IF EXISTS `purchase_invoice`;
 
 CREATE TABLE `purchase_invoice` (
-  `purchase_invoice_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `goods_received_note_id` bigint(20) DEFAULT NULL,
-  `purchase_order_id` bigint(20) DEFAULT NULL,
-  `branch_id` int(11) DEFAULT 0,
-  `supplier_id` int(11) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
-  `payment_method_account_id` int(11) NOT NULL DEFAULT 0,
-  `ongkir_account_id` int(11) DEFAULT 0,
+  `purchase_invoice_id` bigint NOT NULL AUTO_INCREMENT,
+  `goods_received_note_id` bigint DEFAULT NULL,
+  `purchase_order_id` bigint DEFAULT NULL,
+  `branch_id` int DEFAULT '0',
+  `supplier_id` int DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
+  `payment_method_account_id` int NOT NULL DEFAULT '0',
+  `ongkir_account_id` int DEFAULT '0',
   `purchase_invoice_date` date DEFAULT NULL,
-  `purchase_invoice_payment_terms` decimal(10,2) DEFAULT 0.00,
+  `purchase_invoice_payment_terms` decimal(10,2) DEFAULT '0.00',
   `purchase_invoice_due_date` date DEFAULT NULL,
   `purchase_invoice_no` varchar(50) DEFAULT '',
   `purchase_invoice_reference_no` varchar(50) DEFAULT '',
-  `purchase_invoice_remark` text DEFAULT NULL,
+  `purchase_invoice_remark` text,
   `purchase_police_number` varchar(20) DEFAULT '',
-  `subtotal_item` decimal(10,0) DEFAULT 0,
-  `subtotal_amount` decimal(20,2) DEFAULT 0.00,
-  `discount_percentage` decimal(5,2) DEFAULT 0.00,
-  `discount_amount` decimal(20,2) DEFAULT 0.00,
-  `purchase_handling_fee` decimal(20,2) DEFAULT 0.00,
-  `tax_percentage` decimal(5,2) DEFAULT 0.00,
-  `tax_amount` decimal(20,2) DEFAULT 0.00,
+  `subtotal_item` decimal(10,0) DEFAULT '0',
+  `subtotal_amount` decimal(20,2) DEFAULT '0.00',
+  `discount_percentage` decimal(5,2) DEFAULT '0.00',
+  `discount_amount` decimal(20,2) DEFAULT '0.00',
+  `purchase_handling_fee` decimal(20,2) DEFAULT '0.00',
+  `tax_percentage` decimal(5,2) DEFAULT '0.00',
+  `tax_amount` decimal(20,2) DEFAULT '0.00',
   `faktur_tax_no` varchar(255) DEFAULT NULL,
-  `total_amount` decimal(20,2) DEFAULT 0.00,
-  `paid_amount` decimal(20,2) DEFAULT 0.00,
-  `payment_discount` decimal(20,2) DEFAULT 0.00,
-  `owing_amount` decimal(20,2) DEFAULT 0.00,
-  `shortover_amount` decimal(20,2) DEFAULT 0.00,
-  `down_payment_amount` decimal(20,2) DEFAULT 0.00,
-  `purchase_return_amount` decimal(20,2) NOT NULL DEFAULT 0.00,
-  `debit_amount` decimal(20,2) DEFAULT 0.00,
-  `purchase_invoice_status` decimal(1,0) DEFAULT 0 COMMENT '0 : Belum Lunas, 1 : Lunas',
+  `total_amount` decimal(20,2) DEFAULT '0.00',
+  `paid_amount` decimal(20,2) DEFAULT '0.00',
+  `payment_discount` decimal(20,2) DEFAULT '0.00',
+  `owing_amount` decimal(20,2) DEFAULT '0.00',
+  `shortover_amount` decimal(20,2) DEFAULT '0.00',
+  `down_payment_amount` decimal(20,2) DEFAULT '0.00',
+  `purchase_return_amount` decimal(20,2) NOT NULL DEFAULT '0.00',
+  `debit_amount` decimal(20,2) DEFAULT '0.00',
+  `purchase_invoice_status` decimal(1,0) DEFAULT '0' COMMENT '0 : Belum Lunas, 1 : Lunas',
   `purchase_invoice_token` varchar(250) DEFAULT NULL,
   `purchase_invoice_token_void` varchar(250) DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
+  `voided_remark` text,
   `record_no` varchar(20) DEFAULT '',
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`purchase_invoice_id`),
   UNIQUE KEY `purchase_invoice_token` (`purchase_invoice_token`),
   UNIQUE KEY `purchase_invoice_token_void` (`purchase_invoice_token_void`),
@@ -4592,7 +4478,7 @@ CREATE TABLE `purchase_invoice` (
   KEY `FK_purchase_invoice_branch_id` (`branch_id`),
   KEY `FK_purchase_invoice_supplier_id` (`supplier_id`),
   KEY `FK_purchase_invoice_warehouse_id` (`warehouse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_invoice` */
 
@@ -4601,29 +4487,29 @@ CREATE TABLE `purchase_invoice` (
 DROP TABLE IF EXISTS `purchase_invoice_item`;
 
 CREATE TABLE `purchase_invoice_item` (
-  `purchase_invoice_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `purchase_invoice_id` bigint(20) DEFAULT 0,
-  `goods_received_note_item_id` bigint(20) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
-  `quantity_scale` decimal(10,2) DEFAULT 0.00,
-  `quantity` decimal(10,2) DEFAULT 0.00,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_unit_cost` decimal(10,2) DEFAULT 0.00,
-  `subtotal_amount` decimal(20,2) DEFAULT 0.00,
-  `discount_percentage` decimal(5,2) DEFAULT 0.00,
-  `discount_amount` decimal(20,2) DEFAULT 0.00,
-  `subtotal_amount_after_discount` decimal(20,2) DEFAULT 0.00,
+  `purchase_invoice_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `purchase_invoice_id` bigint DEFAULT '0',
+  `goods_received_note_item_id` bigint DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT '0',
+  `item_id` int DEFAULT '0',
+  `quantity_scale` decimal(10,2) DEFAULT '0.00',
+  `quantity` decimal(10,2) DEFAULT '0.00',
+  `item_unit_id` int DEFAULT '0',
+  `item_unit_cost` decimal(10,2) DEFAULT '0.00',
+  `subtotal_amount` decimal(20,2) DEFAULT '0.00',
+  `discount_percentage` decimal(5,2) DEFAULT '0.00',
+  `discount_amount` decimal(20,2) DEFAULT '0.00',
+  `subtotal_amount_after_discount` decimal(20,2) DEFAULT '0.00',
   `purchase_invoice_item_token` varbinary(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`purchase_invoice_item_id`),
   UNIQUE KEY `purchase_invoice_item_token` (`purchase_invoice_item_token`),
   KEY `FK_purchase_invoice_item_purchase_invoice_id` (`purchase_invoice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_invoice_item` */
 
@@ -4632,169 +4518,165 @@ CREATE TABLE `purchase_invoice_item` (
 DROP TABLE IF EXISTS `purchase_order`;
 
 CREATE TABLE `purchase_order` (
-  `purchase_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `supplier_id` int(11) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
+  `purchase_order_id` bigint NOT NULL AUTO_INCREMENT,
+  `supplier_id` int DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
   `purchase_order_no` varchar(20) DEFAULT '',
   `purchase_order_date` date DEFAULT NULL,
   `purchase_order_shipment_date` date DEFAULT NULL,
-  `purchase_order_payment_terms` decimal(10,0) DEFAULT 0,
-  `purchase_order_remark` text DEFAULT NULL,
-  `total_item` decimal(10,2) DEFAULT 0.00,
-  `total_received_item` decimal(20,2) DEFAULT 0.00,
-  `subtotal_amount` decimal(20,2) DEFAULT 0.00,
-  `discount_percentage` decimal(5,2) DEFAULT 0.00,
-  `discount_amount` decimal(20,2) DEFAULT 0.00,
-  `ppn_in_percentage` decimal(5,2) DEFAULT 0.00,
-  `ppn_in_amount` decimal(20,2) DEFAULT 0.00,
-  `subtotal_after_ppn_in` decimal(20,2) DEFAULT 0.00,
-  `tax_percentage` decimal(5,2) DEFAULT 0.00,
-  `tax_amount` decimal(20,2) DEFAULT 0.00,
-  `total_amount` decimal(20,2) DEFAULT 0.00,
-  `down_payment_amount` decimal(20,2) DEFAULT 0.00,
-  `down_payment_amount_balance` decimal(20,2) NOT NULL DEFAULT 0.00,
-  `last_balance_amount` decimal(20,2) DEFAULT 0.00,
-  `purchase_order_type_id` bigint(20) DEFAULT 0,
-  `purchase_order_status` int(11) DEFAULT 0 COMMENT '0= Dalam Proses, 1= Sebagian Diterima, 2=Sudah Diterima',
-  `purchase_invoice_status` int(11) NOT NULL DEFAULT 0,
-  `item_type` int(11) DEFAULT 0,
-  `branch_id` int(11) DEFAULT NULL,
-  `approved` int(11) DEFAULT 0,
-  `approved_id` int(11) DEFAULT 0,
+  `purchase_order_payment_terms` decimal(10,0) DEFAULT '0',
+  `purchase_order_remark` text,
+  `total_item` decimal(10,2) DEFAULT '0.00',
+  `total_received_item` decimal(20,2) DEFAULT '0.00',
+  `subtotal_amount` decimal(20,2) DEFAULT '0.00',
+  `discount_percentage` decimal(5,2) DEFAULT '0.00',
+  `discount_amount` decimal(20,2) DEFAULT '0.00',
+  `ppn_in_percentage` decimal(5,2) DEFAULT '0.00',
+  `ppn_in_amount` decimal(20,2) DEFAULT '0.00',
+  `subtotal_after_ppn_in` decimal(20,2) DEFAULT '0.00',
+  `tax_percentage` decimal(5,2) DEFAULT '0.00',
+  `tax_amount` decimal(20,2) DEFAULT '0.00',
+  `total_amount` decimal(20,2) DEFAULT '0.00',
+  `down_payment_amount` decimal(20,2) DEFAULT '0.00',
+  `down_payment_amount_balance` decimal(20,2) NOT NULL DEFAULT '0.00',
+  `last_balance_amount` decimal(20,2) DEFAULT '0.00',
+  `purchase_order_type_id` bigint DEFAULT '0',
+  `purchase_order_status` int DEFAULT '0' COMMENT '0= Dalam Proses, 1= Sebagian Diterima, 2=Sudah Diterima',
+  `purchase_invoice_status` int NOT NULL DEFAULT '0',
+  `item_type` int DEFAULT '0',
+  `branch_id` int DEFAULT NULL,
+  `approved` int DEFAULT '0',
+  `approved_id` int DEFAULT '0',
   `approved_on` datetime DEFAULT NULL,
-  `approved_remark` text DEFAULT NULL,
-  `closed_remark` text DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `approved_remark` text,
+  `closed_remark` text,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`purchase_order_id`),
   KEY `FK_purchase_order_supplier_id` (`supplier_id`),
   KEY `data_state` (`data_state`),
   KEY `created_id` (`created_id`),
   KEY `FK_purchase_order_warehouse_id` (`warehouse_id`),
   KEY `FK_purchase_order_purchase_order_type_id` (`purchase_order_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order` */
 
 insert  into `purchase_order`(`purchase_order_id`,`supplier_id`,`warehouse_id`,`purchase_order_no`,`purchase_order_date`,`purchase_order_shipment_date`,`purchase_order_payment_terms`,`purchase_order_remark`,`total_item`,`total_received_item`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`ppn_in_percentage`,`ppn_in_amount`,`subtotal_after_ppn_in`,`tax_percentage`,`tax_amount`,`total_amount`,`down_payment_amount`,`down_payment_amount_balance`,`last_balance_amount`,`purchase_order_type_id`,`purchase_order_status`,`purchase_invoice_status`,`item_type`,`branch_id`,`approved`,`approved_id`,`approved_on`,`approved_remark`,`closed_remark`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(209,2,6,'0001/PO/XI/2023','2023-11-17','2023-11-17',0,NULL,100.00,300.00,0.00,0.00,0.00,11.00,33000.00,333000.00,0.00,0.00,300000.00,0.00,0.00,0.00,0,1,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-11-17 06:45:30','2023-11-17 06:56:04'),
-(210,2,6,'0002/PO/XI/2023','2023-11-17','2023-11-17',0,NULL,100.00,300.00,0.00,0.00,0.00,11.00,33000.00,333000.00,0.00,0.00,300000.00,0.00,0.00,0.00,0,1,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-11-17 07:05:56','2023-11-17 07:14:57'),
-(211,2,6,'0003/PO/XI/2023','2023-11-17','2023-11-17',0,NULL,100.00,100.00,0.00,0.00,0.00,11.00,33000.00,333000.00,0.00,0.00,300000.00,0.00,0.00,0.00,0,2,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-11-17 08:57:58','2023-11-17 08:58:28');
+(235,8,6,'0001/PO/XII/2023','2023-12-06','2023-12-06',0,NULL,10.00,10.00,0.00,0.00,0.00,11.00,1100.00,11100.00,0.00,0.00,10000.00,0.00,0.00,0.00,0,3,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-06 04:59:05','2023-12-06 05:02:23');
 
 /*Table structure for table `purchase_order_item` */
 
 DROP TABLE IF EXISTS `purchase_order_item`;
 
 CREATE TABLE `purchase_order_item` (
-  `purchase_order_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `purchase_order_id` bigint(20) DEFAULT 0,
-  `purchase_requisition_id` bigint(20) DEFAULT 0,
-  `purchase_requisition_item_id` bigint(20) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT 0,
-  `quantity` decimal(10,0) DEFAULT 0,
-  `quantity_outstanding` decimal(10,0) DEFAULT 0,
-  `quantity_received` decimal(10,0) DEFAULT 0,
-  `quantity_return` decimal(10,0) DEFAULT 0,
-  `item_unit_cost` decimal(20,0) DEFAULT 0,
-  `subtotal_amount` decimal(20,0) DEFAULT 0,
-  `discount_percentage` decimal(5,0) DEFAULT 0,
-  `discount_amount` decimal(20,0) DEFAULT 0,
-  `subtotal_amount_after_discount` decimal(20,0) DEFAULT 0,
+  `purchase_order_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `purchase_order_id` bigint DEFAULT '0',
+  `purchase_requisition_id` bigint DEFAULT '0',
+  `purchase_requisition_item_id` bigint DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT '0',
+  `quantity` decimal(10,0) DEFAULT '0',
+  `quantity_outstanding` decimal(10,0) DEFAULT '0',
+  `quantity_received` decimal(10,0) DEFAULT '0',
+  `quantity_return` decimal(10,0) DEFAULT '0',
+  `item_unit_cost` decimal(20,0) DEFAULT '0',
+  `subtotal_amount` decimal(20,0) DEFAULT '0',
+  `discount_percentage` decimal(5,0) DEFAULT '0',
+  `discount_amount` decimal(20,0) DEFAULT '0',
+  `subtotal_amount_after_discount` decimal(20,0) DEFAULT '0',
   `purchase_order_item_creassing` varchar(250) DEFAULT '',
   `purchase_order_token` varchar(250) DEFAULT '',
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`purchase_order_item_id`),
   KEY `data_state` (`data_state`),
   KEY `created_id` (`created_id`),
   KEY `purchase_order_token` (`purchase_order_token`),
   KEY `item_flute_id` (`item_type_id`),
   KEY `FK_purchase_order_item_purchase_order_id` (`purchase_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order_item` */
 
 insert  into `purchase_order_item`(`purchase_order_item_id`,`purchase_order_id`,`purchase_requisition_id`,`purchase_requisition_item_id`,`item_category_id`,`item_unit_id`,`item_type_id`,`quantity`,`quantity_outstanding`,`quantity_received`,`quantity_return`,`item_unit_cost`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`subtotal_amount_after_discount`,`purchase_order_item_creassing`,`purchase_order_token`,`data_state`,`created_id`,`created_at`,`voided_id`,`voided_on`,`updated_at`) values 
-(1,209,0,0,1,1,1,100,0,300,0,3000,300000,0,0,0,'','',0,0,'2023-11-17 06:45:30',0,NULL,'2023-11-17 06:56:04'),
-(3,210,0,0,1,1,1,100,0,0,300,3000,300000,0,0,0,'','',0,0,'2023-11-17 07:05:56',0,NULL,'2023-11-17 07:14:57'),
-(4,211,0,0,1,1,1,100,0,100,0,3000,300000,0,0,0,'','',0,0,'2023-11-17 08:57:58',0,NULL,'2023-11-17 08:58:27');
+(10,235,0,0,2,5,24,10,0,5,5,1000,10000,NULL,0,0,'','',0,0,'2023-12-06 04:59:05',0,NULL,'2023-12-06 05:02:23');
 
 /*Table structure for table `purchase_order_return` */
 
 DROP TABLE IF EXISTS `purchase_order_return`;
 
 CREATE TABLE `purchase_order_return` (
-  `purchase_order_return_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `purchase_order_id` bigint(20) DEFAULT NULL,
-  `supplier_id` bigint(20) DEFAULT NULL,
-  `warehouse_id` bigint(20) DEFAULT NULL,
+  `purchase_order_return_id` bigint NOT NULL AUTO_INCREMENT,
+  `purchase_order_id` bigint DEFAULT NULL,
+  `supplier_id` bigint DEFAULT NULL,
+  `warehouse_id` bigint DEFAULT NULL,
   `purchase_order_return_no` varchar(200) DEFAULT NULL,
   `purchase_order_return_date` date DEFAULT NULL,
-  `purchase_order_return_remark` text DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `purchase_order_return_remark` text,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`purchase_order_return_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order_return` */
 
 insert  into `purchase_order_return`(`purchase_order_return_id`,`purchase_order_id`,`supplier_id`,`warehouse_id`,`purchase_order_return_no`,`purchase_order_return_date`,`purchase_order_return_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(46,210,2,7,'0001/PR/XI/2023','2023-11-17',NULL,0,75,'2023-11-17 07:14:57','2023-11-17 07:14:57');
+(45,235,8,7,'0001/PR/XII/2023','2023-12-06',NULL,0,3,'2023-12-06 05:02:23','2023-12-06 05:02:23');
 
 /*Table structure for table `purchase_order_return_item` */
 
 DROP TABLE IF EXISTS `purchase_order_return_item`;
 
 CREATE TABLE `purchase_order_return_item` (
-  `purchase_order_return_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `purchase_order_return_id` bigint(20) DEFAULT NULL,
-  `purchase_order_id` bigint(20) DEFAULT NULL,
-  `purchase_order_item_id` bigint(20) DEFAULT NULL,
-  `item_category_id` bigint(20) DEFAULT NULL,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
+  `purchase_order_return_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `purchase_order_return_id` bigint DEFAULT NULL,
+  `purchase_order_id` bigint DEFAULT NULL,
+  `purchase_order_item_id` bigint DEFAULT NULL,
+  `item_category_id` bigint DEFAULT NULL,
+  `item_type_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
   `item_batch_number` varchar(200) DEFAULT NULL,
   `item_expired_date` date DEFAULT NULL,
-  `quantity` decimal(10,0) DEFAULT 0,
-  `quantity_return` decimal(10,0) DEFAULT 0,
-  `data_state` bigint(20) DEFAULT 0,
-  `created_id` bigint(20) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `quantity` decimal(10,0) DEFAULT '0',
+  `quantity_return` decimal(10,0) DEFAULT '0',
+  `data_state` bigint DEFAULT '0',
+  `created_id` bigint DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`purchase_order_return_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order_return_item` */
 
 insert  into `purchase_order_return_item`(`purchase_order_return_item_id`,`purchase_order_return_id`,`purchase_order_id`,`purchase_order_item_id`,`item_category_id`,`item_type_id`,`item_unit_id`,`item_batch_number`,`item_expired_date`,`quantity`,`quantity_return`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(43,46,210,3,1,1,1,'50','2029-10-31',100,100,0,75,'2023-11-17 07:14:57','2023-11-17 07:14:57');
+(42,45,235,10,2,24,5,'1','2023-12-06',5,5,0,3,'2023-12-06 05:02:23','2023-12-06 05:02:23');
 
 /*Table structure for table `purchase_order_type` */
 
 DROP TABLE IF EXISTS `purchase_order_type`;
 
 CREATE TABLE `purchase_order_type` (
-  `purchase_order_type_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `purchase_order_type_id` bigint NOT NULL AUTO_INCREMENT,
   `purchase_order_type_name` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`purchase_order_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order_type` */
 
@@ -4803,40 +4685,40 @@ CREATE TABLE `purchase_order_type` (
 DROP TABLE IF EXISTS `purchase_payment`;
 
 CREATE TABLE `purchase_payment` (
-  `payment_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 1,
-  `supplier_id` int(11) DEFAULT 0,
+  `payment_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '1',
+  `supplier_id` int DEFAULT '0',
   `payment_date` date DEFAULT NULL,
   `payment_no` varchar(20) DEFAULT '',
   `reference_number` varchar(20) DEFAULT '',
-  `cash_account_id` int(11) DEFAULT 0,
-  `payment_remark` text DEFAULT NULL,
-  `payment_amount` decimal(20,2) DEFAULT 0.00,
-  `payment_allocated` decimal(20,2) DEFAULT 0.00,
-  `payment_shortover` decimal(20,2) DEFAULT 0.00,
-  `payment_total_amount` decimal(20,2) DEFAULT 0.00,
+  `cash_account_id` int DEFAULT '0',
+  `payment_remark` text,
+  `payment_amount` decimal(20,2) DEFAULT '0.00',
+  `payment_allocated` decimal(20,2) DEFAULT '0.00',
+  `payment_shortover` decimal(20,2) DEFAULT '0.00',
+  `payment_total_amount` decimal(20,2) DEFAULT '0.00',
   `payment_shortover_remark` varchar(200) DEFAULT '',
-  `payment_total_cash_amount` decimal(20,2) DEFAULT 0.00,
-  `payment_total_transfer_amount` decimal(20,2) DEFAULT 0.00,
-  `payment_total_giro_amount` decimal(20,2) DEFAULT 0.00,
+  `payment_total_cash_amount` decimal(20,2) DEFAULT '0.00',
+  `payment_total_transfer_amount` decimal(20,2) DEFAULT '0.00',
+  `payment_total_giro_amount` decimal(20,2) DEFAULT '0.00',
   `payment_token` varchar(250) DEFAULT NULL,
   `payment_token_void` varchar(250) DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
   `voided_remark` varchar(100) DEFAULT '',
   `posted` enum('0','1') DEFAULT '0',
-  `posted_id` int(11) DEFAULT 0,
+  `posted_id` int DEFAULT '0',
   `posted_on` datetime DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`payment_id`),
   UNIQUE KEY `payment_token` (`payment_token`),
   UNIQUE KEY `payment_token_void` (`payment_token_void`),
   KEY `FK_purchase_payment_supplier_id` (`supplier_id`) USING BTREE,
   KEY `FK_purchase_payment_branch_id` (`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `purchase_payment` */
 
@@ -4845,20 +4727,20 @@ CREATE TABLE `purchase_payment` (
 DROP TABLE IF EXISTS `purchase_payment_giro`;
 
 CREATE TABLE `purchase_payment_giro` (
-  `payment_giro_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `payment_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) NOT NULL DEFAULT 0,
+  `payment_giro_id` bigint NOT NULL AUTO_INCREMENT,
+  `payment_id` bigint DEFAULT '0',
+  `account_id` int NOT NULL DEFAULT '0',
   `payment_giro_bank_name` varchar(50) DEFAULT '',
   `payment_giro_account_name` varchar(100) DEFAULT '',
   `payment_giro_number` varchar(50) DEFAULT '',
   `payment_giro_amount` varchar(20) DEFAULT '0',
   `payment_giro_token` varchar(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`payment_giro_id`),
   UNIQUE KEY `payment_giro_token` (`payment_giro_token`),
   KEY `FK_purchase_payment_giro_payment_id` (`payment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_payment_giro` */
 
@@ -4867,29 +4749,29 @@ CREATE TABLE `purchase_payment_giro` (
 DROP TABLE IF EXISTS `purchase_payment_item`;
 
 CREATE TABLE `purchase_payment_item` (
-  `payment_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `payment_id` bigint(20) DEFAULT 0,
-  `purchase_invoice_id` bigint(20) DEFAULT 0,
+  `payment_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `payment_id` bigint DEFAULT '0',
+  `purchase_invoice_id` bigint DEFAULT '0',
   `purchase_invoice_no` varchar(20) DEFAULT '',
   `purchase_invoice_date` date DEFAULT NULL,
-  `purchase_invoice_amount` decimal(20,2) DEFAULT 0.00,
-  `total_amount` decimal(20,2) DEFAULT 0.00,
-  `paid_amount` decimal(20,2) DEFAULT 0.00,
-  `owing_amount` decimal(20,2) DEFAULT 0.00,
-  `shortover_amount` decimal(20,2) DEFAULT 0.00,
-  `allocation_amount` decimal(20,2) DEFAULT 0.00,
+  `purchase_invoice_amount` decimal(20,2) DEFAULT '0.00',
+  `total_amount` decimal(20,2) DEFAULT '0.00',
+  `paid_amount` decimal(20,2) DEFAULT '0.00',
+  `owing_amount` decimal(20,2) DEFAULT '0.00',
+  `shortover_amount` decimal(20,2) DEFAULT '0.00',
+  `allocation_amount` decimal(20,2) DEFAULT '0.00',
   `payment_discount` decimal(20,2) DEFAULT NULL,
   `payment_item_token` varchar(250) DEFAULT NULL,
   `payment_item_token_void` varchar(250) DEFAULT NULL,
-  `last_balance` decimal(20,2) DEFAULT 0.00,
+  `last_balance` decimal(20,2) DEFAULT '0.00',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`payment_item_id`),
   UNIQUE KEY `payment_item_token` (`payment_item_token`),
   UNIQUE KEY `payment_item_token_void` (`payment_item_token_void`),
   KEY `FK_purchase_payment_item_purchase_invoice_id` (`purchase_invoice_id`) USING BTREE,
   KEY `FK_purchase_payment_item_payment_id` (`payment_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `purchase_payment_item` */
 
@@ -4898,21 +4780,21 @@ CREATE TABLE `purchase_payment_item` (
 DROP TABLE IF EXISTS `purchase_payment_transfer`;
 
 CREATE TABLE `purchase_payment_transfer` (
-  `payment_transfer_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `payment_id` bigint(20) DEFAULT NULL,
-  `bank_id` int(11) DEFAULT NULL,
-  `account_id` int(11) NOT NULL DEFAULT 0,
+  `payment_transfer_id` bigint NOT NULL AUTO_INCREMENT,
+  `payment_id` bigint DEFAULT NULL,
+  `bank_id` int DEFAULT NULL,
+  `account_id` int NOT NULL DEFAULT '0',
   `payment_transfer_bank_name` varchar(50) DEFAULT NULL,
-  `payment_transfer_amount` decimal(20,2) DEFAULT 0.00,
+  `payment_transfer_amount` decimal(20,2) DEFAULT '0.00',
   `payment_transfer_account_name` varchar(50) DEFAULT NULL,
   `payment_transfer_account_no` varchar(20) DEFAULT '0',
   `payment_transfer_token` varchar(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`payment_transfer_id`),
   UNIQUE KEY `payment_transfer_token` (`payment_transfer_token`),
   KEY `FK_purchase_payment_transfer_payment_id` (`payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_payment_transfer` */
 
@@ -4921,18 +4803,18 @@ CREATE TABLE `purchase_payment_transfer` (
 DROP TABLE IF EXISTS `return_pdp`;
 
 CREATE TABLE `return_pdp` (
-  `return_pdp_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `warehouse_id` bigint(20) DEFAULT NULL,
-  `customer_id` int(11) DEFAULT NULL,
+  `return_pdp_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `warehouse_id` bigint DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
   `return_pdp_date` date DEFAULT NULL,
-  `return_pdp_remark` text DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `return_pdp_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`return_pdp_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -4943,26 +4825,26 @@ CREATE TABLE `return_pdp` (
 DROP TABLE IF EXISTS `return_pdp_item`;
 
 CREATE TABLE `return_pdp_item` (
-  `return_pdp_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `return_pdp_id` bigint(20) DEFAULT NULL,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_note_item_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_order_item_id` int(11) DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `supplier_id` int(11) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT NULL,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_stock_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
+  `return_pdp_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `return_pdp_id` bigint DEFAULT NULL,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_note_item_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_order_item_id` int DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
+  `supplier_id` int DEFAULT NULL,
+  `item_category_id` int DEFAULT NULL,
+  `item_type_id` int DEFAULT NULL,
+  `item_stock_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
   `quantity` decimal(10,0) DEFAULT NULL,
   `quantity_return` decimal(10,0) DEFAULT NULL,
   `item_unit_price` decimal(10,0) DEFAULT NULL,
   `subtotal_price` decimal(10,0) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`return_pdp_item_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -4973,19 +4855,19 @@ CREATE TABLE `return_pdp_item` (
 DROP TABLE IF EXISTS `return_pdp_lost_on_expedition`;
 
 CREATE TABLE `return_pdp_lost_on_expedition` (
-  `return_pdp_lost_on_expedition_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `account_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `warehouse_id` bigint(20) DEFAULT NULL,
-  `customer_id` int(11) DEFAULT NULL,
+  `return_pdp_lost_on_expedition_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `account_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `warehouse_id` bigint DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
   `return_pdp_lost_on_expedition_date` date DEFAULT NULL,
-  `return_pdp_lost_on_expedition_remark` text DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `return_pdp_lost_on_expedition_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`return_pdp_lost_on_expedition_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -4996,26 +4878,26 @@ CREATE TABLE `return_pdp_lost_on_expedition` (
 DROP TABLE IF EXISTS `return_pdp_lost_on_expedition_item`;
 
 CREATE TABLE `return_pdp_lost_on_expedition_item` (
-  `return_pdp_lost_on_expedition_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `return_pdp_lost_on_expedition_id` bigint(20) DEFAULT NULL,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_note_item_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_order_item_id` int(11) DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `supplier_id` int(11) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT NULL,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_stock_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
+  `return_pdp_lost_on_expedition_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `return_pdp_lost_on_expedition_id` bigint DEFAULT NULL,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_note_item_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_order_item_id` int DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
+  `supplier_id` int DEFAULT NULL,
+  `item_category_id` int DEFAULT NULL,
+  `item_type_id` int DEFAULT NULL,
+  `item_stock_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
   `quantity` decimal(10,0) DEFAULT NULL,
   `quantity_return` decimal(10,0) DEFAULT NULL,
   `item_unit_price` decimal(10,0) DEFAULT NULL,
   `subtotal_price` decimal(10,0) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`return_pdp_lost_on_expedition_item_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -5026,45 +4908,45 @@ CREATE TABLE `return_pdp_lost_on_expedition_item` (
 DROP TABLE IF EXISTS `sales_collection`;
 
 CREATE TABLE `sales_collection` (
-  `collection_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `salesman_id` int(11) DEFAULT 0,
-  `customer_id` bigint(20) DEFAULT NULL,
-  `section_id` int(11) DEFAULT NULL,
-  `project_id` int(11) DEFAULT 0,
-  `cash_account_id` int(11) NOT NULL DEFAULT 0,
+  `collection_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `salesman_id` int DEFAULT '0',
+  `customer_id` bigint DEFAULT NULL,
+  `section_id` int DEFAULT NULL,
+  `project_id` int DEFAULT '0',
+  `cash_account_id` int NOT NULL DEFAULT '0',
   `collection_no` varchar(20) DEFAULT '',
   `collection_date` date DEFAULT NULL,
   `reference_number` varchar(20) DEFAULT '',
-  `collection_remark` text DEFAULT NULL,
-  `collection_amount` decimal(20,2) DEFAULT 0.00,
-  `collection_allocated` decimal(20,2) DEFAULT 0.00,
-  `collection_shortover` decimal(20,2) DEFAULT 0.00,
-  `collection_total_amount` decimal(20,2) DEFAULT 0.00,
-  `collection_shortover_remark` text DEFAULT NULL,
-  `collection_total_cash_amount` decimal(20,2) DEFAULT 0.00,
-  `collection_total_transfer_amount` decimal(20,2) DEFAULT 0.00,
-  `collection_total_giro_amount` decimal(20,2) DEFAULT 0.00,
-  `collection_giro_status` decimal(1,0) DEFAULT 0,
+  `collection_remark` text,
+  `collection_amount` decimal(20,2) DEFAULT '0.00',
+  `collection_allocated` decimal(20,2) DEFAULT '0.00',
+  `collection_shortover` decimal(20,2) DEFAULT '0.00',
+  `collection_total_amount` decimal(20,2) DEFAULT '0.00',
+  `collection_shortover_remark` text,
+  `collection_total_cash_amount` decimal(20,2) DEFAULT '0.00',
+  `collection_total_transfer_amount` decimal(20,2) DEFAULT '0.00',
+  `collection_total_giro_amount` decimal(20,2) DEFAULT '0.00',
+  `collection_giro_status` decimal(1,0) DEFAULT '0',
   `collection_token` varchar(250) DEFAULT NULL,
   `collection_token_void` varchar(250) DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
+  `voided_remark` text,
   `posted` enum('1','0') DEFAULT '0',
   `posted_by` varchar(20) DEFAULT '',
   `posted_on` datetime DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_id`),
   UNIQUE KEY `collection_token` (`collection_token`),
   UNIQUE KEY `collection_token_void` (`collection_token_void`),
   KEY `FK_sales_collection_customer_id` (`customer_id`),
   KEY `FK_sales_collection_salesman_id` (`salesman_id`),
   KEY `FK_sales_collection_section_id` (`section_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_collection` */
 
@@ -5073,22 +4955,22 @@ CREATE TABLE `sales_collection` (
 DROP TABLE IF EXISTS `sales_collection_giro`;
 
 CREATE TABLE `sales_collection_giro` (
-  `collection_giro_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `collection_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) NOT NULL DEFAULT 0,
+  `collection_giro_id` bigint NOT NULL AUTO_INCREMENT,
+  `collection_id` bigint DEFAULT '0',
+  `account_id` int NOT NULL DEFAULT '0',
   `collection_giro_bank_name` varchar(50) DEFAULT '',
   `collection_giro_number` varchar(20) DEFAULT '',
-  `collection_giro_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_giro_amount` decimal(20,2) DEFAULT '0.00',
   `collection_giro_due_date` date DEFAULT NULL,
   `collection_giro_account_name` varchar(50) DEFAULT '',
   `collection_giro_token` varchar(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_giro_id`),
   UNIQUE KEY `collection_giro_token` (`collection_giro_token`),
   KEY `FK_sales_collection_giro_bank_id` (`collection_giro_bank_name`),
   KEY `FK_sales_collection_giro_collection_id` (`collection_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `sales_collection_giro` */
 
@@ -5097,32 +4979,32 @@ CREATE TABLE `sales_collection_giro` (
 DROP TABLE IF EXISTS `sales_collection_item`;
 
 CREATE TABLE `sales_collection_item` (
-  `collection_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `collection_id` bigint(20) DEFAULT 0,
-  `sales_invoice_id` bigint(20) DEFAULT 0,
+  `collection_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `collection_id` bigint DEFAULT '0',
+  `sales_invoice_id` bigint DEFAULT '0',
   `sales_invoice_no` varchar(20) DEFAULT '',
   `sales_invoice_date` date DEFAULT NULL,
-  `sales_invoice_amount` decimal(20,0) DEFAULT 0,
-  `subtotal_invoice_amount` decimal(20,0) DEFAULT 0,
-  `discount_percentage` decimal(20,0) DEFAULT 0,
-  `discount_amount` decimal(20,0) DEFAULT 0,
-  `total_amount` decimal(20,2) DEFAULT 0.00,
-  `paid_amount` decimal(20,2) DEFAULT 0.00,
-  `owing_amount` decimal(20,2) DEFAULT 0.00,
-  `shortover_amount` decimal(20,2) DEFAULT 0.00,
-  `allocation_amount` decimal(20,2) DEFAULT 0.00,
-  `collection_discount` decimal(20,2) DEFAULT 0.00,
-  `last_balance` decimal(20,2) DEFAULT 0.00,
+  `sales_invoice_amount` decimal(20,0) DEFAULT '0',
+  `subtotal_invoice_amount` decimal(20,0) DEFAULT '0',
+  `discount_percentage` decimal(20,0) DEFAULT '0',
+  `discount_amount` decimal(20,0) DEFAULT '0',
+  `total_amount` decimal(20,2) DEFAULT '0.00',
+  `paid_amount` decimal(20,2) DEFAULT '0.00',
+  `owing_amount` decimal(20,2) DEFAULT '0.00',
+  `shortover_amount` decimal(20,2) DEFAULT '0.00',
+  `allocation_amount` decimal(20,2) DEFAULT '0.00',
+  `collection_discount` decimal(20,2) DEFAULT '0.00',
+  `last_balance` decimal(20,2) DEFAULT '0.00',
   `collection_item_token` varchar(250) DEFAULT NULL,
   `collection_item_token_void` varchar(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_item_id`),
   UNIQUE KEY `collection_item_token` (`collection_item_token`),
   UNIQUE KEY `collection_item_token_void` (`collection_item_token_void`),
   KEY `FK_sales_collection_collection_id` (`collection_id`) USING BTREE,
   KEY `FK_sales_collection_sales_invoice_id` (`sales_invoice_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_collection_item` */
 
@@ -5131,53 +5013,47 @@ CREATE TABLE `sales_collection_item` (
 DROP TABLE IF EXISTS `sales_collection_piece`;
 
 CREATE TABLE `sales_collection_piece` (
-  `sales_collection_piece_id` int(11) NOT NULL AUTO_INCREMENT,
-  `sales_invoice_id` int(11) DEFAULT NULL,
-  `sales_invoice_no` varchar(255) DEFAULT NULL,
-  `sales_collection_piece_remark` varchar(255) DEFAULT NULL,
-  `sales_collection_piece_type_id` int(11) NOT NULL,
-  `memo_no` varchar(25) NOT NULL,
-  `promotion_no` varchar(255) NOT NULL,
-  `customer_id` int(11) DEFAULT NULL,
-  `total_amount` int(11) DEFAULT NULL,
-  `piece_amount` int(11) DEFAULT NULL,
-  `total_amount_after_piece` int(11) DEFAULT NULL,
+  `sales_collection_piece_id` int NOT NULL AUTO_INCREMENT,
+  `sales_invoice_id` int DEFAULT NULL,
+  `sales_invoice_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sales_collection_piece_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sales_collection_piece_type_id` int NOT NULL,
+  `memo_no` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `promotion_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `customer_id` int DEFAULT NULL,
+  `total_amount` int DEFAULT NULL,
+  `piece_amount` int DEFAULT NULL,
+  `total_amount_after_piece` int DEFAULT NULL,
   `claim_date` date DEFAULT NULL,
-  `claim_status` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `claim_status` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`sales_collection_piece_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_collection_piece` */
-
-insert  into `sales_collection_piece`(`sales_collection_piece_id`,`sales_invoice_id`,`sales_invoice_no`,`sales_collection_piece_remark`,`sales_collection_piece_type_id`,`memo_no`,`promotion_no`,`customer_id`,`total_amount`,`piece_amount`,`total_amount_after_piece`,`claim_date`,`claim_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(21,64,'0002/SI/VIII/2023',NULL,0,'','',2,27700,1000,26700,NULL,0,0,3,'2023-08-03 07:36:37','2023-08-03 07:36:37'),
-(22,4,'0003/TMO.ME/08/2023',NULL,0,'','',40,6909282,100000,6809282,NULL,0,0,75,'2023-08-24 07:21:30','2023-08-24 07:21:30'),
-(23,4,'0003/TMO.ME/08/2023',NULL,0,'','',40,6909282,NULL,6909282,NULL,0,0,75,'2023-08-24 08:55:10','2023-08-24 08:55:10'),
-(24,4,'0003/TMO.ME/08/2023',NULL,0,'','',40,6909282,NULL,6909282,NULL,0,0,75,'2023-08-24 08:55:12','2023-08-24 08:55:12');
 
 /*Table structure for table `sales_collection_transfer` */
 
 DROP TABLE IF EXISTS `sales_collection_transfer`;
 
 CREATE TABLE `sales_collection_transfer` (
-  `collection_giro_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `collection_id` bigint(20) DEFAULT 0,
-  `account_id` int(11) NOT NULL DEFAULT 0,
+  `collection_giro_id` bigint NOT NULL AUTO_INCREMENT,
+  `collection_id` bigint DEFAULT '0',
+  `account_id` int NOT NULL DEFAULT '0',
   `collection_transfer_bank_name` varchar(50) DEFAULT '',
-  `collection_transfer_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_transfer_amount` decimal(20,2) DEFAULT '0.00',
   `collection_transfer_account_name` varchar(100) DEFAULT '',
   `collection_transfer_account_no` varchar(20) DEFAULT '0',
   `collection_transfer_token` varchar(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_giro_id`),
   UNIQUE KEY `collection_transfer_token` (`collection_transfer_token`),
   KEY `sales_collection_transfer_collection_id` (`collection_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `sales_collection_transfer` */
 
@@ -5186,22 +5062,22 @@ CREATE TABLE `sales_collection_transfer` (
 DROP TABLE IF EXISTS `sales_customer`;
 
 CREATE TABLE `sales_customer` (
-  `customer_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 1,
-  `province_id` int(11) NOT NULL DEFAULT 0,
-  `city_id` int(11) NOT NULL DEFAULT 0,
+  `customer_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '1',
+  `province_id` int NOT NULL DEFAULT '0',
+  `city_id` int NOT NULL DEFAULT '0',
   `customer_code` varchar(20) DEFAULT '',
   `customer_registration_date` date DEFAULT NULL,
   `customer_name` varchar(50) DEFAULT '',
   `customer_owner_name` varchar(50) DEFAULT NULL,
   `customer_email` varchar(50) DEFAULT '',
   `customer_tax_no` varchar(30) DEFAULT '',
-  `customer_address` text DEFAULT NULL,
+  `customer_address` text,
   `customer_city` varchar(50) DEFAULT '',
   `customer_post_code` varchar(10) DEFAULT '',
   `customer_kelurahan` varchar(50) DEFAULT '',
   `customer_kecamatan` varchar(50) DEFAULT '',
-  `customer_inv_address` text DEFAULT NULL,
+  `customer_inv_address` text,
   `customer_inv_city` varchar(50) DEFAULT '',
   `customer_inv_post_code` varchar(10) DEFAULT '',
   `customer_inv_kelurahan` varchar(50) DEFAULT '',
@@ -5211,24 +5087,24 @@ CREATE TABLE `sales_customer` (
   `customer_mobile_phone1` varchar(100) DEFAULT '',
   `customer_mobile_phone2` varchar(100) DEFAULT '',
   `customer_fax_number` varchar(100) DEFAULT '',
-  `customer_payment_terms` decimal(10,0) DEFAULT 0 COMMENT 'Default Payment Terms',
-  `customer_latitude` decimal(20,10) DEFAULT 0.0000000000,
-  `customer_longitude` decimal(20,10) DEFAULT 0.0000000000,
-  `customer_credit_limit` decimal(20,2) DEFAULT 0.00,
-  `customer_credit_limit_balance` decimal(20,2) DEFAULT 0.00,
-  `customer_remark` text DEFAULT NULL,
-  `customer_status` decimal(1,0) DEFAULT 1 COMMENT '1 : Active, 0 : Not Active',
+  `customer_payment_terms` decimal(10,0) DEFAULT '0' COMMENT 'Default Payment Terms',
+  `customer_latitude` decimal(20,10) DEFAULT '0.0000000000',
+  `customer_longitude` decimal(20,10) DEFAULT '0.0000000000',
+  `customer_credit_limit` decimal(20,2) DEFAULT '0.00',
+  `customer_credit_limit_balance` decimal(20,2) DEFAULT '0.00',
+  `customer_remark` text,
+  `customer_status` decimal(1,0) DEFAULT '1' COMMENT '1 : Active, 0 : Not Active',
   `customer_no` varchar(50) DEFAULT '',
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `record_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `record_id` int DEFAULT '0',
   PRIMARY KEY (`customer_id`),
   KEY `customer_no` (`customer_no`),
   KEY `FK_sales_customer_province_id` (`province_id`),
   KEY `FK_sales_customer_city` (`city_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `sales_customer` */
 
@@ -5237,21 +5113,21 @@ CREATE TABLE `sales_customer` (
 DROP TABLE IF EXISTS `sales_delivery_note`;
 
 CREATE TABLE `sales_delivery_note` (
-  `sales_delivery_note_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_order_id` bigint(20) DEFAULT 0,
-  `shipment_planning_id` bigint(20) DEFAULT 0,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
-  `section_id` int(11) DEFAULT NULL,
-  `salesman_id` int(11) DEFAULT NULL,
-  `customer_id` bigint(20) DEFAULT 0,
-  `expedition_id` int(11) DEFAULT 0,
-  `sales_delivery_note_cost` decimal(20,2) DEFAULT 0.00,
+  `sales_delivery_note_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_order_id` bigint DEFAULT '0',
+  `shipment_planning_id` bigint DEFAULT '0',
+  `sales_order_id` bigint DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
+  `section_id` int DEFAULT NULL,
+  `salesman_id` int DEFAULT NULL,
+  `customer_id` bigint DEFAULT '0',
+  `expedition_id` int DEFAULT '0',
+  `sales_delivery_note_cost` decimal(20,2) DEFAULT '0.00',
   `sales_delivery_note_no` varchar(20) DEFAULT '',
   `ppn_out_amount` decimal(20,2) DEFAULT NULL,
   `expedition_receipt_no` varchar(255) DEFAULT NULL,
   `customer_name` varchar(50) DEFAULT '',
-  `customer_address` text DEFAULT NULL,
+  `customer_address` text,
   `customer_city` varchar(50) DEFAULT '',
   `customer_home_phone` varchar(50) DEFAULT '',
   `customer_mobile_phone1` varchar(50) DEFAULT '',
@@ -5260,56 +5136,56 @@ CREATE TABLE `sales_delivery_note` (
   `purchase_order_no` varchar(50) DEFAULT NULL,
   `salesman_name` varchar(50) DEFAULT '',
   `sales_delivery_note_date` date DEFAULT NULL,
-  `sales_delivery_note_status` decimal(1,0) DEFAULT 0,
-  `sales_invoice_status` decimal(1,0) DEFAULT 0,
-  `sales_delivery_note_remark` text DEFAULT NULL,
-  `posted` decimal(1,0) DEFAULT 0,
-  `posted_id` int(11) DEFAULT NULL,
+  `sales_delivery_note_status` decimal(1,0) DEFAULT '0',
+  `sales_invoice_status` decimal(1,0) DEFAULT '0',
+  `sales_delivery_note_remark` text,
+  `posted` decimal(1,0) DEFAULT '0',
+  `posted_id` int DEFAULT NULL,
   `posted_on` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `rejected_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `rejected_id` int DEFAULT '0',
   `rejected_on` datetime DEFAULT NULL,
-  `rejected_remark` text DEFAULT NULL,
-  `branch_id` int(11) DEFAULT NULL,
-  `return_status` int(11) DEFAULT 0,
-  `pdp_lost_on_expedition_status` int(11) DEFAULT NULL,
-  `buyers_acknowledgment_status` int(11) DEFAULT 0,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `rejected_remark` text,
+  `branch_id` int DEFAULT NULL,
+  `return_status` int DEFAULT '0',
+  `pdp_lost_on_expedition_status` int DEFAULT NULL,
+  `buyers_acknowledgment_status` int DEFAULT '0',
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_note_id`),
   KEY `FK_sales_delivery_note_sales_delivery_order_id` (`sales_delivery_order_id`),
   KEY `FK_sales_delivery_note_sales_order_id` (`sales_order_id`),
   KEY `FK_sales_delivery_note_warehouse_id` (`warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_note` */
 
 insert  into `sales_delivery_note`(`sales_delivery_note_id`,`sales_delivery_order_id`,`shipment_planning_id`,`sales_order_id`,`warehouse_id`,`section_id`,`salesman_id`,`customer_id`,`expedition_id`,`sales_delivery_note_cost`,`sales_delivery_note_no`,`ppn_out_amount`,`expedition_receipt_no`,`customer_name`,`customer_address`,`customer_city`,`customer_home_phone`,`customer_mobile_phone1`,`driver_name`,`fleet_police_number`,`purchase_order_no`,`salesman_name`,`sales_delivery_note_date`,`sales_delivery_note_status`,`sales_invoice_status`,`sales_delivery_note_remark`,`posted`,`posted_id`,`posted_on`,`voided_id`,`voided_on`,`voided_remark`,`rejected_id`,`rejected_on`,`rejected_remark`,`branch_id`,`return_status`,`pdp_lost_on_expedition_status`,`buyers_acknowledgment_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,0,1,8,NULL,NULL,1,13,0.00,'0001/SDN/XI/2023',0.00,'111111','',NULL,'','','','Sayyid','12242435',NULL,'','2023-11-17',0,0,NULL,0,NULL,NULL,0,NULL,NULL,0,NULL,NULL,1,0,NULL,1,0,75,'2023-11-17 07:23:33','2023-11-17 07:23:58');
+(8,5,0,5,8,NULL,NULL,1,11,0.00,'0001/SDN/XII/2023',0.00,'3550004970009','',NULL,'','','','adit','H 9790 NG',NULL,'','2023-12-06',0,0,NULL,0,NULL,NULL,0,NULL,NULL,0,NULL,NULL,1,0,NULL,1,0,3,'2023-12-06 07:24:40','2023-12-06 07:28:08');
 
 /*Table structure for table `sales_delivery_note_item` */
 
 DROP TABLE IF EXISTS `sales_delivery_note_item`;
 
 CREATE TABLE `sales_delivery_note_item` (
-  `sales_delivery_note_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_note_id` bigint(20) DEFAULT 0,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `sales_order_item_id` int(11) DEFAULT 0,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_item_id` int(11) DEFAULT NULL,
-  `section_id` int(11) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
-  `supplier_id` int(11) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `item_unit_id_unit` int(11) DEFAULT 0,
+  `sales_delivery_note_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_note_id` bigint DEFAULT '0',
+  `sales_order_id` bigint DEFAULT '0',
+  `sales_order_item_id` int DEFAULT '0',
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `sales_delivery_order_item_id` int DEFAULT NULL,
+  `section_id` int DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
+  `supplier_id` int DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_id` int DEFAULT '0',
+  `item_type_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `item_unit_id_unit` int DEFAULT '0',
   `quantity` varchar(100) DEFAULT NULL,
   `quantity_unit` varchar(100) DEFAULT NULL,
   `item_default_quantity_unit` varchar(100) DEFAULT NULL,
@@ -5317,153 +5193,153 @@ CREATE TABLE `sales_delivery_note_item` (
   `item_batch_number` varchar(100) DEFAULT NULL,
   `sales_delivery_note_item_token` varchar(250) DEFAULT NULL,
   `sales_delivery_note_item_token_void` varchar(250) DEFAULT NULL,
-  `return_item_status` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `item_unit_price` decimal(10,2) DEFAULT 0.00,
-  `subtotal_price` decimal(20,2) DEFAULT 0.00,
-  `hpp_amount` decimal(20,2) DEFAULT 0.00,
-  `hpp_account_id` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `return_item_status` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `item_unit_price` decimal(10,2) DEFAULT '0.00',
+  `subtotal_price` decimal(20,2) DEFAULT '0.00',
+  `hpp_amount` decimal(20,2) DEFAULT '0.00',
+  `hpp_account_id` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_note_item_id`),
   UNIQUE KEY `sales_delivery_note_item_token` (`sales_delivery_note_item_token`),
   UNIQUE KEY `sales_delivery_note_item_token_void` (`sales_delivery_note_item_token_void`),
   KEY `account_id_hpp` (`hpp_account_id`),
   KEY `section_id` (`section_id`),
   KEY `FK_sales_delivery_note_item_sales_delivery_note_id` (`sales_delivery_note_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_note_item` */
 
 insert  into `sales_delivery_note_item`(`sales_delivery_note_item_id`,`sales_delivery_note_id`,`sales_order_id`,`sales_order_item_id`,`sales_delivery_order_id`,`sales_delivery_order_item_id`,`section_id`,`warehouse_id`,`supplier_id`,`item_category_id`,`item_id`,`item_type_id`,`item_unit_id`,`item_unit_id_unit`,`quantity`,`quantity_unit`,`item_default_quantity_unit`,`item_weight_unit`,`item_batch_number`,`sales_delivery_note_item_token`,`sales_delivery_note_item_token_void`,`return_item_status`,`data_state`,`item_unit_price`,`subtotal_price`,`hpp_amount`,`hpp_account_id`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,1,1,1,0,0,0,0,NULL,1,1,1,'100.00','100.00','1','0.36',NULL,NULL,NULL,0,0,3500.00,339570.00,0.00,0,75,'2023-11-17 07:23:33','2023-11-17 07:23:33');
+(8,8,5,5,5,5,0,0,0,0,NULL,24,5,5,'5.00','5.00','1','0.35',NULL,NULL,NULL,0,0,2000.00,10000.00,0.00,0,3,'2023-12-06 07:24:40','2023-12-06 07:24:40');
 
 /*Table structure for table `sales_delivery_note_item_stock` */
 
 DROP TABLE IF EXISTS `sales_delivery_note_item_stock`;
 
 CREATE TABLE `sales_delivery_note_item_stock` (
-  `sales_delivery_note_item_stock_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_order_item_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_item_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_item_stock_id` int(11) DEFAULT NULL,
-  `sales_delivery_note_id` bigint(20) DEFAULT NULL,
-  `sales_delivery_note_item_id` bigint(20) DEFAULT NULL,
+  `sales_delivery_note_item_stock_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_order_item_id` int DEFAULT NULL,
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `sales_delivery_order_item_id` int DEFAULT NULL,
+  `sales_delivery_order_item_stock_id` int DEFAULT NULL,
+  `sales_delivery_note_id` bigint DEFAULT NULL,
+  `sales_delivery_note_item_id` bigint DEFAULT NULL,
   `item_batch_number` varchar(255) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT NULL,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_stock_id` int(11) NOT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `item_unit_id_unit` int(11) DEFAULT NULL,
+  `item_category_id` int DEFAULT NULL,
+  `item_type_id` int DEFAULT NULL,
+  `item_stock_id` int NOT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `item_unit_id_unit` int DEFAULT NULL,
   `quantity` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `item_default_quantity_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `quantity_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
   `item_weight_default` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `item_weight_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_note_item_stock_id`),
   KEY `FK_sales_delivery_note_item_stock_sales_delivery_note_id` (`sales_delivery_note_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_note_item_stock` */
 
 insert  into `sales_delivery_note_item_stock`(`sales_delivery_note_item_stock_id`,`sales_order_id`,`sales_order_item_id`,`sales_delivery_order_id`,`sales_delivery_order_item_id`,`sales_delivery_order_item_stock_id`,`sales_delivery_note_id`,`sales_delivery_note_item_id`,`item_batch_number`,`item_category_id`,`item_type_id`,`item_stock_id`,`item_unit_id`,`item_unit_id_unit`,`quantity`,`item_default_quantity_unit`,`quantity_unit`,`warehouse_id`,`item_weight_default`,`item_weight_unit`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,1,1,1,1,1,NULL,NULL,1,5,1,NULL,'60','1','60',0,NULL,'0.36',0,75,'2023-11-17 07:23:34','2023-11-17 07:23:34');
+(6,5,5,5,5,5,8,8,NULL,NULL,24,24,5,NULL,'5','1','5',0,NULL,'0.35',0,3,'2023-12-06 07:24:40','2023-12-06 07:24:40');
 
 /*Table structure for table `sales_delivery_order` */
 
 DROP TABLE IF EXISTS `sales_delivery_order`;
 
 CREATE TABLE `sales_delivery_order` (
-  `sales_delivery_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `warehouse_id` int(11) DEFAULT 0,
-  `sales_order_id` bigint(20) DEFAULT NULL,
+  `sales_delivery_order_id` bigint NOT NULL AUTO_INCREMENT,
+  `warehouse_id` int DEFAULT '0',
+  `sales_order_id` bigint DEFAULT NULL,
   `sales_delivery_order_no` varchar(20) DEFAULT '',
   `sales_delivery_order_date` date DEFAULT NULL,
-  `sales_delivery_order_status` decimal(10,0) DEFAULT 0,
-  `sales_delivery_order_remark` text DEFAULT NULL,
-  `sales_delivery_note_status` decimal(1,0) DEFAULT 0,
+  `sales_delivery_order_status` decimal(10,0) DEFAULT '0',
+  `sales_delivery_order_remark` text,
+  `sales_delivery_note_status` decimal(1,0) DEFAULT '0',
   `sales_delivery_order_cost` decimal(20,2) DEFAULT NULL,
   `ppn_out_amount` decimal(11,0) DEFAULT NULL,
-  `branch_id` int(11) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `branch_id` int DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `updated_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `updated_id` int DEFAULT '0',
   `updated_on` datetime DEFAULT NULL,
-  `updated_remark` text DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_remark` text,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_order` */
 
 insert  into `sales_delivery_order`(`sales_delivery_order_id`,`warehouse_id`,`sales_order_id`,`sales_delivery_order_no`,`sales_delivery_order_date`,`sales_delivery_order_status`,`sales_delivery_order_remark`,`sales_delivery_note_status`,`sales_delivery_order_cost`,`ppn_out_amount`,`branch_id`,`data_state`,`created_id`,`created_at`,`voided_id`,`voided_on`,`voided_remark`,`updated_id`,`updated_on`,`updated_remark`,`updated_at`) values 
-(1,6,1,'0001/SDO/XI/2023','2023-11-17',0,NULL,1,NULL,0,1,0,75,'2023-11-17 07:19:18',0,NULL,NULL,0,NULL,NULL,'2023-11-17 07:23:33');
+(5,6,5,'0001/SDO/XII/2023','2023-12-06',0,NULL,1,NULL,0,1,0,3,'2023-12-06 07:23:59',0,NULL,NULL,0,NULL,NULL,'2023-12-06 07:24:40');
 
 /*Table structure for table `sales_delivery_order_item` */
 
 DROP TABLE IF EXISTS `sales_delivery_order_item`;
 
 CREATE TABLE `sales_delivery_order_item` (
-  `sales_delivery_order_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_order_id` bigint(20) DEFAULT 0,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `sales_order_item_id` bigint(20) DEFAULT 0,
-  `salesman_id` int(11) DEFAULT 0,
-  `customer_id` bigint(20) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
+  `sales_delivery_order_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_order_id` bigint DEFAULT '0',
+  `sales_order_id` bigint DEFAULT '0',
+  `sales_order_item_id` bigint DEFAULT '0',
+  `salesman_id` int DEFAULT '0',
+  `customer_id` bigint DEFAULT '0',
+  `item_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
   `item_batch_number` varchar(50) DEFAULT '',
-  `item_type_id` int(11) DEFAULT NULL,
+  `item_type_id` int DEFAULT NULL,
   `quantity` varchar(222) DEFAULT NULL,
   `quantity_ordered` varchar(222) DEFAULT NULL,
-  `item_unit_price` decimal(10,0) DEFAULT 0,
-  `subtotal_price` decimal(20,2) DEFAULT 0.00,
-  `sales_delivery_note_status` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `item_unit_price` decimal(10,0) DEFAULT '0',
+  `subtotal_price` decimal(20,2) DEFAULT '0.00',
+  `sales_delivery_note_status` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `voided_remark` text,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_order_item` */
 
 insert  into `sales_delivery_order_item`(`sales_delivery_order_item_id`,`sales_delivery_order_id`,`sales_order_id`,`sales_order_item_id`,`salesman_id`,`customer_id`,`item_id`,`item_unit_id`,`item_batch_number`,`item_type_id`,`quantity`,`quantity_ordered`,`item_unit_price`,`subtotal_price`,`sales_delivery_note_status`,`data_state`,`created_id`,`created_at`,`voided_id`,`voided_on`,`voided_remark`,`updated_at`) values 
-(1,1,1,1,0,1,0,1,'',1,'100.00','100.00',3500,339570.00,0,0,75,'2023-11-17 07:19:18',0,NULL,NULL,'2023-11-17 07:19:18');
+(5,5,5,5,0,1,0,5,'',24,'5.00','5.00',2000,10000.00,0,0,3,'2023-12-06 07:23:59',0,NULL,NULL,'2023-12-06 07:23:59');
 
 /*Table structure for table `sales_delivery_order_item_composition` */
 
 DROP TABLE IF EXISTS `sales_delivery_order_item_composition`;
 
 CREATE TABLE `sales_delivery_order_item_composition` (
-  `sales_delivery_order_compt_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_order_id` bigint(20) DEFAULT 0,
-  `stockist_id` bigint(20) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
-  `material_id` int(11) DEFAULT 0,
-  `quantity` decimal(10,2) DEFAULT 0.00,
-  `outstanding_quantity` decimal(10,2) DEFAULT 0.00,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `sales_delivery_order_compt_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_order_id` bigint DEFAULT '0',
+  `stockist_id` bigint DEFAULT '0',
+  `item_id` int DEFAULT '0',
+  `material_id` int DEFAULT '0',
+  `quantity` decimal(10,2) DEFAULT '0.00',
+  `outstanding_quantity` decimal(10,2) DEFAULT '0.00',
+  `sales_order_id` bigint DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_compt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_order_item_composition` */
 
@@ -5472,36 +5348,36 @@ CREATE TABLE `sales_delivery_order_item_composition` (
 DROP TABLE IF EXISTS `sales_delivery_order_item_piece`;
 
 CREATE TABLE `sales_delivery_order_item_piece` (
-  `sales_delivery_order_item_piece_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_order_id` bigint(20) DEFAULT 0,
-  `sales_delivery_order_item_id` bigint(20) DEFAULT 0,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `sales_order_item_id` bigint(20) DEFAULT 0,
-  `salesman_id` int(11) DEFAULT 0,
-  `customer_id` bigint(20) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
-  `item_model_id` int(11) DEFAULT 0,
-  `item_flute_id` int(11) DEFAULT 0,
-  `item_substance_id` int(11) DEFAULT 0,
-  `item_category_id` int(11) DEFAULT 0,
-  `item_id` int(11) DEFAULT 0,
-  `item_unit_id` int(11) DEFAULT 0,
-  `item_stock_id` bigint(20) DEFAULT 0,
-  `quantity` decimal(10,2) DEFAULT 0.00,
+  `sales_delivery_order_item_piece_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_order_id` bigint DEFAULT '0',
+  `sales_delivery_order_item_id` bigint DEFAULT '0',
+  `sales_order_id` bigint DEFAULT '0',
+  `sales_order_item_id` bigint DEFAULT '0',
+  `salesman_id` int DEFAULT '0',
+  `customer_id` bigint DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
+  `item_model_id` int DEFAULT '0',
+  `item_flute_id` int DEFAULT '0',
+  `item_substance_id` int DEFAULT '0',
+  `item_category_id` int DEFAULT '0',
+  `item_id` int DEFAULT '0',
+  `item_unit_id` int DEFAULT '0',
+  `item_stock_id` bigint DEFAULT '0',
+  `quantity` decimal(10,2) DEFAULT '0.00',
   `item_batch_number` varchar(50) DEFAULT '',
-  `sales_order_item_length` int(11) DEFAULT 0,
-  `sales_order_item_width` int(11) DEFAULT 0,
-  `sales_order_item_height` int(11) DEFAULT 9,
+  `sales_order_item_length` int DEFAULT '0',
+  `sales_order_item_width` int DEFAULT '0',
+  `sales_order_item_height` int DEFAULT '9',
   `sales_delivery_order_item_piece_token` varchar(250) DEFAULT '',
   `sales_delivery_order_item_piece_token_void` varchar(250) DEFAULT '',
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_item_piece_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_order_item_piece` */
 
@@ -5510,45 +5386,45 @@ CREATE TABLE `sales_delivery_order_item_piece` (
 DROP TABLE IF EXISTS `sales_delivery_order_item_stock`;
 
 CREATE TABLE `sales_delivery_order_item_stock` (
-  `sales_delivery_order_item_stock_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_order_item_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_item_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `item_stock_id` int(11) DEFAULT NULL,
-  `item_total_stock` decimal(10,0) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `sales_delivery_order_item_stock_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_order_item_id` int DEFAULT NULL,
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `sales_delivery_order_item_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `item_stock_id` int DEFAULT NULL,
+  `item_total_stock` decimal(10,0) DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_delivery_order_item_stock` */
 
 insert  into `sales_delivery_order_item_stock`(`sales_delivery_order_item_stock_id`,`sales_order_id`,`sales_order_item_id`,`sales_delivery_order_id`,`sales_delivery_order_item_id`,`item_unit_id`,`item_stock_id`,`item_total_stock`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,1,1,1,1,60,0,75,'2023-11-17 07:19:18','2023-11-17 07:19:18');
+(5,5,5,5,5,5,22,5,0,3,'2023-12-06 07:23:59','2023-12-06 07:23:59');
 
 /*Table structure for table `sales_delivery_order_item_stock_temporary` */
 
 DROP TABLE IF EXISTS `sales_delivery_order_item_stock_temporary`;
 
 CREATE TABLE `sales_delivery_order_item_stock_temporary` (
-  `sales_delivery_order_item_stock_temporary_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_order_item_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_item_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `item_stock_id` int(11) DEFAULT NULL,
-  `item_stock_quantity` decimal(10,0) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `sales_delivery_order_item_stock_temporary_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_order_item_id` int DEFAULT NULL,
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `sales_delivery_order_item_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `item_stock_id` int DEFAULT NULL,
+  `item_stock_quantity` decimal(10,0) DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_item_stock_temporary_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2552 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_delivery_order_item_stock_temporary` */
 
@@ -5557,23 +5433,23 @@ CREATE TABLE `sales_delivery_order_item_stock_temporary` (
 DROP TABLE IF EXISTS `sales_delivery_order_warehouse`;
 
 CREATE TABLE `sales_delivery_order_warehouse` (
-  `sales_delivery_order_warehouse_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_order_id` bigint(20) DEFAULT NULL,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `customer_id` bigint(20) DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT NULL,
-  `item_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `quantity` decimal(10,2) DEFAULT 0.00,
+  `sales_delivery_order_warehouse_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_order_id` bigint DEFAULT NULL,
+  `sales_order_id` bigint DEFAULT '0',
+  `customer_id` bigint DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
+  `item_category_id` int DEFAULT NULL,
+  `item_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
+  `quantity` decimal(10,2) DEFAULT '0.00',
   `item_batch_number` varchar(20) NOT NULL,
-  `item_stock_type` decimal(1,0) DEFAULT 0,
+  `item_stock_type` decimal(1,0) DEFAULT '0',
   `sales_delivery_order_warehouse_token` varchar(250) DEFAULT NULL,
-  `created_id` int(11) DEFAULT NULL,
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_warehouse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `sales_delivery_order_warehouse` */
 
@@ -5582,105 +5458,111 @@ CREATE TABLE `sales_delivery_order_warehouse` (
 DROP TABLE IF EXISTS `sales_invoice`;
 
 CREATE TABLE `sales_invoice` (
-  `sales_invoice_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` int(11) DEFAULT 0,
-  `warehouse_id` int(11) DEFAULT 0,
-  `customer_id` int(11) DEFAULT 0,
-  `sales_order_id` bigint(20) NOT NULL DEFAULT 0,
-  `sales_delivery_note_id` bigint(20) NOT NULL DEFAULT 0,
-  `collection_method_account_id` int(11) NOT NULL DEFAULT 0,
-  `services_income_id` int(11) NOT NULL DEFAULT 0,
+  `sales_invoice_id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` int DEFAULT '0',
+  `warehouse_id` int DEFAULT '0',
+  `customer_id` int DEFAULT '0',
+  `sales_order_id` bigint NOT NULL DEFAULT '0',
+  `sales_delivery_note_id` bigint NOT NULL DEFAULT '0',
+  `collection_method_account_id` int NOT NULL DEFAULT '0',
+  `services_income_id` int NOT NULL DEFAULT '0',
   `sales_invoice_no` varchar(255) DEFAULT NULL,
   `sales_invoice_reference_no` varchar(30) NOT NULL DEFAULT '',
   `sales_invoice_date` date DEFAULT NULL,
   `sales_invoice_due_date` date DEFAULT NULL,
-  `sales_invoice_remark` text DEFAULT NULL,
-  `sales_invoice_status` decimal(1,0) DEFAULT 0 COMMENT '0 = draft, 1 = closed',
-  `services_income_amount` decimal(20,2) NOT NULL DEFAULT 0.00,
-  `subtotal_item` decimal(10,2) DEFAULT 0.00,
-  `subtotal_amount` decimal(20,2) DEFAULT 0.00,
-  `subtotal_before_discount` decimal(20,2) DEFAULT 0.00,
-  `discount_percentage` decimal(10,2) DEFAULT 0.00,
-  `discount_amount` decimal(20,2) DEFAULT 0.00,
-  `return_status` decimal(1,0) DEFAULT 0,
-  `subtotal_after_discount` decimal(20,2) DEFAULT 0.00,
-  `tax_percentage` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `tax_amount` decimal(20,2) NOT NULL DEFAULT 0.00,
+  `sales_invoice_remark` text,
+  `sales_invoice_status` decimal(1,0) DEFAULT '0' COMMENT '0 = draft, 1 = closed',
+  `services_income_amount` decimal(20,2) NOT NULL DEFAULT '0.00',
+  `subtotal_item` decimal(10,2) DEFAULT '0.00',
+  `subtotal_amount` decimal(20,2) DEFAULT '0.00',
+  `subtotal_before_discount` decimal(20,2) DEFAULT '0.00',
+  `discount_percentage` decimal(10,2) DEFAULT '0.00',
+  `discount_amount` decimal(20,2) DEFAULT '0.00',
+  `return_status` decimal(1,0) DEFAULT '0',
+  `subtotal_after_discount` decimal(20,2) DEFAULT '0.00',
+  `tax_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `tax_amount` decimal(20,2) NOT NULL DEFAULT '0.00',
   `goods_received_note_no` varchar(255) DEFAULT NULL,
   `faktur_tax_no` varchar(255) DEFAULT NULL,
-  `buyers_acknowledgment_id` int(11) NOT NULL,
+  `buyers_acknowledgment_id` int NOT NULL,
   `buyers_acknowledgment_no` varchar(255) NOT NULL,
   `ttf_no` varchar(255) NOT NULL,
-  `kwitansi_status` int(11) NOT NULL,
-  `total_amount` decimal(20,2) DEFAULT 0.00,
-  `paid_amount` decimal(20,2) DEFAULT 0.00,
-  `owing_amount` decimal(20,2) DEFAULT 0.00,
-  `shortover_amount` decimal(20,2) DEFAULT 0.00,
-  `last_balance` decimal(20,2) DEFAULT 0.00,
-  `cash_advance_amount` decimal(20,2) DEFAULT 0.00,
-  `change_amount` decimal(20,2) DEFAULT 0.00,
-  `sales_return_amount` decimal(20,2) NOT NULL DEFAULT 0.00,
+  `kwitansi_status` int NOT NULL,
+  `total_amount` decimal(20,2) DEFAULT '0.00',
+  `paid_amount` decimal(20,2) DEFAULT '0.00',
+  `owing_amount` decimal(20,2) DEFAULT '0.00',
+  `shortover_amount` decimal(20,2) DEFAULT '0.00',
+  `last_balance` decimal(20,2) DEFAULT '0.00',
+  `cash_advance_amount` decimal(20,2) DEFAULT '0.00',
+  `change_amount` decimal(20,2) DEFAULT '0.00',
+  `sales_return_amount` decimal(20,2) NOT NULL DEFAULT '0.00',
   `sales_collection_date` date DEFAULT NULL,
   `sales_invoice_token` varchar(250) DEFAULT NULL,
   `sales_invoice_token_void` varchar(250) DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
-  `data_state` decimal(1,0) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `voided_remark` text,
+  `data_state` decimal(1,0) DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_invoice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_invoice` */
+
+insert  into `sales_invoice`(`sales_invoice_id`,`branch_id`,`warehouse_id`,`customer_id`,`sales_order_id`,`sales_delivery_note_id`,`collection_method_account_id`,`services_income_id`,`sales_invoice_no`,`sales_invoice_reference_no`,`sales_invoice_date`,`sales_invoice_due_date`,`sales_invoice_remark`,`sales_invoice_status`,`services_income_amount`,`subtotal_item`,`subtotal_amount`,`subtotal_before_discount`,`discount_percentage`,`discount_amount`,`return_status`,`subtotal_after_discount`,`tax_percentage`,`tax_amount`,`goods_received_note_no`,`faktur_tax_no`,`buyers_acknowledgment_id`,`buyers_acknowledgment_no`,`ttf_no`,`kwitansi_status`,`total_amount`,`paid_amount`,`owing_amount`,`shortover_amount`,`last_balance`,`cash_advance_amount`,`change_amount`,`sales_return_amount`,`sales_collection_date`,`sales_invoice_token`,`sales_invoice_token_void`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(14,1,8,1,5,8,0,0,'0001/TMO.ME/12/2023','','2023-12-07','2023-12-10',NULL,0,0.00,5.00,11100.00,0.00,0.00,0.00,1,0.00,0.00,0.00,NULL,'0001/20230801/01X',44,'0001/BPB/2023','',0,11100.00,0.00,11100.00,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-07 03:31:32','2023-12-07 04:58:41');
 
 /*Table structure for table `sales_invoice_item` */
 
 DROP TABLE IF EXISTS `sales_invoice_item`;
 
 CREATE TABLE `sales_invoice_item` (
-  `sales_invoice_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_invoice_id` bigint(20) DEFAULT 0,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `sales_delivery_note_id` bigint(20) DEFAULT 0,
-  `sales_delivery_note_item_id` bigint(20) DEFAULT 0,
-  `item_id` bigint(20) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_unit_id` bigint(20) DEFAULT 0,
-  `quantity` int(11) DEFAULT 0,
-  `item_unit_price` bigint(20) DEFAULT 0,
-  `item_unit_price_tax` bigint(20) DEFAULT 0,
-  `discount_A` int(11) DEFAULT 0,
-  `discount_B` int(11) DEFAULT 0,
-  `subtotal_price_A` int(11) DEFAULT 0,
-  `subtotal_price_B` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `sales_invoice_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_invoice_id` bigint DEFAULT '0',
+  `sales_order_id` bigint DEFAULT '0',
+  `sales_delivery_note_id` bigint DEFAULT '0',
+  `sales_delivery_note_item_id` bigint DEFAULT '0',
+  `item_id` bigint DEFAULT '0',
+  `item_type_id` int DEFAULT NULL,
+  `item_unit_id` bigint DEFAULT '0',
+  `quantity` int DEFAULT '0',
+  `item_unit_price` bigint DEFAULT '0',
+  `item_unit_price_tax` bigint DEFAULT '0',
+  `discount_A` int DEFAULT '0',
+  `discount_B` int DEFAULT '0',
+  `subtotal_price_A` int DEFAULT '0',
+  `subtotal_price_B` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `sales_invoice_item_id` (`sales_invoice_item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_invoice_item` */
+
+insert  into `sales_invoice_item`(`sales_invoice_item_id`,`sales_invoice_id`,`sales_order_id`,`sales_delivery_note_id`,`sales_delivery_note_item_id`,`item_id`,`item_type_id`,`item_unit_id`,`quantity`,`item_unit_price`,`item_unit_price_tax`,`discount_A`,`discount_B`,`subtotal_price_A`,`subtotal_price_B`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(20,14,5,8,8,0,24,5,5,2000,0,0,0,10000,11100,0,3,'2023-12-07 03:31:33','2023-12-07 03:31:33');
 
 /*Table structure for table `sales_kwitansi` */
 
 DROP TABLE IF EXISTS `sales_kwitansi`;
 
 CREATE TABLE `sales_kwitansi` (
-  `sales_kwitansi_id` int(11) NOT NULL AUTO_INCREMENT,
-  `sales_kwitansi_no` varchar(255) NOT NULL,
-  `customer_id` int(11) DEFAULT NULL,
+  `sales_kwitansi_id` int NOT NULL AUTO_INCREMENT,
+  `sales_kwitansi_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `customer_id` int DEFAULT NULL,
   `sales_kwitansi_date` date DEFAULT NULL,
-  `print_type` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `print_type` int DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   KEY `sales_kwitansi_id` (`sales_kwitansi_id`),
   KEY `sales_kwitansi_id_2` (`sales_kwitansi_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi` */
 
@@ -5689,16 +5571,16 @@ CREATE TABLE `sales_kwitansi` (
 DROP TABLE IF EXISTS `sales_kwitansi_item`;
 
 CREATE TABLE `sales_kwitansi_item` (
-  `sales_kwitansi_item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `sales_kwitansi_id` int(11) DEFAULT NULL,
-  `sales_invoice_id` int(11) DEFAULT NULL,
-  `buyers_acknowledgment_id` int(11) DEFAULT NULL,
-  `checked` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `sales_kwitansi_item_id` int NOT NULL AUTO_INCREMENT,
+  `sales_kwitansi_id` int DEFAULT NULL,
+  `sales_invoice_id` int DEFAULT NULL,
+  `buyers_acknowledgment_id` int DEFAULT NULL,
+  `checked` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` date DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   KEY `sales_kwitansi_item_id` (`sales_kwitansi_item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi_item` */
 
@@ -5707,197 +5589,203 @@ CREATE TABLE `sales_kwitansi_item` (
 DROP TABLE IF EXISTS `sales_order`;
 
 CREATE TABLE `sales_order` (
-  `sales_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_order_type_id` bigint(20) DEFAULT 0,
-  `customer_id` int(11) DEFAULT 0,
-  `salesman_id` int(11) DEFAULT 0,
+  `sales_order_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_order_type_id` bigint DEFAULT '0',
+  `customer_id` int DEFAULT '0',
+  `salesman_id` int DEFAULT '0',
   `receipt_image` varchar(500) DEFAULT '',
   `sales_order_no` varchar(50) DEFAULT '',
   `purchase_order_no` varchar(50) DEFAULT '0',
   `sales_order_date` date DEFAULT NULL,
   `sales_order_delivery_date` date DEFAULT NULL,
-  `sales_order_status` int(11) DEFAULT 0,
-  `sales_order_over_limit` decimal(20,2) DEFAULT 0.00,
-  `sales_order_over_due_status` int(11) NOT NULL DEFAULT 0,
-  `purchase_order_status` int(11) DEFAULT 0,
-  `work_order_status` int(11) DEFAULT 0 COMMENT '0 : Draft, 1 : Processed',
-  `purchase_requisition_status` int(11) DEFAULT 0,
-  `sales_order_design_status` int(11) DEFAULT 0,
-  `sales_delivery_order_status` int(11) DEFAULT 0,
-  `customer_credit_limit_balance` decimal(20,2) DEFAULT 0.00,
-  `sales_invoice_status` int(11) DEFAULT 0,
-  `sales_invoice_last_balance` decimal(20,2) DEFAULT 0.00,
-  `sales_order_remark` text DEFAULT NULL,
-  `sales_order_over_remark` text DEFAULT NULL,
-  `total_item` decimal(10,2) DEFAULT 0.00,
-  `subtotal_before_discount` decimal(20,2) DEFAULT 0.00,
-  `discount_percentage` decimal(20,2) DEFAULT 0.00,
-  `discount_amount` decimal(20,2) DEFAULT 0.00,
-  `subtotal_after_discount` decimal(20,2) DEFAULT 0.00,
-  `ppn_out_percentage` decimal(20,2) DEFAULT 0.00,
-  `ppn_out_amount` decimal(20,2) DEFAULT 0.00,
-  `subtotal_after_ppn_out` decimal(20,2) DEFAULT 0.00,
-  `sales_shipment_status` decimal(1,0) DEFAULT 0,
-  `paid_amount` decimal(20,2) DEFAULT 0.00,
-  `total_amount` decimal(20,2) DEFAULT 0.00,
-  `last_balance` decimal(20,2) DEFAULT 0.00,
-  `counter_edited` decimal(5,0) DEFAULT 0,
-  `branch_id` int(11) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `sales_order_status` int DEFAULT '0',
+  `sales_order_over_limit` decimal(20,2) DEFAULT '0.00',
+  `sales_order_over_due_status` int NOT NULL DEFAULT '0',
+  `purchase_order_status` int DEFAULT '0',
+  `work_order_status` int DEFAULT '0' COMMENT '0 : Draft, 1 : Processed',
+  `purchase_requisition_status` int DEFAULT '0',
+  `sales_order_design_status` int DEFAULT '0',
+  `sales_delivery_order_status` int DEFAULT '0',
+  `customer_credit_limit_balance` decimal(20,2) DEFAULT '0.00',
+  `sales_invoice_status` int DEFAULT '0',
+  `sales_invoice_last_balance` decimal(20,2) DEFAULT '0.00',
+  `sales_order_remark` text,
+  `sales_order_over_remark` text,
+  `total_item` decimal(10,2) DEFAULT '0.00',
+  `subtotal_before_discount` decimal(20,2) DEFAULT '0.00',
+  `discount_percentage` decimal(20,2) DEFAULT '0.00',
+  `discount_amount` decimal(20,2) DEFAULT '0.00',
+  `subtotal_after_discount` decimal(20,2) DEFAULT '0.00',
+  `ppn_out_percentage` decimal(20,2) DEFAULT '0.00',
+  `ppn_out_amount` decimal(20,2) DEFAULT '0.00',
+  `subtotal_after_ppn_out` decimal(20,2) DEFAULT '0.00',
+  `sales_shipment_status` decimal(1,0) DEFAULT '0',
+  `paid_amount` decimal(20,2) DEFAULT '0.00',
+  `total_amount` decimal(20,2) DEFAULT '0.00',
+  `last_balance` decimal(20,2) DEFAULT '0.00',
+  `counter_edited` decimal(5,0) DEFAULT '0',
+  `branch_id` int DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `approved` int(11) DEFAULT 0,
-  `approved_id` int(11) DEFAULT 0,
+  `approved` int DEFAULT '0',
+  `approved_id` int DEFAULT '0',
   `approved_on` datetime DEFAULT NULL,
-  `approved_remark` text DEFAULT NULL,
-  `closed` int(11) DEFAULT 0,
-  `closed_id` int(11) DEFAULT 0,
+  `approved_remark` text,
+  `closed` int DEFAULT '0',
+  `closed_id` int DEFAULT '0',
   `closed_on` datetime DEFAULT NULL,
-  `closed_remark` text DEFAULT NULL,
-  `voided_id` int(11) DEFAULT 0,
+  `closed_remark` text,
+  `voided_id` int DEFAULT '0',
   `voided_on` datetime DEFAULT NULL,
-  `voided_remark` text DEFAULT NULL,
+  `voided_remark` text,
   `customer_no` varchar(50) DEFAULT '',
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_order_id`),
   KEY `sales_order_id` (`sales_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_order` */
 
 insert  into `sales_order`(`sales_order_id`,`sales_order_type_id`,`customer_id`,`salesman_id`,`receipt_image`,`sales_order_no`,`purchase_order_no`,`sales_order_date`,`sales_order_delivery_date`,`sales_order_status`,`sales_order_over_limit`,`sales_order_over_due_status`,`purchase_order_status`,`work_order_status`,`purchase_requisition_status`,`sales_order_design_status`,`sales_delivery_order_status`,`customer_credit_limit_balance`,`sales_invoice_status`,`sales_invoice_last_balance`,`sales_order_remark`,`sales_order_over_remark`,`total_item`,`subtotal_before_discount`,`discount_percentage`,`discount_amount`,`subtotal_after_discount`,`ppn_out_percentage`,`ppn_out_amount`,`subtotal_after_ppn_out`,`sales_shipment_status`,`paid_amount`,`total_amount`,`last_balance`,`counter_edited`,`branch_id`,`data_state`,`created_id`,`created_at`,`approved`,`approved_id`,`approved_on`,`approved_remark`,`closed`,`closed_id`,`closed_on`,`closed_remark`,`voided_id`,`voided_on`,`voided_remark`,`customer_no`,`updated_at`) values 
-(1,2,1,0,'','0001/SO/XI/2023','PO-171123','2023-11-17','2023-11-17',2,0.00,0,0,0,0,0,1,0.00,0,0.00,NULL,NULL,100.00,0.00,0.00,0.00,376922.70,0.00,0.00,376922.70,0,0.00,376922.70,0.00,0,1,0,0,'2023-11-17 07:16:42',1,0,NULL,NULL,0,0,NULL,NULL,0,NULL,NULL,'','2023-11-17 07:23:34');
+(5,2,1,0,'','0001/SO/XII/2023','0001/PO/XII/2023','2023-12-06','2023-12-06',2,0.00,0,0,0,0,0,1,0.00,0,0.00,NULL,NULL,5.00,0.00,0.00,0.00,11100.00,0.00,0.00,11100.00,0,0.00,11100.00,0.00,0,1,0,0,'2023-12-06 07:22:05',1,0,NULL,NULL,0,0,NULL,NULL,0,NULL,NULL,'','2023-12-06 07:24:40');
 
 /*Table structure for table `sales_order_item` */
 
 DROP TABLE IF EXISTS `sales_order_item`;
 
 CREATE TABLE `sales_order_item` (
-  `sales_order_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_order_id` bigint(20) DEFAULT 0,
-  `item_type_id` int(11) DEFAULT 0,
-  `quantity` decimal(10,2) DEFAULT 0.00,
-  `quantity_delivered` decimal(10,2) DEFAULT 0.00,
-  `quantity_shipped` decimal(10,2) DEFAULT 0.00,
-  `quantity_planned` decimal(10,2) DEFAULT 0.00,
-  `quantity_outstanding` decimal(10,2) DEFAULT 0.00,
-  `quantity_received` decimal(10,2) DEFAULT 0.00,
-  `quantity_ordered` decimal(10,2) DEFAULT 0.00,
-  `quantity_cavity` decimal(10,2) DEFAULT 0.00,
-  `quantity_minimum` decimal(10,2) DEFAULT 0.00,
-  `quantity_resulted` decimal(10,2) DEFAULT 0.00,
-  `sales_order_item_status` int(11) DEFAULT 0,
-  `item_substance_price` decimal(10,2) DEFAULT 0.00,
-  `item_unit_id` int(11) DEFAULT NULL,
-  `item_unit_price` decimal(10,2) DEFAULT 0.00,
-  `item_unit_price_adds` decimal(10,2) DEFAULT 0.00,
-  `purchase_requisition_status` int(11) DEFAULT 0,
-  `purchase_order_status` int(11) DEFAULT 0,
-  `work_order_status` int(11) DEFAULT 0,
-  `sales_delivery_order_status` int(11) NOT NULL DEFAULT 0,
-  `sales_delivery_note_status` int(11) DEFAULT 0,
-  `sales_invoice_status` int(11) DEFAULT 0,
-  `quantity_minimum_status` int(11) DEFAULT 0,
-  `subtotal_amount` decimal(20,2) DEFAULT 0.00,
-  `subtotal_additional_amount` decimal(20,2) DEFAULT 0.00,
-  `subtotal_item_amount` decimal(20,2) DEFAULT 0.00,
+  `sales_order_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_order_id` bigint DEFAULT '0',
+  `item_type_id` int DEFAULT '0',
+  `quantity` decimal(10,2) DEFAULT '0.00',
+  `quantity_delivered` decimal(10,2) DEFAULT '0.00',
+  `quantity_shipped` decimal(10,2) DEFAULT '0.00',
+  `quantity_planned` decimal(10,2) DEFAULT '0.00',
+  `quantity_outstanding` decimal(10,2) DEFAULT '0.00',
+  `quantity_received` decimal(10,2) DEFAULT '0.00',
+  `quantity_ordered` decimal(10,2) DEFAULT '0.00',
+  `quantity_cavity` decimal(10,2) DEFAULT '0.00',
+  `quantity_minimum` decimal(10,2) DEFAULT '0.00',
+  `quantity_resulted` decimal(10,2) DEFAULT '0.00',
+  `sales_order_item_status` int DEFAULT '0',
+  `item_substance_price` decimal(10,2) DEFAULT '0.00',
+  `item_unit_id` int DEFAULT NULL,
+  `item_unit_price` decimal(10,2) DEFAULT '0.00',
+  `item_unit_price_adds` decimal(10,2) DEFAULT '0.00',
+  `purchase_requisition_status` int DEFAULT '0',
+  `purchase_order_status` int DEFAULT '0',
+  `work_order_status` int DEFAULT '0',
+  `sales_delivery_order_status` int NOT NULL DEFAULT '0',
+  `sales_delivery_note_status` int DEFAULT '0',
+  `sales_invoice_status` int DEFAULT '0',
+  `quantity_minimum_status` int DEFAULT '0',
+  `subtotal_amount` decimal(20,2) DEFAULT '0.00',
+  `subtotal_additional_amount` decimal(20,2) DEFAULT '0.00',
+  `subtotal_item_amount` decimal(20,2) DEFAULT '0.00',
   `sales_order_no` varchar(50) DEFAULT '',
-  `sales_order_status` int(11) DEFAULT 0,
-  `discount_percentage_item` decimal(10,2) DEFAULT 0.00,
+  `sales_order_status` int DEFAULT '0',
+  `discount_percentage_item` decimal(10,2) DEFAULT '0.00',
   `discount_percentage_item_b` decimal(10,2) DEFAULT NULL,
-  `discount_amount_item` decimal(10,2) DEFAULT 0.00,
+  `discount_amount_item` decimal(10,2) DEFAULT '0.00',
   `discount_amount_item_b` decimal(10,2) DEFAULT NULL,
-  `subtotal_after_discount_item_a` decimal(10,2) DEFAULT 0.00,
+  `subtotal_after_discount_item_a` decimal(10,2) DEFAULT '0.00',
   `subtotal_after_discount_item_b` decimal(10,2) DEFAULT NULL,
   `total_price_after_ppn_amount` decimal(20,2) NOT NULL,
   `ppn_amount_item` decimal(20,2) NOT NULL,
-  `record_id` bigint(20) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `record_id` bigint DEFAULT '0',
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_order_item_id`),
   KEY `sales_order_item_id` (`sales_order_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_order_item` */
 
 insert  into `sales_order_item`(`sales_order_item_id`,`sales_order_id`,`item_type_id`,`quantity`,`quantity_delivered`,`quantity_shipped`,`quantity_planned`,`quantity_outstanding`,`quantity_received`,`quantity_ordered`,`quantity_cavity`,`quantity_minimum`,`quantity_resulted`,`sales_order_item_status`,`item_substance_price`,`item_unit_id`,`item_unit_price`,`item_unit_price_adds`,`purchase_requisition_status`,`purchase_order_status`,`work_order_status`,`sales_delivery_order_status`,`sales_delivery_note_status`,`sales_invoice_status`,`quantity_minimum_status`,`subtotal_amount`,`subtotal_additional_amount`,`subtotal_item_amount`,`sales_order_no`,`sales_order_status`,`discount_percentage_item`,`discount_percentage_item_b`,`discount_amount_item`,`discount_amount_item_b`,`subtotal_after_discount_item_a`,`subtotal_after_discount_item_b`,`total_price_after_ppn_amount`,`ppn_amount_item`,`record_id`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,1,100.00,100.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,100.00,0,0.00,1,3500.00,0.00,0,0,0,1,0,0,0,350000.00,0.00,0.00,'',0,1.00,2.00,3500.00,6930.00,346500.00,339570.00,376922.70,37352.70,0,0,0,'2023-11-17 07:16:42','2023-11-17 07:19:18');
+(5,5,24,5.00,5.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,5.00,0,0.00,5,2000.00,0.00,0,0,0,1,0,0,0,10000.00,0.00,0.00,'',0,0.00,0.00,0.00,0.00,10000.00,10000.00,11100.00,1100.00,0,0,0,'2023-12-06 07:22:06','2023-12-06 07:23:59');
 
 /*Table structure for table `sales_order_return` */
 
 DROP TABLE IF EXISTS `sales_order_return`;
 
 CREATE TABLE `sales_order_return` (
-  `sales_order_return_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_order_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_invoice_id` int(11) DEFAULT NULL,
-  `warehouse_id` bigint(20) DEFAULT NULL,
-  `customer_id` int(11) DEFAULT NULL,
-  `sales_order_return_no` varchar(200) DEFAULT NULL,
-  `no_retur_barang` varchar(255) DEFAULT NULL,
-  `nota_retur_pajak` varchar(255) DEFAULT NULL,
-  `barang_kembali` int(11) DEFAULT 0,
+  `sales_order_return_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_order_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_invoice_id` int DEFAULT NULL,
+  `warehouse_id` bigint DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
+  `sales_order_return_no` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `no_retur_barang` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nota_retur_pajak` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `barang_kembali` int DEFAULT '0',
   `sales_order_return_date` date DEFAULT NULL,
-  `sales_order_return_remark` text DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `sales_order_return_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_order_return_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `sales_order_return` */
+
+insert  into `sales_order_return`(`sales_order_return_id`,`sales_delivery_note_id`,`sales_delivery_order_id`,`sales_order_id`,`sales_invoice_id`,`warehouse_id`,`customer_id`,`sales_order_return_no`,`no_retur_barang`,`nota_retur_pajak`,`barang_kembali`,`sales_order_return_date`,`sales_order_return_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(115,8,5,5,14,7,1,NULL,'1','1',1,'2023-12-07',NULL,0,3,'2023-12-07 04:58:40','2023-12-07 06:14:34');
 
 /*Table structure for table `sales_order_return_item` */
 
 DROP TABLE IF EXISTS `sales_order_return_item`;
 
 CREATE TABLE `sales_order_return_item` (
-  `sales_order_return_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sales_order_return_id` bigint(20) DEFAULT NULL,
-  `sales_delivery_note_id` int(11) DEFAULT NULL,
-  `sales_delivery_note_item_id` int(11) DEFAULT NULL,
-  `sales_order_id` int(11) DEFAULT NULL,
-  `sales_invoice_id` int(11) DEFAULT NULL,
-  `sales_order_item_id` int(11) DEFAULT NULL,
-  `warehouse_id` int(11) DEFAULT NULL,
-  `supplier_id` int(11) DEFAULT NULL,
-  `item_category_id` int(11) DEFAULT NULL,
-  `item_id` int(11) DEFAULT NULL,
-  `item_stock_id` int(11) DEFAULT NULL,
-  `item_type_id` int(11) DEFAULT NULL,
-  `item_unit_id` int(11) DEFAULT NULL,
+  `sales_order_return_item_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_order_return_id` bigint DEFAULT NULL,
+  `sales_delivery_note_id` int DEFAULT NULL,
+  `sales_delivery_note_item_id` int DEFAULT NULL,
+  `sales_order_id` int DEFAULT NULL,
+  `sales_invoice_id` int DEFAULT NULL,
+  `sales_order_item_id` int DEFAULT NULL,
+  `warehouse_id` int DEFAULT NULL,
+  `supplier_id` int DEFAULT NULL,
+  `item_category_id` int DEFAULT NULL,
+  `item_id` int DEFAULT NULL,
+  `item_stock_id` int DEFAULT NULL,
+  `item_type_id` int DEFAULT NULL,
+  `item_unit_id` int DEFAULT NULL,
   `quantity` decimal(10,0) DEFAULT NULL,
   `quantity_return` decimal(10,0) DEFAULT NULL,
   `item_unit_price` decimal(10,0) DEFAULT NULL,
   `subtotal_price` decimal(10,0) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_order_return_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_order_return_item` */
+
+insert  into `sales_order_return_item`(`sales_order_return_item_id`,`sales_order_return_id`,`sales_delivery_note_id`,`sales_delivery_note_item_id`,`sales_order_id`,`sales_invoice_id`,`sales_order_item_id`,`warehouse_id`,`supplier_id`,`item_category_id`,`item_id`,`item_stock_id`,`item_type_id`,`item_unit_id`,`quantity`,`quantity_return`,`item_unit_price`,`subtotal_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(88,115,8,8,5,14,5,NULL,NULL,NULL,0,24,24,5,5,2,2000,4000,0,3,'2023-12-07 04:58:41','2023-12-07 04:58:41');
 
 /*Table structure for table `sales_order_type` */
 
 DROP TABLE IF EXISTS `sales_order_type`;
 
 CREATE TABLE `sales_order_type` (
-  `sales_order_type_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `sales_order_type_id` bigint NOT NULL AUTO_INCREMENT,
   `sales_order_type_name` varchar(250) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_order_type_id`),
   KEY `sales_order_type_id` (`sales_order_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `sales_order_type` */
 
@@ -5910,19 +5798,19 @@ insert  into `sales_order_type`(`sales_order_type_id`,`sales_order_type_name`,`d
 DROP TABLE IF EXISTS `system_log_user`;
 
 CREATE TABLE `system_log_user` (
-  `user_log_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT 0,
+  `user_log_id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT '0',
   `username` varchar(50) DEFAULT '',
-  `id_previllage` int(11) DEFAULT 0,
+  `id_previllage` int DEFAULT '0',
   `log_stat` enum('0','1') DEFAULT NULL,
   `class_name` varchar(250) DEFAULT '',
   `pk` varchar(20) DEFAULT '',
   `remark` varchar(50) DEFAULT '',
   `log_time` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=latin1;
 
 /*Data for the table `system_log_user` */
 
@@ -6094,7 +5982,9 @@ insert  into `system_log_user`(`user_log_id`,`user_id`,`username`,`id_previllage
 (165,0,'PBF',2141,'1','SalesInvoice.printSalesInvoice','PBF','Print Sales Invoice','2023-09-11 15:30:56','2023-09-11 15:30:56','2023-09-11 15:30:56'),
 (166,0,'PBF',2141,'1','SalesInvoice.printSalesInvoice','PBF','Print Sales Invoice','2023-10-09 10:21:37','2023-10-09 10:21:37','2023-10-09 10:21:37'),
 (167,0,'PBF',2141,'1','SalesInvoice.printSalesInvoice','PBF','Print Sales Invoice','2023-10-10 14:37:28','2023-10-10 14:37:28','2023-10-10 14:37:28'),
-(168,0,'PBF',2141,'1','SalesInvoice.printSalesInvoice','PBF','Print Sales Invoice','2023-10-19 13:39:12','2023-10-19 13:39:12','2023-10-19 13:39:12');
+(168,0,'PBF',2141,'1','SalesInvoice.printSalesInvoice','PBF','Print Sales Invoice','2023-10-19 13:39:12','2023-10-19 13:39:12','2023-10-19 13:39:12'),
+(169,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-07 10:31:50','2023-12-07 10:31:50','2023-12-07 10:31:50'),
+(170,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-07 13:24:58','2023-12-07 13:24:58','2023-12-07 13:24:58');
 
 /*Table structure for table `system_menu` */
 
@@ -6104,11 +5994,11 @@ CREATE TABLE `system_menu` (
   `id_menu` varchar(10) NOT NULL,
   `id` varchar(100) DEFAULT NULL,
   `type` enum('folder','file','function') DEFAULT NULL,
-  `indent_level` int(11) DEFAULT NULL,
+  `indent_level` int DEFAULT NULL,
   `text` varchar(50) DEFAULT NULL,
   `image` varchar(50) DEFAULT NULL,
-  `last_update` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `last_update` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `system_menu` */
 
@@ -6176,7 +6066,7 @@ insert  into `system_menu`(`id_menu`,`id`,`type`,`indent_level`,`text`,`image`,`
 ('711','account','file',3,'No. Perkiraan',NULL,'2023-06-23 10:52:23'),
 ('72','#','folder',2,'Jurnal',NULL,'2023-06-23 10:52:23'),
 ('721','journal','file',3,'Jurnal Umum',NULL,'2023-06-23 10:52:23'),
-('73','ledger','file',2,'Buku Besar',NULL,'2023-06-23 10:52:23'),
+('73','ledger-report','file',2,'Buku Besar',NULL,'2023-12-07 14:17:07'),
 ('8','#','folder',1,'Preference',NULL,'2023-06-23 10:52:23'),
 ('81','preference-company','file',2,'Preferensi Perusahaan',NULL,'2023-06-23 10:52:23'),
 ('129','warehouse-in-type','file',3,'Tipe Penambahan Barang Gudang',NULL,'2023-06-23 10:52:23'),
@@ -6211,13 +6101,13 @@ insert  into `system_menu`(`id_menu`,`id`,`type`,`indent_level`,`text`,`image`,`
 DROP TABLE IF EXISTS `system_menu_mapping`;
 
 CREATE TABLE `system_menu_mapping` (
-  `menu_mapping_id` int(11) NOT NULL,
-  `user_group_level` int(11) DEFAULT NULL,
+  `menu_mapping_id` int NOT NULL,
+  `user_group_level` int DEFAULT NULL,
   `id_menu` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`menu_mapping_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `system_menu_mapping` */
 
@@ -6515,15 +6405,15 @@ insert  into `system_menu_mapping`(`menu_mapping_id`,`user_group_level`,`id_menu
 DROP TABLE IF EXISTS `system_user`;
 
 CREATE TABLE `system_user` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_group_id` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT '',
-  `branch_id` int(11) DEFAULT 0,
-  `email` varchar(255) DEFAULT NULL,
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `user_group_id` int DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `branch_id` int DEFAULT '0',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `data_state` int(11) DEFAULT 0,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data_state` int DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`)
@@ -6545,20 +6435,20 @@ insert  into `system_user`(`user_id`,`user_group_id`,`name`,`branch_id`,`email`,
 DROP TABLE IF EXISTS `system_user_group`;
 
 CREATE TABLE `system_user_group` (
-  `user_group_id` int(11) NOT NULL,
-  `user_group_level` int(11) DEFAULT NULL,
+  `user_group_id` int NOT NULL,
+  `user_group_level` int DEFAULT NULL,
   `user_group_name` varchar(50) DEFAULT NULL,
   `user_group_token` varchar(250) DEFAULT '',
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT 0,
+  `data_state` int DEFAULT '0',
+  `created_id` int DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
-  `updated_id` int(11) DEFAULT 0,
+  `updated_id` int DEFAULT '0',
   `updated_on` datetime DEFAULT NULL,
-  `deleted_id` int(11) DEFAULT 0,
+  `deleted_id` int DEFAULT '0',
   `deleted_on` datetime DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `system_user_group` */
 
@@ -6572,7 +6462,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_bank_disbursement` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_bank_disbursement` BEFORE INSERT ON `acct_bank_disbursement` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_bank_disbursement` BEFORE INSERT ON `acct_bank_disbursement` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE day_period 		VARCHAR(20);
@@ -6627,7 +6517,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_bank_receipt` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_bank_receipt` BEFORE INSERT ON `acct_bank_receipt` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_bank_receipt` BEFORE INSERT ON `acct_bank_receipt` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE day_period 		VARCHAR(20);
@@ -6681,7 +6571,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_cash_disbursement` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_cash_disbursement` BEFORE INSERT ON `acct_cash_disbursement` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_cash_disbursement` BEFORE INSERT ON `acct_cash_disbursement` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE day_period 		VARCHAR(20);
@@ -6736,7 +6626,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_cash_receipt` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_cash_receipt` BEFORE INSERT ON `acct_cash_receipt` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_cash_receipt` BEFORE INSERT ON `acct_cash_receipt` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE day_period 		VARCHAR(20);
@@ -6790,7 +6680,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_check_disbursement` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_check_disbursement` BEFORE INSERT ON `acct_check_disbursement` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_check_disbursement` BEFORE INSERT ON `acct_check_disbursement` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE day_period 		VARCHAR(20);
@@ -6845,7 +6735,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_check_receipt` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_check_receipt` BEFORE INSERT ON `acct_check_receipt` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_check_receipt` BEFORE INSERT ON `acct_check_receipt` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE day_period 		VARCHAR(20);
@@ -6899,39 +6789,83 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_journal_voucher` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_journal_voucher` BEFORE INSERT ON `acct_journal_voucher` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_journal_voucher` BEFORE INSERT ON `acct_journal_voucher` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
-	DECLARE day_period 		VARCHAR(20);
-	DECLARE period 			VARCHAR(20);
+	DECLARE PERIOD 			VARCHAR(20);
 	DECLARE tPeriod			INT;
 	DECLARE nJournalVoucherNo	VARCHAR(20);
+	DECLARE monthPeriod		VARCHAR(20);
 	
-	SET year_period = (SELECT RIGHT(YEAR(new.journal_voucher_date),2));
+	SET year_period = (YEAR(new.journal_voucher_date));
 	
 	SET month_period = (SELECT RIGHT(CONCAT('0', MONTH(new.journal_voucher_date)), 2));
 	
-	SET day_period = (SELECT RIGHT(CONCAT('0', DAY(new.journal_voucher_date)), 2));
-	
-	SET nJournalVoucherNo = CONCAT('JV', year_period, month_period);
-		
-	SET period = (SELECT RIGHT(TRIM(journal_voucher_no), 4) 
-		FROM acct_journal_voucher
-		WHERE LEFT(TRIM(journal_voucher_no), 6) = nJournalVoucherNo
-		ORDER BY journal_voucher_id DESC 
-		LIMIT 1);
-	
-	IF (period IS NULL ) THEN 
-		SET period = "0000";
+	IF (month_period) = '01' THEN 
+		SET monthPeriod = 'I';
 	END IF;
 	
-	SET tPeriod = CAST(period AS DECIMAL(10));
+	IF (month_period) = '02' THEN 
+		SET monthPeriod = 'II';
+	END IF;
+	
+	IF (month_period) = '03' THEN 
+		SET monthPeriod = 'III';
+	END IF;
+	
+	IF (month_period) = '04' THEN 
+		SET monthPeriod = 'IV';
+	END IF;	
+	
+	IF (month_period) = '05' THEN 
+		SET monthPeriod = 'V';
+	END IF;
+	
+	IF (month_period) = '06' THEN 
+		SET monthPeriod = 'VI';
+	END IF;
+	
+	IF (month_period) = '07' THEN 
+		SET monthPeriod = 'VII';
+	END IF;
+	
+	IF (month_period) = '08' THEN 
+		SET monthPeriod = 'VIII';
+	END IF;
+	
+	IF (month_period) = '09' THEN 
+		SET monthPeriod = 'IX';
+	END IF;
+	
+	IF (month_period) = '10' THEN 
+		SET monthPeriod = 'X';
+	END IF;
+	
+	IF (month_period) = '11' THEN 
+		SET monthPeriod = 'XI';
+	END IF;
+	
+	IF (month_period) = '12' THEN 
+		SET monthPeriod = 'XII';
+	END IF;
+		
+	SET PERIOD = (SELECT LEFT(TRIM(journal_voucher_no), 4) 
+			FROM acct_journal_voucher
+			WHERE RIGHT(TRIM(journal_voucher_no), 4) = year_period
+			ORDER BY journal_voucher_id DESC 
+			LIMIT 1);
+		
+	IF (PERIOD IS NULL ) THEN 
+		SET PERIOD = "0000";
+	END IF;
+	
+	SET tPeriod = CAST(PERIOD AS DECIMAL(10));
 	
 	SET tPeriod = tPeriod + 1;
 	
-	SET period = RIGHT(CONCAT('000', TRIM(CAST(tPeriod AS CHAR(4)))), 4);
+	SET PERIOD = RIGHT(CONCAT('0000', TRIM(CAST(tPeriod AS CHAR(4)))), 4);
 	
-	SET nJournalVoucherNo = CONCAT(nJournalVoucherNo, period);
+	SET nJournalVoucherNo = CONCAT(PERIOD, '/JV/', monthPeriod, '/', year_period);
 		
 	SET new.journal_voucher_no = nJournalVoucherNo;
     END */$$
@@ -6945,56 +6879,63 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_acct_journal_voucher_item` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_acct_journal_voucher_item` BEFORE INSERT ON `acct_journal_voucher_item` FOR EACH ROW BEGIN
-	declare nAccountIDDefaultStatus		decimal(1);
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_acct_journal_voucher_item` BEFORE INSERT ON `acct_journal_voucher_item` FOR EACH ROW BEGIN
+	DECLARE nAccountIDDefaultStatus		DECIMAL(1);
 	
-	declare nBranchID 		int(5);
 	DECLARE nAccountID		INT(10);
-	DECLARE nOpeningBalance		DECIMAL(20,2);
-	DECLARE nLastBalance		DECIMAL(20,2);
+	DECLARE nBranchID		INT(10);
+	DECLARE nOpeningBalance		DECIMAL(20);
+	DECLARE nLastBalance		DECIMAL(20);
 	DECLARE nTransactionType	DECIMAL(10);
 	DECLARE nTransactionCode	VARCHAR(20);
 	DECLARE nTransactionID		INT(10);
 	DECLARE nTransactionDate	DATE;
-	declare nAccountIn		decimal(20,2);
-	DECLARE nAccountOut		DECIMAL(20,2);
+	DECLARE nAccountIn		DECIMAL(20);
+	DECLARE nAccountOut		DECIMAL(20);
+	DECLARE nCreatedId		INT(10);
 	
-	set nBranchID			= (select branch_id from acct_journal_voucher
-						where journal_voucher_id = new.journal_voucher_id);
 	
+	SET nCreatedId			= (SELECT created_id FROM acct_journal_voucher
+						WHERE journal_voucher_id = new.journal_voucher_id);
+	
+	SET nBranchID 			= (SELECT company_id FROM acct_journal_voucher
+						WHERE journal_voucher_id = new.journal_voucher_id);
+						
 	SET nOpeningBalance 		= (SELECT last_balance FROM acct_account_balance
-						WHERE account_id = new.account_id
-						and branch_id = nBranchID);
+						WHERE company_id = nBranchID
+						AND account_id = new.account_id);
 						
-	if ( nOpeningBalance is null ) then
-		set nOpeningBalance = 0;
-	end if;
+	IF ( nOpeningBalance IS NULL ) THEN
+		SET nOpeningBalance = 0;
+	END IF;
 				
-	set nAccountIDDefaultStatus 	= (select account_default_status from acct_account 
-						where account_id = new.account_id);
+	SET nAccountIDDefaultStatus 	= (SELECT account_default_status FROM acct_account 
+						WHERE account_id = new.account_id);
 						
-	if (new.account_id_status = nAccountIDDefaultStatus) then
+	IF (new.account_id_status = nAccountIDDefaultStatus) THEN
 		SET nLastBalance 	= nOpeningBalance + new.journal_voucher_amount;
-		set nAccountIn 		= new.journal_voucher_amount;
+		SET nAccountIn 		= new.journal_voucher_amount;
 		SET nAccountOut		= 0;
-	else
+	ELSE
 		SET nLastBalance 	= nOpeningBalance - new.journal_voucher_amount;
 		SET nAccountIn 		= 0;
 		SET nAccountOut		= new.journal_voucher_amount;
-	end if; 
-		
-	set nAccountID 			= (select account_id from acct_account_balance where account_id = new.account_id and branch_id = nBranchID);
+	END IF; 
+	
+	SET nAccountID 			= (SELECT account_id FROM acct_account_balance 
+						WHERE company_id = nBranchID
+						AND account_id = new.account_id);
 	
 	IF (nAccountID IS NULL) THEN
-		insert into acct_account_balance (branch_id, account_id, last_balance) values (nBranchID, new.account_id, nLastBalance);
-	else 
+		INSERT INTO acct_account_balance (company_id, account_id, last_balance, created_id) VALUES (nBranchID, new.account_id, nLastBalance, nCreatedId);
+	ELSE 
 		UPDATE acct_account_balance SET last_balance = nLastBalance
 			WHERE account_id = new.account_id
-			and branch_id = nBranchID;
-	end if;
+			AND company_id = nBranchID;
+	END IF;
 	
 		
-	SET nTransactionType 		= (select transaction_module_id from acct_journal_voucher where journal_voucher_id = new.journal_voucher_id);
+	SET nTransactionType 		= (SELECT transaction_module_id FROM acct_journal_voucher WHERE journal_voucher_id = new.journal_voucher_id);
 		
 	SET nTransactionCode 		= (SELECT transaction_module_code FROM acct_journal_voucher WHERE journal_voucher_id = new.journal_voucher_id);
 	
@@ -7002,85 +6943,10 @@ DELIMITER $$
 		
 	SET nTransactionDate 		= (SELECT journal_voucher_date FROM acct_journal_voucher WHERE journal_voucher_id = new.journal_voucher_id);
 		
-	INSERT INTO acct_account_balance_detail (branch_id, transaction_type, transaction_code, transaction_id, transaction_date, 
-		account_id, opening_balance, account_in, account_out, last_balance)
+	INSERT INTO acct_account_balance_detail (company_id, transaction_type, transaction_code, transaction_id, transaction_date, 
+		account_id, opening_balance, account_in, account_out, last_balance, created_id)
 		VALUES (nBranchID, nTransactionType, nTransactionCode, nTransactionID, nTransactionDate, 
-			new.account_id, nOpeningBalance, nAccountIn, nAccountOut, nLastBalance);
-    END */$$
-
-
-DELIMITER ;
-
-/* Trigger structure for table `acct_journal_voucher_item` */
-
-DELIMITER $$
-
-/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_acct_journal_voucher_item` */$$
-
-/*!50003 CREATE */ /*!50003 TRIGGER `update_acct_journal_voucher_item` BEFORE UPDATE ON `acct_journal_voucher_item` FOR EACH ROW BEGIN
-	DECLARE nAccountIDDefaultStatus		DECIMAL(1);
-	
-	DECLARE nBranchID 			INT(5);
-	DECLARE nAccountID			INT(10);
-	DECLARE nOpeningBalance			DECIMAL(20,2);
-	DECLARE nLastBalance			DECIMAL(20,2);
-	DECLARE nTransactionType		DECIMAL(10);
-	DECLARE nTransactionCode		VARCHAR(20);
-	DECLARE nTransactionID			INT(10);
-	DECLARE nTransactionDate		DATE;
-	DECLARE nAccountIn			DECIMAL(20,2);
-	DECLARE nAccountOut			DECIMAL(20,2);
-	
-	IF (new.data_state = 2) THEN 
-	
-		SET nBranchID			= (SELECT branch_id FROM acct_journal_voucher
-						WHERE journal_voucher_id = new.journal_voucher_id);
-	
-		SET nOpeningBalance 		= (SELECT last_balance FROM acct_account_balance
-						WHERE account_id = new.account_id
-						AND branch_id = nBranchID);
-							
-		IF ( nOpeningBalance IS NULL ) THEN
-			SET nOpeningBalance = 0;
-		END IF;
-					
-		SET nAccountIDDefaultStatus 	= (SELECT account_default_status FROM acct_account 
-							WHERE account_id = new.account_id);
-							
-		IF (new.account_id_status = nAccountIDDefaultStatus) THEN
-			SET nLastBalance 	= nOpeningBalance - new.journal_voucher_amount;
-			SET nAccountOut 	= new.journal_voucher_amount;
-			SET nAccountIn		= 0;
-		ELSE
-			SET nLastBalance 	= nOpeningBalance + new.journal_voucher_amount;
-			SET nAccountOut 	= 0;
-			SET nAccountIn		= new.journal_voucher_amount;
-		END IF; 
-			
-		SET nAccountID 			= (SELECT account_id FROM acct_account_balance WHERE account_id = new.account_id AND branch_id = nBranchID);
-	
-		IF (nAccountID IS NULL) THEN
-			INSERT INTO acct_account_balance (branch_id, account_id, last_balance) VALUES (nBranchID, new.account_id, nLastBalance);
-		ELSE 
-			UPDATE acct_account_balance SET last_balance = nLastBalance
-				WHERE account_id = new.account_id
-				AND branch_id = nBranchID;
-		END IF;
-		
-			
-		SET nTransactionType 		= (SELECT transaction_module_id FROM acct_journal_voucher WHERE journal_voucher_id = new.journal_voucher_id);
-			
-		SET nTransactionCode 		= (SELECT transaction_module_code FROM acct_journal_voucher WHERE journal_voucher_id = new.journal_voucher_id);
-		
-		SET nTransactionID 		= new.journal_voucher_id;
-			
-		SET nTransactionDate 		= (SELECT journal_voucher_date FROM acct_journal_voucher WHERE journal_voucher_id = new.journal_voucher_id);
-			
-		INSERT INTO acct_account_balance_detail (branch_id, transaction_type, transaction_code, transaction_id, transaction_date, 
-			account_id, opening_balance, account_in, account_out, last_balance)
-			VALUES (nBranchID, nTransactionType, nTransactionCode, nTransactionID, nTransactionDate, 
-				new.account_id, nOpeningBalance, nAccountIn, nAccountOut, nLastBalance);
-	end if;
+			new.account_id, nOpeningBalance, nAccountIn, nAccountOut, nLastBalance, nCreatedId);
     END */$$
 
 
@@ -7092,7 +6958,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_inv_goods_received_note` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_inv_goods_received_note` BEFORE INSERT ON `inv_goods_received_note` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_inv_goods_received_note` BEFORE INSERT ON `inv_goods_received_note` FOR EACH ROW BEGIN
 	DECLARE year_period 			VARCHAR(20);
 	DECLARE month_period 			VARCHAR(20);
 	DECLARE PERIOD 				VARCHAR(20);
@@ -7183,7 +7049,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_inv_item_stock_card_in` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_inv_item_stock_card_in` AFTER INSERT ON `inv_goods_received_note_item` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_inv_item_stock_card_in` AFTER INSERT ON `inv_goods_received_note_item` FOR EACH ROW BEGIN
 	DECLARE nOpeningBalance 		DECIMAL(20,5); 
 	DECLARE nLastOpeningBalance 		DECIMAL(20,5);  
 	DECLARE nLastBalance	 		DECIMAL(20,5);
@@ -7275,7 +7141,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_inv_warehouse_in` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_inv_warehouse_in` BEFORE INSERT ON `inv_warehouse_in` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_inv_warehouse_in` BEFORE INSERT ON `inv_warehouse_in` FOR EACH ROW BEGIN
 	DECLARE year_period 			VARCHAR(20);
 	DECLARE month_period 			VARCHAR(20);
 	DECLARE PERIOD 				VARCHAR(20);
@@ -7366,7 +7232,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_inv_warehouse_out` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_inv_warehouse_out` BEFORE INSERT ON `inv_warehouse_out` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_inv_warehouse_out` BEFORE INSERT ON `inv_warehouse_out` FOR EACH ROW BEGIN
 	DECLARE year_period 			VARCHAR(20);
 	DECLARE month_period 			VARCHAR(20);
 	DECLARE PERIOD 				VARCHAR(20);
@@ -7457,7 +7323,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_inv_warehouse_transfer` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_inv_warehouse_transfer` BEFORE INSERT ON `inv_warehouse_transfer` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_inv_warehouse_transfer` BEFORE INSERT ON `inv_warehouse_transfer` FOR EACH ROW BEGIN
 	DECLARE year_period 			VARCHAR(20);
 	DECLARE month_period 			VARCHAR(20);
 	DECLARE PERIOD 				VARCHAR(20);
@@ -7548,7 +7414,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_inv_warehouse_transfer_received_note` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_inv_warehouse_transfer_received_note` BEFORE INSERT ON `inv_warehouse_transfer_received_note` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_inv_warehouse_transfer_received_note` BEFORE INSERT ON `inv_warehouse_transfer_received_note` FOR EACH ROW BEGIN
 	DECLARE year_period 				VARCHAR(20);
 	DECLARE month_period 				VARCHAR(20);
 	DECLARE PERIOD 					VARCHAR(20);
@@ -7639,7 +7505,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_purchase_invoice` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_purchase_invoice` BEFORE INSERT ON `purchase_invoice` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_purchase_invoice` BEFORE INSERT ON `purchase_invoice` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE PERIOD 			VARCHAR(20);
@@ -7730,7 +7596,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_purchase_order` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_purchase_order` BEFORE INSERT ON `purchase_order` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_purchase_order` BEFORE INSERT ON `purchase_order` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE PERIOD 			VARCHAR(20);
@@ -7821,7 +7687,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_purchase_order_return` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_purchase_order_return` BEFORE INSERT ON `purchase_order_return` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_purchase_order_return` BEFORE INSERT ON `purchase_order_return` FOR EACH ROW BEGIN
 	DECLARE year_period 			VARCHAR(20);
 	DECLARE month_period 			VARCHAR(20);
 	DECLARE PERIOD 				VARCHAR(20);
@@ -7912,7 +7778,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_purchase_payment` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_purchase_payment` BEFORE INSERT ON `purchase_payment` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_purchase_payment` BEFORE INSERT ON `purchase_payment` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE PERIOD 			VARCHAR(20);
@@ -8003,7 +7869,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_collection` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_collection` BEFORE INSERT ON `sales_collection` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_sales_collection` BEFORE INSERT ON `sales_collection` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE PERIOD 			VARCHAR(20);
@@ -8094,7 +7960,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_delivery_note` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_delivery_note` BEFORE INSERT ON `sales_delivery_note` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_sales_delivery_note` BEFORE INSERT ON `sales_delivery_note` FOR EACH ROW BEGIN
 	DECLARE year_period 			VARCHAR(20);
 	DECLARE month_period 			VARCHAR(20);
 	DECLARE PERIOD 				VARCHAR(20);
@@ -8185,7 +8051,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_delivery_order` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_delivery_order` BEFORE INSERT ON `sales_delivery_order` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_sales_delivery_order` BEFORE INSERT ON `sales_delivery_order` FOR EACH ROW BEGIN
 	DECLARE year_period 			VARCHAR(20);
 	DECLARE month_period 			VARCHAR(20);
 	DECLARE PERIOD 				VARCHAR(20);
@@ -8276,7 +8142,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_invoice` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_invoice` BEFORE INSERT ON `sales_invoice` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_sales_invoice` BEFORE INSERT ON `sales_invoice` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(50);
 	DECLARE month_period 		VARCHAR(50);
 	DECLARE PERIOD 			VARCHAR(20);
@@ -8320,7 +8186,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_kwitansi` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_kwitansi` BEFORE INSERT ON `sales_kwitansi` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_sales_kwitansi` BEFORE INSERT ON `sales_kwitansi` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(50);
 	DECLARE month_period 		VARCHAR(50);
 	DECLARE PERIOD 			VARCHAR(20);
@@ -8364,7 +8230,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_order` */$$
 
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_order` BEFORE INSERT ON `sales_order` FOR EACH ROW BEGIN
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `insert_sales_order` BEFORE INSERT ON `sales_order` FOR EACH ROW BEGIN
 	DECLARE year_period 		VARCHAR(20);
 	DECLARE month_period 		VARCHAR(20);
 	DECLARE PERIOD 			VARCHAR(20);
@@ -8444,97 +8310,6 @@ DELIMITER $$
 	SET nSalesOrderNo = CONCAT(PERIOD, '/SO/', monthPeriod, '/', year_period);
 		
 	SET new.sales_order_no = nSalesOrderNo;
-    END */$$
-
-
-DELIMITER ;
-
-/* Trigger structure for table `sales_order_return` */
-
-DELIMITER $$
-
-/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_order_return` */$$
-
-/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_order_return` BEFORE INSERT ON `sales_order_return` FOR EACH ROW BEGIN
-	DECLARE year_period 			VARCHAR(20);
-	DECLARE month_period 			VARCHAR(20);
-	DECLARE PERIOD 				VARCHAR(20);
-	DECLARE tPeriod				INT;
-	DECLARE nSalesOrderReturnNo		VARCHAR(20);
-	DECLARE monthPeriod			VARCHAR(20);
-	DECLARE lenSalesOrderReturnNo	DECIMAL(10);
-	
-	SET year_period = (YEAR(new.sales_order_return_date));
-	
-	SET month_period = (SELECT RIGHT(CONCAT('0', MONTH(new.sales_order_return_date)), 2));
-	
-	IF (month_period) = '01' THEN 
-		SET monthPeriod = 'I';
-	END IF;
-	
-	IF (month_period) = '02' THEN 
-		SET monthPeriod = 'II';
-	END IF;
-	
-	IF (month_period) = '03' THEN 
-		SET monthPeriod = 'III';
-	END IF;
-	
-	IF (month_period) = '04' THEN 
-		SET monthPeriod = 'IV';
-	END IF;	
-	
-	IF (month_period) = '05' THEN 
-		SET monthPeriod = 'V';
-	END IF;
-	
-	IF (month_period) = '06' THEN 
-		SET monthPeriod = 'VI';
-	END IF;
-	
-	IF (month_period) = '07' THEN 
-		SET monthPeriod = 'VII';
-	END IF;
-	
-	IF (month_period) = '08' THEN 
-		SET monthPeriod = 'VIII';
-	END IF;
-	
-	IF (month_period) = '09' THEN 
-		SET monthPeriod = 'IX';
-	END IF;
-	
-	IF (month_period) = '10' THEN 
-		SET monthPeriod = 'X';
-	END IF;
-	
-	IF (month_period) = '11' THEN 
-		SET monthPeriod = 'XI';
-	END IF;
-	
-	IF (month_period) = '12' THEN 
-		SET monthPeriod = 'XII';
-	END IF;
-		
-	SET PERIOD = (SELECT LEFT(TRIM(sales_order_return_no), 4) 
-			FROM sales_order_return
-			WHERE RIGHT(TRIM(sales_order_return_no), 4) = year_period
-			ORDER BY sales_order_return_id DESC 
-			LIMIT 1);
-		
-	IF (PERIOD IS NULL ) THEN 
-		SET PERIOD = "0000";
-	END IF;
-	
-	SET tPeriod = CAST(PERIOD AS DECIMAL(10));
-	
-	SET tPeriod = tPeriod + 1;
-	
-	SET PERIOD = RIGHT(CONCAT('0000', TRIM(CAST(tPeriod AS CHAR(4)))), 4);
-	
-	SET nSalesOrderReturnNo = CONCAT(PERIOD, '/SR/', monthPeriod, '/', year_period);
-		
-	SET new.sales_order_return_no = nSalesOrderReturnNo;
     END */$$
 
 
