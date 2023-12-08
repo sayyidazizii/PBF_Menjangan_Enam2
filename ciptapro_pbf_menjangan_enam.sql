@@ -12,7 +12,7 @@ MySQL - 8.0.30 : Database - ciptapro_pbf_menjangan_enam
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`ciptapro_pbf_menjangan_enam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ciptapro_pbf_menjangan_enam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `ciptapro_pbf_menjangan_enam`;
 
@@ -5725,12 +5725,12 @@ CREATE TABLE `sales_order_return` (
   `sales_invoice_id` int DEFAULT NULL,
   `warehouse_id` bigint DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
-  `sales_order_return_no` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `no_retur_barang` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `nota_retur_pajak` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `sales_order_return_no` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `no_retur_barang` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nota_retur_pajak` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `barang_kembali` int DEFAULT '0',
   `sales_order_return_date` date DEFAULT NULL,
-  `sales_order_return_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `sales_order_return_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `data_state` int DEFAULT '0',
   `created_id` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
