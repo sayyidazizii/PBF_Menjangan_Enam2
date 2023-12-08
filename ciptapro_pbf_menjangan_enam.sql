@@ -602,7 +602,7 @@ CREATE TABLE `acct_account_balance` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_balance_id`),
   KEY `FK_acct_account_balance_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_balance` */
 
@@ -647,7 +647,7 @@ CREATE TABLE `acct_account_balance_detail` (
   `created_id` int DEFAULT NULL,
   PRIMARY KEY (`account_balance_detail_id`),
   KEY `FK_acct_account_balance_detail_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_balance_detail` */
 
@@ -1644,7 +1644,7 @@ CREATE TABLE `acct_journal_voucher` (
   KEY `transaction_journal_no` (`transaction_journal_no`),
   KEY `project_id` (`project_id`),
   KEY `project_type_id` (`project_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher` */
 
@@ -1681,7 +1681,7 @@ CREATE TABLE `acct_journal_voucher_item` (
   UNIQUE KEY `journal_voucher_item_token_void` (`journal_voucher_item_token_void`),
   KEY `FK_acct_journal_voucher_item_journal_voucher_id` (`journal_voucher_id`) USING BTREE,
   KEY `FK_acct_journal_voucher_item_account_id` (`account_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=244 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher_item` */
 
@@ -3383,7 +3383,7 @@ CREATE TABLE `inv_goods_received_note` (
 /*Data for the table `inv_goods_received_note` */
 
 insert  into `inv_goods_received_note`(`goods_received_note_id`,`purchase_order_id`,`supplier_id`,`warehouse_id`,`goods_received_note_no`,`goods_received_note_date`,`goods_received_note_expired_date`,`goods_received_note_remark`,`goods_received_note_status_invoice`,`receipt_image`,`delivery_note_no`,`faktur_no`,`subtotal_item`,`item_type`,`data_state`,`voided_remark`,`voided_id`,`voided_at`,`created_id`,`created_at`,`updated_at`) values 
-(13,235,8,6,'0001/IGRN/XII/2023','2023-12-06',NULL,NULL,0,'',NULL,'11',5,0,0,NULL,0,NULL,3,'2023-12-06 05:00:39','2023-12-06 05:00:39');
+(13,235,8,6,'0001/IGRN/XII/2023','2023-12-06',NULL,NULL,1,'',NULL,'11',5,0,0,NULL,0,NULL,3,'2023-12-06 05:00:39','2023-12-08 04:11:47');
 
 /*Table structure for table `inv_goods_received_note_batch_number` */
 
@@ -4478,9 +4478,12 @@ CREATE TABLE `purchase_invoice` (
   KEY `FK_purchase_invoice_branch_id` (`branch_id`),
   KEY `FK_purchase_invoice_supplier_id` (`supplier_id`),
   KEY `FK_purchase_invoice_warehouse_id` (`warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_invoice` */
+
+insert  into `purchase_invoice`(`purchase_invoice_id`,`goods_received_note_id`,`purchase_order_id`,`branch_id`,`supplier_id`,`warehouse_id`,`payment_method_account_id`,`ongkir_account_id`,`purchase_invoice_date`,`purchase_invoice_payment_terms`,`purchase_invoice_due_date`,`purchase_invoice_no`,`purchase_invoice_reference_no`,`purchase_invoice_remark`,`purchase_police_number`,`subtotal_item`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`purchase_handling_fee`,`tax_percentage`,`tax_amount`,`faktur_tax_no`,`total_amount`,`paid_amount`,`payment_discount`,`owing_amount`,`shortover_amount`,`down_payment_amount`,`purchase_return_amount`,`debit_amount`,`purchase_invoice_status`,`purchase_invoice_token`,`purchase_invoice_token_void`,`voided_id`,`voided_on`,`voided_remark`,`record_no`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(21,13,235,1,8,6,0,0,'2023-12-08',0.00,'2023-12-10','0001/PI/XII/2023','',NULL,'',5,5000.00,0.00,0.00,0.00,0.00,0.00,'1',5000.00,0.00,0.00,5000.00,0.00,0.00,0.00,0.00,0,NULL,NULL,0,NULL,NULL,'',0,3,'2023-12-08 04:11:46','2023-12-08 04:21:03');
 
 /*Table structure for table `purchase_invoice_item` */
 
@@ -4509,9 +4512,12 @@ CREATE TABLE `purchase_invoice_item` (
   PRIMARY KEY (`purchase_invoice_item_id`),
   UNIQUE KEY `purchase_invoice_item_token` (`purchase_invoice_item_token`),
   KEY `FK_purchase_invoice_item_purchase_invoice_id` (`purchase_invoice_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_invoice_item` */
+
+insert  into `purchase_invoice_item`(`purchase_invoice_item_id`,`purchase_invoice_id`,`goods_received_note_item_id`,`item_category_id`,`item_type_id`,`item_id`,`quantity_scale`,`quantity`,`item_unit_id`,`item_unit_cost`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`subtotal_amount_after_discount`,`purchase_invoice_item_token`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(39,21,495,2,24,NULL,0.00,5.00,5,1000.00,5000.00,0.00,0.00,0.00,NULL,0,3,'2023-12-08 04:11:47','2023-12-08 04:11:47');
 
 /*Table structure for table `purchase_order` */
 
