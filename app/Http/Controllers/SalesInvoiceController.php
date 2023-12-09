@@ -1153,7 +1153,7 @@ class SalesInvoiceController extends Controller
                     <td style=\"text-align: right;\">" . number_format($val['discount_A'], 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['subtotal_price_A'], 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['discount_B'], 2) . "</td>
-                    <td style=\"text-align: right;\">" . number_format(($val['subtotal_price_B']), 2) . "</td>
+                    <td style=\"text-align: right;\">" . number_format(($val['subtotal_price_A'] - $val['discount_B'], 2) . "</td>
                 </tr> 
                 ";
                 
