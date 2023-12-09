@@ -1325,7 +1325,7 @@ class SalesInvoiceController extends Controller
             ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
             ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
         if ($customer_id || $customer_id != null || $customer_id != '') {
-            $salesinvoice   = $salesinvoice->where('customer_id', $customer_id);
+            $salesinvoice   = $salesinvoice->where('sales_invoice.customer_id', $customer_id);
         }
         $salesinvoice       = $salesinvoice->get();
 
