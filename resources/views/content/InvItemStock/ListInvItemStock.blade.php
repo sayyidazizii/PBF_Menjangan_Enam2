@@ -165,7 +165,8 @@
                         <th width="10%" style='text-align:center'>No.Retur Barang</th>
                         <th width="10%" style='text-align:center'>Nota Retur Pajak</th>
                         <th width="10%" style='text-align:center'>Tanggal Datang</th>
-                        <th width="5%" style='text-align:center'>Harga</th>
+                        <th width="5%" style='text-align:center'>HPP</th>
+                        <th width="5%" style='text-align:center'>HNA</th>
                         <th width="10%" style='text-align:center'>Tanggal Kadaluarsa</th>
                         {{-- <th width="8%" style='text-align:center'>Aksi</th> --}}
                     </tr>
@@ -210,6 +211,7 @@
 
                         <td>{{date('d/m/Y', strtotime($stock['item_stock_date']))}}</td>
                         <td>{{$stock['item_unit_cost']}}</td>
+                        <td>{{$stock['item_unit_price']}}</td>
                         <?php if($stock['item_stock_expired_date']=='0000-00-00') {?>
                             <td>-</td>
                         <?php } else {?>

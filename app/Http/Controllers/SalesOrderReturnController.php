@@ -110,7 +110,7 @@ class SalesOrderReturnController extends Controller
             ->where('return_status', 0)
             ->get();
 
-        return view('content/SalesInvoice/SearchSalesInvoice', compact('salesInvoice'));
+        return view('content/SalesInvoice/SearchSalesinvoice', compact('salesInvoice'));
     }
 
     public function addSalesOrderReturn($sales_invoice_id)

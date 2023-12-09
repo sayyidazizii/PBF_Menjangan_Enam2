@@ -239,6 +239,17 @@ class SalesInvoiceController extends Controller
         return $salesorder['quantity_received'] ?? '';
     }
 
+    public function getPpn($sales_order_item_id)
+    {
+
+        $salesorder = SalesOrderItem::select('ppn_amount_item')
+            ->where('sales_order_item_id', $sales_order_item_id)
+            ->where('data_state', 0)
+            ->first();
+
+        return $salesorder['ppn_amount_item'] ?? '';
+    }
+
     public function addSalesInvoice($buyers_acknowledgment_id)
     {
         // $salesdeliverynote = SalesDeliveryNote::select('sales_delivery_note.*', 'sales_order.*','inv_warehouse.*')
@@ -1050,9 +1061,6 @@ class SalesInvoiceController extends Controller
                 <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">Hal</div> </td>
                 <td style=\"text-align:left;width:2%\"> : </td>
                 <td style=\"text-align:left;width:15%\"><div style=\"text-align: left; font-size:11px\">Tagihan Obat</div></td>
-                <td style=\"text-align:left;width:8%\"><div style=\"text-align: left; font-size:11px\">No. INV</div></td>
-   		<td style=\"text-align:left;width:2%\">:</td>
-                <td style=\"text-align:left;width:20%\"><div style=\"font-size:11px\">" . $salesinvoice['sales_invoice_no'] . "</div></td>
                 <td style=\"text-align:left;width:20%\"></td>
             </tr>
 	    <tr>
@@ -1065,9 +1073,9 @@ class SalesInvoiceController extends Controller
                 <td style=\"text-align:left;width:20%\"><div style=\"font-size:13.5px\"></div></td>
             </tr>
             <tr>
-                <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">Jatuh Tempo</div></td>
+                <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">No. INV</div></td>
                 <td style=\"text-align:left;width:2%\"> : </td>
-                <td style=\"text-align:left;width:45%\"><div style=\"text-align: left; font-size:11px\">" . date('d M Y', strtotime($salesinvoice['sales_invoice_due_date'])) . "</div></td>
+                <td style=\"text-align:left;width:45%\"><div style=\"text-align: left; font-size:11px\">" .  $salesinvoice['sales_invoice_no']  . "</div></td>
                 <td style=\"text-align:left;width:5%\"></td>
                 <td style=\"text-align:left;width:12%\"></td>
                 <td style=\"text-align:left;width:2%\"> </td>
@@ -1130,15 +1138,21 @@ class SalesInvoiceController extends Controller
             <td width=\"10%\" ><div style=\"text-align: center;\">Exp Date</div></td>
             <td width=\"5%\" ><div style=\"text-align: center;\">Qty</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Harga</div></td>
-            <td width=\"10%\" ><div style=\"text-align: center;\">Pot A </div></td>
-            <td width=\"12%\" ><div style=\"text-align: center;\">Total A</div></td>
-            <td width=\"10%\" ><div style=\"text-align: center;\">Pot B </div></td>
-            <td width=\"13%\" ><div style=\"text-align: center;\">Total Akhir Item</div></td>
+            <td width=\"10%\" ><div style=\"text-align: center;\">Total</div></td>
+            <td width=\"10%\" ><div style=\"text-align: center;\">Diskon 1</div></td>
+            <td width=\"12%\" ><div style=\"text-align: center;\">Diskon 2</div></td>
+            <td width=\"13%\" ><div style=\"text-align: center;\">Total Bayar</div></td>
         </tr>";
         $no = 1;
         $tbl2 = "";
+        $qtyTotal = 0;
         $total_price = 0;
+        $dpp = 0;
+        $ppn = 0;
+        $totalBayar = 0;
         foreach ($salesinvoiceitem as $key => $val) {   
+            $qtyTotal = $this->getQtyBpb($val['sales_order_item_id']) * $val['item_unit_price'];
+            $totalBayar = $val['subtotal_price_A'] - $val['discount_B'];
             if ($val['quantity'] != 0) {
                 $cur = 'IDR';
                 $rate = 1;
@@ -1150,42 +1164,44 @@ class SalesInvoiceController extends Controller
                     <td style=\"text-align: center;\">" . $this->getExpDate($val['item_stock_id']) . "</td>
                     <td style=\"text-align: center;\">" . $this->getQtyBpb($val['sales_order_item_id']) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['item_unit_price'], 2) . "</td>
+                    <td style=\"text-align: right;\">" . number_format($qtyTotal, 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['discount_A'], 2) . "</td>
-                    <td style=\"text-align: right;\">" . number_format($val['subtotal_price_A'], 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['discount_B'], 2) . "</td>
-                    <td style=\"text-align: right;\">" .$val['subtotal_price_A'] - $val['discount_B']."</td>
+                    <td style=\"text-align: right;\">" .number_format($totalBayar, 2)."</td>
                 </tr> 
                 ";
                 
                 $total_price += ($val['subtotal_price_B']);
-                $dpp = $salesinvoice['subtotal'];
-                if ($customer_tax_no != '') {
-                    // $ppn = $dpp * 0.1;
-                    if ($salesinvoice['customer_kawasan_berikat'] == 1) {
-                        $ppn = $salesinvoice['ppn_amount'];
-                        $total = $salesinvoice['total_amount'] + $ppn;
-                    } else if ($salesinvoice['customer_kawasan_berikat'] == 0) {
+                
+                $dpp += $totalBayar;
+                $ppn += $this->getPpn($val['sales_order_item_id']);
+                // if ($customer_tax_no != '') {
+                //     // $ppn = $dpp * 0.1;
+                //     if ($salesinvoice['customer_kawasan_berikat'] == 1) {
+                //         $ppn = $salesinvoice['ppn_amount'];
+                //         $total = $salesinvoice['total_amount'] + $ppn;
+                //     } else if ($salesinvoice['customer_kawasan_berikat'] == 0) {
 
-                        $total = $salesinvoice['total_amount'];
-                        $ppn = $total - $dpp;
-                    }
-                } else {
-                    $ppn = 0;
-                    $total = $salesinvoice['total_amount'];
-                }
+                //         $total = $salesinvoice['total_amount'];
+                //         $ppn = $total - $dpp;
+                //     }
+                // } else {
+                //     $ppn = 0;
+                //     $total = $salesinvoice['total_amount'];
+                // }
                 $no++;
             }
         }
 
             $html2  .= "
             <tr>
-                <td colspan=\"10\" style=\"text-align: right;font-weight: bold\";>Discount Nota</td>
-                <td style=\"text-align: right;\">" . number_format($salesinvoice['discount_amount'], 2) . "</td>
+                <td colspan=\"10\" style=\"text-align: right;font-weight: bold\";>DPP</td>
+                <td style=\"text-align: right;\">" . number_format($dpp, 2) . "</td>
                 <td></td>
             </tr>
             <tr>
                 <td colspan=\"10\" style=\"text-align: right;font-weight: bold\";>PPN</td>
-                <td style=\"text-align: right;\">" . number_format($salesinvoice['ppn_out_amount'], 2) . "</td>
+                <td style=\"text-align: right;\">" . number_format($ppn, 2) . "</td>
                 <td></td>
             </tr>
             <tr>

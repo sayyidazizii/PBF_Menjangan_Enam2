@@ -212,11 +212,11 @@
                                 <th style='text-align:center'>Qty BPB</th>
                                 <th style='text-align:center'>Harga Satuan</th>
                                 <th style='text-align:center'>Satuan</th>
-                                <th style='text-align:center'>Diskon A</th>
-                                <th style='text-align:center'>Subtotal Setelah Diskon A</th>
-                                <th style='text-align:center'>Diskon B</th>
+                                <th style='text-align:center'>Diskon 1</th>
+                                <th style='text-align:center'>Subtotal Setelah Diskon 1</th>
+                                <th style='text-align:center'>Diskon 2</th>
      				            <th style='text-align:center'>PPN Item</th>
-                                <th style='text-align:center'>Subtotal Setelah Diskon B</th>
+                                <th style='text-align:center'>Subtotal Setelah Diskon 2</th>
                             </tr>
                         </thead>
                         <tbody id='tablebody'>
