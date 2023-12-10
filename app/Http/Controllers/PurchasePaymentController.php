@@ -599,6 +599,21 @@ class PurchasePaymentController extends Controller
 
         return $account['account_name'];
     }
+    public function getAccountBank($supplier_id){
+        $account = CoreSupplier::where('data_state', 0)
+        ->where('supplier_id', $supplier_id)
+        ->first();
+
+        return $account['supplier_bank_acct_name'];
+    }
+
+    public function getAccountNo($supplier_id){
+        $account = CoreSupplier::where('data_state', 0)
+        ->where('supplier_id', $supplier_id)
+        ->first();
+
+        return $account['supplier_bank_acct_no'];
+    }
 
     public function getCoreBankName($bank_id){
         $bank = CoreBank::where('data_state', 0)

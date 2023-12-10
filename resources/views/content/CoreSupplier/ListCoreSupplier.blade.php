@@ -48,6 +48,8 @@
                         <th width="20%" style='text-align:center'>Alamat Pemasok</th>
                         <th width="20%" style='text-align:center'>Contact Person</th>
                         <th width="20%" style='text-align:center'>No NPWP</th>
+                        <th width="20%" style='text-align:center'>Nama Akun</th>
+                        <th width="20%" style='text-align:center'>Nomor Rekening</th>
                         <th width="10%" style='text-align:center'>Aksi</th>
                     </tr>
                 </thead>
@@ -61,6 +63,8 @@
                         <td>{{$supplier['supplier_address']}}</td>
                         <td>{{$supplier['supplier_contact_person']}}</td>
                         <td>{{$supplier['supplier_npwp_no']}}</td>
+                        <td>{{$supplier['supplier_bank_acct_name']}}</td>
+                        <td>{{$supplier['supplier_bank_acct_no']}}</td>
                         <td class="" style='text-align:center'>
                             <a type="button" class="btn btn-outline-warning btn-sm" href="{{ url('/supplier/edit/'.$supplier['supplier_id']) }}">Edit</a>
                             <a type="button" class="btn btn-outline-danger btn-sm" href="{{ url('/supplier/delete-supplier/'.$supplier['supplier_id']) }}">Hapus</a>

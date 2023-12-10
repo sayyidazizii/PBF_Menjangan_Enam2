@@ -292,32 +292,32 @@ class PurchaseInvoiceController extends Controller
 
 //----------------------------------------------------------Journal Voucher-------------------------------------------------------------------//
             
-$preferencecompany 			= PreferenceCompany::first();
+// $preferencecompany 			= PreferenceCompany::first();
         
-$transaction_module_code 	= "PI";
+// $transaction_module_code 	= "PI";
 
-$transactionmodule 		    = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
-->first();
+// $transactionmodule 		    = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
+// ->first();
 
-$transaction_module_id 		= $transactionmodule['transaction_module_id'];
+// $transaction_module_id 		= $transactionmodule['transaction_module_id'];
 
-$journal_voucher_period 	= date("Ym", strtotime($purchase_invoice_id['purchase_invoice_date']));
+// $journal_voucher_period 	= date("Ym", strtotime($purchase_invoice_id['purchase_invoice_date']));
 
-$data_journal = array(
-    'branch_id'						=> 1,
-    'journal_voucher_period' 		=> $journal_voucher_period,
-    'journal_voucher_date'			=> $purchase_invoice_id['purchase_invoice_date'],
-    'journal_voucher_title'			=> 'Invoice Pembelian '.$purchase_invoice_id['purchase_invoice_no'],
-    'journal_voucher_no'			=> $purchase_invoice_id['purchase_invoice_no'],
-    'journal_voucher_description'	=> $purchase_invoice_id['purchase_invoice_remark'],
-    'transaction_module_id'			=> $transaction_module_id,
-    'transaction_module_code'		=> $transaction_module_code,
-    'transaction_journal_id' 		=> $purchase_invoice_id['purchase_invoice_id'],
-    'transaction_journal_no' 		=> $purchase_invoice_id['purchase_invoice_no'],
-    'created_id' 					=> Auth::id(),
-);
+// $data_journal = array(
+//     'branch_id'						=> 1,
+//     'journal_voucher_period' 		=> $journal_voucher_period,
+//     'journal_voucher_date'			=> $purchase_invoice_id['purchase_invoice_date'],
+//     'journal_voucher_title'			=> 'Invoice Pembelian '.$purchase_invoice_id['purchase_invoice_no'],
+//     'journal_voucher_no'			=> $purchase_invoice_id['purchase_invoice_no'],
+//     'journal_voucher_description'	=> $purchase_invoice_id['purchase_invoice_remark'],
+//     'transaction_module_id'			=> $transaction_module_id,
+//     'transaction_module_code'		=> $transaction_module_code,
+//     'transaction_journal_id' 		=> $purchase_invoice_id['purchase_invoice_id'],
+//     'transaction_journal_no' 		=> $purchase_invoice_id['purchase_invoice_no'],
+//     'created_id' 					=> Auth::id(),
+// );
 
-AcctJournalVoucher::create($data_journal);
+// AcctJournalVoucher::create($data_journal);
 //---------------------------------------------------------End Journal Voucher----------------------------------------------------------------//
 
 
@@ -326,87 +326,87 @@ AcctJournalVoucher::create($data_journal);
 
 $total_amount               = $request->total_amount;
 
-$journalvoucher = AcctJournalVoucher::where('created_id', Auth::id())
-->orderBy('journal_voucher_id', 'DESC')
-->first();
+// $journalvoucher = AcctJournalVoucher::where('created_id', Auth::id())
+// ->orderBy('journal_voucher_id', 'DESC')
+// ->first();
 
 
-$journal_voucher_id 	= $journalvoucher['journal_voucher_id'];
+// $journal_voucher_id 	= $journalvoucher['journal_voucher_id'];
 
 
-//------account_id Persediaan Barang Dagang------//
-$preference_company = PreferenceCompany::first();
+// //------account_id Persediaan Barang Dagang------//
+// $preference_company = PreferenceCompany::first();
 
-$account = AcctAccount::where('account_id', $preference_company['account_inventory_trade_id'])
-->where('data_state', 0)
-->first();
+// $account = AcctAccount::where('account_id', $preference_company['account_inventory_trade_id'])
+// ->where('data_state', 0)
+// ->first();
 
-$account_id_default_status 		= $account['account_default_status'];
-
-
-$data_debit1 = array (
-    'journal_voucher_id'			=> $journal_voucher_id,
-    'account_id'					=> $account['account_id'],
-    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-    'journal_voucher_amount'		=> ABS($total_amount),
-    'journal_voucher_debit_amount'	=> ABS($total_amount),
-    'account_id_default_status'		=> $account_id_default_status,
-    'account_id_status'				=> 1,
-);
-
-// dd($data_debit1);
-
-AcctJournalVoucherItem::create($data_debit1);
-
-//------account_id PPN Masukan------//
-$account = AcctAccount::where('account_id', $preference_company['account_vat_in_id'])
-->where('data_state', 0)
-->first();
-
-$ppn_in_amount = $request->ppn_in_amount;
-
-$account_id_default_status 		= $account['account_default_status'];
+// $account_id_default_status 		= $account['account_default_status'];
 
 
+// $data_debit1 = array (
+//     'journal_voucher_id'			=> $journal_voucher_id,
+//     'account_id'					=> $account['account_id'],
+//     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+//     'journal_voucher_amount'		=> ABS($total_amount),
+//     'journal_voucher_debit_amount'	=> ABS($total_amount),
+//     'account_id_default_status'		=> $account_id_default_status,
+//     'account_id_status'				=> 1,
+// );
 
-$data_debit2 = array (
-    'journal_voucher_id'			=> $journal_voucher_id,
-    'account_id'					=> $account['account_id'],
-    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-    'journal_voucher_amount'		=> ABS((int)$ppn_in_amount),
-    'journal_voucher_debit_amount'	=> ABS((int)$ppn_in_amount),
-    'account_id_default_status'		=> $account_id_default_status,
-    'account_id_status'				=> 1,
-);
+// // dd($data_debit1);
 
-// dd($data_debit2);
+// AcctJournalVoucherItem::create($data_debit1);
 
-AcctJournalVoucherItem::create($data_debit2);
+// //------account_id PPN Masukan------//
+// $account = AcctAccount::where('account_id', $preference_company['account_vat_in_id'])
+// ->where('data_state', 0)
+// ->first();
 
+// $ppn_in_amount = $request->ppn_in_amount;
 
-$account 		= AcctAccount::where('account_id', $preferencecompany['account_payable_id'])
-->where('data_state', 0)
-->first();
-
-$subtotal_after_ppn_in = $request->subtotal_after_ppn_in;
-
-// dd($account);
-
-$account_id_default_status 		= $account['account_default_status'];
-
-$data_credit = array (
-    'journal_voucher_id'			=> $journal_voucher_id,
-    'account_id'					=> $preferencecompany['account_payable_id'],
-    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-    'journal_voucher_amount'		=> ABS((int)$subtotal_after_ppn_in),
-    'journal_voucher_credit_amount'	=> ABS((int)$subtotal_after_ppn_in),
-    'account_id_default_status'		=> $account_id_default_status,
-    'account_id_status'				=> 0,
-);
-// dd($data_credit);
+// $account_id_default_status 		= $account['account_default_status'];
 
 
-AcctJournalVoucherItem::create($data_credit);
+
+// $data_debit2 = array (
+//     'journal_voucher_id'			=> $journal_voucher_id,
+//     'account_id'					=> $account['account_id'],
+//     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+//     'journal_voucher_amount'		=> ABS((int)$ppn_in_amount),
+//     'journal_voucher_debit_amount'	=> ABS((int)$ppn_in_amount),
+//     'account_id_default_status'		=> $account_id_default_status,
+//     'account_id_status'				=> 1,
+// );
+
+// // dd($data_debit2);
+
+// AcctJournalVoucherItem::create($data_debit2);
+
+
+// $account 		= AcctAccount::where('account_id', $preferencecompany['account_payable_id'])
+// ->where('data_state', 0)
+// ->first();
+
+// $subtotal_after_ppn_in = $request->subtotal_after_ppn_in;
+
+// // dd($account);
+
+// $account_id_default_status 		= $account['account_default_status'];
+
+// $data_credit = array (
+//     'journal_voucher_id'			=> $journal_voucher_id,
+//     'account_id'					=> $preferencecompany['account_payable_id'],
+//     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+//     'journal_voucher_amount'		=> ABS((int)$subtotal_after_ppn_in),
+//     'journal_voucher_credit_amount'	=> ABS((int)$subtotal_after_ppn_in),
+//     'account_id_default_status'		=> $account_id_default_status,
+//     'account_id_status'				=> 0,
+// );
+// // dd($data_credit);
+
+
+// AcctJournalVoucherItem::create($data_credit);
 
 
 //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//

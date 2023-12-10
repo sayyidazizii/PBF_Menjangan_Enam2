@@ -170,13 +170,27 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">No. NPWP</a>
-                        <input class="form-control input-bb" type="text" name="supplier_npwp_no" id="supplier_npwp_no" value=""/>
+                        <input class="form-control input-bb" type="text" name="supplier_npwp_no" id="supplier_npwp_no" value="{{$supplier['supplier_npwp_no']}}"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Alamat NPWP</a>
-                        <input class="form-control input-bb" type="text" name="supplier_npwp_address" id="supplier_npwp_address" value=""/>
+                        <input class="form-control input-bb" type="text" name="supplier_npwp_address" id="supplier_npwp_address" value="{{$supplier['supplier_npwp_address']}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <a class="text-dark">Nama Akun</a>
+                        <input class="form-control input-bb" type="text" name="supplier_bank_acct_name" id="supplier_bank_acct_name" value="{{$supplier['supplier_bank_acct_name']}}"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <a class="text-dark">Nomor Rekening</a>
+                        <input class="form-control input-bb" type="text" name="supplier_bank_acct_no" id="supplier_bank_acct_no" value="{{$supplier['supplier_bank_acct_no']}}"/>
                     </div>
                 </div>
             </div>

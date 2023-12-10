@@ -74,6 +74,8 @@ class CoreSupplierController extends Controller
             'supplier_npwp_no'              => $request->supplier_npwp_no,
             'supplier_npwp_address'         => $request->supplier_npwp_address,
             'supplier_payment_terms'        => $request->supplier_payment_terms,
+            'supplier_bank_acct_name'       => $request->supplier_bank_acct_name,
+            'supplier_bank_acct_no'         => $request->supplier_bank_acct_no,
             'supplier_remark'               => $request->supplier_remark,
             'created_id'                    => Auth::id(),
             'data_state'                    => 0
@@ -122,6 +124,8 @@ class CoreSupplierController extends Controller
         $item->supplier_npwp_no                 = $request->supplier_npwp_no;
         $item->supplier_npwp_address            = $request->supplier_npwp_address;
         $item->supplier_payment_terms           = $request->supplier_payment_terms;
+        $item->supplier_bank_acct_name          = $request->supplier_bank_acct_name;
+        $item->supplier_bank_acct_no            = $request->supplier_bank_acct_no;
         $item->supplier_remark                  = $request->supplier_remark;
 
         if($item->save()){

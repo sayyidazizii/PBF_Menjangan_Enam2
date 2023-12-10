@@ -291,7 +291,7 @@
                                             <label style='text-align  : left !important;'>Jumlah Total</label>
                                         </div>
                                         <div class='col'>
-                                            <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='".number_format($total_price + $salesinvoice['tax_amount'],2,',','.')."' readonly/>
+                                            <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='".number_format($DPP + $ppn,2,',','.')."' readonly/>
                                         </div>
                                     </div>
                                     <input class='form-control' type='hidden' name='total_amount' id='total_amount' value='".number_format($total_price + $salesinvoice['tax_amount'],2,',','.')."'/>  

@@ -212,11 +212,12 @@
                                 <th style='text-align:center'>Qty BPB</th>
                                 <th style='text-align:center'>Harga Satuan</th>
                                 <th style='text-align:center'>Satuan</th>
+                                <th style='text-align:center'>Total</th>
                                 <th style='text-align:center'>Diskon 1</th>
-                                <th style='text-align:center'>Subtotal Setelah Diskon 1</th>
+                                <th hidden style='text-align:center'>Subtotal Setelah Diskon 1</th>
                                 <th style='text-align:center'>Diskon 2</th>
-     				            <th style='text-align:center'>PPN Item</th>
-                                <th style='text-align:center'>Subtotal Setelah Diskon 2</th>
+                                <th hidden style='text-align:center'>Subtotal Setelah Diskon 2</th>
+                                <th  style='text-align:center'>Total Bayar</th>
                             </tr>
                         </thead>
                         <tbody id='tablebody'>
@@ -226,6 +227,10 @@
                                 $total_item     = 0;
                                 $diskon = 0 ;
                                 $total_discount = 0;
+                                $totalppn = 0;
+                                $total = 0;
+                                $totalBayar = 0;
+                                $DPP = 0;
                             @endphp
                             @if(count($buyersAcknowledgmentitem)>0)
                                 @foreach($buyersAcknowledgmentitem as $val)
@@ -233,7 +238,10 @@
                                      $total_discount += $SalesInvoice->getDiscount($val['sales_order_item_id']);
                                      $totalA = $val['quantity_received']*$val['item_unit_price']-$SalesInvoice->getDiscount($val['sales_order_item_id']);
                                      $totalB = $totalA + ($SalesInvoice->getDiscountB($val['sales_order_item_id']) + $SalesInvoice->getPpnItem($val['sales_order_item_id']));
-                                @endphp
+                                     $total = $val['quantity_received']*$val['item_unit_price'];
+                                     $totalBayar =  $total - ($SalesInvoice->getDiscount($val['sales_order_item_id']) + $SalesInvoice->getDiscountB($val['sales_order_item_id']));
+                                        
+                              @endphp
                                
                                         <tr>
                                             <td style='text-align  : center'>{{$no}}</td>
@@ -251,23 +259,26 @@
                                             <td style='text-align  : left !important;'>
                                                 <input class='form-control' type='text' name='item_unit_id_view{{ $no }}' id='item_unit_id_view{{ $no }}' value='{{$SalesInvoice->getItemUnitName($val['item_unit_id'])}}' readonly/>  
                                             </td>
+                                            <td style='text-align  : left !important;'>
+                                                <input class='form-control' type='text' name='' id='' value='{{number_format(($total),2)}}' readonly/>  
+                                            </td>
                                                 <input class='form-control' type='hidden' name='item_unit_id_{{ $no }}' id='item_unit_id_{{ $no }}' value='{{$val['item_unit_id']}}' readonly/>  
                                             <td style='text-align  : left !important;'>
                                                 <input class='form-control' type='text' name='discount_A_{{ $no }}' id='discount_A_{{ $no }}' value='{{$SalesInvoice->getDiscount($val['sales_order_item_id'])}}' readonly/>  
                                             </td>
-                                            <td style='text-align  : right !important;'>
+                                            <td hidden style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A__view{{ $no }}' id='subtotal_price_A__view{{ $no }}' value='{{number_format(($totalA), 2)}}' readonly/>  
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A_{{ $no }}' id='subtotal_price_A_{{ $no }}' value='{{$totalA}}' hidden/> 
                                             </td>
                                             <td style='text-align  : left !important;'>
                                                 <input class='form-control' type='text' name='discount_B_{{ $no }}' id='discount_B_{{ $no }}' value='{{$SalesInvoice->getDiscountB($val['sales_order_item_id'])}}' readonly/>  
                                             </td>
-					                        <td style='text-align  : left !important;'>	
+					                        <td hidden style='text-align  : left !important;'>	
                                                 <input class='form-control' type='text' name='ppn_item_{{ $no }}' id='ppn_item_{{ $no }}' value='{{$SalesInvoice->getPpnItem($val['sales_order_item_id'])}}' readonly/>  
                                             </td>
-                                            <td style='text-align  : right !important;'>
-                                                    <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_B__view{{ $no }}' id='subtotal_price_B_view{{ $no }}' value='{{number_format(($totalB), 2)}}' readonly/>  
-                                                    <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_B_{{ $no }}' id='subtotal_price_B_{{ $no }}' value='{{$totalB}}' hidden/>  
+                                            <td hidden style='text-align  : right !important;'>
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_B__view{{ $no }}' id='subtotal_price_B_view{{ $no }}' value='{{number_format(($totalB), 2)}}' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_B_{{ $no }}' id='subtotal_price_B_{{ $no }}' value='{{$totalB}}' hidden/>  
                                             </td>
                                             <td hidden style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;'  class='form-control' type='text' name='item_stock_id_{{$no}}' id='item_stock_id_{{$no}}' value='{{$SalesInvoice->getItemStock($val['sales_delivery_note_item_id'])}}' readonly/>  
@@ -278,13 +289,17 @@
                                             <td hidden style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;'  class='form-control' type='text' name='sales_order_id_{{ $no }}' id='sales_order_id_{{ $no }}' value='{{$val['sales_order_id']}}' readonly/>  
                                             </td>
+                                            <td  style='text-align  : right !important;'>
+                                                <input style='text-align  : right !important;'  class='form-control' type='text' name='' id='' value='{{number_format(($totalBayar),2)}}' readonly/>  
+                                            </td>
                                         </tr>
                                         @php
                                             $total_no = $no;
                                             $no++;
                                             $total_price    += $totalB;
                                             $total_item     += $val['quantity_received'];
-                                         
+                                            $totalppn += $SalesInvoice->getPpnItem($val['sales_order_item_id']);
+                                            $DPP += $totalBayar;
                                         @endphp
                                 @endforeach
                             @else
@@ -292,21 +307,23 @@
                                     <td style='text-align  : center; font-weight: bold;' colspan='6'>Data Kosong</td>    
                                 </tr>
                             @endif
-                                <th style='text-align  : left' colspan='9'>Total</th>
+                                <th style='text-align  : left' colspan='8'>Total</th>
                                 <th style='text-align  : right'>
-                                    <input class='form-control' style='text-align  : right !important;' type='text' name='total_amount_view' id='total_amount_view' value='{{number_format($total_price,2,',','.')}}' readonly/>   
+                                    <input hidden class='form-control' style='text-align  : right !important;' type='text' name='total_amount_view' id='total_amount_view' value='{{number_format($total_price,2,',','.')}}' readonly/>   
+                                    <input  class='form-control' style='text-align  : right !important;' type='text' name='' id='' value='{{number_format($DPP,2,',','.')}}' readonly/>   
                                     <div class="row mt-2">
-                                        <div class="col">
-                                            <label style='text-align  : left !important;'>Ppn Out</label>
+                                        <div hidde class="col">
+                                            <label style='text-align  : left !important;'>Ppn</label>
                                         </div>
-                                        <div class="col">
-                                            <input class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='{{ number_format($SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id']),2,',','.' )}}' readonly/>
+                                        <div  class="col">
+                                            <input class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='{{ number_format($SalesInvoice->getPpnItem($val['sales_order_item_id']),2,',','.' )}}' readonly/>
+                                            <!-- <input hidden class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='{{ number_format($SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id']),2,',','.' )}}' readonly/> -->
                                             <input class='form-control' style='text-align:right;'type='hidden' name='tax_amount' id='tax_amount' value='{{ $SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id'])}}' readonly/>
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col">
-                                            <label style='text-align  : left !important;'>Subtotal After PPN</label>
+                                            <label style='text-align  : left !important;'>Jumlah Total</label>
                                         </div>
                                         <div class="col">
                                             <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ number_format($total_price + $SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id']),2,',','.') }}' readonly/>

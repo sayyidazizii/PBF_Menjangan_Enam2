@@ -185,6 +185,21 @@
             </div>
 
             <div class="row form-group">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <a class="text-dark">Nama Akun</a>
+                        <input class="form-control input-bb" type="text" name="supplier_bank_acct_name" id="supplier_bank_acct_name" value=""/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <a class="text-dark">Nomor Rekening</a>
+                        <input class="form-control input-bb" type="text" name="supplier_bank_acct_no" id="supplier_bank_acct_no" value=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
                 <div class="col-md-12">
                     <div class="form-group">
                         <a class="text-dark">Keterangan</a>

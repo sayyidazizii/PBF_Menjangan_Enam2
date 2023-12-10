@@ -243,11 +243,14 @@
             </div>
             <hr style="margin:0;">
             <br/>
-            
             <div class="row form-group">
                 <div class="col-md-6">
-                    <a class="text-dark">No Perkiraan</a>
-                    {!! Form::select('cash_account_id',  $acctaccount, $purchasepaymentelements == null ? '' : $purchasepaymentelements['cash_account_id'], ['class' => 'selection-search-clear select-form', 'id' => 'cash_account_id', 'onchange' => 'elements_add(this.name, this.value);']) !!}
+                    <a class="text-dark">Tipe Pembayaran</a>
+                            <br/>
+                             <select class="selection-search-clear" name="payment_type" id="payment_type" style="width: 100% !important">
+                                <option value="0">Tunai</option>
+                                <option value="1">Transfer</option>
+                            </select>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -255,6 +258,13 @@
                         <input class="form-control input-bb" type="text" name="payment_total_cash_amount" id="payment_total_cash_amount" value="{{$purchasepaymentelements == null ? '' : $purchasepaymentelements['payment_total_cash_amount']}}" onChange="elements_add(this.name, this.value);" style='text-align:right'/>
                     </div>
                 </div>
+            </div>
+            <div class="row form-group">
+                <!-- <div class="col-md-6">
+                    <a class="text-dark">No Perkiraan</a>
+                    {!! Form::select('cash_account_id',  $acctaccount, $purchasepaymentelements == null ? '' : $purchasepaymentelements['cash_account_id'], ['class' => 'selection-search-clear select-form', 'id' => 'cash_account_id', 'onchange' => 'elements_add(this.name, this.value);']) !!}
+                </div> -->
+                
             </div>
             <br/>
             <div class="row">
@@ -282,13 +292,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Nama Akun</a>
-                        <input class="form-control input-bb" type="text" name="payment_transfer_account_name" id="payment_transfer_account_name" value="" autocomplete='off'/>
+                        <input class="form-control input-bb" type="text" name="payment_transfer_account_name" id="payment_transfer_account_name" value="{{$PurchasePayment->getAccountBank($supplier['supplier_id']) }}" autocomplete='off'/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">No Rekening</a>
-                        <input class="form-control input-bb" type="text" name="payment_transfer_account_no" id="payment_transfer_account_no" value="" autocomplete='off'/>
+                        <input class="form-control input-bb" type="text" name="payment_transfer_account_no" id="payment_transfer_account_no" value="{{$PurchasePayment->getAccountNo($supplier['supplier_id']) }}" autocomplete='off'/>
                     </div>
                 </div>
             </div>
@@ -371,6 +381,45 @@
                         <a class="text-dark">Total Alokasi</a>
                         <input class="form-control input-bb" type="text" style='text-align:right' name="payment_allocated_move_view" id="payment_allocated_move_view" value="" readonly/>
                         <input class="form-control input-bb" type="hidden" style='text-align:right' name="payment_allocated_move" id="payment_allocated_move" value=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <a class="text-dark">PPN Masukan</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                    <input class="form-control" type="checkbox" style='text-align:left' name="" id="" value=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <a class="text-dark">Piutang Promosi</a>
+                        <input class="form-control input-bb" type="text"  style='text-align:right' name="payment_amount_view" id="payment_amount_view" value=""/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="checkbox" style='text-align:left' name="" id="" value=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <a class="text-dark">Biaya Kirim</a>
+                        <input class="form-control input-bb" type="text"  style='text-align:right' name="payment_amount_view" id="payment_amount_view" value=""/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="checkbox" style='text-align:left' name="" id="" value=""/>
                     </div>
                 </div>
             </div>

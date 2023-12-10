@@ -1206,7 +1206,7 @@ class SalesInvoiceController extends Controller
             </tr>
             <tr>
                 <td colspan=\"10\" style=\"text-align: right;font-weight: bold\";>Jumlah Total</td>
-                <td style=\"text-align: right;\">" . number_format($total_price - $salesinvoice['discount_amount'] + $salesinvoice['ppn_out_amount'], 2) . "</td>
+                <td style=\"text-align: right;\">" . number_format($dpp + $ppn, 2) . "</td>
                 <td></td>
             </tr>
             ";

@@ -12,7 +12,7 @@ MySQL - 8.0.30 : Database - ciptapro_pbf_menjangan_enam
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`ciptapro_pbf_menjangan_enam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ciptapro_pbf_menjangan_enam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `ciptapro_pbf_menjangan_enam`;
 
@@ -3318,11 +3318,11 @@ CREATE TABLE `core_supplier` (
 /*Data for the table `core_supplier` */
 
 insert  into `core_supplier`(`supplier_id`,`branch_id`,`province_id`,`city_id`,`supplier_code`,`supplier_name`,`supplier_id_number`,`supplier_address`,`supplier_city`,`supplier_home_phone`,`supplier_mobile_phone1`,`supplier_mobile_phone2`,`supplier_fax_number`,`supplier_email`,`supplier_contact_person`,`supplier_bank_acct_name`,`supplier_bank_acct_no`,`supplier_tax_no`,`supplier_npwp_no`,`supplier_npwp_address`,`supplier_payment_terms`,`supplier_status`,`supplier_remark`,`advance_account_id`,`giro_account_id`,`payable_account_id`,`created_id`,`created_at`,`data_state`,`updated_at`) values 
-(2,1,72,1094,'','Pabrik Antimo',NULL,'Surabaya','','(024) 7600000',NULL,NULL,NULL,NULL,NULL,'','',NULL,'11A1AA1A1A1A1','Surabaya',NULL,0,NULL,0,0,0,3,'2022-01-07 01:22:04',0,'2023-07-11 12:25:47'),
+(2,1,72,1094,'','Pabrik Antimo',NULL,'Surabaya','','(024) 7600000',NULL,NULL,NULL,NULL,NULL,'1','1',NULL,'11A1AA1A1A1A1','Surabaya',NULL,0,NULL,0,0,0,3,'2022-01-07 01:22:04',0,'2023-12-09 23:35:14'),
 (5,1,64,956,'','Pabrik Vitamin Anak',NULL,'Tangerang','',NULL,NULL,NULL,NULL,NULL,NULL,'','',NULL,NULL,NULL,NULL,0,NULL,0,0,0,3,'2023-03-06 04:25:26',0,'2023-06-23 10:52:21'),
 (6,1,70,1007,'','Pabrik Vitamin Dewasa',NULL,'Karawang','',NULL,NULL,NULL,NULL,NULL,NULL,'','',NULL,NULL,NULL,NULL,0,NULL,0,0,0,3,'2023-03-06 04:25:48',0,'2023-06-23 10:52:21'),
-(7,1,71,1048,'','KIMIA FARMA',NULL,'Jl. Gedong Songo Timur No.1','','(024) 7604307',NULL,NULL,NULL,NULL,NULL,'','',NULL,NULL,NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:54:36',0,'2023-06-24 03:54:36'),
-(8,1,71,1048,'','PHAPROS, PT',NULL,'Jl. Simongan No.131','','(024) 7607330',NULL,NULL,NULL,NULL,NULL,'','',NULL,NULL,NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:55:48',0,'2023-06-24 03:55:48');
+(7,1,71,1048,'','KIMIA FARMA',NULL,'Jl. Gedong Songo Timur No.1','','(024) 7604307',NULL,NULL,NULL,NULL,NULL,'1','1',NULL,'1',NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:54:36',0,'2023-12-09 23:38:35'),
+(8,1,71,1048,'','PHAPROS, PT',NULL,'Jl. Simongan No.131','','(024) 7607330',NULL,NULL,NULL,NULL,NULL,'2','2',NULL,'2',NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:55:48',0,'2023-12-09 23:38:55');
 
 /*Table structure for table `failed_jobs` */
 
@@ -3566,6 +3566,8 @@ CREATE TABLE `inv_item_stock` (
   `item_id` int DEFAULT '0',
   `item_unit_id` int DEFAULT '1',
   `item_total` decimal(10,0) DEFAULT '0',
+  `item_unit_cost` decimal(20,0) NOT NULL DEFAULT '0',
+  `item_unit_price` decimal(20,0) NOT NULL DEFAULT '0',
   `item_unit_id_default` int DEFAULT NULL,
   `item_default_quantity_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
   `quantity_unit` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
@@ -3584,11 +3586,11 @@ CREATE TABLE `inv_item_stock` (
 
 /*Data for the table `inv_item_stock` */
 
-insert  into `inv_item_stock`(`item_stock_id`,`goods_received_note_id`,`goods_received_note_item_id`,`item_stock_date`,`item_stock_expired_date`,`item_batch_number`,`purchase_order_item_id`,`warehouse_id`,`purchase_order_no`,`buyers_acknowledgment_no`,`no_retur_barang`,`nota_retur_pajak`,`item_category_id`,`item_type_id`,`item_id`,`item_unit_id`,`item_total`,`item_unit_id_default`,`item_default_quantity_unit`,`quantity_unit`,`item_weight_default`,`item_weight_unit`,`package_id`,`package_total`,`package_unit_id`,`package_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(22,13,495,'2023-12-06','2023-12-06','1',10,6,'','','','',2,24,0,5,5,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-06 05:00:39','2023-12-06 07:24:40'),
-(23,0,0,'2023-12-06','2023-12-06','1',10,7,'','','','',2,24,0,5,0,5,'1','5',0,'',0,0,0,0,0,3,'2023-12-06 05:02:23','2023-12-06 05:02:23'),
-(24,13,495,'2023-12-06','2023-12-06','1',10,7,'0001/PO/XII/2023','','','',2,24,0,5,5,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-06 07:24:40','2023-12-07 06:20:17'),
-(25,13,495,'2023-12-07','2023-12-06','1',10,9,'','0001/BPB/2023','1','1',2,24,0,5,5,5,'1','2',NULL,'',NULL,0,0,0,0,3,'2023-12-06 07:24:40','2023-12-07 04:58:41');
+insert  into `inv_item_stock`(`item_stock_id`,`goods_received_note_id`,`goods_received_note_item_id`,`item_stock_date`,`item_stock_expired_date`,`item_batch_number`,`purchase_order_item_id`,`warehouse_id`,`purchase_order_no`,`buyers_acknowledgment_no`,`no_retur_barang`,`nota_retur_pajak`,`item_category_id`,`item_type_id`,`item_id`,`item_unit_id`,`item_total`,`item_unit_cost`,`item_unit_price`,`item_unit_id_default`,`item_default_quantity_unit`,`quantity_unit`,`item_weight_default`,`item_weight_unit`,`package_id`,`package_total`,`package_unit_id`,`package_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(22,13,495,'2023-12-06','2023-12-06','1',10,6,'','','','',2,24,0,5,5,0,0,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-06 05:00:39','2023-12-06 07:24:40'),
+(23,0,0,'2023-12-06','2023-12-06','1',10,7,'','','','',2,24,0,5,0,0,0,5,'1','5',0,'',0,0,0,0,0,3,'2023-12-06 05:02:23','2023-12-06 05:02:23'),
+(24,13,495,'2023-12-06','2023-12-06','1',10,7,'0001/PO/XII/2023','','','',2,24,0,5,5,0,0,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-06 07:24:40','2023-12-07 06:20:17'),
+(25,13,495,'2023-12-07','2023-12-06','1',10,9,'','0001/BPB/2023','1','1',2,24,0,5,5,0,0,5,'1','2',NULL,'',NULL,0,0,0,0,3,'2023-12-06 07:24:40','2023-12-07 04:58:41');
 
 /*Table structure for table `inv_item_stock_adjustment` */
 
@@ -4569,12 +4571,13 @@ CREATE TABLE `purchase_order` (
   KEY `created_id` (`created_id`),
   KEY `FK_purchase_order_warehouse_id` (`warehouse_id`),
   KEY `FK_purchase_order_purchase_order_type_id` (`purchase_order_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=237 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order` */
 
 insert  into `purchase_order`(`purchase_order_id`,`supplier_id`,`warehouse_id`,`purchase_order_no`,`purchase_order_date`,`purchase_order_shipment_date`,`purchase_order_payment_terms`,`purchase_order_remark`,`total_item`,`total_received_item`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`ppn_in_percentage`,`ppn_in_amount`,`subtotal_after_ppn_in`,`tax_percentage`,`tax_amount`,`total_amount`,`down_payment_amount`,`down_payment_amount_balance`,`last_balance_amount`,`purchase_order_type_id`,`purchase_order_status`,`purchase_invoice_status`,`item_type`,`branch_id`,`approved`,`approved_id`,`approved_on`,`approved_remark`,`closed_remark`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(235,8,6,'0001/PO/XII/2023','2023-12-06','2023-12-06',0,NULL,10.00,10.00,0.00,0.00,0.00,11.00,1100.00,11100.00,0.00,0.00,10000.00,0.00,0.00,0.00,0,3,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-06 04:59:05','2023-12-06 05:02:23');
+(235,8,6,'0001/PO/XII/2023','2023-12-06','2023-12-06',0,NULL,10.00,10.00,0.00,0.00,0.00,11.00,1100.00,11100.00,0.00,0.00,10000.00,0.00,0.00,0.00,0,3,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-06 04:59:05','2023-12-06 05:02:23'),
+(236,2,6,'0002/PO/XII/2023','2023-12-09','2023-12-09',0,NULL,82872.00,0.00,0.00,0.00,0.00,11.00,36263129.76,365927945.76,0.00,0.00,329664816.00,0.00,0.00,0.00,0,0,0,0,1,0,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-09 04:15:32','2023-12-09 04:15:32');
 
 /*Table structure for table `purchase_order_item` */
 
@@ -5568,7 +5571,7 @@ CREATE TABLE `sales_kwitansi` (
   `updated_at` timestamp NULL DEFAULT NULL,
   KEY `sales_kwitansi_id` (`sales_kwitansi_id`),
   KEY `sales_kwitansi_id_2` (`sales_kwitansi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi` */
 
@@ -5586,7 +5589,7 @@ CREATE TABLE `sales_kwitansi_item` (
   `created_at` date DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   KEY `sales_kwitansi_item_id` (`sales_kwitansi_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi_item` */
 
@@ -5725,12 +5728,12 @@ CREATE TABLE `sales_order_return` (
   `sales_invoice_id` int DEFAULT NULL,
   `warehouse_id` bigint DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
-  `sales_order_return_no` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `no_retur_barang` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `nota_retur_pajak` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sales_order_return_no` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `no_retur_barang` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nota_retur_pajak` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `barang_kembali` int DEFAULT '0',
   `sales_order_return_date` date DEFAULT NULL,
-  `sales_order_return_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `sales_order_return_remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `data_state` int DEFAULT '0',
   `created_id` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -5816,7 +5819,7 @@ CREATE TABLE `system_log_user` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=latin1;
 
 /*Data for the table `system_log_user` */
 
@@ -5990,7 +5993,24 @@ insert  into `system_log_user`(`user_log_id`,`user_id`,`username`,`id_previllage
 (167,0,'PBF',2141,'1','SalesInvoice.printSalesInvoice','PBF','Print Sales Invoice','2023-10-10 14:37:28','2023-10-10 14:37:28','2023-10-10 14:37:28'),
 (168,0,'PBF',2141,'1','SalesInvoice.printSalesInvoice','PBF','Print Sales Invoice','2023-10-19 13:39:12','2023-10-19 13:39:12','2023-10-19 13:39:12'),
 (169,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-07 10:31:50','2023-12-07 10:31:50','2023-12-07 10:31:50'),
-(170,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-07 13:24:58','2023-12-07 13:24:58','2023-12-07 13:24:58');
+(170,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-07 13:24:58','2023-12-07 13:24:58','2023-12-07 13:24:58'),
+(171,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-09 11:09:18','2023-12-09 11:09:18','2023-12-09 11:09:18'),
+(172,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:02:16','2023-12-10 05:02:17','2023-12-10 05:02:17'),
+(173,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:09:46','2023-12-10 05:09:46','2023-12-10 05:09:46'),
+(174,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:11:28','2023-12-10 05:11:28','2023-12-10 05:11:28'),
+(175,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:12:03','2023-12-10 05:12:03','2023-12-10 05:12:03'),
+(176,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:12:31','2023-12-10 05:12:31','2023-12-10 05:12:31'),
+(177,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:14:11','2023-12-10 05:14:11','2023-12-10 05:14:11'),
+(178,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:14:43','2023-12-10 05:14:43','2023-12-10 05:14:43'),
+(179,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:15:48','2023-12-10 05:15:48','2023-12-10 05:15:48'),
+(180,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:16:02','2023-12-10 05:16:02','2023-12-10 05:16:02'),
+(181,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:17:48','2023-12-10 05:17:48','2023-12-10 05:17:48'),
+(182,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:18:31','2023-12-10 05:18:31','2023-12-10 05:18:31'),
+(183,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:18:48','2023-12-10 05:18:48','2023-12-10 05:18:48'),
+(184,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:31:05','2023-12-10 05:31:05','2023-12-10 05:31:05'),
+(185,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:31:34','2023-12-10 05:31:34','2023-12-10 05:31:34'),
+(186,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:32:27','2023-12-10 05:32:27','2023-12-10 05:32:27'),
+(187,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:34:18','2023-12-10 05:34:18','2023-12-10 05:34:18');
 
 /*Table structure for table `system_menu` */
 
