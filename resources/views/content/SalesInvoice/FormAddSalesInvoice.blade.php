@@ -162,9 +162,6 @@
                 </div>
                 <div class="col-md-6">
                     <section class="control-label">Jatuh Tempo
-                        <span class="required text-danger">
-                            *
-                        </span>
                     </section>
                     <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="sales_invoice_due_date" id="sales_invoice_due_date" onChange="elements_add(this.name, this.value);" value=""/>
                 </div>

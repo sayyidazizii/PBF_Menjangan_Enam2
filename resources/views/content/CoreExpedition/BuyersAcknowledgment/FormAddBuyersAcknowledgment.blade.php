@@ -87,8 +87,13 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                <div class="form-group">
+                        <a class="text-dark">No. PO Customer<a class='red'> *</a></a>
+                        <div class="">
+                            <input type ="text" class="form-control form-control-inline input-medium date-picker input-date"  name="purchase_order_no" id="purchase_order_no" value="{{ $salesorder['purchase_order_no']}}" style="width: 15rem;"/>
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <a class="text-dark">Keterangan<a class='red'> *</a></a>
                         <div class="">
                             <textarea rows="3" type="text" class="form-control input-bb" name="buyers_acknowledgment_remark" id="buyers_acknowledgment_remark" onChange="function_elements_add(this.name, this.value);" ></textarea>
                         </div>

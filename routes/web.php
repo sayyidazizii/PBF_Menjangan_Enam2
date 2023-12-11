@@ -414,6 +414,7 @@ Route::post('/purchase-order-approval/process-disapprove', [PurchaseOrderApprova
 
 Route::get('/purchase-order-return', [PurchaseOrderReturnController::class, 'index'])->name('purchase-order-return');
 Route::get('/purchase-order-return/search-purchase-order', [PurchaseOrderReturnController::class, 'searchPurchaseOrder'])->name('search-purchase-order-return');
+Route::get('/purchase-order-return/search-purchase-invoice', [PurchaseOrderReturnController::class, 'searchPurchaseInvoice'])->name('search-purchase-invoice');
 Route::get('/purchase-order-return/add/{purchase_order_id}', [PurchaseOrderReturnController::class, 'addPurchaseOrderReturn'])->name('add-purchase-order-return');
 Route::get('/purchase-order-return/detail/{purchase_order_return_id}', [PurchaseOrderReturnController::class, 'detailPurchaseOrderReturn'])->name('detail-purchase-order-return');
 Route::post('/purchase-order-return/process-add-purchase-order-return', [PurchaseOrderReturnController::class, 'processAddPurchaseOrderReturn'])->name('process-add-purchase-order-return');

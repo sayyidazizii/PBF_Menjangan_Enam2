@@ -1,4 +1,4 @@
-@inject('InvGoodsReceivedNote', 'App\Http\Controllers\InvGoodsReceivedNoteController')
+@inject('PurchaseOrderReturn', 'App\Http\Controllers\PurchaseOrderReturnController')
 @extends('adminlte::page')
 
 @section('title', 'PBF | Koperasi Menjangan Enam')
@@ -24,49 +24,49 @@
 		} else if(parseFloat(value)<0){
 			alert("Value must be more than 0");
 		} else {
-			// document.getElementById("quantity_received_"+k).value = value;
+			// document.getElementById("quantity_return_"+k).value = value;
 		}
 
-		var quantity_received_total;
+		var quantity_return_total;
 
-		quantity_received_total = 0;
+		quantity_return_total = 0;
 
 		var total_no 				= document.getElementById("total_no").value;
 
 		for (var key = 1; key <= total_no; key++) {
 
-			var quantity_received = parseFloat(document.getElementById("quantity_received_"+key).value);
+			var quantity_return = parseFloat(document.getElementById("quantity_return_"+key).value);
 
-			if (quantity_received == ""){
-				quantity_received = 0;
-			} else if (isNaN(quantity_received)){
-				quantity_received = 0;
+			if (quantity_return == ""){
+				quantity_return = 0;
+			} else if (isNaN(quantity_return)){
+				quantity_return = 0;
 			}
 
-			quantity_received_total = parseFloat(quantity_received_total) + parseFloat(quantity_received);
+			quantity_return_total = parseFloat(quantity_return_total) + parseFloat(quantity_return);
 		}
 
-		document.getElementById("quantity_received_total").value = quantity_received_total;
+		document.getElementById("quantity_return_total").value = quantity_return_total;
 	}
     
 	$(document).ready(function(){
-        var quantity_received_total = 0;
+        var quantity_return_total = 0;
         var total_no 				= document.getElementById("total_no").value;
 
         for (var key = 1; key <= total_no; key++) {
 
-            var quantity_received = parseFloat(document.getElementById("quantity_received_"+key).value);
+            var quantity_return = parseFloat(document.getElementById("quantity_return_"+key).value);
 
-            if (quantity_received == ""){
-                quantity_received = 0;
-            } else if (isNaN(quantity_received)){
-                quantity_received = 0;
+            if (quantity_return == ""){
+                quantity_return = 0;
+            } else if (isNaN(quantity_return)){
+                quantity_return = 0;
             }
 
-            quantity_received_total = parseFloat(quantity_received_total) + parseFloat(quantity_received);
+            quantity_return_total = parseFloat(quantity_return_total) + parseFloat(quantity_return);
         }
         
-		document.getElementById("quantity_received_total").value = quantity_received_total;
+		document.getElementById("quantity_return_total").value = quantity_return_total;
 	});
 
     $(document).ready(function(){
@@ -96,8 +96,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('goods-received-note') }}">Daftar Penerimaan Barang</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Tambah Penerimaan Barang</li>
+        <li class="breadcrumb-item"><a href="{{ url('purchase-order-return') }}">Daftar Return Pembelian</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tambah Return Pembelian</li>
     </ol>
 </nav>
 
@@ -106,7 +106,7 @@
 @section('content')
 
 <h3 class="page-title">
-    Form Tambah Penerimaan Barang
+    Form Tambah Return Pembelian
 </h3>
 <br/>
 @if(session('msg'))
@@ -130,11 +130,11 @@
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('goods-received-note') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ url('purchase-order-return') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{route('process-add-goods-received-note')}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('process-add-purchase-order-return')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
@@ -148,7 +148,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Tanggal PO</a>
-                        <input class="form-control input-bb" type="text" name="purchase_order_date" id="purchase_order_date" value="{{$purchaseorder['purchase_order_date']}}" readonly/>
+                        <input class="form-control input-bb" type="text" name="purchase_order_date" id="purchase_order_date" value="{{date('d/m/Y', strtotime($purchaseorder['purchase_order_date']))}}" readonly/>
                     </div>
                 </div>
             </div>
@@ -156,35 +156,36 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Nama Pemasok</a>
-                        <input class="form-control input-bb" type="text" name="supplier_id_view" id="supplier_id_view" value="{{$InvGoodsReceivedNote->getCoreSupplierName($purchaseorder['supplier_id'])}}" readonly/>
+                        <input class="form-control input-bb" type="text" name="supplier_id_view" id="supplier_id_view" value="{{$PurchaseOrderReturn->getCoreSupplierName($purchaseorder['supplier_id'])}}" readonly/>
                         <input class="form-control input-bb" type="hidden" name="supplier_id" id="supplier_id" value="{{$purchaseorder['supplier_id']}}" readonly/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Nama Gudang</a>
-                        <input class="form-control input-bb" type="text" name="warehouse_id_view" id="warehouse_id_view" value="{{$InvGoodsReceivedNote->getInvWarehouseName($purchaseorder['warehouse_id'])}}" readonly/>
+                        <input class="form-control input-bb" type="text" name="warehouse_id_view" id="warehouse_id_view" value="{{$PurchaseOrderReturn->getInvWarehouseName($purchaseorder['warehouse_id'])}}" readonly/>
                         <input class="form-control input-bb" type="hidden" name="warehouse_id" id="warehouse_id" value="{{$purchaseorder['warehouse_id']}}" readonly/>
                     </div>
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-md-6">
-                    <section class="control-label">Tanggal Penerimaan
+                    <section class="control-label">Tanggal Return Pembelian
                         <span class="required text-danger">
                             *
                         </span>
                     </section>
-                    <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="goods_received_note_date" id="goods_received_note_date" onChange="function_elements_add(this.name, this.value);" value="" style="width: 15rem;"/>
+                    <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="purchase_order_return_date" id="purchase_order_return_date" onChange="function_elements_add(this.name, this.value);" value="" style="width: 15rem;"/>
                 </div>
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">No. Faktur
+                        <a class="text-dark">Surat Jalan Pemasok
                             <span class="required text-danger">
+                                *
                             </span></a>
-                        <input class="form-control input-bb" type="text" name="faktur_no" id="faktur_no" />
+                        <input class="form-control input-bb" type="text" name="delivery_note_no" id="delivery_note_no" value=""/>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-md-6">
                     <b>File Gambar Kwitansi</b><br/>
                     <input type="file" name="receipt_image" id="receipt_image" value="" accept="image/*"/>
@@ -192,9 +193,12 @@
             </div>
             <div class="row form-group">
                 <div class="col-md-12 ">
-                    <a class="text-dark">Keterangan</a>
+                    <a class="text-dark">Alasan Return</a>
+                    <span class="required text-danger">
+                        *
+                    </span>
                     <div class="">
-                        <textarea rows="3" type="text" class="form-control input-bb" name="goods_received_note_remark" onChange="function_elements_add(this.name, this.value);" id="goods_received_note_remark" ></textarea>
+                        <textarea rows="3" type="text" class="form-control input-bb" name="purchase_order_return_remark" onChange="function_elements_add(this.name, this.value);" id="purchase_order_return_remark" ></textarea>
                     </div>
                 </div>
             </div>
@@ -208,7 +212,7 @@
                 Daftar
             </h5>
             <div class="float-right">
-                <a href='#addbatch' data-toggle='modal' name="Find" class="btn btn-success btn-sm" title="Add Data">Tambah</a>
+                <a href='#addtype' data-toggle='modal' name="Find" class="btn btn-success btn-sm" title="Add Data">Tambah</a>
             </div>
         </div>
     
@@ -222,10 +226,9 @@
                                 <th style='text-align:center'>Kategori Barang</th>
                                 <th style='text-align:center'>Nama Barang</th>
                                 <th style='text-align:center'>Satuan</th>
-                                <th style='text-align:center'>Harga Satuan</th>
                                 <th style='text-align:center'>Qty Order</th>
                                 <th style='text-align:center'>Qty Outstanding</th>
-                                <th style='text-align:center'>Qty Diterima</th>
+                                <th style='text-align:center'>Qty Direturn</th>
                                 <th style='text-align:center'>Batch Number</th>
                                 <th style='text-align:center'>Tanggal Kadaluarsa</th>
                             </tr>
@@ -244,15 +247,14 @@
                                         if( $purchase_order_item_id !=  $val['purchase_order_item_id']){
                                         echo"
                                             <tr>
-                                                <td style='text-align  : center'>".$no.".</td>
-                                                <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemCategoryName($val['item_category_id'])."</td>
-                                                <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemTypeName($val['item_type_id'])."</td>
-                                                <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemUnitName($val['item_unit_id'])."</td>
-                                                <td style='text-align  : right !important;'>".$val['item_unit_cost']."</td>
+                                                <td style='text-align  : center'>".$no."</td>
+                                                <td style='text-align  : left !important;'>".$PurchaseOrderReturn->getItemCategoryName($val['item_category_id'])."</td>
+                                                <td style='text-align  : left !important;'>".$PurchaseOrderReturn->getItemTypeName($val['item_type_id'])."</td>
+                                                <td style='text-align  : left !important;'>".$PurchaseOrderReturn->getItemUnitName($val['item_unit_id'])."</td>
                                                 <td style='text-align  : right !important;'>".$val['quantity']."</td>
                                                 <td style='text-align  : right !important;'>".$val['quantity_outstanding']."</td>
                                                 <td style='text-align  : right !important;'>
-                                                    <input class='form-control' style='text-align:right;' type='number' name='quantity_received_".$no."' id='quantity_received_".$no."' value='".$val['quantity_outstanding']."' onchange='quantityReceivedChange(".$no.",this.value);' autocomplete='off'/>
+                                                    <input class='form-control' style='text-align:right;' type='number' name='quantity_return_".$no."' id='quantity_return_".$no."' value='".$val['quantity_outstanding']."' onchange='quantityReceivedChange(".$no.",this.value);' autocomplete='off'/>
 
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='item_category_id_".$no."' id='item_category_id_".$no."' value='".$val['item_category_id']."'/>
 
@@ -278,14 +280,14 @@
                                         }else{
                                             echo"
                                             <tr>
-                                                <td style='text-align  : center'>".$no.".</td>
+                                                <td style='text-align  : center'>".$no."</td>
                                                 <td style='text-align  : left !important;'></td>
                                                 <td style='text-align  : left !important;'></td>
                                                 <td style='text-align  : left !important;'></td>
                                                 <td style='text-align  : right !important;'></td>
                                                 <td style='text-align  : right !important;'></td>
                                                 <td style='text-align  : right !important;'>
-                                                    <input class='form-control' style='text-align:right;' type='number' name='quantity_received_".$no."' id='quantity_received_".$no."' value='".$val['quantity_outstanding']."' onchange='quantityReceivedChange(".$no.",this.value);' autocomplete='off'/>
+                                                    <input class='form-control' style='text-align:right;' type='number' name='quantity_return_".$no."' id='quantity_return_".$no."' value='".$val['quantity_outstanding']."' onchange='quantityReceivedChange(".$no.",this.value);' autocomplete='off'/>
 
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='item_category_id_".$no."' id='item_category_id_".$no."' value='".$val['item_category_id']."'/>
 
@@ -316,7 +318,7 @@
                                         <tbody></tbody>
                                         <th style='text-align  : center' colspan='6'>Total</th>
                                         <th style='text-align  : right'>
-                                            <input class='form-control' style='text-align:right;'type='text' name='quantity_received_total' id='quantity_received_total' value='' readonly/>
+                                            <input class='form-control' style='text-align:right;'type='text' name='quantity_return_total' id='quantity_return_total' value='' readonly/>
                                             <input class='form-control' style='text-align:right;'type='hidden' name='total_no' id='total_no' value='".$total_no."' readonly/>
                                         </th>
                                         <th style='text-align  : center' colspan='2'></th>
@@ -331,7 +333,7 @@
         
         <div class="card-footer text-muted">
             <div class="form-actions float-right">
-                <a href="{{route('delete-new-purchase-order-item', $purchase_order_id)}}"type="reset" name="Reset" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Batal</a>
+                <a href="{{route('delete-new-purchase-order-item2', $purchase_order_id)}}"type="reset" name="Reset" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Batal</a>
                 <button type="submit" name="Save" class="btn btn-primary btn-sm" title="Save"><i class="fa fa-check"></i> Simpan</button>
             </div>
         </div>
@@ -339,12 +341,12 @@
 </form>
 <br>
 <br>
+@include('footer')
 
-
-<form action="{{route('add-new-purchase-order-item', $purchase_order_id)}}" method="POST">
+<form action="{{route('add-new-purchase-order-item2', $purchase_order_id)}}" method="POST">
     @csrf
     
-    <div class="modal fade bs-modal-md" id="addbatch" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade bs-modal-md" id="addtype" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header"  style='text-align:left !important'>
@@ -353,7 +355,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <a class="text-dark">Tipe Barang<a class='red'> </a></a>
+                            <a class="text-dark">Nama Barang<a class='red'> </a></a>
                             {!! Form::select('purchase_order_item_id',  $add_type_purchaseorderitem, '', ['class' => 'selection-search-clear select-form', 'id' => 'purchase_order_item_id']) !!}
                             <input type="hidden" name="purchase_order_id" id="purchase_order_id" value="{{ $purchase_order_id}}">
                         </div>
@@ -375,19 +377,11 @@
             </div>
         </div>
 </form>
-
-
-
-
 <br>
 <br>
 
 
 
-@stop
-
-@section('footer')
-    
 @stop
 
 @section('css')

@@ -1,9 +1,9 @@
+@inject('PurchaseInvoice', 'App\Http\Controllers\PurchaseInvoiceController')
 @inject('PurchaseOrderReturn', 'App\Http\Controllers\PurchaseOrderReturnController')
 @extends('adminlte::page')
 
 @section('title', 'PBF | Koperasi Menjangan Enam')
 <link rel="shortcut icon" href="{{ asset('resources/assets/logo_pbf.ico') }}" />
-<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('js')
 <script>
 	function toRp(number) {
@@ -15,80 +15,6 @@
 			.split('').reverse().join('');
 		return rupiah + ',' + cents.slice(0, 2);
 	}
-
-	function quantityReceivedChange(k, value){
-		if (value == ""){
-			alert("Value cannot be empty");
-		} else if (isNaN(value)){
-			alert("Value must be a number");
-		} else if(parseFloat(value)<0){
-			alert("Value must be more than 0");
-		} else {
-			// document.getElementById("quantity_return_"+k).value = value;
-		}
-
-		var quantity_return_total;
-
-		quantity_return_total = 0;
-
-		var total_no 				= document.getElementById("total_no").value;
-
-		for (var key = 1; key <= total_no; key++) {
-
-			var quantity_return = parseFloat(document.getElementById("quantity_return_"+key).value);
-
-			if (quantity_return == ""){
-				quantity_return = 0;
-			} else if (isNaN(quantity_return)){
-				quantity_return = 0;
-			}
-
-			quantity_return_total = parseFloat(quantity_return_total) + parseFloat(quantity_return);
-		}
-
-		document.getElementById("quantity_return_total").value = quantity_return_total;
-	}
-    
-	$(document).ready(function(){
-        var quantity_return_total = 0;
-        var total_no 				= document.getElementById("total_no").value;
-
-        for (var key = 1; key <= total_no; key++) {
-
-            var quantity_return = parseFloat(document.getElementById("quantity_return_"+key).value);
-
-            if (quantity_return == ""){
-                quantity_return = 0;
-            } else if (isNaN(quantity_return)){
-                quantity_return = 0;
-            }
-
-            quantity_return_total = parseFloat(quantity_return_total) + parseFloat(quantity_return);
-        }
-        
-		document.getElementById("quantity_return_total").value = quantity_return_total;
-	});
-
-    $(document).ready(function(){
-        var purchase_order_item_id = {!! json_encode($null_add_purchaseorderitem) !!};
-        
-        if(purchase_order_item_id == null){
-            $("#purchase_order_item_id").select2("val", "0");
-        }
-    });
-
-    $(document).ready(function(){
-        var item_unit_id = {!! json_encode($null_add_unit_purchaseorderitem) !!};
-        
-        if(item_unit_id == null){
-            $("#item_unit_id").select2("val", "0");
-        }
-    });
-
-    function clearResult(){
-        document.getElementById("result").value = ''
-    }
-
 </script>
 @stop
 @section('content_header')
@@ -96,8 +22,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('purchase-order-return') }}">Daftar Return Pembelian</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Tambah Return Pembelian</li>
+        <li class="breadcrumb-item"><a href="{{ url('purchase-order-return') }}">Daftar Retur Pembelian</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Retur Pembelian</li>
     </ol>
 </nav>
 
@@ -106,7 +32,7 @@
 @section('content')
 
 <h3 class="page-title">
-    Form Tambah Return Pembelian
+    <b>Detail Retur Pembelian</b>
 </h3>
 <br/>
 @if(session('msg'))
@@ -114,273 +40,168 @@
     {{session('msg')}}
 </div>
 @endif
-@if(count($errors) > 0)
-<div class="alert alert-danger" role="alert">
-    @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-    @endforeach
-</div>
-@endif
-@php
-    $purchase_order_id = Request::segment(3);
-@endphp
     <div class="card border border-dark">
     <div class="card-header border-dark bg-dark">
         <h5 class="mb-0 float-left">
-            Form Tambah
+            Form Detail
         </h5>
         <div class="float-right">
             <button onclick="location.href='{{ url('purchase-order-return') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{route('process-add-purchase-order-return')}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('process-edit-purchase-invoice')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">No PO</a>
-                        <input class="form-control input-bb" type="text" name="purchase_order_no" id="purchase_order_no" value="{{$purchaseorder['purchase_order_no']}}" readonly/>
-                        <input class="form-control input-bb" type="hidden" name="purchase_order_id" id="purchase_order_id" value="{{$purchaseorder['purchase_order_id']}}"/>
+                        <div class="form-group">
+                            <a class="text-dark">No. Invoice</a>
+                            <input class="form-control input-bb" type="text" name="purchase_invoice_no" id="purchase_invoice_no" onChange="function_elements_add(this.name, this.value);" value="{{$purchaseinvoice['purchase_invoice_no']}}" readonly/>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Tanggal PO</a>
-                        <input class="form-control input-bb" type="text" name="purchase_order_date" id="purchase_order_date" value="{{date('d/m/Y', strtotime($purchaseorder['purchase_order_date']))}}" readonly/>
+                    <a class="text-dark">Pemasok</a>
+                        <input class="form-control input-bb" type="text" name="supplier_id" id="supplier_id" value="{{$PurchaseInvoice->getSupplierName($purchaseinvoice['supplier_id'])}}" readonly/>
+                        <input class="form-control input-bb" type="hidden" name="purchase_invoice_id" id="purchase_invoice_id" value="{{$purchase_invoice_id}}"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                    <a class="text-dark">Tanggal Invoice Pembelian<a class='red'> *</a></a>
+                        <input class="form-control input-bb" type="text" name="purchase_invoice_date" id="purchase_invoice_date" onChange="function_elements_add(this.name, this.value);" value="{{date('d/m/Y', strtotime($purchaseinvoice['purchase_invoice_date']))}}" readonly/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <a class="text-dark">Faktur Tax No</a>
+                        <input class="form-control input-bb" type="text" name="faktur_tax_no" id="faktur_tax_no" value="{{$purchaseinvoice['faktur_tax_no']}}" readonly/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                    <a class="text-dark">Tanggal Jatuh Tempo<a class='red'> *</a></a>
+                        <input class="form-control input-bb" type="text" name="purchase_invoice_due_date" id="purchase_invoice_due_date" onChange="function_elements_add(this.name, this.value);" value="{{date('d/m/Y', strtotime($purchaseinvoice['purchase_invoice_due_date']))}}" readonly/>
                     </div>
                 </div>
             </div>
             <div class="row form-group">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Nama Pemasok</a>
-                        <input class="form-control input-bb" type="text" name="supplier_id_view" id="supplier_id_view" value="{{$PurchaseOrderReturn->getCoreSupplierName($purchaseorder['supplier_id'])}}" readonly/>
-                        <input class="form-control input-bb" type="hidden" name="supplier_id" id="supplier_id" value="{{$purchaseorder['supplier_id']}}" readonly/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Nama Gudang</a>
-                        <input class="form-control input-bb" type="text" name="warehouse_id_view" id="warehouse_id_view" value="{{$PurchaseOrderReturn->getInvWarehouseName($purchaseorder['warehouse_id'])}}" readonly/>
-                        <input class="form-control input-bb" type="hidden" name="warehouse_id" id="warehouse_id" value="{{$purchaseorder['warehouse_id']}}" readonly/>
-                    </div>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <section class="control-label">Tanggal Return Pembelian
-                        <span class="required text-danger">
-                            *
-                        </span>
-                    </section>
-                    <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="purchase_order_return_date" id="purchase_order_return_date" onChange="function_elements_add(this.name, this.value);" value="" style="width: 15rem;"/>
-                </div>
-                {{-- <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Surat Jalan Pemasok
-                            <span class="required text-danger">
-                                *
-                            </span></a>
-                        <input class="form-control input-bb" type="text" name="delivery_note_no" id="delivery_note_no" value=""/>
-                    </div>
-                </div> --}}
-                <div class="col-md-6">
-                    <b>File Gambar Kwitansi</b><br/>
-                    <input type="file" name="receipt_image" id="receipt_image" value="" accept="image/*"/>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-12 ">
-                    <a class="text-dark">Alasan Return</a>
-                    <span class="required text-danger">
-                        *
-                    </span>
+                <div class="col-md-12">
+                    <a class="text-dark">Keterangan</a>
                     <div class="">
-                        <textarea rows="3" type="text" class="form-control input-bb" name="purchase_order_return_remark" onChange="function_elements_add(this.name, this.value);" id="purchase_order_return_remark" ></textarea>
+                        <textarea rows="3" type="text" class="form-control input-bb" name="purchase_invoice_remark" onChange="elements_add(this.name, this.value);" id="purchase_invoice_remark" readonly>{{$purchaseinvoice['purchase_invoice_remark']}}</textarea>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <br/>
     <div class="card border border-dark">
         <div class="card-header border-dark bg-dark">
             <h5 class="mb-0 float-left">
-                Daftar
+                Detail Invoice
             </h5>
-            <div class="float-right">
-                <a href='#addtype' data-toggle='modal' name="Find" class="btn btn-success btn-sm" title="Add Data">Tambah</a>
-            </div>
         </div>
     
-        <div class="card-body table-responsive">
+        <div class="card-body">
             <div class="form-body form">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-advance table-hover" >
+                    <table class="table table-bordered table-advance table-hover">
                         <thead class="thead-light">
                             <tr>
                                 <th style='text-align:center'>No.</th>
                                 <th style='text-align:center'>Kategori Barang</th>
                                 <th style='text-align:center'>Nama Barang</th>
                                 <th style='text-align:center'>Satuan</th>
-                                <th style='text-align:center'>Qty Order</th>
-                                <th style='text-align:center'>Qty Outstanding</th>
-                                <th style='text-align:center'>Qty Direturn</th>
-                                <th style='text-align:center'>Batch Number</th>
-                                <th style='text-align:center'>Tanggal Kadaluarsa</th>
+                                <th style='text-align:center'>Harga Satuan</th>
+                                <th style='text-align:center'>Quantity Penerimaan</th>
+                                <th style='text-align:center'>Quantity Invoice</th>
+                                <th style='text-align:center'>Quantity Retur</th>
+                                <th style='text-align:center'>Subtotal</th>
                             </tr>
                         </thead>
-                        <tbody >
-                            <?php
-                                if(count($merge_data)<1){
-                                    echo "<tr><th colspan='7' style='text-align  : center !important;'>Data Kosong</th></tr>";
-                                } else {
-                                    $no =1;
-                                    // $noo =0;
-                                    $total_price = 0;
-                                    $outstanding_total = 0;
-                                    $purchase_order_item_id = -1;
-                                    foreach ($merge_data AS $key => $val){
-                                        if( $purchase_order_item_id !=  $val['purchase_order_item_id']){
-                                        echo"
-                                            <tr>
-                                                <td style='text-align  : center'>".$no."</td>
-                                                <td style='text-align  : left !important;'>".$PurchaseOrderReturn->getItemCategoryName($val['item_category_id'])."</td>
-                                                <td style='text-align  : left !important;'>".$PurchaseOrderReturn->getItemTypeName($val['item_type_id'])."</td>
-                                                <td style='text-align  : left !important;'>".$PurchaseOrderReturn->getItemUnitName($val['item_unit_id'])."</td>
-                                                <td style='text-align  : right !important;'>".$val['quantity']."</td>
-                                                <td style='text-align  : right !important;'>".$val['quantity_outstanding']."</td>
-                                                <td style='text-align  : right !important;'>
-                                                    <input class='form-control' style='text-align:right;' type='number' name='quantity_return_".$no."' id='quantity_return_".$no."' value='".$val['quantity_outstanding']."' onchange='quantityReceivedChange(".$no.",this.value);' autocomplete='off'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_category_id_".$no."' id='item_category_id_".$no."' value='".$val['item_category_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_type_id_".$no."' id='item_type_id_".$no."' value='".$val['item_type_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_unit_id_".$no."' id='item_unit_id_".$no."' value='".$val['item_unit_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_unit_cost_".$no."' id='item_unit_cost_".$no."' value='".$val['item_unit_cost']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='purchase_order_id_".$no."' id='purchase_order_id_".$no."' value='".$val['purchase_order_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='purchase_order_item_id_".$no."' id='purchase_order_item_id_".$no."' value='".$val['purchase_order_item_id']."'/>
-                                                </td>
-                                                <td>
-                                                    <input class='form-control' style='text-align:right;'type='text' name='item_batch_number_".$no."' id='item_batch_number_".$no."' autocomplete='off'/>
-                                                </td>
-                                                <td>
-                                                    <input class='form-control' style='text-align:right;'type='date' name='item_expired_date_".$no."' id='item_expired_date_".$no."' autocomplete='off' autocomplete='off'/>
-                                                </td>";
+                        <tbody>
+                            @if(count($purchaseinvoiceitem)==0)
+                                    <tr><th colspan='8' style='text-align  : center !important;'>Data Kosong</th></tr>
+                            @else
+                                @php
+                                    $no             = 1;
+                                    $total_price    = 0;
+                                    $total_item     = 0;
+                                @endphp    
+                                @foreach ($purchaseinvoiceitem AS $key => $val)
+                                    <tr>
+                                        <td style='text-align  : center'>{{$no}}</td>
+                                        <td style='text-align  : left !important;'>{{$PurchaseInvoice->getItemCategoryName($val['item_category_id'])}}</td>
+                                        <td style='text-align  : left !important;'>{{$PurchaseInvoice->getItemTypeName($val['item_type_id'])}}</td>
+                                        <td style='text-align  : left !important;'>{{$PurchaseInvoice->getItemUnitName($val['item_unit_id'])}}</td>
+                                        <td style='text-align  : right !important;'>{{number_format($val['item_unit_cost'],2,',','.')}}</td>
+                                        <td style='text-align  : left !important;'>{{$PurchaseOrderReturn->getQuantityTerima($val['goods_received_note_item_id'])}}</td>
+                                        <td style='text-align  : right !important;'>{{$val['quantity']}}</td>
+                                        <td style='text-align  : right !important;'>
+                                            <input class='form-control input-bb' type='text' name='quantity_return_{{ $no }}' id='quantity_return_{{ $no }}'/>
+                                        </td>
+                                        <td style='text-align  : right !important;'>{{number_format($val['subtotal_amount'],2,',','.')}}</td>
+                                    </tr>
+                                    @php
                                         $no++;
-                                        // $total_price+=$val['total_price'];
-                                        // $outstanding_total+=$val['quantity_outstanding'];
-                                        }else{
-                                            echo"
-                                            <tr>
-                                                <td style='text-align  : center'>".$no."</td>
-                                                <td style='text-align  : left !important;'></td>
-                                                <td style='text-align  : left !important;'></td>
-                                                <td style='text-align  : left !important;'></td>
-                                                <td style='text-align  : right !important;'></td>
-                                                <td style='text-align  : right !important;'></td>
-                                                <td style='text-align  : right !important;'>
-                                                    <input class='form-control' style='text-align:right;' type='number' name='quantity_return_".$no."' id='quantity_return_".$no."' value='".$val['quantity_outstanding']."' onchange='quantityReceivedChange(".$no.",this.value);' autocomplete='off'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_category_id_".$no."' id='item_category_id_".$no."' value='".$val['item_category_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_type_id_".$no."' id='item_type_id_".$no."' value='".$val['item_type_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_unit_id_".$no."' id='item_unit_id_".$no."' value='".$val['item_unit_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_unit_cost_".$no."' id='item_unit_cost_".$no."' value='".$val['item_unit_cost']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='purchase_order_id_".$no."' id='purchase_order_id_".$no."' value='".$val['purchase_order_id']."'/>
-
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='purchase_order_item_id_".$no."' id='purchase_order_item_id_".$no."' value='".$val['purchase_order_item_id']."'/>
-                                                </td>
-                                                <td>
-                                                    <input class='form-control' style='text-align:right;'type='text' name='item_batch_number_".$no."' id='item_batch_number_".$no."' autocomplete='off'/>
-                                                </td>
-                                                <td>
-                                                    <input class='form-control' style='text-align:right;'type='date' name='item_expired_date_".$no."' id='item_expired_date_".$no."' autocomplete='off' required/>
-                                                </td>";
-                                        $no++;
-                                            }
-                                            $purchase_order_item_id = $val['purchase_order_item_id'];
-
-                                    }
-                                    
-                                        $total_no = $no - 1;
-                                        echo"
-                                        <tbody></tbody>
-                                        <th style='text-align  : center' colspan='6'>Total</th>
-                                        <th style='text-align  : right'>
-                                            <input class='form-control' style='text-align:right;'type='text' name='quantity_return_total' id='quantity_return_total' value='' readonly/>
-                                            <input class='form-control' style='text-align:right;'type='hidden' name='total_no' id='total_no' value='".$total_no."' readonly/>
-                                        </th>
-                                        <th style='text-align  : center' colspan='2'></th>
-                                        ";
-                                }
-                            ?>
+                                        $total_price += $val['subtotal_amount'];
+                                        $total_item  += $val['quantity'];
+                                        $totalAfterPpn = $val['subtotal_amount'] + $purchaseorder->ppn_in_amount;
+                                    @endphp
+                                @endforeach
+                                <th style='text-align  : center' colspan='4'>Total</th>
+                                <th style='text-align  : center' colspan='4'></th>
+                                <th style='text-align  : right'>{{$total_item}}</th>
+                                <th style='text-align  : right'></th>
+                                <th style='text-align  : right'>{{number_format($total_price,2,',','.')}}
+                                    <input class='form-control input-bb' type='hidden' name='total_amount' id='total_amount' value='{{$total_price}}'/>  
+                                    <input class='form-control input-bb' type='hidden' name='total_item' id='total_item' value='{{$total_item}}'/>    
+                                </th>
+                                <tr>
+                                    <td style='text-align  : center' colspan='4'><b>PPN Masuk (%)</b></td>
+                                    <td style='text-align  : center'><b>:</b></td>
+                                    <td colspan='2'></td>
+                                    <td>
+                                        <input style='text-align  : right' type="text" class="form-control" name="ppn_in_percentage" id="ppn_in_percentage" value="{{ $purchaseorder->ppn_in_percentage }}" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" style='text-align  : right' class="form-control" name="ppn_in_amount" id="ppn_in_amount" value="{{number_format($purchaseorder->ppn_in_amount,2,',','.')}}" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='text-align  : center' colspan='4'><b>Total Harga Akhir </td>
+                                    <td style='text-align  : center'><b>:</b></td>
+                                    <td colspan='3'></td>
+                                    <td style='text-align  : center'>
+                                        <input type="text" style='text-align  : right' class="form-control" name="subtotal_after_ppn_in" id="subtotal_after_ppn_in" value="{{number_format($totalAfterPpn,2,',','.')}}" readonly>
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         
-        <div class="card-footer text-muted">
+        {{-- <div class="card-footer text-muted">
             <div class="form-actions float-right">
-                <a href="{{route('delete-new-purchase-order-item2', $purchase_order_id)}}"type="reset" name="Reset" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Batal</a>
-                <button type="submit" name="Save" class="btn btn-primary btn-sm" title="Save"><i class="fa fa-check"></i> Simpan</button>
+                <button type="reset" name="Reset" class="btn btn-danger" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</button>
+                <button type="submit" name="Save" class="btn btn-primary" title="Save"><i class="fa fa-check"></i> Simpan</button>
             </div>
-        </div>
+        </div> --}}
     </div>
 </form>
+<br/>
 <br>
 <br>
+
 @include('footer')
-
-<form action="{{route('add-new-purchase-order-item2', $purchase_order_id)}}" method="POST">
-    @csrf
-    
-    <div class="modal fade bs-modal-md" id="addtype" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header"  style='text-align:left !important'>
-                    <h4>Form Tambah Daftar Barang</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <a class="text-dark">Nama Barang<a class='red'> </a></a>
-                            {!! Form::select('purchase_order_item_id',  $add_type_purchaseorderitem, '', ['class' => 'selection-search-clear select-form', 'id' => 'purchase_order_item_id']) !!}
-                            <input type="hidden" name="purchase_order_id" id="purchase_order_id" value="{{ $purchase_order_id}}">
-                        </div>
-                        {{-- <div class="col-md-12 mb-3">
-                            <a class="text-dark">Satuan<a class='red'> </a></a>
-                            {!! Form::select('item_unit_id',  $add_unit_purchaseorderitem, '', ['class' => 'selection-search-clear select-form', 'id' => 'item_unit_id']) !!}
-                        </div> --}}
-                        <div class="col-md-12">
-                            <a class="text-dark">Quantity<a class='red'> </a></a>
-                            <input type="number" class="form-control input-bb" name="quantity" id="quantity" value="" autocomplete="off">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="modal-footer">
-                        {{-- <button type="button" class="btn btn-danger btn-sm" >Batal</button> --}}
-                        <button type="submit" class="btn btn-primary btn-sm" style="margin-right: -3%">Tambah</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-</form>
-<br>
-<br>
-
-
 
 @stop
 

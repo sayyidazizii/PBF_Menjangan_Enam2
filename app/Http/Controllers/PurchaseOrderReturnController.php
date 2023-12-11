@@ -15,6 +15,9 @@ use App\Models\InvItemUnit;
 use App\Models\PurchaseOrderReturn;
 use App\Models\PurchaseOrderItem;
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseInvoice;
+use App\Models\PurchaseInvoiceItem;
+use App\Models\InvGoodsReceivedNoteItem;
 use App\Models\InvItemStock;
 use App\Models\PurchaseOrderReturnItem;
 use Elibyy\TCPDF\Facades\TCPDF;
@@ -85,47 +88,40 @@ class PurchaseOrderReturnController extends Controller
         return view('content/PurchaseOrder/SearchPurchaseOrder', compact('purchaseorder'));
     }
 
-    public function addPurchaseOrderReturn($purchase_order_id)
+    public function searchPurchaseInvoice()
     {
-        $purchaseorder = PurchaseOrder::where('purchase_order.data_state', 0)
-            ->where('purchase_order.purchase_order_id', $purchase_order_id)
-            ->join('purchase_order_item', 'purchase_order.purchase_order_id', 'purchase_order_item.purchase_order_id')
-            ->where('purchase_order_item.quantity_outstanding', '>', 0)
+        Session::forget('purchaseorderitem');
+
+        $purchaseinvoice = PurchaseInvoice::select('purchase_invoice.*')
+            ->where('purchase_invoice.data_state', '=', 0)
+            ->get();
+
+        return view('content/PurchaseOrder/searchPurchaseInvoice', compact('purchaseinvoice'));
+    }
+
+    public function addPurchaseOrderReturn($purchase_invoice_id)
+    {
+
+        $purchaseinvoice = PurchaseInvoice::findOrFail($purchase_invoice_id);
+
+        $purchaseorder = PurchaseOrder::where('purchase_order_id', $purchaseinvoice['purchase_order_id'])
+        ->where('data_state', 0)
+        ->first();
+        
+        $purchaseinvoiceitem = PurchaseInvoiceItem::select('purchase_invoice_item.*')
+        ->where('data_state', 0)
+        ->where('purchase_invoice_id', $purchase_invoice_id)
+        ->get();
+
+        return view('content/PurchaseOrder/FormAddPurchaseOrderReturn', compact('purchase_invoice_id','purchaseinvoice','purchaseinvoiceitem','purchaseorder'));
+    }
+
+    public function getQuantityTerima($goods_received_note_item_id)
+    {
+        $invgoodsreceivednoteitemid = InvGoodsReceivedNoteItem::where('data_state', 0)
+            ->where('goods_received_note_item_id', $goods_received_note_item_id)
             ->first();
-
-        $purchaseorderitem = PurchaseOrderItem::where('data_state', 0)
-            ->where('purchase_order_id', $purchase_order_id)
-            ->where('purchase_order_item.quantity_outstanding', '>', 0)
-            ->get()->toArray();
-
-        $purchaseorderitem_temporary = Session::get('purchaseorderitem');
-
-        if ($purchaseorderitem_temporary == null) {
-            $merge_data = $purchaseorderitem;
-        } else {
-            $merge_data = array_merge($purchaseorderitem, $purchaseorderitem_temporary);
-            $key_type = array_column($merge_data, 'item_type_id');
-            $key_qty = array_column($merge_data, 'quantity');
-            array_multisort($key_type, SORT_ASC, $merge_data, SORT_DESC, $merge_data);
-        }
-        // dd($merge_data);
-
-        $add_type_purchaseorderitem = PurchaseOrderItem::where('purchase_order_item.data_state', 0)
-            ->where('purchase_order_id', $purchase_order_id)
-            ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'purchase_order_item.item_type_id')
-            // ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'purchase_order_item.item_unit_id')
-            ->pluck('item_type_name', 'purchase_order_item.purchase_order_item_id');
-
-        $add_unit_purchaseorderitem = PurchaseOrderItem::where('purchase_order_item.data_state', 0)
-            ->where('purchase_order_id', $purchase_order_id)
-            // ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'purchase_order_item.item_type_id')
-            ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'purchase_order_item.item_unit_id')
-            ->pluck('item_unit_name', 'purchase_order_item.item_unit_id');
-
-        $null_add_purchaseorderitem = Session::get('purchase_order_item_id');
-        $null_add_unit_purchaseorderitem = Session::get('item_unit_id');
-
-        return view('content/PurchaseOrder/FormAddPurchaseOrderReturn', compact('merge_data', 'purchaseorderitem_temporary', 'purchaseorder', 'purchaseorderitem', 'add_type_purchaseorderitem', 'null_add_purchaseorderitem', 'add_unit_purchaseorderitem', 'null_add_unit_purchaseorderitem'));
+        return $invgoodsreceivednoteitemid['quantity_received'] ?? '';
     }
 
     public function getItemCategoryName($item_category_id)
