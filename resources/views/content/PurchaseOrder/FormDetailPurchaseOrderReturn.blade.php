@@ -56,13 +56,13 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">No Penerimaan</a>
+                        <a class="text-dark">No Retur</a>
                         <input class="form-control input-bb" type="text" name="purchase_order_return_no" id="purchase_order_return_no" value="{{$purchaseorderreturn['purchase_order_return_no']}}" readonly/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Tanggal Penerimaan</a>
+                        <a class="text-dark">Tanggal Retur</a>
                         <input class="form-control input-bb" type="text" name="purchase_order_return_date" id="purchase_order_return_date" value="{{$purchaseorderreturn['purchase_order_return_date']}}" readonly/>
                     </div>
                 </div>
@@ -70,14 +70,14 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">No PO</a>
-                        <input class="form-control input-bb" type="text" name="purchase_order_date" id="purchase_order_date" value="{{$PurchaseOrderReturn->getPurchaseOrderNo($purchaseorderreturn['purchase_order_id'])}}" readonly/>
+                        <a class="text-dark">No Invoice</a>
+                        <input class="form-control input-bb" type="text" name="purchase_order_date" id="purchase_order_date" value="{{$PurchaseOrderReturn->getPurchaseInvoiceNo($purchaseorderreturn['purchase_invoice_id'])}}" readonly/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Tanggal PO</a>
-                        <input class="form-control input-bb" type="text" name="purchase_order_date" id="purchase_order_date" value="{{$PurchaseOrderReturn->getPurchaseOrderDate($purchaseorderreturn['purchase_order_id'])}}" readonly/>
+                        <a class="text-dark">Tanggal Invoice</a>
+                        <input class="form-control input-bb" type="text" name="purchase_order_date" id="purchase_order_date" value="{{$PurchaseOrderReturn->getPurchaseInvoiceDate($purchaseorderreturn['purchase_invoice_id'])}}" readonly/>
                     </div>
                 </div>
             </div>
@@ -92,14 +92,6 @@
                     <div class="form-group">
                         <a class="text-dark">Pemasok</a>
                         <input class="form-control input-bb" type="text" name="supplier_id" id="supplier_id" value="{{$PurchaseOrder->getCoreSupplierName($purchaseorderreturn['supplier_id'])}}" readonly/>
-                    </div>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Surat Jalan Supplier</a>
-                        <input class="form-control input-bb" type="text" name="delivery_note_no" id="delivery_note_no" value="{{$purchaseorderreturn['delivery_note_no']}}" readonly/>
                     </div>
                 </div>
             </div>
@@ -132,7 +124,8 @@
                                 <th style='text-align:center'>Kategori Barang</th>
                                 <th style='text-align:center'>Nama Barang</th>
                                 <th style='text-align:center'>Satuan</th>
-                                <th style='text-align:center'>Quantity</th>
+                                <th style='text-align:center'>Quantity Retur</th>
+                                <th style='text-align:center'>Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -150,18 +143,37 @@
                                                 <td style='text-align  : left !important;'>".$PurchaseOrder->getItemCategoryName($val['item_category_id'])."</td>
                                                 <td style='text-align  : left !important;'>".$PurchaseOrder->getItemTypeName($val['item_type_id'])."</td>
                                                 <td style='text-align  : left !important;'>".$PurchaseOrder->getItemUnitName($val['item_unit_id'])."</td>
-                                                <td style='text-align  : right !important;'>".$val['quantity']."</td>";
+                                                <td style='text-align  : right !important;'>".$val['quantity_return']."</td>
+                                                <td style='text-align  : right !important;'>".$val['total_amount']."</td>";
                                                 echo"
                                             </tr>
                                         ";
                                         $no++;
-                                        $total_price += $val['subtotal_amount'];
-                                        $total_item  += $val['quantity'];
+                                        $total_price += $val['total_amount'];
+                                        $total_item  += $val['quantity_return'];
                                     }
                                         echo"
-                                        <th style='text-align  : center' colspan='4'>Total</th>
-                                        <th style='text-align  : right'>".$total_item."</th>
+                                            <th style='text-align  : center' colspan='4'>Total</th>
+                                            <th style='text-align  : right'>".$total_item."</th>
+                                            <th style='text-align  : right'>".$total_price."</th>
                                         ";
+
+
+                                        echo"<tr>
+                                                <th style='text-align  : center' colspan='4'>PPN</th>
+                                                <th style='text-align  : right'>".$purchaseorderreturn['ppn_in_percentage']."</th>
+                                                <th style='text-align  : right'>".$purchaseorderreturn['ppn_in_amount']."</th>
+                                            </tr>
+                                        ";
+
+                                        echo"<tr>
+                                                <th style='text-align  : center' colspan='4'>Subtotal</th>
+                                                <th style='text-align  : right'></th>
+                                                <th style='text-align  : right'>".$total_price + $purchaseorderreturn['ppn_in_amount']."</th>
+                                            </tr>
+                                ";
+
+                                       
                                 }
                             ?>
                         </tbody>

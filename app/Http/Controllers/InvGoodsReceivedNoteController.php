@@ -531,9 +531,10 @@ class InvGoodsReceivedNoteController extends Controller
 
                 $purchaseorderitem          = PurchaseOrderItem::where('purchase_order_item_id', $temprequest['purchase_order_item_id_'.$i])
                 ->first();
+            }
 
                 $purchaseorder              = PurchaseOrder::findOrFail($invgoodsreceivednote['purchase_order_id']);
-                $total_amount               = $temprequest['quantity_received_'.$i] * $purchaseorderitem['item_unit_cost'] -  $purchaseorderitem['discount_amount'] ;
+                $total_amount               = $purchaseorder['total_amount'];
 
                 $journalvoucher = AcctJournalVoucher::where('created_id', Auth::id())
                 ->orderBy('journal_voucher_id', 'DESC')
@@ -566,7 +567,7 @@ class InvGoodsReceivedNoteController extends Controller
                 // dd($data_debit1);
                 
                 AcctJournalVoucherItem::create($data_debit1);
-            }
+
                 
                 //------account_id PPN Masukan------//
                 $account = AcctAccount::where('account_id',106)

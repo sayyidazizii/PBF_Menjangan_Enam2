@@ -180,7 +180,7 @@
                                         $no++;
                                         $total_price += $val['subtotal_amount'];
                                         $total_item  += $val['quantity'];
-                                        $totalAfterPpn = $val['subtotal_amount'] + $purchaseorder->ppn_in_amount;
+                                        $totalAfterPpn = $total_price + $purchaseorder->ppn_in_amount;
                                     @endphp
                                 @endforeach
                                 <th style='text-align  : center' colspan='2'>Total</th>

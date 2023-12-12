@@ -411,31 +411,6 @@ $total_amount               = $request->total_amount;
 
 //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             $msg = 'Tambah Purchase Invoice Berhasil';
             return redirect('/purchase-invoice')->with('msg',$msg);
         }else{
