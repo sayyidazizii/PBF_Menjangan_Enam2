@@ -299,7 +299,7 @@ function elements_add(name, value){
                             </tr>
                         </thead>
                         <tbody>
-                            <label style='text-align  : left !important;'>Ppn Out<input class='form-control' style='text-align:right;'type='text' name='ppn_out_amount' id='ppn_out_amount' value='{{ $SalesDeliveryNote->getPpnOut($salesdeliveryorder['sales_delivery_order_id']) }}' readonly/>
+                            <label hidden style='text-align  : left !important;'>Ppn Out<input class='form-control' style='text-align:right;'type='text' name='ppn_out_amount' id='ppn_out_amount' value='{{ $SalesDeliveryNote->getPpnOut($salesdeliveryorder['sales_delivery_order_id']) }}' readonly/>
                             </label>
 
                             @if(count($salesdeliveryorderitem)==0)
@@ -322,7 +322,7 @@ function elements_add(name, value){
                                         <td style='text-align  : right !important;'>{{$item['quantity_resulted']}}</td>
                                         <td style='text-align  : right !important;'>
                                             <input class='form-control' style='text-align:right;'type='text' name='quantity_delivered_{{$no}}' id='quantity_delivered_{{$no}}' value='{{$val['quantity']}}' readonly/>  
-
+                                            
                                             <input class='form-control' style='text-align:right;'type='hidden' name='sales_order_id__{{$no}}' id='sales_order_id__{{$no}}' value='{{$val['sales_order_id']}}'/>  
                                             <input class='form-control' style='text-align:right;'type='hidden' name='sales_order_item_id__{{$no}}' id='sales_order_item_id__{{$no}}' value='{{$val['sales_order_item_id']}}'/> 
                                             <input class='form-control' style='text-align:right;'type='hidden' name='sales_delivery_order_id__{{$no}}' id='sales_delivery_order_id__{{$no}}' value='{{$val['sales_delivery_order_id']}}'/>  

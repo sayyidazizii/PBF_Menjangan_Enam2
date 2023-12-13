@@ -60,8 +60,12 @@
                         <input class="form-control input-bb" type="hidden" name="purchase_invoice_id" id="purchase_invoice_id" value="{{$purchase_invoice_id}}"/>
                     </div>
                 </div>
-            </div>
-            <div class="row form-group">
+                <div class="col-md-6">
+                    <div class="form-group">
+                            <a class="text-dark">Tanggal Jatuh Tempo<a class='red'> *</a></a>
+                            <input class="form-control input-bb" type="text" name="purchase_invoice_due_date" id="purchase_invoice_due_date" onChange="function_elements_add(this.name, this.value);" value="{{date('d/m/Y', strtotime($purchaseinvoice['purchase_invoice_due_date']))}}" readonly/>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">No Penerimaan Barang</a>
@@ -92,19 +96,21 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <a class="text-dark">Nomor Invoice</a>
+                        <input class="form-control input-bb" type="text" name="faktur_tax_no" id="faktur_tax_no" value="{{$purchaseinvoice['purchase_invoice_no']}}" readonly/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <a class="text-dark">Tanggal Invoice Pembelian<a class='red'> *</a></a>
                         <input class="form-control input-bb" type="text" name="purchase_invoice_date" id="purchase_invoice_date" onChange="function_elements_add(this.name, this.value);" value="{{date('d/m/Y', strtotime($purchaseinvoice['purchase_invoice_date']))}}" readonly/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Tanggal Jatuh Tempo<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="purchase_invoice_due_date" id="purchase_invoice_due_date" onChange="function_elements_add(this.name, this.value);" value="{{date('d/m/Y', strtotime($purchaseinvoice['purchase_invoice_due_date']))}}" readonly/>
+                        <a class="text-dark">Faktur Tax No</a>
+                        <input class="form-control input-bb" type="text" name="faktur_tax_no" id="faktur_tax_no" value="{{$purchaseinvoice['faktur_tax_no']}}" readonly/>
                     </div>
-                    <div class="form-group">
-                    <a class="text-dark">Faktur Tax No</a>
-                    <input class="form-control input-bb" type="text" name="faktur_tax_no" id="faktur_tax_no" value="{{$purchaseinvoice['faktur_tax_no']}}" readonly/>
-                </div>
                 </div>
             </div>
             <div class="row form-group">
@@ -136,8 +142,8 @@
                                 <th style='text-align:center'>No.</th>
                                 <th style='text-align:center'>Kategori Barang</th>
                                 <th style='text-align:center'>Nama Barang</th>
-                                <th style='text-align:center'>Quantity</th>
                                 <th style='text-align:center'>Satuan</th>
+                                <th style='text-align:center'>Quantity</th>
                                 <th style='text-align:center'>Harga Satuan</th>
                                 <th style='text-align:center'>Subtotal</th>
                             </tr>
@@ -156,8 +162,8 @@
                                         <td style='text-align  : center'>{{$no}}</td>
                                         <td style='text-align  : left !important;'>{{$PurchaseInvoice->getItemCategoryName($val['item_category_id'])}}</td>
                                         <td style='text-align  : left !important;'>{{$PurchaseInvoice->getItemTypeName($val['item_type_id'])}}</td>
-                                        <td style='text-align  : right !important;'>{{$val['quantity']}}</td>
                                         <td style='text-align  : left !important;'>{{$PurchaseInvoice->getItemUnitName($val['item_unit_id'])}}</td>
+                                        <td style='text-align  : right !important;'>{{$val['quantity']}}</td>
                                         <td style='text-align  : right !important;'>{{number_format($val['item_unit_cost'],2,',','.')}}</td>
                                         <td style='text-align  : right !important;'>{{number_format($val['subtotal_amount'],2,',','.')}}</td>
                                     </tr>

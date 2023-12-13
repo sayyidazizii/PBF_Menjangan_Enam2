@@ -451,7 +451,7 @@ Route::post('/sales-order/add-customer', [SalesOrderController::class, 'addCoreC
 Route::post('/sales-order/available-stock', [SalesOrderController::class, 'getAvailableStock'])->name('available-stock-sales-order');
 Route::post('/sales-order/select-data-stock', [SalesOrderController::class, 'getSelectDataStock'])->name('select-data-stock-sales-order');
 Route::post('/sales-order/select-data-unit', [SalesOrderController::class, 'getSelectDataUnit'])->name('select-data-unit');
-
+Route::post('/sales-order/type', [SalesOrderController::class, 'getInvItemType'])->name('sales-order-type');
     
 Route::get('/sales-order-approval', [SalesOrderApprovalController::class, 'index'])->name('sales-order-approval');
 Route::get('/sales-order-approval/approve/{sales_order_id}', [SalesOrderApprovalController::class, 'approveSalesorder'])->name('approve-sales-order-approval');

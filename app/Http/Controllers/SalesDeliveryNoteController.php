@@ -516,6 +516,8 @@ class SalesDeliveryNoteController extends Controller
                             'item_category_id'                  =>   $itemstock['item_category_id'],
                             'item_type_id'                      =>   $dataitem['item_type_id_'.$i],
                             'item_unit_id'                      =>   $dataitem['item_unit_id_'.$i],
+                            'item_unit_cost'                    =>   $itemstock['item_unit_cost'],
+                            'item_unit_price'                   =>   $dataitem['item_unit_price_'.$i],
                             'item_total'                        =>   $itemstock['item_total'],
                             'item_unit_id_default'              =>   $itemstock['item_unit_id_default'],
                             'item_default_quantity_unit'        =>   $itemstock['item_default_quantity_unit'],

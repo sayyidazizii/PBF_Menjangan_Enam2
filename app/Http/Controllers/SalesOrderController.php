@@ -206,6 +206,7 @@ class SalesOrderController extends Controller
     public function processAddArraySalesOrderItem(Request $request)
     {
         $fields = $request->validate([
+            'item_category_id'              => 'required',
             'item_type_id'                  => 'required',
             'item_unit_id'                  => 'required',
             'quantity'                      => 'required',
@@ -220,6 +221,7 @@ class SalesOrderController extends Controller
         ]);
 
         $salesorderitem = array(
+            'item_category_id'	            => $request->item_category_id,
             'item_type_id'	                => $request->item_type_id,
             'item_unit_id'	                => $request->item_unit_id,
             'quantity'	                    => $request->quantity,
@@ -288,6 +290,30 @@ class SalesOrderController extends Controller
         ->first();
 
         return $itemcategory['item_category_name'];
+    }
+
+    public function getInvItemType(Request $request)
+    {
+        $item_category_id = $request->item_category_id;
+        $data = '';
+
+        // $type = InvItemType::where('item_category_id', $item_category_id)
+        //     ->where('data_state', '=', 0)
+        //     ->get();
+        
+        $type = InvItemType::select('*')
+        ->where('inv_item_type.data_state','=',0)
+        ->join('inv_item_category', 'inv_item_category.item_category_id', 'inv_item_type.item_category_id')
+        ->join('inv_item_stock', 'inv_item_type.item_type_id', 'inv_item_stock.item_type_id')
+        ->where('inv_item_stock.item_category_id', $item_category_id)
+        ->get();
+
+        $data .= "<option value=''>--Choose One--</option>";
+        foreach ($type as $mp) {
+            $data .= "<option value='$mp[item_type_id]'>$mp[item_type_name]".'-'."$mp[item_batch_number]</option>\n";
+        }
+
+        return $data;
     }
 
     public function getItemTypeName($item_type_id){
@@ -462,6 +488,7 @@ class SalesOrderController extends Controller
             foreach ($salesorderitem AS $key => $val){
                 $datasalesorderitem = array (
                     'sales_order_id'                => $sales_order_id['sales_order_id'],
+                    'item_category_id'              => $val['item_category_id'],
                     'item_type_id'                  => $val['item_type_id'],
                     'item_unit_id'                  => $val['item_unit_id'],
                     // 'item_stock_id'                 => $val['item_stock_id'],

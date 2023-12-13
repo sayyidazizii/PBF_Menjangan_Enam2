@@ -496,6 +496,7 @@ class InvGoodsReceivedNoteController extends Controller
                     'warehouse_id'                  => $fields['warehouse_id'],
                     'item_total'                    => $temprequest['quantity_received_'.$i],
                     'item_unit_id_default' 		    => $item_unit_id_default,
+                    'item_unit_cost'                => $temprequest['item_unit_cost_'.$i],
                     'quantity_unit' 		        => $quantity_unit,
                     'item_default_quantity_unit'    => $default_quantity,
                     // 'item_weight_unit' 		        => $item_weight,

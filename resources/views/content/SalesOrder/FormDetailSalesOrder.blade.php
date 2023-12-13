@@ -102,14 +102,14 @@
                                 <th style='text-align:center'>Qty</th>
                                 <th style='text-align:center'>Satuan</th>
                                 <th style='text-align:center'>Harga Satuan</th>
-                                <th style='text-align:center'>Discount A(%)</th>
-                                <th style='text-align:center'> Discount A</th>
-                                <th style='text-align:center'>Total After Discount A</th>
-                                <th style='text-align:center'>Discount B(%)</th>
-                                <th style='text-align:center'> Discount B</th>
-                                <th style='text-align:center'>Total After Discount B</th>
+                                <th style='text-align:center'>Discount 1(%)</th>
+                                <th style='text-align:center'> Discount 1</th>
+                                <th style='text-align:center'>Total</th>
+                                <th style='text-align:center'>Discount 2(%)</th>
+                                <th style='text-align:center'> Discount 2</th>
                                 <th style='text-align:center'>PPN</th>
-                                <th style='text-align:center'>Total After PPN</th>
+                                <th style='text-align:center'>Total Bayar</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -121,7 +121,8 @@
                                     $total_price = 0;
                                     $total_item = 0;
                                     $total_price_after_discount_item = 0;
-                                    $no =1;
+                                    $ppn_amount = 0 ;
+                                    $no = 1;
                                 @endphp
                                 @foreach ($salesorderitem AS $key => $val) 
                                     <tr>
@@ -135,30 +136,30 @@
                                         <td style='text-align  : right !important;'>{{number_format($val['subtotal_after_discount_item_a'],2,',','.')}}</td>
                                         <td style='text-align  : right !important;'>{{$val['discount_percentage_item_b']}}</td>
                                         <td style='text-align  : right !important;'>{{number_format($val['discount_amount_item_b'],2,',','.')}}</td>
-                                        <td style='text-align  : right !important;'>{{number_format($val['subtotal_after_discount_item_b'],2,',','.')}}</td>
                                         <td style='text-align  : right !important;'>{{number_format($val['ppn_amount_item'],2,',','.')}}</td>
-                                        <td style='text-align  : right !important;'>{{number_format($val['total_price_after_ppn_amount'],2,',','.')}}</td>
+                                        <td style='text-align  : right !important;'>{{number_format($val['subtotal_after_discount_item_b'],2,',','.')}}</td>
                                     </tr>
                                     @php
                                     $no++;
-                                    $total_price_after_discount_item += $val['total_price_after_ppn_amount'];
+                                    $total_price_after_discount_item += $val['subtotal_after_discount_item_b'];
                                     $total_item+=$val['quantity'];
-                                    $price_after_discount_amount = $total_price_after_discount_item   - $salesorder['discount_amount'];
+                                    $ppn_amount += $val['ppn_amount_item'];
+                                    $price_after_discount_amount = $total_price_after_discount_item + $ppn_amount;
                                 @endphp
                                 
                                 @endforeach
                                 <th style='text-align  : center' colspan='2'>Total</th>
                                 <th style='text-align  : right' >{{$total_item}}</th>
-                                <th colspan='9'></th>
+                                <th colspan='8'></th>
                                 <th style='text-align  : right'>{{number_format($total_price_after_discount_item,2,',','.')}}</th>
                                 <th hidden>
-                                    <input class='form-control input-bb' type='hidden' name='total_price_all' id='total_price_all' value='{{$total_price_after_discount_item}}'/>
-                                    <input class='form-control input-bb' type='hidden' name='total_item_all' id='total_item_all' value='{{$total_item}}'/>
+                                    <input class='form-control input-bb' type='text' name='total_price_all' id='total_price_all' value='{{$total_price_after_discount_item}}'/>
+                                    <input class='form-control input-bb' type='text' name='total_item_all' id='total_item_all' value='{{$total_item}}'/>
                                 </th>
-                                <tr>
+                                <tr hidden>
                                     <td style='text-align  : center' colspan='2'><b>Discount Nota (%)</b></td>
                                     <td style='text-align  : center'><b>:</b></td>
-                                    <td colspan='8'></td>
+                                    <td colspan='7'></td>
                                     <td>
                                         <input style='text-align  : right' type="text" class="form-control" name="discount_percentage" id="discount_percentage" value="0"  placeholder="isi 0 jika kosong"></td>
                                     <td>
@@ -167,29 +168,28 @@
                                         <input style='text-align  : right;  font-weight: bold;' type="text"  value="{{$salesorder['discount_amount']}}"  class="form-control" name="discount_amount_view" id="discount_amount_view" readonly>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr hidden>
                                     <td style='text-align  : center' colspan='2'><b>Harga Setelah Discount Nota </td>
                                     <td style='text-align  : center'><b>:</b></td>
-                                    <td colspan='9'></td>
+                                    <td colspan='8'></td>
                                     <td style='text-align  : center'>
                                         <input style='text-align  : right;  font-weight: bold;' type="text" value="{{number_format($price_after_discount_amount,2,',','.')}}" class="form-control" name="subtotal_after_discount_view" id="subtotal_after_discount_view" readonly>
                                     </td>
                                 </tr>
-                                <tr hidden>
-                                    <td  style='text-align  : center' colspan='2'><b>PPN Keluar (%)</b></td>
+                                <tr>
+                                    <td  style='text-align  : center' colspan='2'><b>Total PPN Keluar (%)</b></td>
                                     <td  style='text-align  : center'><b>:</b></td>
-                                    <td  colspan='8'></td>
+                                    <td  colspan='7'></td>
                                     <td>
-                                        <input  style='text-align  : right' type="text" class="form-control" name="ppn_out_percentage" id="ppn_out_percentage" value="0" placeholder="isi 0 jika kosong"></td>
                                     <td>
-                                        <input  type="" class="form-control" name="ppn_out_amount" id="ppn_out_amount" readonly>
-                                        <input  style='text-align  : right;  font-weight: bold;' type="text" class="form-control" name="ppn_out_amount_view" id="ppn_out_amount_view" readonly>
+                                        <input hidden type="text" class="form-control" name="ppn_out_amount" id="ppn_out_amount" value="{{ $ppn_amount }}" readonly>
+                                        <input  style='text-align  : right;  font-weight: bold;' type="text" class="form-control" value="{{ number_format($ppn_amount,2,',','.') }}" name="ppn_out_amount_view" id="ppn_out_amount_view" readonly>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style='text-align  : center' colspan='2'><b>Total Harga Akhir </td>
                                     <td style='text-align  : center'><b>:</b></td>
-                                    <td colspan='9'></td>
+                                    <td colspan='8'></td>
                                     <td style='text-align  : center'>
                                         <input type="hidden" class="form-control" name="subtotal_after_ppn_out" id="subtotal_after_ppn_out" readonly>
                                         <input style='text-align  : right;  font-weight: bold;' type="text"  value="{{number_format($price_after_discount_amount,2,',','.')}}"  class="form-control" name="subtotal_after_ppn_out_view" id="subtotal_after_ppn_out_view" readonly>

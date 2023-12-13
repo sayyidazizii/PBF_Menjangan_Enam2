@@ -263,7 +263,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <label style='text-align  : left !important;'>Ppn Out<input class='form-control' style='text-align:right;'type='text' name='ppn_out_amount' id='ppn_out_amount' value='{{ $SalesDeliveryOrder->getPpnOut($salesorder['sales_order_id']) }}' readonly/>
+                            <label hidden style='text-align  : left !important;'>Ppn Out<input class='form-control' style='text-align:right;'type='text' name='ppn_out_amount' id='ppn_out_amount' value='{{ $SalesDeliveryOrder->getPpnOut($salesorder['sales_order_id']) }}' readonly/>
                             </label>
                                 @if(count($salesorderitem)==0)
                                     <tr>

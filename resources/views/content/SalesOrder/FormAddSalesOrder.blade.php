@@ -88,6 +88,29 @@
         //         });
 		// });
 
+        $("#item_category_id").change(function(){
+			var item_category_id 	= $("#item_category_id").val();
+                $.ajax({
+                    type: "POST",
+                    url : "{{route('sales-order-type')}}",
+                    dataType: "html",
+                    data: {
+                        'item_category_id'			    : item_category_id,
+                        '_token'                        : '{{csrf_token()}}',
+                    },
+                    success: function(return_data){ 
+					    $('#item_type_id').html(return_data);
+                        console.log(return_data);
+                    },
+                    error: function(data)
+                    {
+                        console.log(data);
+
+                    }
+                });
+
+		}); 
+
         
         if(!elements['sales_order_type_id']){
             $("#sales_order_type_id").select2("val", "0");
@@ -546,6 +569,7 @@
 
 
     function processAddArraySalesOrderItem(){
+        var item_category_id		            = document.getElementById("item_category_id").value;
         var item_type_id		                = document.getElementById("item_type_id").value;
         var item_unit_id	                    = document.getElementById("item_unit_id").value;
         // var item_stock_id	                    = document.getElementById("item_stock_id").value;
@@ -565,6 +589,7 @@
             type: "POST",
             url : "{{route('sales-order-add-array')}}",
             data: {
+                'item_category_id'              : item_category_id,
                 'item_type_id'                  : item_type_id, 
                 'item_unit_id'                  : item_unit_id,
                 // 'item_stock_id' 		        : item_stock_id,
@@ -749,8 +774,14 @@
             <hr/>
             <div class="row form-group">
                 <div class="col-md-4">
+                    <a class="text-dark">Kategori Barang<a class='red'> *</a></a>
+                    {!! Form::select('item_category_id',  $itemcategory, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_category_id']) !!}
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
                     <a class="text-dark">Nama Barang<a class='red'> *</a></a>
-                    {!! Form::select('item_type_id',  $invitemtype, $null_item_type_id, ['class' => 'selection-search-clear select-form', 'id' => 'item_type_id']) !!}
+                    {!! Form::select('item_type_id',  $itemtype, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_type_id']) !!}
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
