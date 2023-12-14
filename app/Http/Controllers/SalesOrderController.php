@@ -292,30 +292,6 @@ class SalesOrderController extends Controller
         return $itemcategory['item_category_name'];
     }
 
-    public function getInvItemType(Request $request)
-    {
-        $item_category_id = $request->item_category_id;
-        $data = '';
-
-        // $type = InvItemType::where('item_category_id', $item_category_id)
-        //     ->where('data_state', '=', 0)
-        //     ->get();
-        
-        $type = InvItemType::select('*')
-        ->where('inv_item_type.data_state','=',0)
-        ->join('inv_item_category', 'inv_item_category.item_category_id', 'inv_item_type.item_category_id')
-        ->join('inv_item_stock', 'inv_item_type.item_type_id', 'inv_item_stock.item_type_id')
-        ->where('inv_item_stock.item_category_id', $item_category_id)
-        ->get();
-
-        $data .= "<option value=''>--Choose One--</option>";
-        foreach ($type as $mp) {
-            $data .= "<option value='$mp[item_type_id]'>$mp[item_type_name]".'-'."$mp[item_batch_number]</option>\n";
-        }
-
-        return $data;
-    }
-
     public function getItemTypeName($item_type_id){
         $itemtype = InvItemType::where('inv_item_type.data_state','=',0)
         ->select('inv_item_type.item_type_id', DB::raw('CONCAT(inv_item_category.item_category_name, " - ", inv_item_type.item_type_name) AS item_name'))
@@ -595,33 +571,70 @@ class SalesOrderController extends Controller
     }
 
     public function getAvailableStock(Request $request){
-        $item_type_id    = $request->item_type_id;
+        $item_stock_id    = $request->item_stock_id;
         $available_stock = 0;
 
-        $itemtype       = InvItemType::where('data_state', 0)
-        ->where('item_type_id', $item_type_id)
-        ->first();
+        // $itemtype       = InvItemType::where('data_state', 0)
+        // ->where('item_type_id', $item_type_id)
+        // ->first();
 
         // dd($itemtype);
 
         $itemstock  = InvItemStock::where('inv_item_stock.data_state', 0)
         // ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'inv_item_stock.item_type_id')
-        ->where('inv_item_stock.item_type_id', $item_type_id)
-        ->where('warehouse_id',6)
+        ->where('inv_item_stock.item_stock_id', $item_stock_id)
+        ->where('inv_item_stock.warehouse_id',6)
         ->sum('quantity_unit');
 
         $itemunitsecond = InvItemStock::join('inv_item_unit', 'inv_item_stock.item_unit_id', '=', 'inv_item_unit.item_unit_id')
-        ->where('inv_item_stock.item_type_id', $item_type_id)
+        ->where('inv_item_stock.item_stock_id', $item_stock_id)
         ->first();
 
         if($itemstock == null){
-            $return_data =  '';
+            $return_data =  'kosong';
             return $return_data;
         }else{
             $return_data =  $itemstock . ' ' .  $itemunitsecond['item_unit_name'];
             return $return_data;
         }
     }
+
+
+        public function getInvItemType(Request $request)
+        {
+            $item_category_id = $request->item_category_id;
+            $data = '';
+            
+            $type = InvItemType::select('*')
+            ->where('inv_item_type.data_state','=',0)
+            ->join('inv_item_category', 'inv_item_category.item_category_id', 'inv_item_type.item_category_id')
+            ->join('inv_item_stock', 'inv_item_type.item_type_id', 'inv_item_stock.item_type_id')
+            ->where('inv_item_stock.item_category_id', $item_category_id)
+            ->where('inv_item_stock.warehouse_id', 6)
+            ->get();
+
+            $data .= "<option value=''>--Choose One--</option>";
+            foreach ($type as $mp) {
+                $data .= "<option value='$mp[item_stock_id]'>$mp[item_type_name]".'-'."$mp[item_batch_number]</option>\n";
+            }
+
+            return $data;
+        }
+
+        public function getInvItemTypeId(Request $request)
+        {
+            $item_stock_id = $request->item_stock_id;
+            // $data = '';
+            
+            $type = InvItemStock::select('*')
+            ->where('inv_item_stock.data_state','=',0)
+            ->where('inv_item_stock.item_stock_id', $item_stock_id)
+            ->where('inv_item_stock.warehouse_id', 6)
+            ->first();
+
+            return $type['item_type_id'];
+        }
+
 
 
     public function getSelectDataStock(Request $request){
@@ -648,9 +661,15 @@ class SalesOrderController extends Controller
 
 
     public function getSelectDataUnit(Request $request){
-        $item_type_id   = $request->item_type_id;
 
-        $inv_item_type= InvItemType::where('item_type_id', $item_type_id)
+        $item_stock_id  = $request->item_stock_id;
+        $item_type_id   = InvItemStock::select('*')
+        ->where('inv_item_stock.data_state','=',0)
+        ->where('inv_item_stock.item_stock_id', $item_stock_id)
+        ->where('inv_item_stock.warehouse_id', 6)
+        ->first();
+
+        $inv_item_type= InvItemType::where('item_type_id', $item_type_id['item_type_id'])
         ->first();
         
         $data= '';

@@ -406,6 +406,7 @@ class SalesInvoiceController extends Controller
             'customer_id'                   => $request->customer_id,
             'buyers_acknowledgment_id'      => $request->buyers_acknowledgment_id,
             'subtotal_item'                 => $request->total_item,
+            'subtotal_after_discount'       => $request->subtotal_after_discount,
             'subtotal_amount'               => $request->total_amount,
             'total_amount'                  => $request->total_amount,
             'owing_amount'                  => $request->total_amount,
@@ -1133,15 +1134,15 @@ class SalesInvoiceController extends Controller
         <tr style=\"text-align: center;\">
             <td width=\"5%\" ><div style=\"text-align: center;\">No</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Nama Item</div></td>
-            <td width=\"5%\" ><div style=\"text-align: center;\">Unit</div></td>
+            <td width=\"10%\" ><div style=\"text-align: center;\">Satuan</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Batch</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Exp Date</div></td>
             <td width=\"5%\" ><div style=\"text-align: center;\">Qty</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Harga</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Total</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Diskon 1</div></td>
-            <td width=\"12%\" ><div style=\"text-align: center;\">Diskon 2</div></td>
-            <td width=\"13%\" ><div style=\"text-align: center;\">Total Bayar</div></td>
+            <td width=\"10%\" ><div style=\"text-align: center;\">Diskon 2</div></td>
+            <td width=\"10%\" ><div style=\"text-align: center;\">Total Bayar</div></td>
         </tr>";
         $no = 1;
         $tbl2 = "";
@@ -1218,7 +1219,7 @@ class SalesInvoiceController extends Controller
                     </table>
 
         ";
-            $path = '<img width="80"; height="80" src="resources/assets/img/ttd.png">';
+            $path = '<img width="100"; height="100" src="resources/assets/img/ttd.png">';
             if ($salesinvoice['section_id'] == 1) {
                 $html2 .= "
             <table style=\"text-align: center;font-weight: bold\" cellspacing=\"20\";>

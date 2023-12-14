@@ -304,32 +304,35 @@
                                     <td style='text-align  : center; font-weight: bold;' colspan='6'>Data Kosong</td>    
                                 </tr>
                             @endif
-                                <th style='text-align  : left' colspan='8'>Total</th>
+                                <th style='text-align  : center; font-weight: bold;' colspan='7'>
+                                    TOTAL
+                                </th>
+                                <th style='text-align  : left'>
+                                    <div class="row mt-4">
+                                        Total 
+                                    </div>
+                                    <div class="row mt-4">
+                                        Total PPN
+                                    </div>
+                                    <div class="row mt-4">
+                                        Subtotal 
+                                    </div>
+                                </th>
                                 <th style='text-align  : right'>
-                                    <input hidden class='form-control' style='text-align  : right !important;' type='text' name='total_amount_view' id='total_amount_view' value='{{number_format($total_price,2,',','.')}}' readonly/>   
-                                    <input  class='form-control' style='text-align  : right !important;' type='text' name='' id='' value='{{number_format($DPP,2,',','.')}}' readonly/>   
                                     <div class="row mt-2">
-                                        <div hidde class="col">
-                                            <label style='text-align  : left !important;'>Ppn</label>
-                                        </div>
-                                        <div  class="col">
-                                            <input class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='{{ number_format($SalesInvoice->getPpnItem($val['sales_order_item_id']),2,',','.' )}}' readonly/>
-                                            <!-- <input hidden class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='{{ number_format($SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id']),2,',','.' )}}' readonly/> -->
-                                            <input class='form-control' style='text-align:right;'type='hidden' name='tax_amount' id='tax_amount' value='{{ $SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id'])}}' readonly/>
-                                        </div>
+                                            <input  class='form-control' style='text-align  : right !important;' type='text' name='subtotal_after_discount_view' id='subtotal_after_discount_view' value='{{number_format($DPP,2,',','.')}}' readonly/>   
+                                            <input hidden class='form-control' style='text-align  : right !important;' type='text' name='subtotal_after_discount' id='subtotal_after_discount' value='{{ $DPP }}' readonly/>   
                                     </div>
                                     <div class="row mt-2">
-                                        <div class="col">
-                                            <label style='text-align  : left !important;'>Jumlah Total</label>
-                                        </div>
-                                        <div class="col">
-                                            <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ number_format($total_price + $SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id']),2,',','.') }}' readonly/>
-                                        </div>
+                                            <input class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='{{ number_format($totalppn,2,',','.' )}}' readonly/>
+                                            <input class='form-control' style='text-align:right;'type='hidden' name='tax_amount' id='tax_amount' value='{{ $totalppn }}' readonly/>
                                     </div>
-                                    <input class='form-control' type='hidden' name='total_amount' id='total_amount' value='{{$total_price + $SalesInvoice->getPpnOut($buyersAcknowledgment['sales_delivery_note_id'])}}'/>  
-                                    <input class='form-control' type='hidden' name='total_item' id='total_item' value='{{$total_item}}'/>    
-                                    <input class='form-control' type='hidden' name='total_no' id='total_no' value='{{$total_no}}'/>  
-
+                                    <div class="row mt-2">
+                                            <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ number_format($DPP + $totalppn,2,',','.') }}' readonly/>
+                                    </div>
+                                            <input class='form-control' type='hidden' name='total_amount' id='total_amount' value='{{ $DPP + $totalppn }}'/>  
+                                            <input class='form-control' type='hidden' name='total_item' id='total_item' value='{{$total_item}}'/>    
+                                            <input class='form-control' type='hidden' name='total_no' id='total_no' value='{{$total_no}}'/>  
                                 </th>
                         </tbody>
                     </table>

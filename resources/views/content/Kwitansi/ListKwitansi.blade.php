@@ -140,7 +140,7 @@
             Daftar
         </h5>
         <div class="form-actions float-right">
-            <button onclick="location.href='{{ url('/print-kwitansi/add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Kwitansi</button>
+            <button onclick="location.href='{{ url('/print-kwitansi/add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Buat Kwitansi</button>
         </div>
     </div>
 
@@ -169,11 +169,8 @@
                         <td style='text-align:center'>
                           {{-- <a href="/print-kwitansi/{{ $item['sales_kwitansi_id'] }}" class="btn btn-outline-primary">detail</a> --}}
 
-                          <button id="button_multiple_{{ $item['sales_kwitansi_id'] }}" onclick="multiple({{ $item['sales_kwitansi_id'] }});" type="button" class="btn btn-outline-warning">MultiPle</button>
-                          <input type="text" class="form-control input-bb" name="input_multiple_{{ $item['sales_kwitansi_id'] }}" id="input_multiple_{{ $item['sales_kwitansi_id'] }}" hidden value="{{ $item['sales_kwitansi_id'] }}"> 
-
-                          <button id="button_single_{{ $item['sales_kwitansi_id'] }}" onclick="single({{ $item['sales_kwitansi_id'] }});" type="button" class="btn btn-outline-info">Single</button>
-                          <input type="text" class="form-control input-bb" name="input_single_{{ $item['sales_kwitansi_id'] }}" id="input_single_{{ $item['sales_kwitansi_id'] }}" hidden value="{{ $item['sales_kwitansi_id'] }}"> 
+                          <a href=" {{ url('/print-kwitansi/cetak-multiple/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-warning">MultiPle</a>
+                          <a href=" {{ url('/print-kwitansi/cetak-single/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-info">Single</a>
                         </td>
                     </tr>
                     <?php

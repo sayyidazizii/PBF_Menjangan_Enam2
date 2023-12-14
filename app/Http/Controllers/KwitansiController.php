@@ -13,6 +13,8 @@ use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceItem;
 use App\Models\SalesKwitansi;
 use App\Models\SalesKwitansiItem;
+use App\Models\SalesDeliveryNoteItem;
+use App\Models\SalesOrderItem;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -178,17 +180,17 @@ class KwitansiController extends Controller
             }
     }
 
-    public function printKwitansi(Request $request){
+    public function printKwitansi($sales_kwitansi_id){
         $saleskwitansi = SalesKwitansi::select('*')
         ->where('data_state', '=', 0)
-        ->where('sales_kwitansi_id', '=', $request->sales_kwitansi_id)
+        ->where('sales_kwitansi_id', '=', $sales_kwitansi_id)
         ->first();
 
         $saleskwitansiItem = SalesKwitansiItem::select('*')
         ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_kwitansi_item.sales_invoice_id')
-        ->join('sales_order_item','sales_order_item.sales_order_id','sales_invoice_item.sales_order_id')
-        ->where('sales_kwitansi_item.sales_kwitansi_id', '=', $request->sales_kwitansi_id)
+        ->where('sales_kwitansi_item.sales_kwitansi_id', '=', $sales_kwitansi_id)
         ->where('checked', '=', 1)
+        ->groupBy('sales_invoice_item.sales_invoice_item_id')
         ->get();
 
     //dd($saleskwitansiItem);
@@ -300,9 +302,13 @@ class KwitansiController extends Controller
         $totalbayar = 0;
         $totaldpp = 0;
         foreach ($saleskwitansiItem as $key => $val) {
-            $totaldpp += $val['subtotal_price_B'];
-            $totalppn += $val['ppn_amount_item'];
-            $totalbayar += $val['subtotal_price_B'] + $val['ppn_amount_item'];
+            $total = $val['item_unit_price'] * $val['quantity'];
+            $diskon = $val['discount_A'] + $val['discount_B'];
+            $dpp = $total - $diskon ; 
+            $totaldpp += $total - $diskon ;
+            $ppn = $this->getPpnItem($val['sales_delivery_note_item_id']);
+            $totalppn += $this->getPpnItem($val['sales_delivery_note_item_id']);
+            $totalbayar += $total - $diskon  + $ppn;
             $html2 .= "<tr>
                             <td>" . $no . "</td>
                             <td>".$this->getBpbNo($val['sales_invoice_id']) ."<br>".$this->getInvItemTypeName($val['item_type_id'])."</td>
@@ -310,9 +316,9 @@ class KwitansiController extends Controller
                             <td style=\"text-align: right;\">".$val['item_unit_price']."</td>
                             <td style=\"text-align: right;\">".$val['item_unit_price'] * $val['quantity']."</td>
                             <td style=\"text-align: right;\">".$val['discount_A'] + $val['discount_B']." </td>
-                            <td style=\"text-align: right;\">".$val['subtotal_price_B']."</td>
-                            <td style=\"text-align: right;\">".$val['ppn_amount_item']."</td>
-                            <td style=\"text-align: right;\">".$val['subtotal_price_B'] + $val['ppn_amount_item']."</td>
+                            <td style=\"text-align: right;\">".$total - $diskon."</td>
+                            <td style=\"text-align: right;\">".$ppn."</td>
+                            <td style=\"text-align: right;\">".$dpp."</td>
                         </tr> 
                         ";
             $no++;
@@ -324,6 +330,12 @@ class KwitansiController extends Controller
                         <td style=\"text-align: right;\">".$totaldpp."</td>
                         <td style=\"text-align: right;\">".$totalppn."</td>
                         <td style=\"text-align: right;\">".$totalbayar."</td>
+                    </tr>
+                    <tr>
+                        <td colspan=\"6\" style=\"text-align: right;font-weight: bold\";>TOTAL PPN</td>
+                        <td style=\"text-align: right;\"></td>
+                        <td style=\"text-align: right;\"></td>
+                        <td style=\"text-align: right;\">".$totalppn."</td>
                     </tr>
                     <tr>
                         <td colspan=\"6\" style=\"text-align: right;font-weight: bold\";>TOTAL BAYAR</td>
@@ -371,17 +383,17 @@ class KwitansiController extends Controller
         
     }
 
-    public function printKwitansiSingle(Request $request) {
+    public function printKwitansiSingle($sales_kwitansi_id) {
         $saleskwitansi = SalesKwitansi::select('*')
         ->where('data_state', '=', 0)
-        ->where('sales_kwitansi_id', '=', $request->sales_kwitansi_id)
+        ->where('sales_kwitansi_id', '=', $sales_kwitansi_id)
         ->first();
 
         $saleskwitansiItem = SalesKwitansiItem::select('*')
         ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_kwitansi_item.sales_invoice_id')
-        ->join('sales_order_item','sales_order_item.sales_order_id','sales_invoice_item.sales_order_id')
-        ->where('sales_kwitansi_item.sales_kwitansi_id', '=', $request->sales_kwitansi_id)
+        ->where('sales_kwitansi_item.sales_kwitansi_id', '=', $sales_kwitansi_id)
         ->where('checked', '=', 1)
+        ->groupBy('sales_invoice_item.sales_invoice_item_id')
         ->get();
 
        //dd($saleskwitansiItem[0]);
@@ -504,7 +516,7 @@ class KwitansiController extends Controller
                 <td style=\"text-align: center;\">".$this->getItemBatchNumber($this->getNoteStokID($saleskwitansiItem[$i]['sales_delivery_note_item_id']))."</td>
                 <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['quantity']."".$this->getItemUnitName($saleskwitansiItem[$i]['item_unit_id']) ."</td>
                 <td style=\"text-align: center;\">". "@Rp".$saleskwitansiItem[$i]['item_unit_price']."</td>
-                <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['subtotal_price_B']."</td>
+                <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B']."</td>
             </tr> 
             ";
             $no++;
@@ -513,27 +525,27 @@ class KwitansiController extends Controller
         $html2  .= " 
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>TOTAL</td>
-                        <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['subtotal_price_B']."</td>
+                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B']."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>POTONGAN</td>
-                        <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B']."</td>
+                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B']."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>NETTO</td>
-                        <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['subtotal_price_B'] - $saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B']."</td>
+                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B'] - $saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B']."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>PPN</td>
-                        <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['ppn_amount_item']."</td>
+                        <td style=\"text-align: right;\">".$this->getPpnItem($saleskwitansiItem[$i]['sales_delivery_note_item_id'])."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>TOTAL BAYAR</td>
-                        <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['subtotal_price_B'] - ($saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B'])+$saleskwitansiItem[$i]['ppn_amount_item']."</td>
+                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B'] - ($saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B'])+$saleskwitansiItem[$i]['ppn_amount_item']."</td>
                         <td></td>
                     </tr>
                     ";
@@ -622,5 +634,16 @@ class KwitansiController extends Controller
         ->first();
 
         return $item['item_unit_name'];
+    }
+
+    public function getPpnItem($sales_delivery_note_item_id){
+        $item = SalesDeliveryNoteItem::where('sales_delivery_note_item_id', $sales_delivery_note_item_id)
+        ->where('data_state', 0)
+        ->first();
+
+        $salesorderitem = SalesOrderItem::where('sales_order_item_id',$item['sales_order_item_id'])
+        ->where('data_state', 0)
+        ->first();
+        return $salesorderitem['ppn_amount_item'];
     }
 }

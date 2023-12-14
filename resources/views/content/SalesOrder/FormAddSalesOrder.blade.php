@@ -49,9 +49,9 @@
             $("#warehouse_id").select2("val", "0");
         }
 
-        if(!elements['item_type_id']){
-            $("#item_type_id").select2("val", "0");
-        }
+        // if(!elements['item_type_id']){
+        //     $("#item_type_id").select2("val", "0");
+        // }
         
         if(!elements['customer_id']){
             $("#customer_id").select2("val", "0");
@@ -99,7 +99,7 @@
                         '_token'                        : '{{csrf_token()}}',
                     },
                     success: function(return_data){ 
-					    $('#item_type_id').html(return_data);
+					    $('#item_stock_id').html(return_data);
                         console.log(return_data);
                     },
                     error: function(data)
@@ -252,15 +252,37 @@
                 });
 
 		}); 
+
+        $("#item_stock_id").change(function(){
+			var item_stock_id 	= $("#item_stock_id").val();
+                $.ajax({
+                    type: "POST",
+                    url : "{{route('select-id-stock')}}",
+                    dataType: "html",
+                    data: {
+                        'item_stock_id'	: item_stock_id,
+                        '_token'        : '{{csrf_token()}}',
+                    },
+                    success: function(return_data){ 
+					$('#item_type_id').val(return_data);
+                        console.log(return_data);       
+                    },
+                    error: function(data)
+                    {
+                        console.log(data);
+
+                    }
+                });
+		});
         
-        $("#item_type_id").change(function(){
-			var item_type_id 	= $("#item_type_id").val();
+        $("#item_stock_id").change(function(){
+			var item_stock_id 	= $("#item_stock_id").val();
                 $.ajax({
                     type: "POST",
                     url : "{{route('available-stock-sales-order')}}",
                     dataType: "html",
                     data: {
-                        'item_type_id'	: item_type_id,
+                        'item_stock_id'	: item_stock_id,
                         '_token'    : '{{csrf_token()}}',
                     },
                     success: function(return_data){ 
@@ -274,21 +296,21 @@
                 });
 		});   
 
-        $("#item_type_id").change(function(){
-			var item_type_id 	= $("#item_type_id").val();
+       
+
+        $("#item_stock_id").change(function(){
+			var item_stock_id 	= $("#item_stock_id").val();
                 $.ajax({
                     type: "POST",
                     url : "{{route('select-data-unit')}}",
                     dataType: "html",
                     data: {
-                        'item_type_id'	: item_type_id,
+                        'item_stock_id'	: item_stock_id,
                         '_token'        : '{{csrf_token()}}',
                     },
                     success: function(return_data){ 
 					$('#item_unit_id').html(return_data);
-                        console.log(return_data);
-                    $("#item_unit_id").val(return_data);
-                        console.log(return_data);        
+                        console.log(return_data);       
                     },
                     error: function(data)
                     {
@@ -297,12 +319,13 @@
                     }
                 });
 		});
+
 	});
 
 
 
     $(document).ready(function(){
-        var discount_percentage_item 	                = $("#discount_percentage_item").val();
+            var discount_percentage_item 	                = $("#discount_percentage_item").val();
             var discount_percentage_item_b 	                = $("#discount_percentage_item_b").val();
 			var total_price 	                            = $("#total_price").val();
             var ppn_out_percentage 	                        = $("#ppn_out_percentage").val();
@@ -419,7 +442,7 @@
 
     //discount nota
     $(document).ready(function(){
-        var discount_percentage 	            = $("#discount_percentage").val();
+            var discount_percentage 	            = $("#discount_percentage").val();
 			var total_price_all 	                = $("#total_price_all").val();
 
             var ppn_out_percentage 	                = $("#ppn_out_percentage").val();
@@ -492,7 +515,7 @@
     });
 
     $(document).ready(function(){
-        var discount_percentage 	            = $("#discount_percentage").val();
+            var discount_percentage 	            = $("#discount_percentage").val();
 			var total_price_all 	                = $("#total_price_all").val();
 
             var ppn_out_percentage 	                = $("#ppn_out_percentage").val();
@@ -572,7 +595,7 @@
         var item_category_id		            = document.getElementById("item_category_id").value;
         var item_type_id		                = document.getElementById("item_type_id").value;
         var item_unit_id	                    = document.getElementById("item_unit_id").value;
-        // var item_stock_id	                    = document.getElementById("item_stock_id").value;
+        var item_stock_id	                    = document.getElementById("item_stock_id").value;
         var quantity			                = document.getElementById("quantity").value;
         var price			                    = document.getElementById("price").value;
         var total_price			                = document.getElementById("total_price").value;
@@ -592,7 +615,7 @@
                 'item_category_id'              : item_category_id,
                 'item_type_id'                  : item_type_id, 
                 'item_unit_id'                  : item_unit_id,
-                // 'item_stock_id' 		        : item_stock_id,
+                'item_stock_id' 		        : item_stock_id,
                 'quantity' 			            : quantity,
                 'price' 			            : price,
                 'total_price' 		            : total_price,
@@ -781,7 +804,8 @@
             <div class="row form-group">
                 <div class="col-md-4">
                     <a class="text-dark">Nama Barang<a class='red'> *</a></a>
-                    {!! Form::select('item_type_id',  $itemtype, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_type_id']) !!}
+                    {!! Form::select('item_stock_id',  $itemtype, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_stock_id']) !!}
+                    <input class="form-control input-bb" type="hidden" name="item_type_id" id="item_type_id" value="0" readonly/>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
