@@ -394,6 +394,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                     <input class="form-control" type="checkbox" style='text-align:left' name="" id="" value=""/>
+                    <input class="form-control" hidden type="text" style='text-align:left' name="ppn_in_amount" id="" value="{{ $PPN }}"/>
                     </div>
                 </div>
             </div>

@@ -199,7 +199,8 @@
                                             <input style='text-align  : right' type="text" class="form-control" name="ppn_in_percentage" id="ppn_in_percentage" value="{{$purchaseorder->ppn_in_percentage}}" readonly>
                                         </td>
                                         <td>
-                                            <input type="text" style='text-align  : right' class="form-control" name="ppn_in_amount" id="ppn_in_amount" value="{{number_format($purchaseorder->ppn_in_amount,2,',','.')}}" readonly>
+                                            <input type="text" style='text-align  : right' class="form-control" name="ppn_in_amount_view" id="ppn_in_amount_view" value="{{number_format($purchaseorder->ppn_in_amount,2,',','.')}}" readonly>
+                                            <input type="text" style='text-align  : right' class="form-control" name="ppn_in_amount" id="ppn_in_amount" value="{{$purchaseorder->ppn_in_amount}}" hidden>
                                         </td>
                                     </tr>
                                     <tr>

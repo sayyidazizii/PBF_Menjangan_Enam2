@@ -1411,7 +1411,7 @@ class SalesInvoiceController extends Controller
            $sheet->setCellValue('B8', " SIKA: 449.2/16/DPM-PTSP/SIKA.16/III/2019 ");
            $sheet->setCellValue('B9', "");
            $sheet->setCellValue('B10', "");
-           $sheet->setCellValue('B11', "Sales Promotion Periode ".$start_date." - ".$end_date);	
+           $sheet->setCellValue('B11', "LAPORAN PENJUALAN Periode ".$start_date." - ".$end_date);	
            $sheet->setCellValue('B12', "No");
            $sheet->setCellValue('C12', "TGL INV");
            $sheet->setCellValue('D12', "NOMOR FPP");
@@ -1438,7 +1438,7 @@ class SalesInvoiceController extends Controller
 
             $itemunitcost = $this->getUnitCost($val['item_type_id'] ?? '') ;
             $diskon = $this->getDiscountType($val['item_type_id']);
-            $diskonAmount =  (int)$diskon * 1/100; 
+            $diskonAmount =  (int)$diskon * 1/100;    
             $unitCost =  $diskonAmount * (int)$itemunitcost;
             $uniCostAmount = (int)$itemunitcost - $unitCost; 
 
@@ -1448,7 +1448,7 @@ class SalesInvoiceController extends Controller
             $diskonPersen =  (int)$this->getDiscountAmt($sales_delivery_note_item_id) + (int)$this->getDiscountAmtB($sales_delivery_note_item_id) ;
 
                $sheet = $spreadsheet->getActiveSheet(0);
-               $spreadsheet->getActiveSheet()->setTitle("SURAT JALAN");
+               $spreadsheet->getActiveSheet()->setTitle("LAPORAN PENJUALAN");
                $spreadsheet->getActiveSheet()->getStyle('B'.$j.':N'.$j)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                $spreadsheet->getActiveSheet()->getStyle('N'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
              
