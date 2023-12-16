@@ -621,6 +621,10 @@ Route::get('/sales-invoice/closed/{sales_invoice_id}', [SalesInvoiceController::
 Route::post('/sales-invoice/process-closed', [SalesInvoiceController::class, 'processClosedSalesInvoice'])->name('process-closed-sales-invoice');
 Route::get('/sales-invoice/export', [SalesInvoiceController::class, 'export'])->name('sales-invoice-export');
 
+Route::get('/sales-invoice-report', [SalesInvoiceController::class, 'ReportSalesInvoice'])->name('sales-invoice-report');
+Route::post('/sales-invoice-report/filter', [SalesInvoiceController::class, 'filterSalesInvoiceReport'])->name('filter-sales-invoice-report');
+Route::get('/sales-invoice-report/filter-reset', [SalesInvoiceController::class, 'resetFilterSalesInvoiceReport'])->name('filter-reset-sales-invoice-report');
+
 Route::get('/warehouse-transfer-type', [InvWarehouseTransferTypeController::class, 'index'])->name('warehouse-transfer-type');
 Route::get('/warehouse-transfer-type/add', [InvWarehouseTransferTypeController::class, 'addInvWarehouseTransferType'])->name('add-warehouse-transfer-type');
 Route::post('/warehouse-transfer-type/process-add-warehouse-transfer-type', [InvWarehouseTransferTypeController::class, 'processAddInvWarehouseTransferType'])->name('process-add-warehouse-transfer-type');

@@ -106,6 +106,19 @@ class SalesInvoiceController extends Controller
         return redirect('/sales-invoice');
     }
 
+    public function filterSalesInvoiceReport(Request $request)
+    {
+        $start_date     = $request->start_date;
+        $end_date       = $request->end_date;
+        $customer_id    = $request->customer_id;
+
+        Session::put('start_date', $start_date);
+        Session::put('end_date', $end_date);
+        Session::put('customer_id', $customer_id);
+
+        return redirect('/sales-invoice-report');
+    }
+
     public function resetFilterSalesInvoice()
     {
         Session::forget('start_date');
@@ -113,6 +126,15 @@ class SalesInvoiceController extends Controller
         Session::forget('customer_id');
 
         return redirect('/sales-invoice');
+    }
+
+    public function resetFilterSalesInvoiceReport()
+    {
+        Session::forget('start_date');
+        Session::forget('end_date');
+        Session::forget('customer_id');
+
+        return redirect('/sales-invoice-report');
     }
 
     // public function search()
@@ -387,12 +409,48 @@ class SalesInvoiceController extends Controller
         }
     }
 
+
+    //Report 
+    public function ReportSalesInvoice()
+    {
+        if (!Session::get('start_date')) {
+            $start_date     = date('Y-m-d');
+        } else {
+            $start_date = Session::get('start_date');
+        }
+
+        if (!Session::get('end_date')) {
+            $end_date     = date('Y-m-d');
+        } else {
+            $end_date = Session::get('end_date');
+        }
+
+        $customer_id = Session::get('customer_id');
+
+        Session::forget('salesinvoiceitem');
+        Session::forget('salesinvoiceelements');
+
+        $salesinvoice = SalesInvoice::where('sales_invoice.data_state', '=', 0)
+        ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_invoice.sales_invoice_id')
+        ->join('sales_order','sales_order.sales_order_id','sales_invoice.sales_order_id')
+        ->where('sales_invoice.data_state', '=', 0)
+        ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
+        ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
+        if ($customer_id || $customer_id != null || $customer_id != '') {
+            $salesinvoice   = $salesinvoice->where('sales_invoice.customer_id', $customer_id);
+        }
+        $salesinvoice       = $salesinvoice->get();
+
+        $customer = CoreCustomer::select('customer_id', 'customer_name')
+            ->where('data_state', 0)
+            ->pluck('customer_name', 'customer_id');
+
+        return view('content/SalesInvoice/FormSalesInvoiceReport', compact('salesinvoice', 'start_date', 'end_date', 'customer_id', 'customer'));
+   }
+
+
     public function processAddSalesInvoice(Request $request)
     {
-        // $salesdeliverynoteitem = SalesDeliveryNoteItem::where('sales_delivery_note_id', $request->sales_delivery_note_id)
-        // ->where('data_state', 0)
-        // ->get();
-        //dd($salesdeliverynoteitem);
 
         $buyersAcknowledgmentitem = BuyersAcknowledgmentItem::select('*')
             ->where('buyers_acknowledgment_item.buyers_acknowledgment_id', $request->buyers_acknowledgment_id)
@@ -425,13 +483,6 @@ class SalesInvoiceController extends Controller
         //dd($salesinvoice);
 
         if (SalesInvoice::create($salesinvoice)) {
-            // $salesdeliverynote = SalesDeliveryNote::findOrFail($request->sales_delivery_note_id);
-            // $salesdeliverynote->sales_invoice_status = 1;
-            // $salesdeliverynote->save();
-
-            // $buyersAcknowledgment = BuyersAcknowledgment::findOrFail($request->sales_delivery_note_id);
-            // $buyersAcknowledgment->sales_invoice_status = 1;
-            // $buyersAcknowledgment->save();
 
             $sales_invoice_id = SalesInvoice::select('*')
                 ->orderBy('created_at', 'DESC')
@@ -461,20 +512,8 @@ class SalesInvoiceController extends Controller
                 //dd($data);
                 SalesInvoiceItem::create($data);
 
-
-                //dd($data);
-                // $itemstock = InvItemStock::findOrfail($dataItem['item_stock_id_'.$no]);
-                // //dd($itemstock,$data);
-                // //pengurangan stock
-                // $itemstock->quantity_unit =  (int)$itemstock['quantity_unit'] -  (int)$itemstock['quantity_unit'];
-                // $itemstock->save();
-
-                // $no++;
-
             }
-            // $buyersAcknowledgment = BuyersAcknowledgment::findOrFail($request->sales_delivery_note_id);
-            // $buyersAcknowledgment->sales_invoice_status = 1;
-            // $buyersAcknowledgment->save();
+            
             DB::table('buyers_acknowledgment')
 		        ->where('buyers_acknowledgment_id',$request->buyers_acknowledgment_id)
                 ->update(['sales_invoice_status' => 1]);
@@ -810,11 +849,11 @@ class SalesInvoiceController extends Controller
 
         return $data['item_stock_expired_date'] ?? '';
     }
-    public function getUnitCost($item_type_id)
+    public function getUnitCost($sales_order_item_id)
     {
-        $data = PurchaseOrderItem::select('item_unit_cost')
+        $data = BuyersAcknowledgmentItem::select('item_unit_cost')
             ->where('data_state', 0)
-            ->where('item_type_id', $item_type_id)
+            ->where('sales_order_item_id', $sales_order_item_id)
             ->first();
 
         return $data['item_unit_cost'] ?? '';
@@ -841,19 +880,29 @@ class SalesInvoiceController extends Controller
     }
 
 
-    public function getDiscountAmt($sales_order_item_id)
+    public function getDiscountAmt($sales_delivery_note_item_id)
     {
+        $sales_order_item_id = SalesDeliveryNoteItem::select('sales_order_item_id')
+        ->where('data_state', 0)
+        ->where('sales_delivery_note_item_id', $sales_delivery_note_item_id)
+        ->first();
+
         $data = SalesOrderItem::select('discount_percentage_item')
-            ->where('sales_order_item_id', $sales_order_item_id)
+            ->where('sales_order_item_id', $sales_order_item_id['sales_order_item_id'])
             ->first();
 
         return $data['discount_percentage_item'] ?? '';
     }
 
-    public function getDiscountAmtB($sales_order_item_id)
+    public function getDiscountAmtB($sales_delivery_note_item_id)
     {
+        $sales_order_item_id = SalesDeliveryNoteItem::select('sales_order_item_id')
+        ->where('data_state', 0)
+        ->where('sales_delivery_note_item_id', $sales_delivery_note_item_id)
+        ->first();
+
         $data = SalesOrderItem::select('discount_percentage_item_b')
-            ->where('sales_order_item_id', $sales_order_item_id)
+            ->where('sales_order_item_id', $sales_order_item_id['sales_order_item_id'])
             ->first();
 
         return $data['discount_percentage_item_b'] ?? '';
@@ -1029,7 +1078,7 @@ class SalesInvoiceController extends Controller
                 <td><div style=\"text-align: right; font-size:12px; font-weight: bold\">PBF MENJANGAN ENAM</div></td>
             </tr>
             <tr>
-                <td><div style=\"text-align: right; font-size:10px\">Jl.Puspowarno Raya No 55D RT 06 RW 09</div></td>
+                <td><div style=\"text-align: right; font-size:10px\">Jl.Puspowarno Raya No 55D Bojong Salaman,Semarang Barat</div></td>
             </tr>
             <tr>
                 <td><div style=\"text-align: right; font-size:10px\">APJ : " . Auth::user()->name . "</div></td>
@@ -1351,7 +1400,6 @@ class SalesInvoiceController extends Controller
             ->pluck('customer_name', 'customer_id');
 
         $preference_company         = PreferenceCompany::first();
-    //   dd($salesinvoice);
 
        $spreadsheet = new Spreadsheet();
 
@@ -1406,12 +1454,12 @@ class SalesInvoiceController extends Controller
 
 
            $sheet->setCellValue('B5', "PBF MENJANGAN ENAM ");	
-           $sheet->setCellValue('B6', "Jl.Puspowarno Raya No 55D RT 06 RW 09");
-           $sheet->setCellValue('B7', "APA : ".Auth::user()->name."");
+           $sheet->setCellValue('B6', "Jl.Puspowarno Raya No 55D Bojong Salaman,Semarang Barat");
+           $sheet->setCellValue('B7', "APA : ISTI RAHMADANI,S.Farm, Apt.");
            $sheet->setCellValue('B8', " SIKA: 449.2/16/DPM-PTSP/SIKA.16/III/2019 ");
            $sheet->setCellValue('B9', "");
            $sheet->setCellValue('B10', "");
-           $sheet->setCellValue('B11', "LAPORAN PENJUALAN Periode ".$start_date." - ".$end_date);	
+           $sheet->setCellValue('B11', "LAPORAN PENJUALAN TANGGAL ".$start_date." - ".$end_date);	
            $sheet->setCellValue('B12', "No");
            $sheet->setCellValue('C12', "TGL INV");
            $sheet->setCellValue('D12', "NOMOR FPP");
@@ -1436,16 +1484,14 @@ class SalesInvoiceController extends Controller
            
            foreach($salesinvoice as $key => $val){
 
-            $itemunitcost = $this->getUnitCost($val['item_type_id'] ?? '') ;
-            $diskon = $this->getDiscountType($val['item_type_id']);
-            $diskonAmount =  (int)$diskon * 1/100;    
-            $unitCost =  $diskonAmount * (int)$itemunitcost;
-            $uniCostAmount = (int)$itemunitcost - $unitCost; 
-
             
-            $sales_delivery_note_item_id = $this->getSOitemId($val['sales_delivery_note_item_id']);
+            $salesorderitem = $this->getSalesOrderItem($val['sales_delivery_note_item_id']);
+            $itemunitcost   = $this->getUnitCost($salesorderitem ?? '');
+            $jumlahDiskon   = $val['discount_A'] + $val['discount_B'];
+            $ppn            = $this->getPpnItem($salesorderitem);
+            $dpp            = ($val['item_unit_price'] * $val['quantity']) - $jumlahDiskon;
 
-            $diskonPersen =  (int)$this->getDiscountAmt($sales_delivery_note_item_id) + (int)$this->getDiscountAmtB($sales_delivery_note_item_id) ;
+            $diskonPersen   = $this->getDiscountAmt($val['sales_delivery_note_item_id']) + $this->getDiscountAmtB($val['sales_delivery_note_item_id']) ;
 
                $sheet = $spreadsheet->getActiveSheet(0);
                $spreadsheet->getActiveSheet()->setTitle("LAPORAN PENJUALAN");
@@ -1454,16 +1500,16 @@ class SalesInvoiceController extends Controller
              
                $sheet->setCellValue('B'.$j, $no);
                $sheet->setCellValue('C'.$j, $val['sales_invoice_date']);
-               $sheet->setCellValue('D'.$j, $val['purchase_order_no']);
+               $sheet->setCellValue('D'.$j, $val['faktur_tax_no']);
                $sheet->setCellValue('E'.$j, $this->getCustomerName($val['customer_id']));
                $sheet->setCellValue('F'.$j, $val['sales_invoice_no']);
                $sheet->setCellValue('G'.$j, $this->getItemTypeName($val['item_type_id']));
-               $sheet->setCellValue('H'.$j, $val['quantity']);
-               $sheet->setCellValue('I'.$j, $uniCostAmount);
-               $sheet->setCellValue('J'.$j, $val['discount_A'] + $val['discount_B']);
-               $sheet->setCellValue('K'.$j, $val['subtotal_price_B']);
-               $sheet->setCellValue('L'.$j, $val['tax_amount']);
-               $sheet->setCellValue('M'.$j, $val['total_amount']);
+               $sheet->setCellValue('H'.$j, $val['item_unit_price'] * $val['quantity']);
+               $sheet->setCellValue('I'.$j, $itemunitcost * $val['quantity']);
+               $sheet->setCellValue('J'.$j, $jumlahDiskon);
+               $sheet->setCellValue('K'.$j, $dpp);
+               $sheet->setCellValue('L'.$j, $ppn);
+               $sheet->setCellValue('M'.$j, $dpp + $ppn);
                $sheet->setCellValue('N'.$j, " $diskonPersen  %");
          
                $no++;
