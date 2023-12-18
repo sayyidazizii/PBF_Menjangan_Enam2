@@ -463,7 +463,6 @@ class SalesCollectionController extends Controller
                 AcctJournalVoucherItem::create($data_debit);
             } else {}
 
-
             $account = AcctAccount::where('account_id', $preferencecompany['account_receivable_id'])
             ->where('data_state', 0)
             ->first();

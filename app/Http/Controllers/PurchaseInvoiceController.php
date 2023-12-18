@@ -250,7 +250,7 @@ class PurchaseInvoiceController extends Controller
             'subtotal_amount'	        => $request->total_amount + $request->ppn_in_amount,
             'total_amount'	            => $request->total_amount + $request->ppn_in_amount,
             'owing_amount'	            => $request->total_amount + $request->ppn_in_amount,
-            'ppn_in_amount'             => $request->ppn_in_amount;
+            'ppn_in_amount'             => $request->ppn_in_amount,
             'supplier_id'	            => $request->supplier_id,
             'warehouse_id'	            => $request->warehouse_id,
             'purchase_invoice_due_date' => $request->purchase_invoice_due_date,
