@@ -386,9 +386,17 @@
             <br/>
             
             <div class="row form-group">
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <a class="text-dark">No Perkiraan</a>
                     {!! Form::select('cash_account_id',  $acctaccount, $salescollectionelements == null ? '' :  $salescollectionelements['cash_account_id'], ['class' => 'selection-search-clear select-form', 'id' => 'cash_account_id', 'onchange' => 'elements_add(this.name, this.value);']) !!}
+                </div> --}}
+                <div class="col-md-6">
+                    <a class="text-dark">Tipe Pembayaran</a>
+                            <br/>
+                             <select class="selection-search-clear" name="payment_type" id="payment_type" style="width: 100% !important">
+                                <option value="0">Tunai</option>
+                                <option value="1">Transfer</option>
+                            </select>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -672,15 +680,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            {{-- <a class="text-dark">Tipe Barang<a class='red'> </a></a>
-                            {!! Form::select('sales_order_item_id',  $type, '', ['class' => 'selection-search-clear select-form', 'id' => 'sales_order_item_id', 'name' => 'sales_order_item_id']) !!} --}}
                             <input type="hidden" name="sales_invoice_id" id="sales_invoice_id_{{$no}}" value="{{$val['sales_invoice_id']}}">
-                        {{-- </div> --}}
                         <div class="col-md-12 mb-3">
                             <a class="text-dark">No Invoice<a class='red'> </a></a>
-                            {{-- {!! Form::select('item_stock_id',  [], null, ['class' => 'selection-search-clear select-form', 'id' => 'item_stock_id']) !!} --}}
                           <input type="text" class="form-control input-bb" name="sales_invoice_no" id="sales_invoice_no_{{ $no }}" value="{{$val['sales_invoice_no']}}" autocomplete="off" readonly>
-
                         </div>
                         <div class="col-md-12 mb-3">
                             <a class="text-dark">Jumlah Invoice<a class='red'> </a></a>
@@ -689,7 +692,6 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <a class="text-dark">Jenis Potongan<a class='red'> </a></a>
-                            {{-- {!! Form::select('sales_collection_type_id_1',  $select ,1, ['class' => 'selection-search-clear select-form', 'id' => 'sales_collection_type_id_1' , 'onchange' => 'elements_add(this.name , this.value);'] ) !!} --}}
                             <select class="selection-search-clear" name="sales_collection_piece_type_id" id="sales_collection_piece_type_id_{{$no}}"  onchange="change_type({{ $no }});" style="width: 100% !important" >
                                 <option value="1">Promosi</option>
                                 <option value="2">Biasa</option>
@@ -710,7 +712,6 @@
                     </div>
                     <br>
                     <div class="modal-footer">
-                        {{-- <button type="button" class="btn btn-danger btn-sm" >Batal</button> --}}
                         <a id="add-piece-button_{{$no}}"  type="button" onclick="datapiece_add({{ $no }});" class="btn btn-primary btn-sm" >Simpan</a>
                     </div>
                 </div>
