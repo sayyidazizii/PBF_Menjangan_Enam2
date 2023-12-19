@@ -17,6 +17,9 @@
             elements = [];
         }
 
+        $('#promotion_amount').attr('readonly', true);
+        $('#adm_cost_amount').attr('readonly', true);
+
         $("#ppn_in_amount_check").change(function(){
             var ppn = $("#ppn_in").val();
                 // Check the state of the checkbox
@@ -38,10 +41,12 @@
                 if($(this).is(":checked")){
                     // If checkbox is checked, set text value to 1
                     $("#promosi").val("1");
+                    $('#promotion_amount').attr('readonly', false);
                     console.log(amount);
                 } else {
                     // If checkbox is not checked, set text value to 0
                     $("#promosi").val("0");
+                    $('#promotion_amount').attr('readonly', true);
                     console.log(amount);
                 }
         });
@@ -52,10 +57,12 @@
                 if($(this).is(":checked")){
                     // If checkbox is checked, set text value to 1
                     $("#adm_cost").val("1");
+                    $('#adm_cost_amount').attr('readonly', false);
                     console.log(amount);
                 } else {
                     // If checkbox is not checked, set text value to 0
                     $("#adm_cost").val("0");
+                    $('#adm_cost_amount').attr('readonly', true);
                     console.log(amount);
                 }
         });

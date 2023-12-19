@@ -450,7 +450,7 @@ class PurchasePaymentController extends Controller
         }
 
 //jika check Promosi
-        $accountPromotion 		= AcctAccount::where('account_id', 42)
+        $accountPromotion 		= AcctAccount::where('account_id', 50)
         ->where('data_state', 0)
         ->first();
         //dd($account);
@@ -460,7 +460,7 @@ class PurchasePaymentController extends Controller
         if($cekPromosi == 1){
             $data_credit = array (
                 'journal_voucher_id'			=> $journal_voucher_id,
-                'account_id'					=> 42,
+                'account_id'					=> 50,
                 'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                 'journal_voucher_amount'		=> ABS($request->promotion_amount),
                 'journal_voucher_credit_amount'	=> ABS($request->promotion_amount),
@@ -471,7 +471,7 @@ class PurchasePaymentController extends Controller
         }
         
 //jika check Biaya kirim
-        $accountAdmCost 		= AcctAccount::where('account_id', 105)
+        $accountAdmCost 		= AcctAccount::where('account_id', 58)
         ->where('data_state', 0)
         ->first();
         //dd($account);
@@ -481,7 +481,7 @@ class PurchasePaymentController extends Controller
         if($cekAdmCost == 1){
             $data_credit = array (
                 'journal_voucher_id'			=> $journal_voucher_id,
-                'account_id'					=> 105,
+                'account_id'					=> 58,
                 'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                 'journal_voucher_amount'		=> ABS($request->adm_cost_amount),
                 'journal_voucher_credit_amount'	=> ABS($request->adm_cost_amount),

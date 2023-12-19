@@ -295,6 +295,7 @@ class SalesCollectionController extends Controller
             ->orderBy('collection_id', 'DESC')
             ->first();
             
+//----------Header Journal Voucher
             $journal_voucher_period 	= date("Ym", strtotime($data['collection_date']));
 
             $data_journal = array(
@@ -311,7 +312,6 @@ class SalesCollectionController extends Controller
                 'created_id' 					=> $data['created_id'],
                 'created_on' 					=> $data['created_on']
             );
-            
             AcctJournalVoucher::create($data_journal);		
 
             $journalvoucher = AcctJournalVoucher::where('created_id', $data['created_id'])
@@ -362,7 +362,6 @@ class SalesCollectionController extends Controller
                 }
                 
             }
-
 
             if($data['collection_total_cash_amount'] != '' || $data['collection_total_cash_amount'] != 0){
 
@@ -468,7 +467,6 @@ class SalesCollectionController extends Controller
             ->first();
 
             $account_id_default_status = $account['account_default_status'];
-
             $data_credit = array (
                 'journal_voucher_id'			=> $journal_voucher_id,
                 'account_id'					=> $preferencecompany['account_receivable_id'],
@@ -478,7 +476,6 @@ class SalesCollectionController extends Controller
                 'account_id_default_status'		=> $account_id_default_status,
                 'account_id_status'				=> 0,
             );
-
             AcctJournalVoucherItem::create($data_credit);
             
             $msg = "Tambah Pelunasan Piutang Berhasil";

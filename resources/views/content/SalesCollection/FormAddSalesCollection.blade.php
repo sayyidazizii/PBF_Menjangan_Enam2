@@ -27,6 +27,59 @@
         if(!elements['collection_total_cash_amount']){
             $("#collection_total_cash_amount").val(0);
         }
+        $('#piutang_amount').attr('readonly', true);
+        $('#promotion_amount').attr('readonly', true);
+        $('#adm_cost_amount').attr('readonly', true);
+
+
+        $("#piutang_amount_check").change(function(){
+            var ppn = $("#piutang").val();
+                // Check the state of the checkbox
+                if($(this).is(":checked")){
+                    // If checkbox is checked, set text value to 1
+                    $("#piutang").val("1");
+                    $('#piutang_amount').attr('readonly', false);
+                    console.log(ppn);
+                } else {
+                    // If checkbox is not checked, set text value to 0
+                    $("#piutang").val("0");
+                    $('#piutang_amount').attr('readonly', true);
+                    console.log(ppn);
+                }
+        });
+
+
+        $("#piutang_promosi_check").change(function(){
+            var amount = $("#promosi").val();
+                // Check the state of the checkbox
+                if($(this).is(":checked")){
+                    // If checkbox is checked, set text value to 1
+                    $("#promosi").val("1");
+                    $('#promotion_amount').attr('readonly', false);
+                    console.log(amount);
+                } else {
+                    // If checkbox is not checked, set text value to 0
+                    $("#promosi").val("0");
+                    $('#promotion_amount').attr('readonly', true);
+                    console.log(amount);
+                }
+        });
+
+        $("#adm_cost_check").change(function(){
+            var amount = $("#adm_cost").val();
+                // Check the state of the checkbox
+                if($(this).is(":checked")){
+                    // If checkbox is checked, set text value to 1
+                    $("#adm_cost").val("1");
+                    $('#adm_cost_amount').attr('readonly', false);
+                    console.log(amount);
+                } else {
+                    // If checkbox is not checked, set text value to 0
+                    $("#adm_cost").val("0");
+                    $('#adm_cost_amount').attr('readonly', true);
+                    console.log(amount);
+                }
+        });
 
         calculateTotal();
     });
@@ -464,6 +517,48 @@
                     </div>
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <a class="text-dark">Piutang Retur Penjualan</a>
+                        <input class="form-control" hidden type="text" style='text-align:left' name="piutang" id="piutang" value="0"/>
+                        <input class="form-control input-bb" type="text" style='text-align:right' name="piutang_amount" id="piutang_amount" value=""/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                    <input class="form-control" type="checkbox" style='text-align:left' name="piutang_amount_check" id="piutang_amount_check" value="1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <a class="text-dark">Piutang Promosi</a>
+                        <input class="form-control" hidden type="text" style='text-align:left' name="promosi" id="promosi" value="0"/>
+                        <input class="form-control input-bb" type="text"  style='text-align:right' name="promotion_amount" id="promotion_amount" value=""/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="checkbox" style='text-align:left' name="piutang_promosi_check" id="piutang_promosi_check" value="1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <a class="text-dark">Biaya Adm</a>
+                        <input class="form-control" hidden type="text" style='text-align:left' name="adm_cost" id="adm_cost" value="0"/>
+                        <input class="form-control input-bb" type="text"  style='text-align:right' name="adm_cost_amount" id="adm_cost_amount" value=""/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control" type="checkbox" style='text-align:left' name="adm_cost_check" id="adm_cost_check" value="1"/>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -496,8 +591,8 @@
                             <th style='text-align:center'>Alokasi</th>
                             <th style='text-align:center'>Pembulatan</th>
                             <th style='text-align:center'>Saldo Akhir</th>
-                            <th style='text-align:center'>Aksi</th>
-                            <th style='text-align:center' colspan="3">Potongan
+                            <!-- <th style='text-align:center'>Aksi</th> -->
+                            <!-- <th style='text-align:center' colspan="3">Potongan -->
                         </tr>
                     </thead>
                     <tbody>
@@ -524,8 +619,8 @@
                                         <input class="form-control" type="text" style='text-align:right' name="{{$no}}_shortover" id="{{$no}}_shortover" value="0" onChange="calculateAllocation()"/>
                                     </td>
                                     <td style='text-align  : center'>
-                                        <input class="form-control" type="text" style='text-align:right' name="{{$no}}_last_balance_view" id="{{$no}}_last_balance_view" value="{{number_format($val['owing_amount'])}}" readonly/>
-                                        <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_last_balance" id="{{$no}}_last_balance" value="{{$val['owing_amount']}}" readonly/>
+                                        <input class="form-control" type="text" style='text-align:right' name="{{$no}}_last_balance_view" id="{{$no}}_last_balance_view" value="{{number_format($val['owing_amount'],2)}}" readonly/>
+                                        <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_last_balance" id="{{$no}}_last_balance" value="{{$val['owing_amount'],2}}" readonly/>
 
                                         
                                         <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_sales_invoice_id" id="{{$no}}_sales_invoice_id" value="{{$val['sales_invoice_id']}}" readonly/>
@@ -536,10 +631,10 @@
                                         <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_paid_amount" id="{{$no}}_paid_amount" value="{{$val['paid_amount']}}" readonly/>
                                         <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_owing_amount" id="{{$no}}_owing_amount" value="{{$val['owing_amount']}}" readonly/>
                                     </td>
-                                    <td style='text-align  : center'>
+                                    <td hidden style='text-align  : center'>
                                            <a href='#addtstock_{{ $no }}' data-toggle='modal' name="Find" class="btn btn-success btn-sm" title="Add Data"><i class="fa fa-plus"> </i> Tambah Potongan</a>
                                     </td>
-                                    <td>
+                                    <td hidden>
                                         <a target="_blank" href="/PBF_Menjangan_Enam/sales-collection-piece/detail-sales-collection-piece/{{$val['sales_invoice_id']}}" class="btn btn-outline-primary">Detail</a>
                                     </td>
                                         {{-- @php

@@ -12,7 +12,7 @@ MySQL - 8.0.30 : Database - ciptapro_pbf_menjangan_enam
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`ciptapro_pbf_menjangan_enam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ciptapro_pbf_menjangan_enam` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `ciptapro_pbf_menjangan_enam`;
 
@@ -602,15 +602,23 @@ CREATE TABLE `acct_account_balance` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`account_balance_id`),
   KEY `FK_acct_account_balance_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_balance` */
 
 insert  into `acct_account_balance`(`account_balance_id`,`company_id`,`branch_id`,`account_id`,`last_balance`,`created_id`,`created_at`,`updated_at`) values 
-(151,2,0,82,15000.00,3,NULL,'2023-12-12 16:37:25'),
-(152,2,0,106,3300.00,3,NULL,'2023-12-12 16:37:25'),
-(153,2,0,205,15000.00,3,NULL,'2023-12-12 16:37:25'),
-(154,2,0,105,-3300.00,3,NULL,'2023-12-12 16:38:55');
+(168,2,0,42,-1516661.00,3,NULL,'2023-12-13 14:38:44'),
+(169,2,0,43,-8088.00,3,NULL,'2023-12-13 14:38:44'),
+(170,2,0,338,-1315000.00,3,NULL,'2023-12-13 14:38:44'),
+(171,2,0,238,-201661.00,3,NULL,'2023-12-13 14:38:44'),
+(172,2,0,522,-8088.00,3,NULL,'2023-12-13 14:38:44'),
+(173,2,0,390,-1315000.00,3,NULL,'2023-12-13 14:38:44'),
+(174,2,0,82,-1165000.00,3,NULL,'2023-12-13 14:38:44'),
+(175,2,0,106,-19800.00,3,NULL,'2023-12-13 14:57:53'),
+(176,2,0,205,-25000.00,3,NULL,'2023-12-13 14:57:53'),
+(177,2,0,105,-36300.00,3,NULL,'2023-12-15 14:23:19'),
+(178,2,0,5,0.00,3,NULL,'2023-12-15 14:23:19'),
+(179,2,0,8,-191500.00,3,NULL,'2023-12-15 14:23:19');
 
 /*Table structure for table `acct_account_balance_detail` */
 
@@ -638,17 +646,76 @@ CREATE TABLE `acct_account_balance_detail` (
   `created_id` int DEFAULT NULL,
   PRIMARY KEY (`account_balance_detail_id`),
   KEY `FK_acct_account_balance_detail_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `acct_account_balance_detail` */
 
 insert  into `acct_account_balance_detail`(`account_balance_detail_id`,`branch_id`,`company_id`,`transaction_type`,`transaction_code`,`transaction_date`,`transaction_id`,`account_id`,`opening_balance`,`account_in`,`account_out`,`cash_in`,`cash_out`,`bank_in`,`bank_out`,`last_balance`,`created_at`,`updated_at`,`created_id`) values 
-(207,0,2,20,'GRN','2023-12-12',58,82,0.00,30000.00,0.00,0.00,0.00,0.00,0.00,30000.00,NULL,'2023-12-12 16:37:25',3),
-(208,0,2,20,'GRN','2023-12-12',58,106,0.00,3300.00,0.00,0.00,0.00,0.00,0.00,3300.00,NULL,'2023-12-12 16:37:25',3),
-(209,0,2,20,'GRN','2023-12-12',58,205,0.00,33300.00,0.00,0.00,0.00,0.00,0.00,33300.00,NULL,'2023-12-12 16:37:25',3),
-(210,0,2,60,'POR','2023-12-12',59,205,33300.00,0.00,18300.00,0.00,0.00,0.00,0.00,15000.00,NULL,'2023-12-12 16:38:55',3),
-(211,0,2,60,'POR','2023-12-12',59,82,30000.00,0.00,15000.00,0.00,0.00,0.00,0.00,15000.00,NULL,'2023-12-12 16:38:55',3),
-(212,0,2,60,'POR','2023-12-12',59,105,0.00,0.00,3300.00,0.00,0.00,0.00,0.00,-3300.00,NULL,'2023-12-12 16:38:55',3);
+(265,0,2,63,'PPP','2023-12-13',68,42,0.00,0.00,837560.00,0.00,0.00,0.00,0.00,-837560.00,NULL,'2023-12-13 14:38:44',3),
+(266,0,2,63,'PPP','2023-12-13',68,43,0.00,0.00,4000.00,0.00,0.00,0.00,0.00,-4000.00,NULL,'2023-12-13 14:38:44',3),
+(267,0,2,63,'PPP','2023-12-13',68,338,0.00,0.00,750000.00,0.00,0.00,0.00,0.00,-750000.00,NULL,'2023-12-13 14:38:44',3),
+(268,0,2,63,'PPP','2023-12-13',68,238,0.00,0.00,87560.00,0.00,0.00,0.00,0.00,-87560.00,NULL,'2023-12-13 14:38:44',3),
+(269,0,2,63,'PPP','2023-12-13',68,522,0.00,0.00,4000.00,0.00,0.00,0.00,0.00,-4000.00,NULL,'2023-12-13 14:38:44',3),
+(270,0,2,63,'PPP','2023-12-13',68,390,0.00,0.00,750000.00,0.00,0.00,0.00,0.00,-750000.00,NULL,'2023-12-13 14:38:44',3),
+(271,0,2,63,'PPP','2023-12-13',68,82,0.00,0.00,750000.00,0.00,0.00,0.00,0.00,-750000.00,NULL,'2023-12-13 14:38:44',3),
+(272,0,2,63,'PPP','2023-12-13',69,42,-837560.00,0.00,487560.00,0.00,0.00,0.00,0.00,-1325120.00,NULL,'2023-12-13 14:53:15',3),
+(273,0,2,63,'PPP','2023-12-13',69,43,-4000.00,0.00,4000.00,0.00,0.00,0.00,0.00,-8000.00,NULL,'2023-12-13 14:53:15',3),
+(274,0,2,63,'PPP','2023-12-13',69,338,-750000.00,0.00,400000.00,0.00,0.00,0.00,0.00,-1150000.00,NULL,'2023-12-13 14:53:15',3),
+(275,0,2,63,'PPP','2023-12-13',69,238,-87560.00,0.00,87560.00,0.00,0.00,0.00,0.00,-175120.00,NULL,'2023-12-13 14:53:15',3),
+(276,0,2,63,'PPP','2023-12-13',69,522,-4000.00,0.00,4000.00,0.00,0.00,0.00,0.00,-8000.00,NULL,'2023-12-13 14:53:15',3),
+(277,0,2,63,'PPP','2023-12-13',69,390,-750000.00,0.00,400000.00,0.00,0.00,0.00,0.00,-1150000.00,NULL,'2023-12-13 14:53:15',3),
+(278,0,2,63,'PPP','2023-12-13',69,82,-750000.00,0.00,400000.00,0.00,0.00,0.00,0.00,-1150000.00,NULL,'2023-12-13 14:53:15',3),
+(279,0,2,20,'GRN','2023-12-13',70,82,-1150000.00,150000.00,0.00,0.00,0.00,0.00,0.00,-1000000.00,NULL,'2023-12-13 14:57:53',3),
+(280,0,2,20,'GRN','2023-12-13',70,106,0.00,16500.00,0.00,0.00,0.00,0.00,0.00,16500.00,NULL,'2023-12-13 14:57:53',3),
+(281,0,2,20,'GRN','2023-12-13',70,205,0.00,166500.00,0.00,0.00,0.00,0.00,0.00,166500.00,NULL,'2023-12-13 14:57:53',3),
+(282,0,2,63,'PPP','2023-12-13',71,42,-1325120.00,0.00,174626.00,0.00,0.00,0.00,0.00,-1499746.00,NULL,'2023-12-13 16:07:54',3),
+(283,0,2,63,'PPP','2023-12-13',71,338,-1150000.00,0.00,150000.00,0.00,0.00,0.00,0.00,-1300000.00,NULL,'2023-12-13 16:07:54',3),
+(284,0,2,63,'PPP','2023-12-13',71,238,-175120.00,0.00,24626.00,0.00,0.00,0.00,0.00,-199746.00,NULL,'2023-12-13 16:07:54',3),
+(285,0,2,63,'PPP','2023-12-13',71,390,-1150000.00,0.00,150000.00,0.00,0.00,0.00,0.00,-1300000.00,NULL,'2023-12-13 16:07:54',3),
+(286,0,2,63,'PPP','2023-12-13',71,82,-1000000.00,0.00,150000.00,0.00,0.00,0.00,0.00,-1150000.00,NULL,'2023-12-13 16:07:54',3),
+(287,0,2,63,'PPP','2023-12-14',72,42,-1499746.00,0.00,16915.00,0.00,0.00,0.00,0.00,-1516661.00,NULL,'2023-12-14 14:30:31',3),
+(288,0,2,63,'PPP','2023-12-14',72,43,-8000.00,0.00,88.00,0.00,0.00,0.00,0.00,-8088.00,NULL,'2023-12-14 14:30:31',3),
+(289,0,2,63,'PPP','2023-12-14',72,338,-1300000.00,0.00,15000.00,0.00,0.00,0.00,0.00,-1315000.00,NULL,'2023-12-14 14:30:31',3),
+(290,0,2,63,'PPP','2023-12-14',72,238,-199746.00,0.00,1915.00,0.00,0.00,0.00,0.00,-201661.00,NULL,'2023-12-14 14:30:31',3),
+(291,0,2,63,'PPP','2023-12-14',72,522,-8000.00,0.00,88.00,0.00,0.00,0.00,0.00,-8088.00,NULL,'2023-12-14 14:30:31',3),
+(292,0,2,63,'PPP','2023-12-14',72,390,-1300000.00,0.00,15000.00,0.00,0.00,0.00,0.00,-1315000.00,NULL,'2023-12-14 14:30:31',3),
+(293,0,2,63,'PPP','2023-12-14',72,82,-1150000.00,0.00,15000.00,0.00,0.00,0.00,0.00,-1165000.00,NULL,'2023-12-14 14:30:31',3),
+(294,0,2,31,'PP','2023-12-15',73,205,166500.00,0.00,100000.00,0.00,0.00,0.00,0.00,66500.00,NULL,'2023-12-15 14:23:19',3),
+(295,0,2,31,'PP','2023-12-15',73,105,0.00,0.00,16500.00,0.00,0.00,0.00,0.00,-16500.00,NULL,'2023-12-15 14:23:19',3),
+(296,0,2,31,'PP','2023-12-15',73,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:23:19',3),
+(297,0,2,31,'PP','2023-12-15',73,8,0.00,0.00,100000.00,0.00,0.00,0.00,0.00,-100000.00,NULL,'2023-12-15 14:23:19',3),
+(298,0,2,31,'PP','2023-12-15',73,106,16500.00,0.00,16500.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:23:19',3),
+(299,0,2,31,'PP','2023-12-15',74,205,66500.00,100000.00,0.00,0.00,0.00,0.00,0.00,166500.00,NULL,'2023-12-15 14:25:57',3),
+(300,0,2,31,'PP','2023-12-15',74,105,-16500.00,16500.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:25:57',3),
+(301,0,2,31,'PP','2023-12-15',74,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:25:57',3),
+(302,0,2,31,'PP','2023-12-15',74,8,-100000.00,100000.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:25:57',3),
+(303,0,2,31,'PP','2023-12-15',74,106,0.00,16500.00,0.00,0.00,0.00,0.00,0.00,16500.00,NULL,'2023-12-15 14:25:57',3),
+(304,0,2,31,'PP','2023-12-15',75,205,166500.00,0.00,100000.00,0.00,0.00,0.00,0.00,66500.00,NULL,'2023-12-15 14:27:37',3),
+(305,0,2,31,'PP','2023-12-15',75,105,0.00,0.00,16500.00,0.00,0.00,0.00,0.00,-16500.00,NULL,'2023-12-15 14:27:37',3),
+(306,0,2,31,'PP','2023-12-15',75,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:27:37',3),
+(307,0,2,31,'PP','2023-12-15',75,8,0.00,0.00,100000.00,0.00,0.00,0.00,0.00,-100000.00,NULL,'2023-12-15 14:27:37',3),
+(308,0,2,31,'PP','2023-12-15',75,106,16500.00,0.00,16500.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:27:37',3),
+(309,0,2,31,'PP','2023-12-15',76,205,66500.00,0.00,66500.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:32:36',3),
+(310,0,2,31,'PP','2023-12-15',76,105,-16500.00,0.00,16500.00,0.00,0.00,0.00,0.00,-33000.00,NULL,'2023-12-15 14:32:36',3),
+(311,0,2,31,'PP','2023-12-15',76,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-15 14:32:36',3),
+(312,0,2,31,'PP','2023-12-15',76,8,-100000.00,0.00,66500.00,0.00,0.00,0.00,0.00,-166500.00,NULL,'2023-12-15 14:32:36',3),
+(313,0,2,31,'PP','2023-12-15',76,106,0.00,0.00,16500.00,0.00,0.00,0.00,0.00,-16500.00,NULL,'2023-12-15 14:32:36',3),
+(314,0,2,31,'PP','2023-12-18',77,205,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-18 11:00:44',3),
+(315,0,2,31,'PP','2023-12-18',77,205,0.00,0.00,10000.00,0.00,0.00,0.00,0.00,-10000.00,NULL,'2023-12-18 11:00:44',3),
+(316,0,2,31,'PP','2023-12-18',77,105,-33000.00,0.00,0.00,0.00,0.00,0.00,0.00,-33000.00,NULL,'2023-12-18 11:00:44',3),
+(317,0,2,31,'PP','2023-12-18',77,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-18 11:00:45',3),
+(318,0,2,31,'PP','2023-12-18',77,8,-166500.00,0.00,10000.00,0.00,0.00,0.00,0.00,-176500.00,NULL,'2023-12-18 11:00:45',3),
+(319,0,2,31,'PP','2023-12-18',77,106,-16500.00,0.00,0.00,0.00,0.00,0.00,0.00,-16500.00,NULL,'2023-12-18 11:00:45',3),
+(320,0,2,31,'PP','2023-12-18',78,205,-10000.00,0.00,5000.00,0.00,0.00,0.00,0.00,-15000.00,NULL,'2023-12-18 11:04:16',3),
+(321,0,2,31,'PP','2023-12-18',78,105,-33000.00,0.00,3300.00,0.00,0.00,0.00,0.00,-36300.00,NULL,'2023-12-18 11:04:16',3),
+(322,0,2,31,'PP','2023-12-18',78,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-18 11:04:16',3),
+(323,0,2,31,'PP','2023-12-18',78,8,-176500.00,0.00,5000.00,0.00,0.00,0.00,0.00,-181500.00,NULL,'2023-12-18 11:04:16',3),
+(324,0,2,31,'PP','2023-12-18',78,106,-16500.00,0.00,3300.00,0.00,0.00,0.00,0.00,-19800.00,NULL,'2023-12-18 11:04:16',3),
+(325,0,2,31,'PP','2023-12-18',79,205,-15000.00,0.00,10000.00,0.00,0.00,0.00,0.00,-25000.00,NULL,'2023-12-18 11:06:59',3),
+(326,0,2,31,'PP','2023-12-18',79,105,-36300.00,0.00,0.00,0.00,0.00,0.00,0.00,-36300.00,NULL,'2023-12-18 11:06:59',3),
+(327,0,2,31,'PP','2023-12-18',79,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-18 11:06:59',3),
+(328,0,2,31,'PP','2023-12-18',79,8,-181500.00,0.00,10000.00,0.00,0.00,0.00,0.00,-191500.00,NULL,'2023-12-18 11:06:59',3),
+(329,0,2,31,'PP','2023-12-18',79,106,-19800.00,0.00,0.00,0.00,0.00,0.00,0.00,-19800.00,NULL,'2023-12-18 11:06:59',3);
 
 /*Table structure for table `acct_account_mutation` */
 
@@ -1621,13 +1688,23 @@ CREATE TABLE `acct_journal_voucher` (
   KEY `transaction_journal_no` (`transaction_journal_no`),
   KEY `project_id` (`project_id`),
   KEY `project_type_id` (`project_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher` */
 
 insert  into `acct_journal_voucher`(`journal_voucher_id`,`company_id`,`branch_id`,`project_id`,`project_type_id`,`transaction_module_id`,`transaction_journal_id`,`transaction_journal_no`,`journal_voucher_title`,`journal_voucher_no`,`journal_voucher_period`,`journal_voucher_date`,`journal_voucher_description`,`journal_voucher_token`,`journal_voucher_token_void`,`journal_voucher_type_id`,`transaction_module_code`,`posted`,`posted_id`,`posted_on`,`voided`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`,`reverse_state`) values 
-(58,2,1,0,0,20,16,'0001/IGRN/XII/2023','Pembelian 0001/IGRN/XII/2023','0001/JV/XII/2023',202312,'2023-12-12',NULL,NULL,NULL,1,'GRN',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-12 09:37:25','2023-12-12 09:37:25',0),
-(59,2,1,0,0,60,56,'0001/PR/XII/2023','Return Pembelian Barang 0001/PR/XII/2023','0002/JV/XII/2023',202312,'2023-12-12',NULL,NULL,NULL,1,'POR',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-12 09:38:55','2023-12-12 09:38:55',0);
+(68,2,1,0,0,63,9,'0001/BPB/2023','Penjualan Atas Produk PHAPROS - 0001/POC/XII/2023','0001/JV/XII/2023',202312,'2023-12-13',NULL,NULL,NULL,1,'PPP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(69,2,1,0,0,63,9,'0001/BPB/2023','Penjualan Atas Produk PHAPROS - 0001/POC/XII/2023','0002/JV/XII/2023',202312,'2023-12-13',NULL,NULL,NULL,1,'PPP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(70,2,1,0,0,20,18,'0001/IGRN/XII/2023','Pembelian 0001/IGRN/XII/2023','0003/JV/XII/2023',202312,'2023-12-13',NULL,NULL,NULL,1,'GRN',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-13 07:57:52','2023-12-13 07:57:52',0),
+(71,2,1,0,0,63,10,'0002/BPB/2023','Penjualan Atas Produk KIMIA FARMA - 0002/PO/XII/20','0004/JV/XII/2023',202312,'2023-12-13',NULL,NULL,NULL,1,'PPP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-13 09:07:54','2023-12-13 09:07:54',0),
+(72,2,1,0,0,63,11,'0003/BPB/2023','Penjualan Atas Produk PHAPROS - 0003/PO/XII/2023','0005/JV/XII/2023',202312,'2023-12-14',NULL,NULL,NULL,1,'PPP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(73,2,1,0,0,31,24,'0001/PO/XII/2023','Pelunasan Hutang 0001/PO/XII/2023','0006/JV/XII/2023',202312,'2023-12-15',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-15 07:23:19','2023-12-15 07:25:57',1),
+(74,2,0,0,0,31,0,'0001/PO/XII/2023','HAPUS JurnalPelunasan Hutang 0001/PO/XII/2023','0007/JV/XII/2023',202312,'2023-12-15','HAPUS Jurnal',NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-15 07:25:57','2023-12-15 07:25:57',1),
+(75,2,1,0,0,31,25,'0001/PH/XII/2023','Pembayaran hutang 0001/PH/XII/2023','0008/JV/XII/2023',202312,'2023-12-15',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-15 07:27:37','2023-12-15 07:27:37',0),
+(76,2,1,0,0,31,26,'0002/PH/XII/2023','Pembayaran hutang 0002/PH/XII/2023','0009/JV/XII/2023',202312,'2023-12-15',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-15 07:32:36','2023-12-15 07:32:36',0),
+(77,2,1,0,0,31,27,'0003/PH/XII/2023','Pembayaran hutang 0003/PH/XII/2023','0010/JV/XII/2023',202312,'2023-12-18',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-18 04:00:44','2023-12-18 04:00:44',0),
+(78,2,1,0,0,31,28,'0004/PH/XII/2023','Pembayaran hutang 0004/PH/XII/2023','0011/JV/XII/2023',202312,'2023-12-18',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-18 04:04:16','2023-12-18 04:04:16',0),
+(79,2,1,0,0,31,29,'0005/PH/XII/2023','Pembayaran hutang 0005/PH/XII/2023','0012/JV/XII/2023',202312,'2023-12-18',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-18 04:06:59','2023-12-18 04:06:59',0);
 
 /*Table structure for table `acct_journal_voucher_item` */
 
@@ -1655,17 +1732,76 @@ CREATE TABLE `acct_journal_voucher_item` (
   UNIQUE KEY `journal_voucher_item_token_void` (`journal_voucher_item_token_void`),
   KEY `FK_acct_journal_voucher_item_journal_voucher_id` (`journal_voucher_id`) USING BTREE,
   KEY `FK_acct_journal_voucher_item_account_id` (`account_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=269 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=386 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher_item` */
 
 insert  into `acct_journal_voucher_item`(`journal_voucher_item_id`,`journal_voucher_id`,`company_id`,`account_id`,`journal_voucher_description`,`journal_voucher_amount`,`account_id_status`,`account_id_default_status`,`journal_voucher_debit_amount`,`journal_voucher_credit_amount`,`journal_voucher_item_token`,`journal_voucher_item_token_void`,`data_state`,`created_at`,`updated_at`,`reverse_state`) values 
-(263,58,2,82,NULL,30000.00,1,1,30000.00,0.00,NULL,NULL,0,'2023-12-12 09:37:25','2023-12-12 09:37:25',0),
-(264,58,2,106,NULL,3300.00,1,1,3300.00,0.00,NULL,NULL,0,'2023-12-12 09:37:25','2023-12-12 09:37:25',0),
-(265,58,2,205,NULL,33300.00,0,0,0.00,33300.00,NULL,NULL,0,'2023-12-12 09:37:25','2023-12-12 09:37:25',0),
-(266,59,2,205,NULL,18300.00,1,0,18300.00,0.00,NULL,NULL,0,'2023-12-12 09:38:55','2023-12-12 09:38:55',0),
-(267,59,2,82,NULL,15000.00,0,1,0.00,15000.00,NULL,NULL,0,'2023-12-12 09:38:55','2023-12-12 09:38:55',0),
-(268,59,2,105,NULL,3300.00,0,1,0.00,3300.00,NULL,NULL,0,'2023-12-12 09:38:55','2023-12-12 09:38:55',0);
+(321,68,2,42,NULL,837560.00,0,1,837560.00,0.00,NULL,NULL,0,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(322,68,2,43,NULL,4000.00,0,1,4000.00,0.00,NULL,NULL,0,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(323,68,2,338,NULL,750000.00,1,0,0.00,750000.00,NULL,NULL,0,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(324,68,2,238,NULL,87560.00,1,1,0.00,87560.00,NULL,NULL,0,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(325,68,2,522,NULL,4000.00,1,0,0.00,4000.00,NULL,NULL,0,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(326,68,2,390,NULL,750000.00,0,0,750000.00,0.00,NULL,NULL,0,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(327,68,2,82,NULL,750000.00,0,0,0.00,750000.00,NULL,NULL,0,'2023-12-13 07:38:44','2023-12-13 07:38:44',0),
+(328,69,2,42,NULL,487560.00,0,1,487560.00,0.00,NULL,NULL,0,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(329,69,2,43,NULL,4000.00,0,1,4000.00,0.00,NULL,NULL,0,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(330,69,2,338,NULL,400000.00,1,0,0.00,400000.00,NULL,NULL,0,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(331,69,2,238,NULL,87560.00,1,1,0.00,87560.00,NULL,NULL,0,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(332,69,2,522,NULL,4000.00,1,0,0.00,4000.00,NULL,NULL,0,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(333,69,2,390,NULL,400000.00,0,0,400000.00,0.00,NULL,NULL,0,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(334,69,2,82,NULL,400000.00,0,0,0.00,400000.00,NULL,NULL,0,'2023-12-13 07:53:15','2023-12-13 07:53:15',0),
+(335,70,2,82,NULL,150000.00,1,1,150000.00,0.00,NULL,NULL,0,'2023-12-13 07:57:53','2023-12-13 07:57:53',0),
+(336,70,2,106,NULL,16500.00,1,1,16500.00,0.00,NULL,NULL,0,'2023-12-13 07:57:53','2023-12-13 07:57:53',0),
+(337,70,2,205,NULL,166500.00,0,0,0.00,166500.00,NULL,NULL,0,'2023-12-13 07:57:53','2023-12-13 07:57:53',0),
+(338,71,2,42,NULL,174626.25,0,1,174626.25,0.00,NULL,NULL,0,'2023-12-13 09:07:54','2023-12-13 09:07:54',0),
+(339,71,2,338,NULL,150000.00,1,0,0.00,150000.00,NULL,NULL,0,'2023-12-13 09:07:54','2023-12-13 09:07:54',0),
+(340,71,2,238,NULL,24626.25,1,1,0.00,24626.25,NULL,NULL,0,'2023-12-13 09:07:54','2023-12-13 09:07:54',0),
+(341,71,2,390,NULL,150000.00,0,0,150000.00,0.00,NULL,NULL,0,'2023-12-13 09:07:54','2023-12-13 09:07:54',0),
+(342,71,2,82,NULL,150000.00,0,0,0.00,150000.00,NULL,NULL,0,'2023-12-13 09:07:54','2023-12-13 09:07:54',0),
+(343,72,2,42,NULL,16915.38,0,1,16915.38,0.00,NULL,NULL,0,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(344,72,2,43,NULL,87.50,0,1,87.50,0.00,NULL,NULL,0,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(345,72,2,338,NULL,15000.00,1,0,0.00,15000.00,NULL,NULL,0,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(346,72,2,238,NULL,1915.38,1,1,0.00,1915.38,NULL,NULL,0,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(347,72,2,522,NULL,87.50,1,0,0.00,87.50,NULL,NULL,0,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(348,72,2,390,NULL,15000.00,0,0,15000.00,0.00,NULL,NULL,0,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(349,72,2,82,NULL,15000.00,0,0,0.00,15000.00,NULL,NULL,0,'2023-12-14 07:30:31','2023-12-14 07:30:31',0),
+(350,73,2,205,NULL,100000.00,1,0,100000.00,0.00,NULL,NULL,0,'2023-12-15 07:23:19','2023-12-15 07:23:19',1),
+(351,73,2,105,NULL,16500.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-15 07:23:19','2023-12-15 07:23:19',1),
+(352,73,2,5,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-15 07:23:19','2023-12-15 07:23:19',1),
+(353,73,2,8,NULL,100000.00,0,1,0.00,100000.00,NULL,NULL,0,'2023-12-15 07:23:19','2023-12-15 07:23:19',1),
+(354,73,2,106,NULL,16500.00,0,1,0.00,16500.00,NULL,NULL,0,'2023-12-15 07:23:19','2023-12-15 07:23:19',1),
+(355,74,2,205,'',100000.00,0,0,0.00,100000.00,NULL,NULL,0,'2023-12-15 07:25:57','2023-12-15 07:25:57',1),
+(356,74,2,105,'',16500.00,1,1,0.00,0.00,NULL,NULL,0,'2023-12-15 07:25:57','2023-12-15 07:25:57',1),
+(357,74,2,5,'',0.00,1,1,0.00,0.00,NULL,NULL,0,'2023-12-15 07:25:57','2023-12-15 07:25:57',1),
+(358,74,2,8,'',100000.00,1,1,100000.00,0.00,NULL,NULL,0,'2023-12-15 07:25:57','2023-12-15 07:25:57',1),
+(359,74,2,106,'',16500.00,1,1,16500.00,0.00,NULL,NULL,0,'2023-12-15 07:25:57','2023-12-15 07:25:57',1),
+(360,75,2,205,NULL,100000.00,1,0,100000.00,0.00,NULL,NULL,0,'2023-12-15 07:27:37','2023-12-15 07:27:37',0),
+(361,75,2,105,NULL,16500.00,0,1,16500.00,0.00,NULL,NULL,0,'2023-12-15 07:27:37','2023-12-15 07:27:37',0),
+(362,75,2,5,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-15 07:27:37','2023-12-15 07:27:37',0),
+(363,75,2,8,NULL,100000.00,0,1,0.00,100000.00,NULL,NULL,0,'2023-12-15 07:27:37','2023-12-15 07:27:37',0),
+(364,75,2,106,NULL,16500.00,0,1,0.00,16500.00,NULL,NULL,0,'2023-12-15 07:27:37','2023-12-15 07:27:37',0),
+(365,76,2,205,NULL,66500.00,1,0,66500.00,0.00,NULL,NULL,0,'2023-12-15 07:32:36','2023-12-15 07:32:36',0),
+(366,76,2,105,NULL,16500.00,0,1,16500.00,0.00,NULL,NULL,0,'2023-12-15 07:32:36','2023-12-15 07:32:36',0),
+(367,76,2,5,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-15 07:32:36','2023-12-15 07:32:36',0),
+(368,76,2,8,NULL,66500.00,0,1,0.00,66500.00,NULL,NULL,0,'2023-12-15 07:32:36','2023-12-15 07:32:36',0),
+(369,76,2,106,NULL,16500.00,0,1,0.00,16500.00,NULL,NULL,0,'2023-12-15 07:32:36','2023-12-15 07:32:36',0),
+(370,77,2,205,NULL,0.00,1,0,0.00,0.00,NULL,NULL,0,'2023-12-18 04:00:44','2023-12-18 04:00:44',0),
+(371,77,2,205,NULL,10000.00,1,0,10000.00,0.00,NULL,NULL,0,'2023-12-18 04:00:44','2023-12-18 04:00:44',0),
+(372,77,2,105,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-18 04:00:44','2023-12-18 04:00:44',0),
+(373,77,2,5,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-18 04:00:45','2023-12-18 04:00:45',0),
+(374,77,2,8,NULL,10000.00,0,1,0.00,10000.00,NULL,NULL,0,'2023-12-18 04:00:45','2023-12-18 04:00:45',0),
+(375,77,2,106,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-18 04:00:45','2023-12-18 04:00:45',0),
+(376,78,2,205,NULL,5000.00,1,0,5000.00,0.00,NULL,NULL,0,'2023-12-18 04:04:16','2023-12-18 04:04:16',0),
+(377,78,2,105,NULL,3300.00,0,1,3300.00,0.00,NULL,NULL,0,'2023-12-18 04:04:16','2023-12-18 04:04:16',0),
+(378,78,2,5,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-18 04:04:16','2023-12-18 04:04:16',0),
+(379,78,2,8,NULL,5000.00,0,1,0.00,5000.00,NULL,NULL,0,'2023-12-18 04:04:16','2023-12-18 04:04:16',0),
+(380,78,2,106,NULL,3300.00,0,1,0.00,3300.00,NULL,NULL,0,'2023-12-18 04:04:16','2023-12-18 04:04:16',0),
+(381,79,2,205,NULL,10000.00,1,0,10000.00,0.00,NULL,NULL,0,'2023-12-18 04:06:59','2023-12-18 04:06:59',0),
+(382,79,2,105,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-18 04:06:59','2023-12-18 04:06:59',0),
+(383,79,2,5,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-18 04:06:59','2023-12-18 04:06:59',0),
+(384,79,2,8,NULL,10000.00,0,1,0.00,10000.00,NULL,NULL,0,'2023-12-18 04:06:59','2023-12-18 04:06:59',0),
+(385,79,2,106,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-18 04:06:59','2023-12-18 04:06:59',0);
 
 /*Table structure for table `acct_journal_voucher_type` */
 
@@ -2206,9 +2342,14 @@ CREATE TABLE `buyers_acknowledgment` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`buyers_acknowledgment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `buyers_acknowledgment` */
+
+insert  into `buyers_acknowledgment`(`buyers_acknowledgment_id`,`sales_delivery_note_id`,`sales_delivery_order_id`,`account_id`,`sales_order_id`,`warehouse_id`,`customer_id`,`buyers_acknowledgment_no`,`buyers_acknowledgment_date`,`buyers_acknowledgment_remark`,`sales_invoice_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(52,9,6,42,6,0,1,'0001/BPB/2023','2023-12-13',NULL,0,0,3,'2023-12-13 07:53:15','2023-12-13 07:53:15'),
+(53,10,7,42,7,0,1,'0002/BPB/2023','2023-12-13',NULL,1,0,3,'2023-12-13 09:07:53','2023-12-13 09:07:53'),
+(54,11,8,42,8,0,1,'0003/BPB/2023','2023-12-14',NULL,1,0,3,'2023-12-14 07:30:31','2023-12-14 07:30:31');
 
 /*Table structure for table `buyers_acknowledgment_item` */
 
@@ -2229,6 +2370,7 @@ CREATE TABLE `buyers_acknowledgment_item` (
   `item_unit_id` int DEFAULT NULL,
   `quantity` decimal(10,0) DEFAULT NULL,
   `quantity_received` decimal(10,0) DEFAULT NULL,
+  `item_unit_cost` decimal(10,0) DEFAULT NULL,
   `item_unit_price` decimal(10,0) DEFAULT NULL,
   `subtotal_price` decimal(10,0) DEFAULT NULL,
   `data_state` int DEFAULT '0',
@@ -2236,9 +2378,17 @@ CREATE TABLE `buyers_acknowledgment_item` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`buyers_acknowledgment_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `buyers_acknowledgment_item` */
+
+insert  into `buyers_acknowledgment_item`(`buyers_acknowledgment_item_id`,`buyers_acknowledgment_id`,`sales_delivery_note_id`,`sales_delivery_note_item_id`,`sales_order_id`,`sales_order_item_id`,`warehouse_id`,`supplier_id`,`item_category_id`,`item_type_id`,`item_stock_id`,`item_unit_id`,`quantity`,`quantity_received`,`item_unit_cost`,`item_unit_price`,`subtotal_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(72,52,9,9,6,6,NULL,NULL,1,2,47,6,200,200,1500,2000,400000,0,3,'2023-12-13 07:53:15','2023-12-13 07:53:15'),
+(73,52,9,10,6,7,NULL,NULL,1,1,46,1,100,100,1000,3000,300000,0,3,'2023-12-13 07:53:15','2023-12-13 07:53:15'),
+(74,53,10,11,7,8,NULL,NULL,2,24,50,5,50,50,1000,1500,75000,0,3,'2023-12-13 09:07:53','2023-12-13 09:07:53'),
+(75,53,10,12,7,9,NULL,NULL,2,26,51,5,100,100,1000,1500,150000,0,3,'2023-12-13 09:07:53','2023-12-13 09:07:53'),
+(76,54,11,13,8,10,NULL,NULL,1,2,53,6,5,5,1000,1500,7500,0,3,'2023-12-14 07:30:31','2023-12-14 07:30:31'),
+(77,54,11,14,8,11,NULL,NULL,1,1,52,1,5,5,2000,2000,10000,0,3,'2023-12-14 07:30:31','2023-12-14 07:30:31');
 
 /*Table structure for table `core_agency` */
 
@@ -2292,7 +2442,7 @@ CREATE TABLE `core_bank` (
 
 insert  into `core_bank`(`bank_id`,`bank_code`,`bank_name`,`account_id`,`bank_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
 (11,'BM','Bank Mandiri',8,NULL,0,3,'2023-06-09 06:34:35','2023-06-23 10:52:21'),
-(12,'5454','BRI Syariah',13,NULL,0,3,'2023-06-20 15:54:32','2023-06-23 10:52:21');
+(12,'5454','BRI Syariah',22,NULL,0,3,'2023-06-20 15:54:32','2023-06-23 10:52:21');
 
 /*Table structure for table `core_branch` */
 
@@ -3329,12 +3479,12 @@ CREATE TABLE `inv_goods_received_note` (
   CONSTRAINT `FK_inv_goods_received_note_purchase_order_id` FOREIGN KEY (`purchase_order_id`) REFERENCES `purchase_order` (`purchase_order_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_inv_goods_received_note_supplier_id` FOREIGN KEY (`supplier_id`) REFERENCES `core_supplier` (`supplier_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_inv_goods_received_note_warehouse_id` FOREIGN KEY (`warehouse_id`) REFERENCES `inv_warehouse` (`warehouse_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_goods_received_note` */
 
 insert  into `inv_goods_received_note`(`goods_received_note_id`,`purchase_order_id`,`supplier_id`,`warehouse_id`,`goods_received_note_no`,`goods_received_note_date`,`goods_received_note_expired_date`,`goods_received_note_remark`,`goods_received_note_status_invoice`,`receipt_image`,`delivery_note_no`,`faktur_no`,`subtotal_item`,`item_type`,`data_state`,`voided_remark`,`voided_id`,`voided_at`,`created_id`,`created_at`,`updated_at`) values 
-(16,239,8,6,'0001/IGRN/XII/2023','2023-12-12',NULL,NULL,1,'',NULL,'11111',10,0,0,NULL,0,NULL,3,'2023-12-12 09:37:25','2023-12-12 09:38:25');
+(18,241,7,6,'0001/IGRN/XII/2023','2023-12-13',NULL,NULL,1,'',NULL,'112',150,0,0,NULL,0,NULL,3,'2023-12-13 07:57:52','2023-12-15 04:05:56');
 
 /*Table structure for table `inv_goods_received_note_batch_number` */
 
@@ -3390,13 +3540,13 @@ CREATE TABLE `inv_goods_received_note_item` (
   KEY `FK_goods_received_note_item_purchase_order_id` (`purchase_order_id`),
   KEY `FK_goods_received_note_item_purchase_order_item_id` (`purchase_order_item_id`),
   KEY `FK_invt_goods_received_note_item_item_stock_id` (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=502 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=506 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_goods_received_note_item` */
 
 insert  into `inv_goods_received_note_item`(`goods_received_note_item_id`,`goods_received_note_id`,`purchase_order_id`,`purchase_order_item_id`,`item_category_id`,`item_type_id`,`item_unit_id`,`item_stock_id`,`quantity`,`quantity_received`,`item_batch_number`,`item_expired_date`,`data_state`,`voided_id`,`voided_at`,`created_id`,`created_at`,`updated_at`) values 
-(500,16,239,15,1,1,1,0,5,5,'1111','2026-12-12',0,0,NULL,3,'2023-12-12 09:37:25','2023-12-12 09:37:25'),
-(501,16,239,16,1,2,6,0,5,5,'2222','2026-12-12',0,0,NULL,3,'2023-12-12 09:37:25','2023-12-12 09:37:25');
+(504,18,241,19,2,24,5,0,50,50,'121212','2023-12-13',0,0,NULL,3,'2023-12-13 07:57:52','2023-12-13 07:57:52'),
+(505,18,241,20,2,26,5,0,100,100,'131313','2023-12-13',0,0,NULL,3,'2023-12-13 07:57:53','2023-12-13 07:57:53');
 
 /*Table structure for table `inv_item` */
 
@@ -3535,15 +3685,25 @@ CREATE TABLE `inv_item_stock` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_stock` */
 
 insert  into `inv_item_stock`(`item_stock_id`,`goods_received_note_id`,`goods_received_note_item_id`,`item_stock_date`,`item_stock_expired_date`,`item_batch_number`,`purchase_order_item_id`,`warehouse_id`,`purchase_order_no`,`buyers_acknowledgment_no`,`no_retur_barang`,`nota_retur_pajak`,`item_category_id`,`item_type_id`,`item_id`,`item_unit_id`,`item_total`,`item_unit_cost`,`item_unit_total`,`item_unit_price`,`item_unit_id_default`,`item_default_quantity_unit`,`quantity_unit`,`item_weight_default`,`item_weight_unit`,`package_id`,`package_total`,`package_unit_id`,`package_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(40,16,500,'2023-12-12','2026-12-12','1111',15,6,'','','','',1,1,0,1,5,1000,0,0,1,'1','5',NULL,'',NULL,0,0,0,0,3,'2023-12-12 09:37:25','2023-12-12 09:37:25'),
-(41,16,501,'2023-12-12','2026-12-12','2222',16,6,'','','','',1,2,0,6,5,2000,0,0,6,'1','5',NULL,'',NULL,0,0,0,0,3,'2023-12-12 09:37:25','2023-12-12 09:37:25'),
+(40,16,500,'2023-12-12','2026-12-12','1111',15,6,'','','','',1,1,0,1,5,1000,0,0,1,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-12 09:37:25','2023-12-14 07:29:48'),
+(41,16,501,'2023-12-12','2026-12-12','2222',16,6,'','','','',1,2,0,6,5,2000,0,0,6,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-12 09:37:25','2023-12-14 07:29:48'),
 (42,0,0,'2023-12-12','2026-12-12','1111',15,7,'','','','',1,1,0,1,0,1000,0,0,1,'1','5',0,'',0,0,0,0,0,3,'2023-12-12 09:38:55','2023-12-12 09:38:55'),
-(43,0,0,'2023-12-12','2026-12-12','2222',16,7,'','','','',1,2,0,6,0,2000,0,0,6,'1','5',0,'',0,0,0,0,0,3,'2023-12-12 09:38:55','2023-12-12 09:38:55');
+(43,0,0,'2023-12-12','2026-12-12','2222',16,7,'','','','',1,2,0,6,0,2000,0,0,6,'1','5',0,'',0,0,0,0,0,3,'2023-12-12 09:38:55','2023-12-12 09:38:55'),
+(44,17,502,'2023-12-13','2025-12-13','123',17,6,'','','','',1,1,0,1,100,1000,0,0,1,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-13 03:15:12','2023-12-13 03:51:36'),
+(45,17,503,'2023-12-13','2025-12-13','456',18,6,'','','','',1,2,0,6,200,1500,0,0,6,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-13 03:15:12','2023-12-13 03:51:36'),
+(46,17,503,'2023-12-13','2025-12-13','456',18,8,'0001/POC/XII/2023','','','',1,2,0,6,200,1000,0,2000,6,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-13 03:51:36','2023-12-13 07:53:15'),
+(47,17,502,'2023-12-13','2025-12-13','123',17,8,'0001/POC/XII/2023','','','',1,1,0,1,100,1500,0,3000,1,'1','-300',NULL,'',NULL,0,0,0,0,3,'2023-12-13 03:51:36','2023-12-13 07:53:15'),
+(48,18,504,'2023-12-13','2023-12-13','121212',19,6,'','','','',2,24,0,5,50,1000,0,0,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-13 07:57:53','2023-12-13 08:58:48'),
+(49,18,505,'2023-12-13','2023-12-13','131313',20,6,'','','','',2,26,0,5,100,1000,0,0,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-13 07:57:53','2023-12-13 08:58:48'),
+(50,18,504,'2023-12-13','2023-12-13','121212',19,8,'0002/PO/XII/2023','','','',2,24,0,5,50,1000,0,1500,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-13 08:58:48','2023-12-13 09:07:53'),
+(51,18,505,'2023-12-13','2023-12-13','131313',20,8,'0002/PO/XII/2023','','','',2,26,0,5,100,1000,0,1500,5,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-13 08:58:48','2023-12-13 09:07:54'),
+(52,16,501,'2023-12-14','2026-12-12','2222',16,8,'0003/PO/XII/2023','','','',1,2,0,6,5,2000,0,1500,6,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-14 07:29:48','2023-12-14 07:30:31'),
+(53,16,500,'2023-12-14','2026-12-12','1111',15,8,'0003/PO/XII/2023','','','',1,1,0,1,5,1000,0,2000,1,'1','0',NULL,'',NULL,0,0,0,0,3,'2023-12-14 07:29:48','2023-12-14 07:30:31');
 
 /*Table structure for table `inv_item_stock_adjustment` */
 
@@ -3628,13 +3788,17 @@ CREATE TABLE `inv_item_stock_card` (
   KEY `FK_inv_item_stock_card_item_unit_id` (`item_unit_id`),
   KEY `FK_inv_item_stock_card_section_id` (`section_id`),
   KEY `item_batch_number` (`item_batch_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=74931 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=74935 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `inv_item_stock_card` */
 
 insert  into `inv_item_stock_card`(`item_stock_card_id`,`item_stock_id`,`section_id`,`item_category_id`,`item_type_id`,`warehouse_id`,`supplier_id`,`item_unit_id`,`item_stock_type`,`item_batch_number`,`item_color`,`item_size`,`transaction_id`,`transaction_type`,`transaction_code`,`transaction_date`,`opening_balance`,`opening_balance_unfinished`,`item_stock_card_in`,`item_stock_card_out`,`item_unit_default_quantity`,`last_balance`,`last_balance_unfinished`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(74929,40,0,1,1,6,0,1,0,'1111','',0,16,1,'INVT_GDS_RCV_NOTE','2023-12-12',0,0,5,0,0,5,0,0,NULL,'2023-12-12 16:37:25','2023-12-12 16:37:25'),
-(74930,41,0,1,2,6,0,6,0,'2222','',0,16,1,'INVT_GDS_RCV_NOTE','2023-12-12',0,0,5,0,0,5,0,0,NULL,'2023-12-12 16:37:25','2023-12-12 16:37:25');
+(74929,40,0,1,1,6,0,1,0,'1111','',0,16,1,'INVT_GDS_RCV_NOTE','2023-12-12',0,0,0,5,0,5,0,0,NULL,'2023-12-12 16:37:25','2023-12-12 16:37:25'),
+(74930,41,0,1,2,6,0,6,0,'2222','',0,16,1,'INVT_GDS_RCV_NOTE','2023-12-12',0,0,0,5,0,5,0,0,NULL,'2023-12-12 16:37:25','2023-12-12 16:37:25'),
+(74931,44,0,1,1,6,0,1,0,'123','',0,17,1,'INVT_GDS_RCV_NOTE','2023-12-13',0,0,0,100,0,100,0,0,NULL,'2023-12-13 10:15:12','2023-12-13 10:15:12'),
+(74932,45,0,1,2,6,0,6,0,'456','',0,17,1,'INVT_GDS_RCV_NOTE','2023-12-13',0,0,0,200,0,200,0,0,NULL,'2023-12-13 10:15:12','2023-12-13 10:15:12'),
+(74933,48,0,2,24,6,0,5,0,'121212','',0,18,1,'INVT_GDS_RCV_NOTE','2023-12-13',0,0,0,50,0,50,0,0,NULL,'2023-12-13 14:57:52','2023-12-13 14:57:52'),
+(74934,49,0,2,26,6,0,5,0,'131313','',0,18,1,'INVT_GDS_RCV_NOTE','2023-12-13',0,0,0,100,0,100,0,0,NULL,'2023-12-13 14:57:53','2023-12-13 14:57:53');
 
 /*Table structure for table `inv_item_stock_package` */
 
@@ -4404,6 +4568,7 @@ CREATE TABLE `purchase_invoice` (
   `discount_percentage` decimal(5,2) DEFAULT '0.00',
   `discount_amount` decimal(20,2) DEFAULT '0.00',
   `purchase_handling_fee` decimal(20,2) DEFAULT '0.00',
+  `ppn_in_amount` decimal(20,0) DEFAULT '0',
   `tax_percentage` decimal(5,2) DEFAULT '0.00',
   `tax_amount` decimal(20,2) DEFAULT '0.00',
   `faktur_tax_no` varchar(255) DEFAULT NULL,
@@ -4434,12 +4599,13 @@ CREATE TABLE `purchase_invoice` (
   KEY `FK_purchase_invoice_branch_id` (`branch_id`),
   KEY `FK_purchase_invoice_supplier_id` (`supplier_id`),
   KEY `FK_purchase_invoice_warehouse_id` (`warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_invoice` */
 
-insert  into `purchase_invoice`(`purchase_invoice_id`,`goods_received_note_id`,`purchase_order_id`,`branch_id`,`supplier_id`,`warehouse_id`,`payment_method_account_id`,`ongkir_account_id`,`purchase_invoice_date`,`purchase_invoice_payment_terms`,`purchase_invoice_due_date`,`purchase_invoice_no`,`purchase_invoice_reference_no`,`purchase_invoice_remark`,`purchase_police_number`,`subtotal_item`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`purchase_handling_fee`,`tax_percentage`,`tax_amount`,`faktur_tax_no`,`total_amount`,`paid_amount`,`payment_discount`,`owing_amount`,`shortover_amount`,`down_payment_amount`,`purchase_return_amount`,`debit_amount`,`purchase_invoice_status`,`purchase_invoice_token`,`purchase_invoice_token_void`,`voided_id`,`voided_on`,`voided_remark`,`record_no`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(24,16,239,1,8,6,0,0,'2023-12-12',0.00,'2028-06-07','0001/PI/XII/2023','',NULL,'',10,15000.00,0.00,0.00,0.00,0.00,0.00,NULL,15000.00,0.00,0.00,15000.00,0.00,0.00,0.00,0.00,1,NULL,NULL,0,NULL,NULL,'',0,3,'2023-12-12 09:38:25','2023-12-12 09:38:55');
+insert  into `purchase_invoice`(`purchase_invoice_id`,`goods_received_note_id`,`purchase_order_id`,`branch_id`,`supplier_id`,`warehouse_id`,`payment_method_account_id`,`ongkir_account_id`,`purchase_invoice_date`,`purchase_invoice_payment_terms`,`purchase_invoice_due_date`,`purchase_invoice_no`,`purchase_invoice_reference_no`,`purchase_invoice_remark`,`purchase_police_number`,`subtotal_item`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`purchase_handling_fee`,`ppn_in_amount`,`tax_percentage`,`tax_amount`,`faktur_tax_no`,`total_amount`,`paid_amount`,`payment_discount`,`owing_amount`,`shortover_amount`,`down_payment_amount`,`purchase_return_amount`,`debit_amount`,`purchase_invoice_status`,`purchase_invoice_token`,`purchase_invoice_token_void`,`voided_id`,`voided_on`,`voided_remark`,`record_no`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(24,16,239,1,8,6,0,0,'2023-12-12',0.00,'2028-06-07','0001/PI/XII/2023','',NULL,'',10,15000.00,0.00,0.00,0.00,3300,0.00,0.00,NULL,15000.00,25000.00,0.00,0.00,0.00,0.00,0.00,0.00,1,NULL,NULL,0,NULL,NULL,'',0,3,'2023-12-12 09:38:25','2023-12-18 04:06:59'),
+(25,18,241,1,7,6,0,0,'2023-12-13',0.00,'2023-12-13','0002/PI/XII/2023','',NULL,'',150,166500.00,0.00,0.00,0.00,16500,0.00,0.00,NULL,166500.00,166500.00,0.00,0.00,0.00,0.00,0.00,0.00,0,NULL,NULL,0,NULL,NULL,'',0,3,'2023-12-13 09:10:24','2023-12-15 07:32:36');
 
 /*Table structure for table `purchase_invoice_item` */
 
@@ -4468,13 +4634,15 @@ CREATE TABLE `purchase_invoice_item` (
   PRIMARY KEY (`purchase_invoice_item_id`),
   UNIQUE KEY `purchase_invoice_item_token` (`purchase_invoice_item_token`),
   KEY `FK_purchase_invoice_item_purchase_invoice_id` (`purchase_invoice_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_invoice_item` */
 
 insert  into `purchase_invoice_item`(`purchase_invoice_item_id`,`purchase_invoice_id`,`goods_received_note_item_id`,`item_category_id`,`item_type_id`,`item_id`,`quantity_scale`,`quantity`,`item_unit_id`,`item_unit_cost`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`subtotal_amount_after_discount`,`purchase_invoice_item_token`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
 (44,24,500,1,1,NULL,0.00,5.00,1,1000.00,5000.00,0.00,0.00,0.00,NULL,0,3,'2023-12-12 09:38:25','2023-12-12 09:38:25'),
-(45,24,501,1,2,NULL,0.00,5.00,6,2000.00,10000.00,0.00,0.00,0.00,NULL,0,3,'2023-12-12 09:38:25','2023-12-12 09:38:25');
+(45,24,501,1,2,NULL,0.00,5.00,6,2000.00,10000.00,0.00,0.00,0.00,NULL,0,3,'2023-12-12 09:38:25','2023-12-12 09:38:25'),
+(46,25,504,2,24,NULL,0.00,50.00,5,1000.00,50000.00,0.00,0.00,0.00,NULL,0,3,'2023-12-13 09:10:24','2023-12-13 09:10:24'),
+(47,25,505,2,26,NULL,0.00,100.00,5,1000.00,100000.00,0.00,0.00,0.00,NULL,0,3,'2023-12-13 09:10:24','2023-12-13 09:10:24');
 
 /*Table structure for table `purchase_order` */
 
@@ -4526,12 +4694,14 @@ CREATE TABLE `purchase_order` (
   KEY `created_id` (`created_id`),
   KEY `FK_purchase_order_warehouse_id` (`warehouse_id`),
   KEY `FK_purchase_order_purchase_order_type_id` (`purchase_order_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order` */
 
 insert  into `purchase_order`(`purchase_order_id`,`supplier_id`,`warehouse_id`,`purchase_order_no`,`purchase_order_date`,`purchase_order_shipment_date`,`purchase_order_payment_terms`,`purchase_order_remark`,`total_item`,`total_received_item`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`ppn_in_percentage`,`ppn_in_amount`,`subtotal_after_ppn_in`,`tax_percentage`,`tax_amount`,`total_amount`,`down_payment_amount`,`down_payment_amount_balance`,`last_balance_amount`,`purchase_order_type_id`,`purchase_order_status`,`purchase_invoice_status`,`item_type`,`branch_id`,`approved`,`approved_id`,`approved_on`,`approved_remark`,`closed_remark`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(239,8,6,'0001/PO/XII/2023','2023-12-12','2023-12-12',0,NULL,20.00,10.00,0.00,0.00,0.00,11.00,3300.00,33300.00,0.00,0.00,30000.00,0.00,0.00,0.00,0,1,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-12 09:36:10','2023-12-12 09:37:25');
+(239,8,6,'0001/PO/XII/2023','2023-12-12','2023-12-12',0,NULL,20.00,10.00,0.00,0.00,0.00,11.00,3300.00,33300.00,0.00,0.00,30000.00,0.00,0.00,0.00,0,1,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-12 09:36:10','2023-12-12 09:37:25'),
+(240,8,6,'0002/PO/XII/2023','2023-12-13','2023-12-13',0,NULL,300.00,300.00,0.00,0.00,0.00,11.00,44000.00,444000.00,0.00,0.00,400000.00,0.00,0.00,0.00,0,2,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-13 03:13:01','2023-12-13 03:15:12'),
+(241,7,6,'0003/PO/XII/2023','2023-12-13','2023-12-13',0,NULL,150.00,150.00,0.00,0.00,0.00,11.00,16500.00,166500.00,0.00,0.00,150000.00,0.00,0.00,0.00,0,2,0,0,1,1,0,NULL,NULL,NULL,0,NULL,NULL,0,0,'2023-12-13 07:56:42','2023-12-13 07:57:53');
 
 /*Table structure for table `purchase_order_item` */
 
@@ -4568,13 +4738,17 @@ CREATE TABLE `purchase_order_item` (
   KEY `purchase_order_token` (`purchase_order_token`),
   KEY `item_flute_id` (`item_type_id`),
   KEY `FK_purchase_order_item_purchase_order_id` (`purchase_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_order_item` */
 
 insert  into `purchase_order_item`(`purchase_order_item_id`,`purchase_order_id`,`purchase_requisition_id`,`purchase_requisition_item_id`,`item_category_id`,`item_unit_id`,`item_type_id`,`quantity`,`quantity_outstanding`,`quantity_received`,`quantity_return`,`item_unit_cost`,`subtotal_amount`,`discount_percentage`,`discount_amount`,`subtotal_amount_after_discount`,`purchase_order_item_creassing`,`purchase_order_token`,`data_state`,`created_id`,`created_at`,`voided_id`,`voided_on`,`updated_at`) values 
 (15,239,0,0,1,1,1,10,0,5,5,1000,10000,0,0,0,'','',0,0,'2023-12-12 09:36:10',0,NULL,'2023-12-12 09:38:55'),
-(16,239,0,0,1,6,2,10,0,5,5,2000,20000,0,0,0,'','',0,0,'2023-12-12 09:36:10',0,NULL,'2023-12-12 09:38:55');
+(16,239,0,0,1,6,2,10,0,5,5,2000,20000,0,0,0,'','',0,0,'2023-12-12 09:36:10',0,NULL,'2023-12-12 09:38:55'),
+(17,240,0,0,1,1,1,100,0,100,0,1000,100000,0,0,0,'','',0,0,'2023-12-13 03:13:01',0,NULL,'2023-12-13 03:15:12'),
+(18,240,0,0,1,6,2,200,0,200,0,1500,300000,NULL,0,0,'','',0,0,'2023-12-13 03:13:01',0,NULL,'2023-12-13 03:15:12'),
+(19,241,0,0,2,5,24,50,0,50,0,1000,50000,0,0,0,'','',0,0,'2023-12-13 07:56:42',0,NULL,'2023-12-13 07:57:52'),
+(20,241,0,0,2,5,26,100,0,100,0,1000,100000,0,0,0,'','',0,0,'2023-12-13 07:56:42',0,NULL,'2023-12-13 07:57:53');
 
 /*Table structure for table `purchase_order_return` */
 
@@ -4689,9 +4863,15 @@ CREATE TABLE `purchase_payment` (
   UNIQUE KEY `payment_token_void` (`payment_token_void`),
   KEY `FK_purchase_payment_supplier_id` (`supplier_id`) USING BTREE,
   KEY `FK_purchase_payment_branch_id` (`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `purchase_payment` */
+
+insert  into `purchase_payment`(`payment_id`,`branch_id`,`supplier_id`,`payment_date`,`payment_no`,`reference_number`,`cash_account_id`,`payment_remark`,`payment_amount`,`payment_allocated`,`payment_shortover`,`payment_total_amount`,`payment_shortover_remark`,`payment_total_cash_amount`,`payment_total_transfer_amount`,`payment_total_giro_amount`,`payment_token`,`payment_token_void`,`voided_id`,`voided_on`,`voided_remark`,`posted`,`posted_id`,`posted_on`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(25,1,7,'2023-12-15','0001/PH/XII/2023','',8,NULL,100000.00,100000.00,0.00,100000.00,'',0.00,100000.00,0.00,NULL,NULL,0,NULL,'','0',0,NULL,0,3,'2023-12-15 07:27:37','2023-12-15 07:27:37'),
+(26,1,7,'2023-12-15','0002/PH/XII/2023','',8,NULL,66500.00,66500.00,0.00,66500.00,'',0.00,66500.00,0.00,NULL,NULL,0,NULL,'','0',0,NULL,0,3,'2023-12-15 07:32:36','2023-12-15 07:32:36'),
+(28,1,8,'2023-12-18','0004/PH/XII/2023','',8,NULL,5000.00,5000.00,0.00,5000.00,'',0.00,5000.00,0.00,NULL,NULL,0,NULL,'','0',0,NULL,0,3,'2023-12-18 04:04:16','2023-12-18 04:04:16'),
+(29,1,8,'2023-12-18','0005/PH/XII/2023','',8,NULL,10000.00,10000.00,0.00,10000.00,'',0.00,10000.00,0.00,NULL,NULL,0,NULL,'','0',0,NULL,0,3,'2023-12-18 04:06:59','2023-12-18 04:06:59');
 
 /*Table structure for table `purchase_payment_giro` */
 
@@ -4742,9 +4922,16 @@ CREATE TABLE `purchase_payment_item` (
   UNIQUE KEY `payment_item_token_void` (`payment_item_token_void`),
   KEY `FK_purchase_payment_item_purchase_invoice_id` (`purchase_invoice_id`) USING BTREE,
   KEY `FK_purchase_payment_item_payment_id` (`payment_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `purchase_payment_item` */
+
+insert  into `purchase_payment_item`(`payment_item_id`,`payment_id`,`purchase_invoice_id`,`purchase_invoice_no`,`purchase_invoice_date`,`purchase_invoice_amount`,`total_amount`,`paid_amount`,`owing_amount`,`shortover_amount`,`allocation_amount`,`payment_discount`,`payment_item_token`,`payment_item_token_void`,`last_balance`,`created_at`,`updated_at`) values 
+(24,25,25,'0002/PI/XII/2023','2023-12-13',166500.00,166500.00,100000.00,166500.00,0.00,100000.00,NULL,NULL,NULL,66500.00,'2023-12-15 07:27:37','2023-12-15 07:27:37'),
+(25,26,25,'0002/PI/XII/2023','2023-12-13',166500.00,166500.00,100000.00,66500.00,0.00,66500.00,NULL,NULL,NULL,0.00,'2023-12-15 07:32:36','2023-12-15 07:32:36'),
+(26,27,24,'0001/PI/XII/2023','2023-12-12',15000.00,15000.00,0.00,15000.00,0.00,10000.00,NULL,NULL,NULL,15000.00,'2023-12-18 04:00:44','2023-12-18 04:00:44'),
+(27,28,24,'0001/PI/XII/2023','2023-12-12',15000.00,15000.00,10000.00,15000.00,0.00,5000.00,NULL,NULL,NULL,10000.00,'2023-12-18 04:04:16','2023-12-18 04:04:16'),
+(28,29,24,'0001/PI/XII/2023','2023-12-12',15000.00,15000.00,15000.00,10000.00,0.00,10000.00,NULL,NULL,NULL,0.00,'2023-12-18 04:06:59','2023-12-18 04:06:59');
 
 /*Table structure for table `purchase_payment_transfer` */
 
@@ -4765,9 +4952,16 @@ CREATE TABLE `purchase_payment_transfer` (
   PRIMARY KEY (`payment_transfer_id`),
   UNIQUE KEY `payment_transfer_token` (`payment_transfer_token`),
   KEY `FK_purchase_payment_transfer_payment_id` (`payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `purchase_payment_transfer` */
+
+insert  into `purchase_payment_transfer`(`payment_transfer_id`,`payment_id`,`bank_id`,`account_id`,`payment_transfer_bank_name`,`payment_transfer_amount`,`payment_transfer_account_name`,`payment_transfer_account_no`,`payment_transfer_token`,`created_at`,`updated_at`) values 
+(6,25,11,8,'Bank Mandiri',100000.00,'1','1',NULL,'2023-12-15 07:27:37','2023-12-15 07:27:37'),
+(7,26,11,8,'Bank Mandiri',66500.00,'1','1',NULL,'2023-12-15 07:32:36','2023-12-15 07:32:36'),
+(8,27,11,8,'Bank Mandiri',10000.00,'2','2',NULL,'2023-12-18 04:00:45','2023-12-18 04:00:45'),
+(9,28,11,8,'Bank Mandiri',5000.00,'2','2',NULL,'2023-12-18 04:04:16','2023-12-18 04:04:16'),
+(10,29,11,8,'Bank Mandiri',10000.00,'2','2',NULL,'2023-12-18 04:06:59','2023-12-18 04:06:59');
 
 /*Table structure for table `return_pdp` */
 
@@ -5131,9 +5325,14 @@ CREATE TABLE `sales_delivery_note` (
   KEY `FK_sales_delivery_note_sales_delivery_order_id` (`sales_delivery_order_id`),
   KEY `FK_sales_delivery_note_sales_order_id` (`sales_order_id`),
   KEY `FK_sales_delivery_note_warehouse_id` (`warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_note` */
+
+insert  into `sales_delivery_note`(`sales_delivery_note_id`,`sales_delivery_order_id`,`shipment_planning_id`,`sales_order_id`,`warehouse_id`,`section_id`,`salesman_id`,`customer_id`,`expedition_id`,`sales_delivery_note_cost`,`sales_delivery_note_no`,`ppn_out_amount`,`expedition_receipt_no`,`customer_name`,`customer_address`,`customer_city`,`customer_home_phone`,`customer_mobile_phone1`,`driver_name`,`fleet_police_number`,`purchase_order_no`,`salesman_name`,`sales_delivery_note_date`,`sales_delivery_note_status`,`sales_invoice_status`,`sales_delivery_note_remark`,`posted`,`posted_id`,`posted_on`,`voided_id`,`voided_on`,`voided_remark`,`rejected_id`,`rejected_on`,`rejected_remark`,`branch_id`,`return_status`,`pdp_lost_on_expedition_status`,`buyers_acknowledgment_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(9,6,0,6,8,NULL,NULL,1,11,0.00,'0001/SDN/XII/2023',0.00,'11111111111111111111','',NULL,'','','','adit','H 9790 NG',NULL,'','2023-12-13',0,0,NULL,0,NULL,NULL,0,NULL,NULL,0,NULL,NULL,1,0,NULL,1,0,3,'2023-12-13 03:51:36','2023-12-13 07:53:15'),
+(10,7,0,7,8,NULL,NULL,1,13,0.00,'0002/SDN/XII/2023',0.00,'11111111111111111111','',NULL,'','','','adit','H 9790 NG',NULL,'','2023-12-13',0,0,NULL,0,NULL,NULL,0,NULL,NULL,0,NULL,NULL,1,0,NULL,1,0,3,'2023-12-13 08:58:48','2023-12-13 09:07:53'),
+(11,8,0,8,8,NULL,NULL,1,13,0.00,'0003/SDN/XII/2023',0.00,'2222222222222','',NULL,'','','','adit','H 9790 NG',NULL,'','2023-12-14',0,0,NULL,0,NULL,NULL,0,NULL,NULL,0,NULL,NULL,1,0,NULL,1,0,3,'2023-12-14 07:29:47','2023-12-14 07:30:31');
 
 /*Table structure for table `sales_delivery_note_item` */
 
@@ -5176,9 +5375,17 @@ CREATE TABLE `sales_delivery_note_item` (
   KEY `account_id_hpp` (`hpp_account_id`),
   KEY `section_id` (`section_id`),
   KEY `FK_sales_delivery_note_item_sales_delivery_note_id` (`sales_delivery_note_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_note_item` */
+
+insert  into `sales_delivery_note_item`(`sales_delivery_note_item_id`,`sales_delivery_note_id`,`sales_order_id`,`sales_order_item_id`,`sales_delivery_order_id`,`sales_delivery_order_item_id`,`section_id`,`warehouse_id`,`supplier_id`,`item_category_id`,`item_id`,`item_type_id`,`item_unit_id`,`item_unit_id_unit`,`quantity`,`quantity_unit`,`item_default_quantity_unit`,`item_weight_unit`,`item_batch_number`,`sales_delivery_note_item_token`,`sales_delivery_note_item_token_void`,`return_item_status`,`data_state`,`item_unit_price`,`subtotal_price`,`hpp_amount`,`hpp_account_id`,`created_id`,`created_at`,`updated_at`) values 
+(9,9,6,6,6,6,0,0,0,1,NULL,2,6,6,'200.00','200.00','1','1.6',NULL,NULL,NULL,0,0,2000.00,199000.00,0.00,0,3,'2023-12-13 03:51:36','2023-12-13 03:51:36'),
+(10,9,6,7,6,7,0,0,0,1,NULL,1,1,1,'100.00','100.00','1','0.6',NULL,NULL,NULL,0,0,3000.00,597000.00,0.00,0,3,'2023-12-13 03:51:36','2023-12-13 03:51:36'),
+(11,10,7,8,7,8,0,0,0,0,NULL,24,5,5,'50.00','50.00','1','3',NULL,NULL,NULL,0,0,1500.00,74625.00,0.00,0,3,'2023-12-13 08:58:48','2023-12-13 08:58:48'),
+(12,10,7,9,7,9,0,0,0,0,NULL,26,5,5,'100.00','100.00','1','7',NULL,NULL,NULL,0,0,1500.00,149250.00,0.00,0,3,'2023-12-13 08:58:48','2023-12-13 08:58:48'),
+(13,11,8,10,8,10,0,0,0,0,NULL,2,6,6,'5.00','5.00','1','0.04',NULL,NULL,NULL,0,0,1500.00,7462.50,0.00,0,3,'2023-12-14 07:29:48','2023-12-14 07:29:48'),
+(14,11,8,11,8,11,0,0,0,0,NULL,1,1,1,'5.00','5.00','1','0.03',NULL,NULL,NULL,0,0,2000.00,9950.00,0.00,0,3,'2023-12-14 07:29:48','2023-12-14 07:29:48');
 
 /*Table structure for table `sales_delivery_note_item_stock` */
 
@@ -5211,9 +5418,17 @@ CREATE TABLE `sales_delivery_note_item_stock` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_note_item_stock_id`),
   KEY `FK_sales_delivery_note_item_stock_sales_delivery_note_id` (`sales_delivery_note_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_note_item_stock` */
+
+insert  into `sales_delivery_note_item_stock`(`sales_delivery_note_item_stock_id`,`sales_order_id`,`sales_order_item_id`,`sales_delivery_order_id`,`sales_delivery_order_item_id`,`sales_delivery_order_item_stock_id`,`sales_delivery_note_id`,`sales_delivery_note_item_id`,`item_batch_number`,`item_category_id`,`item_type_id`,`item_stock_id`,`item_unit_id`,`item_unit_id_unit`,`quantity`,`item_default_quantity_unit`,`quantity_unit`,`warehouse_id`,`item_weight_default`,`item_weight_unit`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(7,6,7,6,7,7,9,10,NULL,NULL,2,46,6,NULL,'100','1','200',0,NULL,'0.6',0,3,'2023-12-13 03:51:36','2023-12-13 03:51:36'),
+(8,6,6,6,6,6,9,9,NULL,NULL,1,47,1,NULL,'100','1','100',0,NULL,'0.6',0,3,'2023-12-13 03:51:36','2023-12-13 03:51:36'),
+(9,7,8,7,8,8,10,11,NULL,NULL,24,50,5,NULL,'100','1','50',0,NULL,'7',0,3,'2023-12-13 08:58:48','2023-12-13 08:58:48'),
+(10,7,9,7,9,9,10,12,NULL,NULL,26,51,5,NULL,'100','1','100',0,NULL,'7',0,3,'2023-12-13 08:58:48','2023-12-13 08:58:48'),
+(11,8,11,8,11,12,11,14,NULL,NULL,2,52,6,NULL,'5','1','5',0,NULL,'0.03',0,3,'2023-12-14 07:29:48','2023-12-14 07:29:48'),
+(12,8,10,8,10,11,11,13,NULL,NULL,1,53,1,NULL,'5','1','5',0,NULL,'0.03',0,3,'2023-12-14 07:29:48','2023-12-14 07:29:48');
 
 /*Table structure for table `sales_delivery_order` */
 
@@ -5242,9 +5457,14 @@ CREATE TABLE `sales_delivery_order` (
   `updated_remark` text,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_order` */
+
+insert  into `sales_delivery_order`(`sales_delivery_order_id`,`warehouse_id`,`sales_order_id`,`sales_delivery_order_no`,`sales_delivery_order_date`,`sales_delivery_order_status`,`sales_delivery_order_remark`,`sales_delivery_note_status`,`sales_delivery_order_cost`,`ppn_out_amount`,`branch_id`,`data_state`,`created_id`,`created_at`,`voided_id`,`voided_on`,`voided_remark`,`updated_id`,`updated_on`,`updated_remark`,`updated_at`) values 
+(6,6,6,'0001/SDO/XII/2023','2023-12-13',0,NULL,1,NULL,0,1,0,3,'2023-12-13 03:35:42',0,NULL,NULL,0,NULL,NULL,'2023-12-13 03:51:36'),
+(7,6,7,'0002/SDO/XII/2023','2023-12-13',0,NULL,1,NULL,0,1,0,3,'2023-12-13 08:57:48',0,NULL,NULL,0,NULL,NULL,'2023-12-13 08:58:48'),
+(8,6,8,'0003/SDO/XII/2023','2023-12-14',0,NULL,1,NULL,0,1,0,3,'2023-12-14 07:29:07',0,NULL,NULL,0,NULL,NULL,'2023-12-14 07:29:47');
 
 /*Table structure for table `sales_delivery_order_item` */
 
@@ -5274,9 +5494,17 @@ CREATE TABLE `sales_delivery_order_item` (
   `voided_remark` text,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_delivery_order_item` */
+
+insert  into `sales_delivery_order_item`(`sales_delivery_order_item_id`,`sales_delivery_order_id`,`sales_order_id`,`sales_order_item_id`,`salesman_id`,`customer_id`,`item_id`,`item_unit_id`,`item_batch_number`,`item_type_id`,`quantity`,`quantity_ordered`,`item_unit_price`,`subtotal_price`,`sales_delivery_note_status`,`data_state`,`created_id`,`created_at`,`voided_id`,`voided_on`,`voided_remark`,`updated_at`) values 
+(6,6,6,6,0,1,0,1,'',1,'100.00','100.00',2000,199000.00,0,0,3,'2023-12-13 03:35:42',0,NULL,NULL,'2023-12-13 03:35:42'),
+(7,6,6,7,0,1,0,6,'',2,'200.00','200.00',3000,597000.00,0,0,3,'2023-12-13 03:35:42',0,NULL,NULL,'2023-12-13 03:35:42'),
+(8,7,7,8,0,1,0,5,'',24,'50.00','50.00',1500,74625.00,0,0,3,'2023-12-13 08:57:48',0,NULL,NULL,'2023-12-13 08:57:48'),
+(9,7,7,9,0,1,0,5,'',26,'100.00','100.00',1500,149250.00,0,0,3,'2023-12-13 08:57:48',0,NULL,NULL,'2023-12-13 08:57:48'),
+(10,8,8,10,0,1,0,1,'',1,'5.00','5.00',1500,7462.50,0,0,3,'2023-12-14 07:29:07',0,NULL,NULL,'2023-12-14 07:29:07'),
+(11,8,8,11,0,1,0,6,'',2,'5.00','5.00',2000,9950.00,0,0,3,'2023-12-14 07:29:07',0,NULL,NULL,'2023-12-14 07:29:07');
 
 /*Table structure for table `sales_delivery_order_item_composition` */
 
@@ -5355,12 +5583,18 @@ CREATE TABLE `sales_delivery_order_item_stock` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_delivery_order_item_stock` */
 
 insert  into `sales_delivery_order_item_stock`(`sales_delivery_order_item_stock_id`,`sales_order_id`,`sales_order_item_id`,`sales_delivery_order_id`,`sales_delivery_order_item_id`,`item_unit_id`,`item_stock_id`,`item_total_stock`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(5,5,5,5,5,5,22,5,0,3,'2023-12-06 07:23:59','2023-12-06 07:23:59');
+(6,6,6,6,6,1,44,100,0,3,'2023-12-13 03:35:42','2023-12-13 03:35:42'),
+(7,6,7,6,7,6,45,200,0,3,'2023-12-13 03:35:42','2023-12-13 03:35:42'),
+(8,7,8,7,8,5,48,50,0,3,'2023-12-13 08:57:48','2023-12-13 08:57:48'),
+(9,7,9,7,9,5,49,100,0,3,'2023-12-13 08:57:48','2023-12-13 08:57:48'),
+(10,7,9,7,9,5,49,100,0,3,'2023-12-13 08:57:48','2023-12-13 08:57:48'),
+(11,8,10,8,10,1,40,5,0,3,'2023-12-14 07:29:07','2023-12-14 07:29:07'),
+(12,8,11,8,11,6,41,5,0,3,'2023-12-14 07:29:07','2023-12-14 07:29:07');
 
 /*Table structure for table `sales_delivery_order_item_stock_temporary` */
 
@@ -5380,7 +5614,7 @@ CREATE TABLE `sales_delivery_order_item_stock_temporary` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_delivery_order_item_stock_temporary_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2552 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2559 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_delivery_order_item_stock_temporary` */
 
@@ -5463,9 +5697,13 @@ CREATE TABLE `sales_invoice` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_invoice_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_invoice` */
+
+insert  into `sales_invoice`(`sales_invoice_id`,`branch_id`,`warehouse_id`,`customer_id`,`sales_order_id`,`sales_delivery_note_id`,`collection_method_account_id`,`services_income_id`,`sales_invoice_no`,`sales_invoice_reference_no`,`sales_invoice_date`,`sales_invoice_due_date`,`sales_invoice_remark`,`sales_invoice_status`,`services_income_amount`,`subtotal_item`,`subtotal_amount`,`subtotal_before_discount`,`discount_percentage`,`discount_amount`,`return_status`,`subtotal_after_discount`,`tax_percentage`,`tax_amount`,`goods_received_note_no`,`faktur_tax_no`,`buyers_acknowledgment_id`,`buyers_acknowledgment_no`,`ttf_no`,`kwitansi_status`,`total_amount`,`paid_amount`,`owing_amount`,`shortover_amount`,`last_balance`,`cash_advance_amount`,`change_amount`,`sales_return_amount`,`sales_collection_date`,`sales_invoice_token`,`sales_invoice_token_void`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(16,1,8,1,7,10,0,0,'0001/TMO.ME/12/2023','','2023-12-14','2023-12-14',NULL,0,0.00,150.00,248501.25,0.00,0.00,0.00,0,223875.00,0.00,24626.25,'0002/BPB/2023','0001/20230801/01X',53,'0002/BPB/2023','1',0,248501.25,0.00,248501.25,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-14 03:21:38','2023-12-14 03:26:39'),
+(17,1,8,1,8,11,0,0,'0002/TMO.ME/12/2023','','2023-12-14',NULL,NULL,0,0.00,10.00,19327.88,0.00,0.00,0.00,0,17412.50,0.00,1915.38,NULL,'1',54,'0003/BPB/2023','',0,19327.88,0.00,19327.88,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-14 07:33:50','2023-12-14 07:33:50');
 
 /*Table structure for table `sales_invoice_item` */
 
@@ -5492,29 +5730,37 @@ CREATE TABLE `sales_invoice_item` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `sales_invoice_item_id` (`sales_invoice_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_invoice_item` */
+
+insert  into `sales_invoice_item`(`sales_invoice_item_id`,`sales_invoice_id`,`sales_order_id`,`sales_delivery_note_id`,`sales_delivery_note_item_id`,`item_id`,`item_type_id`,`item_unit_id`,`quantity`,`item_unit_price`,`item_unit_price_tax`,`discount_A`,`discount_B`,`subtotal_price_A`,`subtotal_price_B`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(22,16,7,10,11,0,24,5,50,1500,0,0,375,75000,83584,0,3,'2023-12-14 03:21:38','2023-12-14 03:21:38'),
+(23,16,7,10,12,0,26,5,100,1500,0,0,750,150000,167168,0,3,'2023-12-14 03:21:38','2023-12-14 03:21:38'),
+(24,17,8,11,13,0,2,6,5,1500,0,0,38,7500,8358,0,3,'2023-12-14 07:33:50','2023-12-14 07:33:50'),
+(25,17,8,11,14,0,1,1,5,2000,0,0,50,10000,11145,0,3,'2023-12-14 07:33:50','2023-12-14 07:33:50');
 
 /*Table structure for table `sales_kwitansi` */
 
 DROP TABLE IF EXISTS `sales_kwitansi`;
 
 CREATE TABLE `sales_kwitansi` (
-  `sales_kwitansi_id` int NOT NULL AUTO_INCREMENT,
-  `sales_kwitansi_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sales_kwitansi_id` bigint NOT NULL AUTO_INCREMENT,
+  `sales_kwitansi_no` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
   `sales_kwitansi_date` date DEFAULT NULL,
-  `print_type` int DEFAULT '0',
+  `print_type` int DEFAULT NULL,
   `data_state` int DEFAULT '0',
   `created_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  KEY `sales_kwitansi_id` (`sales_kwitansi_id`),
-  KEY `sales_kwitansi_id_2` (`sales_kwitansi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`sales_kwitansi_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi` */
+
+insert  into `sales_kwitansi`(`sales_kwitansi_id`,`sales_kwitansi_no`,`customer_id`,`sales_kwitansi_date`,`print_type`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(2,'0001/KW.ME/12/2023',1,'2023-12-14',NULL,0,3,'2023-12-14 07:54:19','2023-12-14 07:54:19');
 
 /*Table structure for table `sales_kwitansi_item` */
 
@@ -5525,14 +5771,18 @@ CREATE TABLE `sales_kwitansi_item` (
   `sales_kwitansi_id` int DEFAULT NULL,
   `sales_invoice_id` int DEFAULT NULL,
   `buyers_acknowledgment_id` int DEFAULT NULL,
-  `checked` int DEFAULT '0',
+  `checked` int DEFAULT NULL,
   `created_id` int DEFAULT NULL,
   `created_at` date DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  KEY `sales_kwitansi_item_id` (`sales_kwitansi_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`sales_kwitansi_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi_item` */
+
+insert  into `sales_kwitansi_item`(`sales_kwitansi_item_id`,`sales_kwitansi_id`,`sales_invoice_id`,`buyers_acknowledgment_id`,`checked`,`created_id`,`created_at`,`updated_at`) values 
+(3,2,16,53,1,3,'2023-12-14','2023-12-14 07:54:19'),
+(4,2,17,54,1,3,'2023-12-14','2023-12-14 07:54:19');
 
 /*Table structure for table `sales_order` */
 
@@ -5593,9 +5843,14 @@ CREATE TABLE `sales_order` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_order_id`),
   KEY `sales_order_id` (`sales_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_order` */
+
+insert  into `sales_order`(`sales_order_id`,`sales_order_type_id`,`customer_id`,`salesman_id`,`receipt_image`,`sales_order_no`,`purchase_order_no`,`sales_order_date`,`sales_order_delivery_date`,`sales_order_status`,`sales_order_over_limit`,`sales_order_over_due_status`,`purchase_order_status`,`work_order_status`,`purchase_requisition_status`,`sales_order_design_status`,`sales_delivery_order_status`,`customer_credit_limit_balance`,`sales_invoice_status`,`sales_invoice_last_balance`,`sales_order_remark`,`sales_order_over_remark`,`total_item`,`subtotal_before_discount`,`discount_percentage`,`discount_amount`,`subtotal_after_discount`,`ppn_out_percentage`,`ppn_out_amount`,`subtotal_after_ppn_out`,`sales_shipment_status`,`paid_amount`,`total_amount`,`last_balance`,`counter_edited`,`branch_id`,`data_state`,`created_id`,`created_at`,`approved`,`approved_id`,`approved_on`,`approved_remark`,`closed`,`closed_id`,`closed_on`,`closed_remark`,`voided_id`,`voided_on`,`voided_remark`,`customer_no`,`updated_at`) values 
+(6,2,1,0,'','0001/SO/XII/2023','0001/POC/XII/2023','2023-12-13','2023-12-13',2,0.00,0,0,0,0,0,1,0.00,0,0.00,NULL,NULL,300.00,0.00,0.00,0.00,883560.00,0.00,0.00,883560.00,0,0.00,883560.00,0.00,0,1,0,0,'2023-12-13 03:30:36',1,0,NULL,NULL,0,0,NULL,NULL,0,NULL,NULL,'','2023-12-13 07:53:15'),
+(7,2,1,0,'','0002/SO/XII/2023','0002/PO/XII/2023','2023-12-13','2023-12-13',2,0.00,0,0,0,0,0,1,0.00,0,0.00,NULL,NULL,150.00,0.00,0.00,0.00,248501.25,0.00,0.00,248501.25,0,0.00,248501.25,0.00,0,1,0,0,'2023-12-13 08:31:19',1,0,NULL,NULL,0,0,NULL,NULL,0,NULL,NULL,'','2023-12-13 09:07:53'),
+(8,2,1,0,'','0003/SO/XII/2023','0003/PO/XII/2023','2023-12-14','2023-12-14',2,0.00,0,0,0,0,0,1,0.00,0,0.00,NULL,NULL,10.00,0.00,0.00,0.00,19327.88,0.00,0.00,19327.88,0,0.00,19327.88,0.00,0,1,0,0,'2023-12-14 07:27:29',1,0,NULL,NULL,0,0,NULL,NULL,0,NULL,NULL,'','2023-12-14 07:30:31');
 
 /*Table structure for table `sales_order_item` */
 
@@ -5604,6 +5859,7 @@ DROP TABLE IF EXISTS `sales_order_item`;
 CREATE TABLE `sales_order_item` (
   `sales_order_item_id` bigint NOT NULL AUTO_INCREMENT,
   `sales_order_id` bigint DEFAULT '0',
+  `item_category_id` int DEFAULT NULL,
   `item_type_id` int DEFAULT '0',
   `quantity` decimal(10,2) DEFAULT '0.00',
   `quantity_delivered` decimal(10,2) DEFAULT '0.00',
@@ -5647,9 +5903,17 @@ CREATE TABLE `sales_order_item` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`sales_order_item_id`),
   KEY `sales_order_item_id` (`sales_order_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_order_item` */
+
+insert  into `sales_order_item`(`sales_order_item_id`,`sales_order_id`,`item_category_id`,`item_type_id`,`quantity`,`quantity_delivered`,`quantity_shipped`,`quantity_planned`,`quantity_outstanding`,`quantity_received`,`quantity_ordered`,`quantity_cavity`,`quantity_minimum`,`quantity_resulted`,`sales_order_item_status`,`item_substance_price`,`item_unit_id`,`item_unit_price`,`item_unit_price_adds`,`purchase_requisition_status`,`purchase_order_status`,`work_order_status`,`sales_delivery_order_status`,`sales_delivery_note_status`,`sales_invoice_status`,`quantity_minimum_status`,`subtotal_amount`,`subtotal_additional_amount`,`subtotal_item_amount`,`sales_order_no`,`sales_order_status`,`discount_percentage_item`,`discount_percentage_item_b`,`discount_amount_item`,`discount_amount_item_b`,`subtotal_after_discount_item_a`,`subtotal_after_discount_item_b`,`total_price_after_ppn_amount`,`ppn_amount_item`,`record_id`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(6,6,1,1,100.00,100.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,100.00,0,0.00,1,2000.00,0.00,0,0,0,1,0,0,0,200000.00,0.00,0.00,'',0,0.00,0.50,0.00,1000.00,200000.00,199000.00,220890.00,21890.00,0,0,0,'2023-12-13 03:30:36','2023-12-13 03:35:42'),
+(7,6,1,2,200.00,200.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,200.00,0,0.00,6,3000.00,0.00,0,0,0,1,0,0,0,600000.00,0.00,0.00,'',0,0.00,0.50,0.00,3000.00,600000.00,597000.00,662670.00,65670.00,0,0,0,'2023-12-13 03:30:36','2023-12-13 03:35:42'),
+(8,7,2,24,50.00,50.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,50.00,0,0.00,5,1500.00,0.00,0,0,0,1,0,0,0,75000.00,0.00,0.00,'',0,0.00,0.50,0.00,375.00,75000.00,74625.00,82833.75,8208.75,0,0,0,'2023-12-13 08:31:19','2023-12-13 08:57:48'),
+(9,7,2,26,100.00,100.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,100.00,0,0.00,5,1500.00,0.00,0,0,0,1,0,0,0,150000.00,0.00,0.00,'',0,0.00,0.50,0.00,750.00,150000.00,149250.00,165667.50,16417.50,0,0,0,'2023-12-13 08:31:19','2023-12-13 08:57:48'),
+(10,8,1,1,5.00,5.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,5.00,0,0.00,1,1500.00,0.00,0,0,0,1,0,0,0,7500.00,0.00,0.00,'',0,0.00,0.50,0.00,37.50,7500.00,7462.50,8283.38,820.88,0,0,0,'2023-12-14 07:27:29','2023-12-14 07:29:07'),
+(11,8,1,2,5.00,5.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,5.00,0,0.00,6,2000.00,0.00,0,0,0,1,0,0,0,10000.00,0.00,0.00,'',0,0.00,0.50,0.00,50.00,10000.00,9950.00,11044.50,1094.50,0,0,0,'2023-12-14 07:27:29','2023-12-14 07:29:07');
 
 /*Table structure for table `sales_order_return` */
 
@@ -5748,7 +6012,7 @@ CREATE TABLE `system_log_user` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=latin1;
 
 /*Data for the table `system_log_user` */
 
@@ -5941,7 +6205,19 @@ insert  into `system_log_user`(`user_log_id`,`user_id`,`username`,`id_previllage
 (186,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:32:27','2023-12-10 05:32:27','2023-12-10 05:32:27'),
 (187,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 05:34:18','2023-12-10 05:34:18','2023-12-10 05:34:18'),
 (188,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 08:16:54','2023-12-10 08:16:54','2023-12-10 08:16:54'),
-(189,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 08:36:25','2023-12-10 08:36:25','2023-12-10 08:36:25');
+(189,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-10 08:36:25','2023-12-10 08:36:25','2023-12-10 08:36:25'),
+(190,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:21:47','2023-12-14 10:21:47','2023-12-14 10:21:47'),
+(191,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:27:45','2023-12-14 10:27:45','2023-12-14 10:27:45'),
+(192,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:28:00','2023-12-14 10:28:00','2023-12-14 10:28:00'),
+(193,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:28:27','2023-12-14 10:28:27','2023-12-14 10:28:27'),
+(194,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:29:05','2023-12-14 10:29:05','2023-12-14 10:29:05'),
+(195,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:29:22','2023-12-14 10:29:22','2023-12-14 10:29:22'),
+(196,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:30:10','2023-12-14 10:30:10','2023-12-14 10:30:10'),
+(197,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:30:21','2023-12-14 10:30:21','2023-12-14 10:30:21'),
+(198,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 10:30:35','2023-12-14 10:30:35','2023-12-14 10:30:35'),
+(199,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-14 14:03:44','2023-12-14 14:03:45','2023-12-14 14:03:45'),
+(200,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-16 09:51:21','2023-12-16 09:51:21','2023-12-16 09:51:21'),
+(201,0,'administrator',2141,'1','SalesInvoice.printSalesInvoice','administrator','Print Sales Invoice','2023-12-16 10:41:37','2023-12-16 10:41:37','2023-12-16 10:41:37');
 
 /*Table structure for table `system_menu` */
 
@@ -6052,7 +6328,9 @@ insert  into `system_menu`(`id_menu`,`id`,`type`,`indent_level`,`text`,`image`,`
 ('240','purchase-order-return-report','file',3,'Laporan Retur Pembelian',NULL,'2023-07-26 15:40:54'),
 ('35','print-kwitansi','file',2,'Cetak Kwitansi',NULL,'2023-09-04 10:54:55'),
 ('64','sales-promotion','file',2,'Cetak Promosi',NULL,'2023-09-06 12:02:42'),
-('619','sales-discount-collection','file',3,'Pelunasan Piutang Diskon',NULL,'2023-12-11 12:09:13');
+('619','sales-discount-collection','file',3,'Pelunasan Piutang Diskon',NULL,'2023-12-11 12:09:13'),
+('36','#','folder',2,'Laporan',NULL,'2023-12-14 16:55:21'),
+('361','sales-invoice-report','file',3,'Laporan Penjualan',NULL,'2023-12-14 16:56:11');
 
 /*Table structure for table `system_menu_mapping` */
 
@@ -6350,14 +6628,14 @@ insert  into `system_menu_mapping`(`menu_mapping_id`,`user_group_level`,`id_menu
 (983,1,'75',NULL,'2023-06-23 10:54:07'),
 (984,1,'16',NULL,'2023-07-06 13:51:47'),
 (985,1,'63',NULL,'2023-07-20 09:15:53'),
-(986,1,'722',NULL,'2023-07-22 10:50:27'),
-(988,1,'723',NULL,'2023-07-24 11:35:29'),
 (989,1,'724',NULL,'2023-07-24 14:31:55'),
 (991,1,'82',NULL,'2023-07-24 15:02:34'),
 (992,1,'24',NULL,'2023-07-26 15:36:57'),
 (993,1,'240',NULL,'2023-07-26 15:39:10'),
 (994,1,'35',NULL,'2023-09-04 10:55:17'),
-(995,1,'619',NULL,'2023-12-11 12:05:07');
+(995,1,'619',NULL,'2023-12-11 12:05:07'),
+(996,1,'36',NULL,'2023-12-14 16:56:32'),
+(997,1,'361',NULL,'2023-12-14 16:56:40');
 
 /*Table structure for table `system_user` */
 
@@ -7814,7 +8092,7 @@ DELIMITER $$
 	
 	SET PERIOD = RIGHT(CONCAT('0000', TRIM(CAST(tPeriod AS CHAR(4)))), 4);
 	
-	SET nPurchasePaymentNo = CONCAT(PERIOD, '/PO/', monthPeriod, '/', year_period);
+	SET nPurchasePaymentNo = CONCAT(PERIOD, '/PH/', monthPeriod, '/', year_period);
 		
 	SET new.payment_no = nPurchasePaymentNo;
     END */$$
