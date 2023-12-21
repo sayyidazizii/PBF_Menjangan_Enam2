@@ -473,8 +473,23 @@ class SalesCollectionController extends Controller
             );
             AcctJournalVoucherItem::create($data_credit);
         }
+//----------Piutang Piutang Non Anggota
+            $account = AcctAccount::where('account_id', 42)
+                ->where('data_state', 0)
+                ->first();
+                $account_id_default_status = $account['account_default_status'];
+                $data_credit = array (
+                    'journal_voucher_id'			=> $journal_voucher_id,
+                    'account_id'					=> 42,
+                    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                    'journal_voucher_amount'		=> ABS($selisih_shortover),
+                    'journal_voucher_credit_amount'	=> ABS($selisih_shortover),
+                    'account_id_default_status'		=> $account_id_default_status,
+                    'account_id_status'				=> 0,
+                );
+                AcctJournalVoucherItem::create($data_credit);
 
-//----------Piutang Customer (sisa piutang jika dibayar > 1 kali)
+//----------Piutang Piutang Non Anggota (sisa piutang jika dibayar > 1 kali)
             if($selisih_shortover > 0){
                 $account = AcctAccount::where('account_id', 42)
                 ->where('data_state', 0)
@@ -496,17 +511,16 @@ class SalesCollectionController extends Controller
                 ->where('data_state', 0)
                 ->first();
                 $account_id_default_status = $account['account_default_status'];
-
-                $data_debit = array (
+                $data_credit = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
                     'account_id'					=> 42,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($selisih_shortover),
-                    'journal_voucher_debit_amount'	=> ABS($selisih_shortover),
+                    'journal_voucher_credit_amount'	=> ABS($selisih_shortover),
                     'account_id_default_status'		=> $account_id_default_status,
-                    'account_id_status'				=> 1,
+                    'account_id_status'				=> 0,
                 );
-                AcctJournalVoucherItem::create($data_debit);
+                AcctJournalVoucherItem::create($data_credit);
             }
 
             $msg = "Tambah Pelunasan Piutang Berhasil";
