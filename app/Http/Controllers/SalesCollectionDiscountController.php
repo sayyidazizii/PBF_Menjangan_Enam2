@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\AcctAccount;
+use App\Models\AcctJournalVoucher;
+use App\Models\AcctJournalVoucherItem;
 use App\Providers\RouteServiceProvider;
 use App\Models\CoreCustomer;
 use App\Models\CoreExpedition;
@@ -14,9 +17,14 @@ use App\Models\InvItemType;
 use App\Models\InvItemUnit;
 use App\Models\InvItemStock;
 use App\Models\PreferenceCompany;
+use App\Models\PreferenceTransactionModule;
+use App\Models\SalesCollection;
+use App\Models\SalesCollectionDiscount;
+use App\Models\SalesCollectionItem;
 use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceItem;
 use App\Models\SalesCollectionPiece;
+use App\Models\SalesCollectionTransfer;
 use App\Models\SalesDeliveryNote;
 use App\Models\SalesDeliveryNoteItem;
 use App\Models\SalesOrder;
@@ -73,12 +81,12 @@ class SalesCollectionDiscountController extends Controller
         Session::forget('salesinvoiceitem');
         Session::forget('salesinvoiceelements');
 
-        $salescolectionpiece = SalesCollectionPiece::select('sales_collection_piece.*','sales_invoice.sales_invoice_date')
-        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_piece.sales_invoice_id')
-        ->where('sales_collection_piece.data_state','=',0)
-        ->where('sales_collection_piece.claim_status', 1)
-        ->where('sales_collection_piece.claim_date', '>=', $start_date)
-        ->where('sales_collection_piece.claim_date', '<=', $end_date);
+        $salescolectionpiece = SalesCollectionDiscount::select('sales_collection_discount.*','sales_invoice.sales_invoice_date')
+        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_discount.sales_invoice_id')
+        ->where('sales_collection_discount.data_state','=',0)
+        ->where('sales_collection_discount.claim_status', 1)
+        ->where('sales_collection_discount.claim_date', '>=', $start_date)
+        ->where('sales_collection_discount.claim_date', '<=', $end_date);
         if($customer_id||$customer_id!=null||$customer_id!=''){
             $salescolectionpiece   = $salescolectionpiece->where('sales_collection_piece.customer_id', $customer_id);
         }
@@ -128,8 +136,8 @@ class SalesCollectionDiscountController extends Controller
 
         Session::forget('salescollectionelements');
         Session::forget('datasalescollectiontransfer');
-        
-        $corecustomer = SalesInvoice::select('sales_invoice.customer_id', 'core_customer.customer_name', 'core_customer.customer_address', DB::raw("SUM(sales_invoice.owing_amount) as total_owing_amount"))
+
+        $corecustomer = SalesInvoice::select('sales_invoice.customer_id', 'core_customer.customer_name', 'core_customer.customer_address', DB::raw("SUM(sales_invoice.owing_discount_amount) as total_owing_amount"))
         ->join('core_customer', 'core_customer.customer_id', 'sales_invoice.customer_id')
         ->where('sales_invoice.data_state', 0)
         ->where('core_customer.data_state', 0)
@@ -140,296 +148,380 @@ class SalesCollectionDiscountController extends Controller
         return view('content/SalesCollectionDiscount/searchCoreCustomer',compact('corecustomer'));
     }
 
-    public function ClaimSalesCollectionPiece($sales_collection_piece_id)
-    {
-        $salescolectionpiece = SalesCollectionPiece::select('sales_collection_piece.*','sales_invoice.sales_invoice_date')
-        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_piece.sales_invoice_id')
-        ->where('sales_collection_piece.sales_collection_piece_id',$sales_collection_piece_id)
-        ->where('sales_collection_piece.data_state','=',0)
-        ->where('claim_status', 0)
-        ->get();
 
-        return view('content/SalesCollection/FormAddSalesCollectionPiece',compact('salescolectionpiece'));
+    public function getPiece($sales_invoice_id){
+        $salescollectionpiece = SalesCollectionPiece::select('*')
+        ->where('sales_invoice_id', $sales_invoice_id)
+        ->where('data_state', 0)
+        ->get();  
+       // dd($salescollectionpiece);
+        return ($salescollectionpiece);
     }
 
+    public function addSalesCollectionDiscount($customer_id){
 
-    public function processClaimSalesCollectionPiece(Request $request){
-
-       SalesCollectionPiece::where('sales_collection_piece_id',$request->sales_collection_piece_id)
-        ->Update(['claim_status' => 1,'claim_date' =>  \Carbon\Carbon::now()]);
-    
-        
-        return redirect('/sales-collection-piece');
-    }
-
-
-
-    public function detailClaimSalesCollectionPiece($sales_collection_piece_id)
-    {
-        $salescolectionpiece = SalesCollectionPiece::select('sales_collection_piece.*','sales_invoice.sales_invoice_date')
-        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_piece.sales_invoice_id')
-        ->where('sales_collection_piece.sales_collection_piece_id',$sales_collection_piece_id)
-        ->where('sales_collection_piece.data_state','=',0)
-        ->get();
-
-        return view('content/SalesCollection/FormDetailSalesCollectionPiece',compact('salescolectionpiece'));
-    }
-
-    public function detailClaimSalesCollection($sales_invoice_id)
-    {
-        $salesinvoice = SalesInvoice::where('sales_invoice_id',$sales_invoice_id)
-        ->where('data_state','=',0)
-        ->first();
-        $salescolectionpiece = SalesCollectionPiece::select('sales_collection_piece.*','sales_invoice.sales_invoice_date')
-        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_piece.sales_invoice_id')
-        ->where('sales_collection_piece.sales_invoice_id',$sales_invoice_id)
-        ->where('sales_collection_piece.data_state','=',0)
-        ->where('sales_collection_piece.claim_status','=',0)
-        ->get();
-
-        return view('content/SalesCollection/FormdetailListPiece',compact('salescolectionpiece','salesinvoice'));
-    }
-
-    public function CancelClaimSalesCollectionPiece($sales_collection_piece_id)
-    {
-        
-        $salescolectionpiece = SalesCollectionPiece::select('sales_collection_piece.*','sales_invoice.sales_invoice_date')
-        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_piece.sales_invoice_id')
-        ->where('sales_collection_piece.sales_collection_piece_id',$sales_collection_piece_id)
-        ->where('sales_collection_piece.data_state','=',0)
-        ->get();
-
-        return view('content/SalesCollection/FormCancelSalesCollectionPiece',compact('salescolectionpiece'));
-    }
-    
-
-    public function processCancelClaimSalesCollectionPiece(Request $request){
-
-        SalesCollectionPiece::where('sales_collection_piece_id',$request->sales_collection_piece_id)
-         ->Update(['claim_status' => 0,'claim_date' => 0]);
-     
-         
-         return redirect('/sales-collection-piece');
-     }
-
-
-    public function processAddSalesCollectionPiece(Request $request){
-
-        $data = array(
-                'sales_invoice_id'	            => $request->sales_invoice_id,
-                'sales_invoice_no'	            => $request->sales_invoice_no,
-                'customer_id'	                => $request->customer_id,
-                'total_amount'	                => $request->total_amount,
-                'piece_amount'	                => $request->piece_amount,
-                'total_amount_after_piece'	    => $request->total_amount - $request->piece_amount,
-                'sales_collection_piece_type_id'=> $request->sales_collection_piece_type_id,
-                'promotion_no'	                => $request->promotion_no,
-                'memo_no'	                    => $request->memo_no,
-                'claim_status'	                => 0,
-                'created_id'                    => Auth::id(),
-        );
-
-
-        $invoice = SalesInvoice::findOrfail($request->sales_invoice_id);
-       // dd($invoice);
-       if ($request->piece_amount > $invoice->owing_amount){
-            $msg = 'Potongan Tidak Boleh lebih Besar';
-       }else{
-            $invoice->owing_amount =  $invoice->owing_amount - $request->piece_amount;
-            $invoice->save();
-        //dd($request->all());
-        if(SalesCollectionPiece::create($data)){
-            $msg = 'Tambah Potongan Berhasil';
-        }else{
-            $msg = 'Tambah Potongan Gagal';
-        }
-       }      
-        return redirect()->back()->with('msg',$msg);
-    }
-
-    public function processDeleteSalesCollectionPiece(Request $request){ 
-        
-        $item1 = SalesCollectionPiece::select('*')
-        ->where('sales_collection_piece_id', $request->sales_collection_piece_id)
-        ->first();
-
-        $invoice = SalesInvoice::findOrfail($item1->sales_invoice_id);
-        $invoice->owing_amount =  $invoice->owing_amount + $item1->piece_amount;
-        $invoice->save();
-
-        $item = SalesCollectionPiece::where('sales_collection_piece_id', $request->sales_collection_piece_id);
-
-        //dd($request->sales_delivery_order_item_stock_temporary_id);
-
-        if($item->delete()){
-            $msg = 'Hapus Stock Sales Delivery Order Berhasil';
-        }else{
-            $msg = 'Hapus Stock Sales Delivery Order Gagal';
-        }
-        return redirect()->back()->with('msg',$msg);
-    }
-
-    
-
-
-    public function addSalesInvoicePiece(Request $request)
-    {
-        $salesinvoiceowing = SalesInvoice::select('sales_invoice.sales_invoice_id', 'sales_invoice.customer_id', 'sales_invoice.owing_amount', 'sales_invoice.sales_invoice_date', 'sales_invoice.paid_amount', 'sales_invoice.sales_invoice_no', 'sales_invoice.subtotal_amount', 'sales_invoice.discount_percentage', 'sales_invoice.discount_amount', 'sales_invoice.total_amount')
-        ->where('sales_invoice.customer_id', $request->customer_id)
+        $salesinvoiceowing = SalesInvoice::select('sales_invoice.sales_invoice_id', 'sales_invoice.customer_id', 'sales_invoice.owing_amount', 'sales_invoice.sales_invoice_date', 'sales_invoice.paid_amount','sales_invoice.buyers_acknowledgment_no', 'sales_invoice.sales_invoice_no', 'sales_invoice.subtotal_amount', 'sales_invoice.discount_percentage', 'sales_invoice.discount_amount', 'sales_invoice.total_amount', 'sales_invoice.goods_received_note_no','sales_invoice.total_discount_amount', 'sales_invoice.paid_discount_amount','sales_invoice.owing_discount_amount')
+        ->where('sales_invoice.customer_id', $customer_id)
         ->where('sales_invoice.owing_amount', '>', 0)
         ->where('sales_invoice.data_state', 0)
-        ->get();
+        ->get(); 
 
-        return view('content/SalesInvoice/FormAddSalesInvoice',compact('salesdeliverynote', 'salesdeliverynoteitem', 'sales_delivery_note_id', 'coreexpedition'));
+        $customer = CoreCustomer::findOrfail($customer_id);
+
+        $acctaccount    = AcctAccount::select('account_id', DB::raw('CONCAT(account_code, " - ", account_name) AS full_name'))
+        ->where('acct_account.data_state', 0)
+        ->where('parent_account_status', 0)
+        ->pluck('full_name','account_id');
+
+        $select = array(
+            '1' => 'biasa',
+            '2' => 'promosi'
+        );
+
+        $salescollectionelements = Session::get('salescollectionelements');
+        $salescollectiontransfer = Session::get('datasalescollectiontransfer');
+        
+        return view('content.SalesCollectionDiscount.FormAddSalesCollectionDiscount',compact('select','customer_id', 'salesinvoiceowing', 'customer', 'acctaccount', 'salescollectionelements', 'salescollectiontransfer'));
     }
 
+    public function detailSalesCollection($collection_id){
 
+        $salescollection = SalesCollection::findOrFail($collection_id);
 
+        $salescollectionitem = SalesCollectionItem::select('sales_collection_item.*', 'sales_invoice.sales_invoice_date', 'sales_invoice.sales_invoice_no', 'sales_collection_item.shortover_amount AS shortover_value')
+        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_item.sales_invoice_id')
+        ->where('collection_id', $salescollection['collection_id'])
+        ->get();
 
+        $salescollectiontransfer = SalesCollectionTransfer::where('collection_id', $salescollection['collection_id'])
+        ->get();
 
-
-
-
-
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-    public function editSalesInvoice($sales_invoice_id)
-    {
-        $salesinvoice = SalesInvoice::findOrFail($sales_invoice_id);
-
-        $salesorder = SalesOrder::where('sales_order_id', $salesinvoice['sales_order_id'])
-        ->where('data_state', 0)
+        $customer = CoreCustomer::where('data_state', 0)
+        ->where('customer_id', $salescollection['customer_id'])
         ->first();
         
-        $salesinvoiceitem = SalesInvoiceItem::select('sales_invoice_item.*')
-        ->where('data_state', 0)
-        ->where('sales_invoice_id', $sales_invoice_id)
-        ->get();
-
-        $salesdeliverynote = SalesDeliveryNote::select('sales_delivery_note.*','inv_warehouse.*')
-        ->join('inv_warehouse', 'inv_warehouse.warehouse_id', 'sales_delivery_note.warehouse_id')
-        ->where('sales_delivery_note.data_state', 0)
-        ->where('sales_delivery_note.sales_delivery_note_id', $salesinvoice['sales_delivery_note_id'])
-        ->first();
-
-        return view('content/SalesInvoice/FormEditSalesInvoice',compact('salesinvoice', 'salesinvoiceitem', 'salesdeliverynote', 'salesorder', 'sales_invoice_id'));
+        return view('content/SalesCollection/FormDetailSalesCollection',compact('collection_id', 'salescollection', 'salescollectionitem', 'salescollectiontransfer',  'customer'));
     }
 
-    public function detailSalesInvoice($sales_invoice_id)
-    {
-        $salesinvoice = SalesInvoice::findOrFail($sales_invoice_id);
+    public function deleteSalesCollection($collection_id){
 
-        $salesorder = SalesOrder::where('sales_order_id', $salesinvoice['sales_order_id'])
-        ->where('data_state', 0)
+        $salescollection = SalesCollection::findOrFail($collection_id);
+
+        $salescollectionitem = SalesCollectionItem::select('sales_collection_item.*', 'sales_invoice.sales_invoice_date', 'sales_invoice.sales_invoice_no', 'sales_collection_item.shortover_amount AS shortover_value')
+        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_item.sales_invoice_id')
+        ->where('collection_id', $salescollection['collection_id'])
+        ->get();
+
+        $salescollectiontransfer = SalesCollectionTransfer::where('collection_id', $salescollection['collection_id'])
+        ->get();
+
+        $customer = CoreCustomer::where('data_state', 0)
+        ->where('customer_id', $salescollection['customer_id'])
         ->first();
         
-        $salesinvoiceitem = SalesInvoiceItem::select('sales_invoice_item.*')
-        ->where('data_state', 0)
-        ->where('sales_invoice_id', $sales_invoice_id)
-        ->get();
-
-        $salesdeliverynote = SalesDeliveryNote::select('sales_delivery_note.*','inv_warehouse.*')
-        ->join('inv_warehouse', 'inv_warehouse.warehouse_id', 'sales_delivery_note.warehouse_id')
-        ->where('sales_delivery_note.data_state', 0)
-        ->where('sales_delivery_note.sales_delivery_note_id', $salesinvoice['sales_delivery_note_id'])
-        ->first();
-
-        return view('content/SalesInvoice/FormDetailSalesInvoice',compact('salesinvoice', 'salesinvoiceitem', 'salesdeliverynote', 'salesorder', 'sales_invoice_id'));
+        return view('content/SalesCollection/FormDeleteSalesCollection',compact('collection_id', 'salescollection', 'salescollectionitem', 'salescollectiontransfer',  'customer'));
     }
 
-    public function voidSalesInvoice($sales_invoice_id)
+    public function elements_add(Request $request){
+        $salescollectionelements= Session::get('salescollectionelements');
+        if(!$salescollectionelements || $salescollectionelements == ''){
+            $salescollectionelements['collection_date']                = '';
+            $salescollectionelements['collection_remark']              = '';
+            $salescollectionelements['cash_account_id']             = '';
+            $salescollectionelements['collection_total_cash_amount']   = '';
+        }
+        $salescollectionelements[$request->name] = $request->value;
+        Session::put('salescollectionelements', $salescollectionelements);
+    }
+    
+    public function processAddTransferArray(Request $request)
     {
-        $salesinvoice = SalesInvoice::findOrFail($sales_invoice_id);
+        $salescollectiontransfer = array(
+            'transfer_account_id'              => $request->transfer_account_id,
+            'collection_transfer_bank_name'    => $request->collection_transfer_bank_name,
+            'collection_transfer_account_name' => $request->collection_transfer_account_name,
+            'collection_transfer_account_no'   => $request->collection_transfer_account_no,
+            'collection_transfer_amount'       => $request->collection_transfer_amount,
+        );
 
-        $salesorder = SalesOrder::where('sales_order_id', $salesinvoice['sales_order_id'])
-        ->where('data_state', 0)
-        ->first();
-        
-        $salesinvoiceitem = SalesInvoiceItem::select('sales_invoice_item.*')
-        ->where('data_state', 0)
-        ->where('sales_invoice_id', $sales_invoice_id)
-        ->get();
-
-        $salesdeliverynote = SalesDeliveryNote::select('sales_delivery_note.*')
-        ->where('data_state', 0)
-        ->where('sales_delivery_note_id', $salesinvoice['sales_delivery_note_id'])
-        ->first();
-
-        return view('content/SalesInvoice/FormVoidSalesInvoice',compact('salesinvoice', 'salesinvoiceitem', 'salesdeliverynote', 'salesorder', 'sales_invoice_id'));
-    }
-
-    public function closedSalesInvoice($sales_invoice_id)
-    {
-        $salesinvoice = SalesInvoice::findOrFail($sales_invoice_id);
-
-        $salesorder = SalesOrder::where('sales_order_id', $salesinvoice['sales_order_id'])
-        ->where('data_state', 0)
-        ->first();
-        
-        $salesinvoiceitem = SalesInvoiceItem::select('sales_invoice_item.*')
-        ->where('data_state', 0)
-        ->where('sales_invoice_id', $sales_invoice_id)
-        ->get();
-
-        $salesdeliverynote = SalesDeliveryNote::select('sales_delivery_note.*')
-        ->where('data_state', 0)
-        ->where('sales_delivery_note_id', $salesinvoice['sales_delivery_note_id'])
-        ->first();
-
-        return view('content/SalesInvoice/FormClosedSalesInvoice',compact('salesinvoice', 'salesinvoiceitem', 'salesdeliverynote', 'salesorder', 'sales_invoice_id'));
-    }
-
-    public function  processClosedSalesInvoice(Request $request){
-        $salesinvoice = SalesInvoice::findOrFail($request->sales_invoice_id);
-        $salesinvoice->sales_invoice_status = 1;
-
-        if($salesinvoice->save()){
-            $msg = 'Closing Sales Invoice Berhasil';
-            return redirect('/sales-invoice')->with('msg',$msg);
+        $lastsalescollectiontransfer = Session::get('datasalescollectiontransfer');
+        if($lastsalescollectiontransfer !== null){
+            array_push($lastsalescollectiontransfer, $salescollectiontransfer);
+            Session::put('datasalescollectiontransfer', $lastsalescollectiontransfer);
         }else{
-            $msg = 'Closing Sales Invoice Gagal';
-            return redirect('/sales-invoice/closed/'.$request->sales_invoice_id)->with('msg',$msg);
+            $lastsalescollectiontransfer = [];
+            array_push($lastsalescollectiontransfer, $salescollectiontransfer);
+            Session::push('datasalescollectiontransfer', $salescollectiontransfer);
         }
     }
-
-
-
-    public function processVoidSalesInvoice(Request $request){
+    
+    public function processAddSalesCollection(Request $request)
+    {
+        $allrequest = $request->all();
+        $datasalescollectiontransfer = Session::get('datasalescollectiontransfer');
         $fields = $request->validate([
-            'sales_invoice_id'   => 'required',
+            'collection_date'                   => 'required',
         ]);
 
-        print_r($fields['sales_invoice_id']);
-        
-        $salesinvoice = SalesInvoice::findOrFail($request->sales_invoice_id);
-        $salesinvoice->voided_id     = Auth::id();
-        $salesinvoice->voided_on     = date('Y-m-d');
-        $salesinvoice->data_state    = 1;
+        $paymenttype = $request->payment_type;
 
-        if($salesinvoice->save()){
-            $salesinvoiceitem = SalesInvoiceItem::where('sales_invoice_id', $request->sales_invoice_id)->get();
-
-            $salesdeliverynote = SalesDeliveryNote::findOrFail($salesinvoice['sales_delivery_note_id']);
-            $salesdeliverynote->sales_invoice_status = 0;
-            $salesdeliverynote->save();
-
-            foreach($salesinvoiceitem as $val){
-                $dataitem = SalesInvoiceItem::where('sales_invoice_item_id', $val['sales_invoice_item_id'])->first();
-                $dataitem->data_state = 1;
-                $dataitem->save();
-            }
-
-            $msg = 'Void Sales Invoice Berhasil';
-            return redirect('/sales-invoice')->with('msg',$msg);
+        $payment_account_id = 5 ;
+        if($paymenttype == 0){
+            $payment_account_id = 5 ;
         }else{
-            $msg = 'Void Sales Invoice Gagal';
-            return redirect('/sales-invoice/void/'.$fields['sales_invoice_id'])->with('msg',$msg);
+            $payment_account_id = 8 ;
         }
-    }
+//----------Type Transfer
+        if(is_array($datasalescollectiontransfer) && !empty($datasalescollectiontransfer)){
+            foreach ($datasalescollectiontransfer as $keyTransfer => $valTransfer) {
+                $transfer_account_id = $valTransfer['transfer_account_id'];
+                $data = array (
+                    'collection_date'                   => $fields['collection_date'],
+                    'cash_account_id'				    => 8,
+                    'customer_id'						=> $request->customer_id,
+                    'collection_remark'					=> $request->collection_remark,
+                    'collection_amount'					=> $request->collection_amount,
+                    'collection_allocated'			    => $request->allocation_total,
+                    'collection_shortover'			    => $request->shortover_total,
+                    'collection_total_amount'		    => $request->collection_amount,
+                    'collection_total_cash_amount'	    => $request->collection_total_cash_amount,
+                    'collection_total_transfer_amount'  => $request->collection_total_transfer_amount,
+                    'data_state'						=> 0,
+                    'created_on'						=> date("Y-m-d H:i:s"),
+                    'created_id'						=> Auth::id(),
+                    'branch_id'                         => Auth::user()->branch_id,
+                );
+            }
+        }else{
+//----------Type Tunai            
+            $data = array (
+                'collection_date'                   => $fields['collection_date'],
+                'cash_account_id'				    => $payment_account_id,
+                'customer_id'						=> $request->customer_id,
+                'collection_remark'					=> $request->collection_remark,
+                'collection_amount'					=> $request->collection_amount,
+                'collection_allocated'			    => $request->allocation_total,
+                'collection_shortover'			    => $request->shortover_total,
+                'collection_total_amount'		    => $request->collection_amount,
+                'collection_total_cash_amount'	    => $request->collection_total_cash_amount,
+                'collection_total_transfer_amount'  => $request->collection_total_transfer_amount,
+                'data_state'						=> 0,
+                'created_on'						=> date("Y-m-d H:i:s"),
+                'created_id'						=> Auth::id(),
+                'branch_id'                         => Auth::user()->branch_id,
+            );
+        }
+
+        $collection_total_amount = $data['collection_allocated'] + $data['collection_shortover'];
+        $selisih_shortover = $data['collection_total_amount'] - $collection_total_amount;
+        $transaction_module_code 	= "SC";
+
+        $transactionmodule 		    = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
+        ->first();
+        $transaction_module_id 		= $transactionmodule['transaction_module_id'];
+        $preferencecompany 			= PreferenceCompany::first();
+        
+        if(SalesCollection::create($data)){
+            $SalesCollection_last 		= SalesCollection::select('collection_id', 'collection_no')
+            ->where('created_id', $data['created_id'])
+            ->orderBy('collection_id', 'DESC')
+            ->first();
+            
+//----------Header Journal Voucher
+            $journal_voucher_period 	= date("Ym", strtotime($data['collection_date']));
+            $data_journal = array(
+                'branch_id'						=> $data['branch_id'],
+                'journal_voucher_period' 		=> $journal_voucher_period,
+                'journal_voucher_date'			=> $data['collection_date'],
+                'journal_voucher_title'			=> 'Pelunasan Piutang '.$SalesCollection_last['collection_no'],
+                'journal_voucher_no'			=> $SalesCollection_last['collection_no'],
+                'journal_voucher_description'	=> $data['collection_remark'],
+                'transaction_module_id'			=> $transaction_module_id,
+                'transaction_module_code'		=> $transaction_module_code,
+                'transaction_journal_id' 		=> $SalesCollection_last['collection_id'],
+                'transaction_journal_no' 		=> $SalesCollection_last['collection_no'],
+                'created_id' 					=> $data['created_id'],
+                'created_on' 					=> $data['created_on']
+            );
+            AcctJournalVoucher::create($data_journal);		
+
+            $journalvoucher = AcctJournalVoucher::where('created_id', $data['created_id'])
+            ->orderBy('journal_voucher_id', 'DESC')
+            ->first();
+
+            $journal_voucher_id 	= $journalvoucher['journal_voucher_id'];
+
+            $collection = SalesCollection::where('created_id', $data['created_id'])
+            ->orderBy('collection_id', 'DESC')
+            ->first();
+
+            $collection_id = $collection['collection_id'];
+
+            for($i = 1; $i < $request->item_total; $i++){
+                $data_collectionitem = array(
+                    'collection_id'		 		=> $collection_id,
+                    'sales_invoice_id' 		    => $allrequest[$i.'_sales_invoice_id'],
+                    'sales_invoice_no' 		    => $allrequest[$i.'_sales_invoice_no'],
+                    'sales_invoice_date' 	    => $allrequest[$i.'_sales_invoice_date'],
+                    'sales_invoice_amount'	    => $allrequest[$i.'_sales_invoice_amount'],
+                    'total_amount' 				=> $allrequest[$i.'_total_amount'],
+                    'paid_amount' 				=> $allrequest[$i.'_paid_amount'],
+                    'owing_amount' 				=> $allrequest[$i.'_owing_amount'],
+                    'allocation_amount' 		=> $allrequest[$i.'_allocation'],
+                    'shortover_amount'	 		=> $allrequest[$i.'_shortover'],
+                    'last_balance' 				=> $allrequest[$i.'_last_balance']
+                );
+
+                if($data_collectionitem['allocation_amount'] > 0){
+                    if(SalesCollectionItem::create($data_collectionitem)){
+
+                        $salesinvoice = SalesInvoice::where('data_state', 0)
+                        ->where('sales_invoice_id', $data_collectionitem['sales_invoice_id'])
+                        ->first();
+
+                        $salesinvoice->paid_amount       = $salesinvoice['paid_amount'] + $data_collectionitem['allocation_amount'] + $data_collectionitem['shortover_amount'];
+                        $salesinvoice->owing_amount      = $data_collectionitem['last_balance'];
+                        $salesinvoice->shortover_amount  = $salesinvoice['shortover_amount'] + $data_collectionitem['shortover_amount'];
+                        $salesinvoice->save();
+
+                        $msg = "Tambah Pelunasan Piutang Berhasil";
+                        continue;
+                    }else{
+                        $msg = "Tambah Pelunasan Piutang Gagal";
+                        return redirect('/sales-collection/add/'.$data['customer_id'])->with('msg',$msg);
+                    }
+                }
+                
+            }
+//----------Kas
+            if($data['collection_total_cash_amount'] != '' || $data['collection_total_cash_amount'] != 0){
+
+                $account = AcctAccount::where('account_id', $data['cash_account_id'])
+                ->where('data_state', 0)
+                ->first();
+
+                $account_id_default_status = $account['account_default_status'];
+
+                $data_debet = array (
+                    'journal_voucher_id'			=> $journal_voucher_id,
+                    'account_id'					=> $data['cash_account_id'],
+                    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                    'journal_voucher_amount'		=> ABS($data['collection_total_cash_amount']),
+                    'journal_voucher_debit_amount'	=> ABS($data['collection_total_cash_amount']),
+                    'account_id_default_status'		=> $account_id_default_status,
+                    'account_id_status'				=> 1,
+                );
+                AcctJournalVoucherItem::create($data_debet);
+            }
+//----------Bank
+            if(is_array($datasalescollectiontransfer) && !empty($datasalescollectiontransfer)){
+                foreach ($datasalescollectiontransfer as $keyTransfer => $valTransfer) {
+                    $transfer_account_id = $valTransfer['transfer_account_id'];
+                    $datatransfer = array(
+                        'collection_id'							=> $collection_id,
+                        'account_id' 							=> $transfer_account_id,
+                        'collection_transfer_bank_name'			=> $valTransfer['collection_transfer_bank_name'],
+                        'collection_transfer_amount'			=> $valTransfer['collection_transfer_amount'],
+                        'collection_transfer_account_name'		=> $valTransfer['collection_transfer_account_name'],
+                        'collection_transfer_account_no'		=> $valTransfer['collection_transfer_account_no'],
+                    );
+                    if(SalesCollectionTransfer::create($datatransfer)){
+                        $account = AcctAccount::where('account_id', $transfer_account_id)
+                        ->where('data_state', 0)
+                        ->first();
+        
+                        $account_id_default_status = $account['account_default_status'];
+                        $data_debet = array (
+                            'journal_voucher_id'			=> $journal_voucher_id,
+                            'account_id'					=> $transfer_account_id,
+                            'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                            'journal_voucher_amount'		=> ABS($datatransfer['collection_transfer_amount']),
+                            'journal_voucher_debit_amount'	=> ABS($datatransfer['collection_transfer_amount']),
+                            'account_id_default_status'		=> $account_id_default_status,
+                            'account_id_status'				=> 1,
+                        );
+                        AcctJournalVoucherItem::create($data_debet);	
+                    }
+                }
+            }
+//jika check Piutang Retur
+        $accountReturn 		= AcctAccount::where('account_id', 48)
+        ->where('data_state', 0)
+        ->first();
+        $account_id_default_status_return 		= $accountReturn['account_default_status'];
+
+        $cekReturn = $request->piutang;
+        if($cekReturn == 1){
+            $data_credit = array (
+                'journal_voucher_id'			=> $journal_voucher_id,
+                'account_id'					=> 48,
+                'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                'journal_voucher_amount'		=> ABS($request->piutang_amount),
+                'journal_voucher_credit_amount'	=> ABS($request->piutang_amount),
+                'account_id_default_status'		=> $account_id_default_status_return,
+                'account_id_status'				=> 0,
+            );
+            AcctJournalVoucherItem::create($data_credit);
+        }
+//jika check Piutang Promosi
+        $accountReturn 		= AcctAccount::where('account_id', 50)
+        ->where('data_state', 0)
+        ->first();
+        $account_id_default_status_promosi 		= $accountReturn['account_default_status'];
+
+        $cekPromosi = $request->promosi;
+        if($cekPromosi == 1){
+            $data_credit = array (
+                'journal_voucher_id'			=> $journal_voucher_id,
+                'account_id'					=> 50,
+                'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                'journal_voucher_amount'		=> ABS($request->promotion_amount),
+                'journal_voucher_credit_amount'	=> ABS($request->promotion_amount),
+                'account_id_default_status'		=> $account_id_default_status_promosi,
+                'account_id_status'				=> 0,
+            );
+            AcctJournalVoucherItem::create($data_credit);
+        }
+//jika check Adm Bank
+        $accountReturn 		= AcctAccount::where('account_id', 528)
+        ->where('data_state', 0)
+        ->first();
+        $account_id_default_status_adm_cost 		= $accountReturn['account_default_status'];
+
+        $cekAdmCost = $request->adm_cost;
+        if($cekAdmCost == 1){
+            $data_credit = array (
+                'journal_voucher_id'			=> $journal_voucher_id,
+                'account_id'					=> 528,
+                'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                'journal_voucher_amount'		=> ABS($request->adm_cost_amount),
+                'journal_voucher_credit_amount'	=> ABS($request->adm_cost_amount),
+                'account_id_default_status'		=> $account_id_default_status_adm_cost,
+                'account_id_status'				=> 0,
+            );
+            AcctJournalVoucherItem::create($data_credit);
+        }
+//----------Piutang Piutang Non Anggota
+            $account = AcctAccount::where('account_id', 42)
+                ->where('data_state', 0)
+                ->first();
+                $account_id_default_status = $account['account_default_status'];
+                $data_credit = array (
+                    'journal_voucher_id'			=> $journal_voucher_id,
+                    'account_id'					=> 42,
+                    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                    'journal_voucher_amount'		=> ABS($selisih_shortover),
+                    'journal_voucher_credit_amount'	=> ABS($selisih_shortover),
+                    'account_id_default_status'		=> $account_id_default_status,
+                    'account_id_status'				=> 0,
+                );
+                AcctJournalVoucherItem::create($data_credit);
+
+//----------Piutang Piutang Non Anggota (sisa piutang jika dibayar > 1 kali)
+
+            }
+        }
+
 
 
     public function getItemStock($sales_delivery_note_item_id){
@@ -528,425 +620,5 @@ class SalesCollectionDiscountController extends Controller
         return $invitem['item_name'];
     }
 
-    public function changeSalesDeliveryNote(Request $request){
-        $sales_delivery_note_id = $request->sales_delivery_note_id;
-        
-        $data = new stdClass;
-
-        $salesdeliverynote = SalesDeliveryNote::select('sales_delivery_order.sales_order_id', 'sales_delivery_note.*')
-        ->join('sales_delivery_order', 'sales_delivery_order.sales_delivery_order_id', 'sales_delivery_note.sales_delivery_order_id')
-        ->where('sales_delivery_note_id', $sales_delivery_note_id)
-        ->where('sales_delivery_note.data_state', 0)
-        ->first();
-
-        $salesdeliverynoteitem = SalesDeliveryNoteItem::where('sales_delivery_note_id', $salesdeliverynote['sales_delivery_note_id'])
-        ->where('sales_delivery_note_item.data_state', 0)
-        ->first();
-
-        $salesorder = SalesOrder::where('sales_order_id', $salesdeliverynote['sales_order_id'])
-        ->first();
-
-        $customer = CoreCustomer::where('customer_id', $salesorder['customer_id'])
-        ->where('data_state', 0)
-        ->first();
-
-        $expedition = CoreExpedition::where('expedition_id', $salesdeliverynote['expedition_id'])
-        ->where('data_state', 0)
-        ->first();
-
-        $data->salesdeliverynote        = $salesdeliverynote;
-        $data->salesdeliverynoteitem    = $salesdeliverynoteitem;
-        $data->salesorder               = $salesorder;
-        $data->customer                 = $customer;
-        $data->expedition               = $expedition;
-
-        return response()->json(json_encode($data));
-    }
-
-    
-	public function set_log($user_id, $username, $id, $class, $pk, $remark){
-
-		date_default_timezone_set("Asia/Jakarta");
-
-		$log = array(
-			'user_id'		=>	$user_id,
-			'username'		=>	$username,
-			'id_previllage'	=> 	$id,
-			'class_name'	=>	$class,
-			'pk'			=>	$pk,
-			'remark'		=> 	$remark,
-			'log_stat'		=>	'1',
-			'log_time'		=>	date("Y-m-d G:i:s")
-		);
-		return SystemLogUser::create($log);
-	}
-    
-    public function processPrintingSalesInvoice($sales_invoice_id){
-        $preference_company 		= PreferenceCompany::first();
-
-        $salesinvoice				= SalesInvoice::select('sales_invoice.*', 'sales_order.*', 'sales_delivery_note.*', 'core_customer.*')
-        ->join('sales_order', 'sales_order.sales_order_id', 'sales_invoice.sales_order_id')
-        ->join('sales_delivery_note', 'sales_delivery_note.sales_delivery_note_id', 'sales_invoice.sales_delivery_note_id')
-        ->join('core_customer', 'core_customer.customer_id', 'sales_invoice.customer_id')
-        ->where('sales_invoice.sales_invoice_id', $sales_invoice_id)
-        ->first();
-        
-        $salesinvoiceitem			= SalesInvoiceItem::where('sales_invoice_item.sales_invoice_id', $sales_invoice_id)
-        ->get();
-
-        $customer_tax_no 			= $salesinvoice['customer_tax_no'];
-        $ppn_percentage 			= $preference_company['ppn'];
-
-        $this->set_log(Auth::id(), Auth::user()->name, '2141', 'SalesInvoice.printSalesInvoice', Auth::user()->name, 'Print Sales Invoice');
-
-
-        // create new PDF document
-        $pdf = new TCPDF('P', PDF_UNIT, 'A4', true, 'UTF-8', false);
-
-        $pdf::SetPrintHeader(false);
-        $pdf::SetPrintFooter(false);
-
-        $pdf::SetMargins(6, 6, 6, 6); // put space of 10 on top
-
-        // set image scale factor
-        $pdf::setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-        // set some language-dependent strings (optional)
-        if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-            require_once(dirname(__FILE__).'/lang/eng.php');
-            $pdf::setLanguageArray($l);
-        }
-
-        // ---------------------------------------------------------
-
-        // set font
-        $pdf::SetFont('helvetica', 'B', 20);
-
-        // add a page
-        $pdf::AddPage();
-
-        /*$pdf::Write(0, 'Example of HTML tables', '', 0, 'L', true, 0, false, false, 0);*/
-
-        $pdf::SetFont('helvetica', '', 10);
-
-        // -----------------------------------------------------------------------------
-
-        /*print_r($preference_company);*/
-        $tbla = "";
-            if(trim($customer_tax_no) != ''){
-                $tbla = "
-                    <table id=\"items\" width=\"100%\" cellspacing=\"1\" cellpadding=\"0\" >
-                        <tr>
-                            <td style=\"text-align:center;width:25%\">
-                                <table id=\"items\" width=\"100%\" cellpadding=\"1\" >
-                                    <tr>
-                                        <td colspan=\"2\" rowspan=\"2\">
-                                            <div style=\"font-size:25px\";><b>
-                                                I N V O I C E
-                                            </b></div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-
-                            <td style=\"text-align:center;width:35%\">
-                                <table id=\"items\" width=\"100%\" cellpadding=\"1\">
-                                    <tr>
-                                        <td style=\"text-align:left;width:30%\">
-                                            <div style=\"font-size:13.5px\">
-                                                NO. INV
-                                            </div>
-                                        </td>
-                                        <td style=\"text-align:left;width:70%\">
-                                            <div style=\"font-size:13.5px\">
-                                                : ".$salesinvoice['sales_invoice_no']."
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style=\"text-align:left;width:30%\">
-                                            <div style=\"font-size:13.5px\">
-                                                TGL
-                                            </div>
-                                        </td>
-                                        <td style=\"text-align:left;width:70%\">
-                                            <div style=\"font-size:13.5px\">
-                                                : ".date('d M Y',strtotime($salesinvoice['sales_invoice_date']))."
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td style=\"text-align:left; height:20%;\">".$preference_company['company_name']."
-                                <br>".$preference_company['company_address']."<br>Telp./Fax :
-                                ".$preference_company['company_home_phone1']."<br>N.P.W.P :
-                                ".$preference_company['company_tax_number']."
-                            </td>
-                        </tr>
-                    </table>
-                    <br><br>
-                ";
-            } else {
-                $tbla = "
-                    <table id=\"items\" width=\"100%\" cellspacing=\"1\" cellpadding=\"0\" border=\"0\">
-                        <tr>
-                            <td style=\"text-align:center;width:25%\">
-                                <table id=\"items\" width=\"100%\" cellpadding=\"1\" >
-                                    <tr>
-                                        <td colspan=\"2\" rowspan=\"2\">
-                                            <div style=\"font-size:25px\";><b>
-                                                I N V O I C E
-                                            </b></div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td style=\"text-align:center;width:35%\">
-                                <table id=\"items\" width=\"100%\" cellpadding=\"1\" border=\"0\">
-                                    <tr>
-                                        <td style=\"text-align:left;width:30%\">
-                                            <div style=\"font-size:13.5px\">
-                                                NO. INV
-                                            </div>
-                                        </td>
-                                        <td style=\"text-align:left;width:70%\">
-                                            <div style=\"font-size:13.5px\">
-                                                : ".$salesinvoice['sales_invoice_no']."
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style=\"text-align:left;width:30%\">
-                                            <div style=\"font-size:13.5px\">
-                                                TGL
-                                            </div>
-                                        </td>
-                                        <td style=\"text-align:left;width:70%\">
-                                            <div style=\"font-size:13.5px\">
-                                                : ".date('d M Y',strtotime($salesinvoice['sales_invoice_date']))."
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td style=\"text-align:left;width:40%; height:20%;\">
-                                
-                            </td>
-                        </tr>
-                    </table>
-                    <br><br>
-                ";
-            }
-
-            // $pdf->writeHTML($tbl, true, false, false, false, '');
-        
-
-        $tbl = "
-        <table cellspacing=\"0\" cellspacing=\"1\" cellpadding=\"0\" border=\"0\">
-            <tr>
-                <td style=\"text-align:left;width:10%\">Pelanggan </td>
-                <td style=\"text-align:left;width:5%\"> : </td>
-                <td style=\"text-align:left;width:45%\">".$salesinvoice['customer_name']."</td>
-                <td style=\"text-align:left;width:5%\"></td>
-                <td style=\"text-align:left;width:12%\">No. SJ</td>
-                <td style=\"text-align:left;width:2%\"> : </td>
-                <td style=\"text-align:left;width:20%\"><div style=\"font-size:13.5px\">".$salesinvoice['sales_delivery_note_no']."</div></td>
-            </tr>
-            <tr>
-                <td style=\"text-align:left;width:10%\">Alamat</td>
-                <td style=\"text-align:left;width:5%\"> : </td>
-                <td style=\"text-align:left;width:45%\">".$salesinvoice['customer_address']."</td>
-                <td style=\"text-align:left;width:5%\"></td>
-                <td style=\"text-align:left;width:12%\">TGL. SJ</td>
-                <td style=\"text-align:left;width:2%\"> : </td>
-                <td style=\"text-align:left;width:20%\"><div style=\"font-size:13.5px\">".date('d M Y', strtotime($salesinvoice['sales_delivery_note_date']))."</div></td>
-            </tr>
-            <tr>
-                <td style=\"text-align:left;width:10%\"></td>
-                <td style=\"text-align:left;width:5%\"></td>
-                <td style=\"text-align:left;width:45%\"></td>
-                <td style=\"text-align:left;width:5%\"></td>
-                <td style=\"text-align:left;width:12%\">Jatuh Tempo</td>
-                <td style=\"text-align:left;width:2%\"> : </td>
-                <td style=\"text-align:left;width:20%\"><div style=\"font-size:13.5px\">".date('d M Y', strtotime($salesinvoice['sales_invoice_due_date']))."</div></td>
-            </tr>
-            <tr>
-                <td style=\"text-align:left;width:10%\"></td>
-                <td style=\"text-align:left;width:5%\"></td>
-                <td style=\"text-align:left;width:45%\"></td>
-                <td style=\"text-align:left;width:5%\"></td>
-                <td style=\"text-align:left;width:12%\"></td>
-                <td style=\"text-align:left;width:2%\"></td>
-                <td style=\"text-align:left;width:20%\"><div style=\"font-size:13.5px\"></div></td>
-            </tr>
-        </table>";
-
-        $pdf::writeHTML($tbla.$tbl, true, false, false, false, '');
-
-
-        $tbl1 = "
-        <table id=\"items\" width=\"100%\" cellspacing=\"1\" cellpadding=\"0\" border=\"0\">			        
-            <tr>
-                <th style=\"text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;\" width=\"5%\"><div style=\"font-size:14px\">No</div></th>
-                <th style=\"text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" width=\"20%\"><div style=\"font-size:14px\">Item Name</div></th> 
-                <th style=\"text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" width=\"15%\"><div style=\"font-size:14px\">Unit</div></th>
-                <th style=\"text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" width=\"9%\"><div style=\"font-size:14px\">Curr</div></th>
-                <th style=\"text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" width=\"10%\"><div style=\"font-size:14px\">Qty</div></th> 
-                <th style=\"text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" width=\"25%\"><div style=\"font-size:14px\">Harga</div></th>
-                <th style=\"text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" width=\"16%\"><div style=\"font-size:14px\">Total</div></th>
-            </tr>
-            ";
-        
-        
-            $no =1;
-            $tbl2 = "";
-            $total_price = 0;
-                foreach($salesinvoiceitem as $key => $val){
-                    if($val['quantity'] != 0){
-                        $cur = 'IDR';
-                        $rate = 1;
-                        
-                            $tbl2 .= "
-                            <tr>
-                                <td style=\"text-align:center;border-left: 1px solid black;\"><div style=\"font-size:13.5px\">".$no."</div></td>
-                                <td style=\"text-align:left;border-left: 1px solid black;\"><div style=\"font-size:13.5px\">&nbsp;".$this->getItemName($val['item_id'])."</div></td>
-                                <td style=\"text-align:left;border-left: 1px solid black;\"><div style=\"font-size:13.5px\">&nbsp;".$this->getItemUnitName($val['item_unit_id'])."</div></td>
-                                <td style=\"text-align:left;border-left: 1px solid black;\"><div style=\"font-size:13.5px\">&nbsp;".$cur." </div></td>
-                                <td style=\"text-align:right;border-left: 1px solid black;\"><div style=\"font-size:13.5px\">".$val['quantity']." &nbsp;</div></td>
-                                <td style=\"text-align:right;border-left: 1px solid black;\"><div style=\"font-size:13.5px\">".number_format($val['item_unit_price'], 2)." &nbsp;</div></td>
-                                <td style=\"text-align:right;border-left: 1px solid black;border-right: 1px solid black;\"><div style=\"font-size:13.5px\">".number_format(($val['quantity']*$val['item_unit_price']), 2)." &nbsp;</div></td>
-                            </tr>
-                            ";		
-                        $total_price += ($val['quantity']*$val['item_unit_price']);
-                        $dpp = $salesinvoice['subtotal'];							
-                        if($customer_tax_no != ''){
-                            // $ppn = $dpp * 0.1;
-                            if($salesinvoice['customer_kawasan_berikat'] == 1){
-                                $ppn = $salesinvoice['ppn_amount'];
-                                $total = $salesinvoice['total_amount'] + $ppn;
-                            } else if($salesinvoice['customer_kawasan_berikat'] == 0) {
-                                
-                                $total = $salesinvoice['total_amount'];
-                                $ppn = $total - $dpp;
-                            }
-                        } else{
-                            $ppn = 0;
-                            $total = $salesinvoice['total_amount'];
-                        }
-
-                        $no++;	
-                    }
-                }		
-                
-        $tbl3 = "
-            <tr>
-                <td style=\"text-align:center;border-left: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;border-right: 1px solid black;\"></td>
-
-            </tr>
-            <tr>
-                <td style=\"text-align:center;border-bottom: 1px solid black;border-left: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;border-bottom: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;border-bottom: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;border-bottom: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;border-bottom: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;border-bottom: 1px solid black;\"></td>
-                <td style=\"text-align:center;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\"></td>
-            </tr>";
-
-        $tbl4 ="";
-            if($customer_tax_no != ''){
-                $tbl4 = "
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"5\">Ket : ".$salesinvoice['sales_invoice_remark']."</td>
-                        <td style=\"text-align:right;\" ><div style=\"font-size:13.5px\">Total &nbsp;</div></td>
-                        <td style=\"text-align:right;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" ><div style=\"font-size:13.5px\">".number_format($total_price, 2)." &nbsp;</div></td>
-                    </tr>
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"4\"></td>
-                        <td style=\"text-align:right;\" colspan=\"2\"></td>
-                        <td style=\"text-align:right;\" ></td>
-                    </tr>
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"5\" ></td>
-                        <td style=\"text-align:right;\" ></td>
-                        <td style=\"text-align:right;\" ></td>
-                    </tr>
-                                
-                ";
-            } else {
-                $tbl4 = "
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"7\">Ket : ".$salesinvoice['sales_invoice_remark']."
-                        </td>
-
-                        <td style=\"text-align:right;\" ><div style=\"font-size:13.5px\">Total &nbsp;</div></td>
-                        <td style=\"text-align:right;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;\" ><div style=\"font-size:13.5px\">".number_format($total, 2)." &nbsp;</div></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                    </tr>
-                            
-                ";
-            }
-
-            $tbl5 = "";
-                
-            if($salesinvoice['section_id'] == 1){
-                $tbl5 = "
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"5\"><div style=\"font-size:13.5px\">".$preference_company['company_bank_name_nonppn1']."<br>A/C:".$preference_company['company_bank_account_no_nonppn1'].", A/N ".$preference_company['company_bank_account_name_nonppn']."</div>
-                        </td>
-                        <td style=\"text-align:center;\" width=\"5%\"></td>
-                        <td style=\"text-align:center;\" width=\"15%\" colspan=\"2\">Approved</td>
-                    </tr>
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"5\"><div style=\"font-size:13.5px\">".$preference_company['company_bank_name_nonppn2']."<br>A/C:".$preference_company['company_bank_account_no_nonppn2'].", A/N ".$preference_company['company_bank_account_name_nonppn']."</div></td>
-                        <td style=\"text-align:center;\" width=\"5%\" ></td>
-                        <td style=\"text-align:center;\" width=\"15%\" colspan=\"2\"><br><br><br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-                        
-                    </tr>
-                ";
-            } else {
-                $tbl5 = "
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"5\"><div style=\"font-size:13.5px\">".$preference_company['company_bank_name_nonppn2']."<br>A/C:".$preference_company['company_bank_account_no_nonppn2'].", A/N ".$preference_company['company_bank_account_name_nonppn']."</div>
-                        </td>
-                        <td style=\"text-align:center;\" width=\"5%\"></td>
-                        <td style=\"text-align:center;\" width=\"15%\" colspan=\"2\">Approved</td>
-                    </tr>
-                    <tr>
-                        <td style=\"text-align:left;\" colspan=\"5\"></td>
-                        <td style=\"text-align:center;\" width=\"5%\"></td>
-                        <td style=\"text-align:center;\" width=\"15%\" colspan=\"2\"><br><br><br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-                        
-                    </tr>
-                    
-                            
-                ";
-            }
-
-        $tbl6 = "</table>";
-
-        $pdf::writeHTML($tbl1.$tbl2.$tbl3.$tbl4.$tbl5.$tbl6, true, false, false, false, '');
-
-        // ob_clean();
-
-        if (ob_get_contents()) ob_end_clean();
-        // -----------------------------------------------------------------------------
-        
-        //Close and output PDF document
-        $filename = 'Sales_Invoice_'.$salesinvoice['sales_invoice_no'].'.pdf';
-        $pdf::Output($filename, 'I');
-
-        //============================================================+
-        // END OF FILE
-        //============================================================+
-    }
 
 }

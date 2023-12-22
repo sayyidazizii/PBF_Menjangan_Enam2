@@ -791,17 +791,18 @@ Route::get('/print-kwitansi/cetak-multiple/{sales_kwitansi_id}', [KwitansiContro
 Route::get('/print-kwitansi/cetak-single/{sales_kwitansi_id}', [KwitansiController::class, 'printKwitansiSingle'])->name('print-single');
 
 
-Route::get('/sales-discount-collection', [SalesCollectionDiscountController::class, 'index'])->name('sales-collection-piece');
-Route::post('/sales-discount-collection/add-piece', [SalesCollectionDiscountController::class, 'processAddSalesCollectionPiece'])->name('add-/sales-discount-collection');
-Route::post('/sales-discount-collection/delete-piece', [SalesCollectionDiscountController::class, 'processDeleteSalesCollectionPiece'])->name('delete-/sales-discount-collection');
-Route::post('/sales-discount-collection/filter', [SalesCollectionDiscountController::class, 'filterSalesCollectionPiece'])->name('filter-/sales-discount-collection');
-Route::get('/sales-discount-collection/filter-reset', [SalesCollectionDiscountController::class, 'resetFilterSalesCollectionPiece'])->name('filter-reset-/sales-discount-collection');
+Route::get('/sales-discount-collection', [SalesCollectionDiscountController::class, 'index'])->name('sales-collection-discount');
+Route::get('/sales-discount-collection/add/{customer_id}', [SalesCollectionDiscountController::class, 'addSalesCollectionDiscount'])->name('add-sales-collection');
+Route::post('/sales-discount-collection/add-discount', [SalesCollectionDiscountController::class, 'processAddSalesCollectionDiscount'])->name('add-sales-discount-collection');
+Route::post('/sales-discount-collection/delete-discount', [SalesCollectionDiscountController::class, 'processDeleteSalesCollectionDiscount'])->name('delete-sales-discount-collection');
+Route::post('/sales-discount-collection/filter', [SalesCollectionDiscountController::class, 'filterSalesCollectionDiscount'])->name('filter-sales-discount-collection');
+Route::get('/sales-discount-collection/filter-reset', [SalesCollectionDiscountController::class, 'resetFilterSalesCollectionDiscount'])->name('filter-reset-sales-discount-collection');
 Route::get('/sales-discount-collection/search', [SalesCollectionDiscountController::class, 'searchCoreCustomer'])->name('search-core-supplier-sales-collection');
-Route::get('/sales-discount-collection/claim-/sales-discount-collection/{sales_collection_piece_id}', [SalesCollectionDiscountController::class, 'ClaimSalesCollectionPiece'])->name('claim-/sales-discount-collection');
-Route::post('/sales-discount-collection/process-claim/', [SalesCollectionDiscountController::class, 'processClaimSalesCollectionPiece'])->name('process-claim');
-Route::get('/sales-discount-collection/cancel-claim-/sales-discount-collection/{sales_invoice_id}', [SalesCollectionDiscountController::class, 'CancelClaimSalesCollectionPiece'])->name('cancel-claim-/sales-discount-collection');
-Route::post('/sales-discount-collection/process-cancel-claim/', [SalesCollectionDiscountController::class, 'processCancelClaimSalesCollectionPiece'])->name('process-batal-claim');
-Route::get('/sales-discount-collection/detail-claim-/sales-discount-collection/{sales_collection_piece_id}', [SalesCollectionDiscountController::class, 'detailClaimSalesCollectionPiece'])->name('detail-claim-/sales-discount-collection');
+Route::get('/sales-discount-collection/claim-/sales-discount-collection/{sales_collection_piece_id}', [SalesCollectionDiscountController::class, 'ClaimSalesCollectionDiscount'])->name('claim-sales-discount-collection');
+Route::post('/sales-discount-collection/process-claim/', [SalesCollectionDiscountController::class, 'processClaimSalesCollectionDiscount'])->name('process-claim');
+Route::get('/sales-discount-collection/cancel-claim-/sales-discount-collection/{sales_invoice_id}', [SalesCollectionDiscountController::class, 'CancelClaimSalesCollectionDiscount'])->name('cancel-claim-sales-discount-collection');
+Route::post('/sales-discount-collection/process-cancel-claim/', [SalesCollectionDiscountController::class, 'processCancelClaimSalesCollectionDiscount'])->name('process-batal-claim');
+Route::get('/sales-discount-collection/detail-claim-/sales-discount-collection/{sales_collection_piece_id}', [SalesCollectionDiscountController::class, 'detailClaimSalesCollectionDiscount'])->name('detail-claim-sales-discount-collection');
 Route::get('/sales-discount-collection/detail-/sales-discount-collection/{sales_invoice_id}', [SalesCollectionDiscountController::class, 'detailClaimSalesCollection'])->name('detail-claim-sales-collection');
 
 

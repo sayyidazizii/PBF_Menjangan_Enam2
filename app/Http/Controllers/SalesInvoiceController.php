@@ -517,6 +517,28 @@ class SalesInvoiceController extends Controller
             DB::table('buyers_acknowledgment')
 		        ->where('buyers_acknowledgment_id',$request->buyers_acknowledgment_id)
                 ->update(['sales_invoice_status' => 1]);
+            
+
+//-------------Update Discount Sumary
+                $diskonA = DB::table('sales_order_item')
+		        ->where('sales_order_id', $request->sales_order_id)
+                ->sum('discount_amount_item');
+        
+                $diskonB = DB::table('sales_order_item')
+		        ->where('sales_order_id', $request->sales_order_id)
+                ->sum('discount_amount_item_b');
+
+                $totalDiscount = $diskonA + $diskonB;
+                if($totalDiscount){
+                    DB::table('sales_invoice as a')
+		            ->where('sales_order_id', $request->sales_order_id)
+                    ->update([ 
+                        'a.total_discount_amount' => $totalDiscount, 
+                        'a.owing_discount_amount' => $totalDiscount 
+                    ]);
+                }
+                
+
 
 
             //----------------------------------------------------------Journal Voucher-------------------------------------------------------------------//
@@ -857,6 +879,16 @@ class SalesInvoiceController extends Controller
             ->first();
 
         return $data['item_unit_cost'] ?? '';
+    }
+
+    public function getItemUnitPrice($sales_invoce_item_id)
+    {
+        $item = SalesInvoiceItem::select('item_unit_price')
+            ->where('data_state', 0)
+            ->where('sales_invoice_item_id', $sales_invoce_item_id)
+            ->first();
+
+        return $item['item_unit_price'] ?? '';
     }
 
     public function getDiscountType($item_type_id)
@@ -1201,7 +1233,7 @@ class SalesInvoiceController extends Controller
         $ppn = 0;
         $totalBayar = 0;
         foreach ($salesinvoiceitem as $key => $val) {   
-            $qtyTotal = $this->getQtyBpb($val['sales_order_item_id']) * $val['item_unit_price'];
+            $qtyTotal = $this->getQtyBpb($val['sales_order_item_id']) * $this->getItemUnitPrice($val['sales_invoice_item_id']);
             $totalBayar = $val['subtotal_price_A'] - $val['discount_B'];
             if ($val['quantity'] != 0) {
                 $cur = 'IDR';
@@ -1213,7 +1245,7 @@ class SalesInvoiceController extends Controller
                     <td style=\"text-align: center;\">" . $this->getBatchNum($val['item_stock_id']) . "</td>
                     <td style=\"text-align: center;\">" . $this->getExpDate($val['item_stock_id']) . "</td>
                     <td style=\"text-align: center;\">" . $this->getQtyBpb($val['sales_order_item_id']) . "</td>
-                    <td style=\"text-align: right;\">" . number_format($val['item_unit_price'], 2) . "</td>
+                    <td style=\"text-align: right;\">" . $this->getItemUnitPrice($val['sales_invoice_item_id']). "</td>
                     <td style=\"text-align: right;\">" . number_format($qtyTotal, 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['discount_A'], 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['discount_B'], 2) . "</td>
