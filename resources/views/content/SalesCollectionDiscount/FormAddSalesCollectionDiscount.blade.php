@@ -48,39 +48,6 @@
                 }
         });
 
-
-        $("#piutang_promosi_check").change(function(){
-            var amount = $("#promosi").val();
-                // Check the state of the checkbox
-                if($(this).is(":checked")){
-                    // If checkbox is checked, set text value to 1
-                    $("#promosi").val("1");
-                    $('#promotion_amount').attr('readonly', false);
-                    console.log(amount);
-                } else {
-                    // If checkbox is not checked, set text value to 0
-                    $("#promosi").val("0");
-                    $('#promotion_amount').attr('readonly', true);
-                    console.log(amount);
-                }
-        });
-
-        $("#adm_cost_check").change(function(){
-            var amount = $("#adm_cost").val();
-                // Check the state of the checkbox
-                if($(this).is(":checked")){
-                    // If checkbox is checked, set text value to 1
-                    $("#adm_cost").val("1");
-                    $('#adm_cost_amount').attr('readonly', false);
-                    console.log(amount);
-                } else {
-                    // If checkbox is not checked, set text value to 0
-                    $("#adm_cost").val("0");
-                    $('#adm_cost_amount').attr('readonly', true);
-                    console.log(amount);
-                }
-        });
-
         calculateTotal();
     });
 
@@ -536,34 +503,6 @@
                 <div class="col-md-4">
                     <div class="form-group">
                     <input class="form-control" type="checkbox" style='text-align:left' name="piutang_amount_check" id="piutang_amount_check" value="1"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <a class="text-dark">Piutang Promosi</a>
-                        <input class="form-control" hidden type="text" style='text-align:left' name="promosi" id="promosi" value="0"/>
-                        <input class="form-control input-bb" type="text"  style='text-align:right' name="promotion_amount" id="promotion_amount" value=""/>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <input class="form-control" type="checkbox" style='text-align:left' name="piutang_promosi_check" id="piutang_promosi_check" value="1"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <a class="text-dark">Biaya Adm</a>
-                        <input class="form-control" hidden type="text" style='text-align:left' name="adm_cost" id="adm_cost" value="0"/>
-                        <input class="form-control input-bb" type="text"  style='text-align:right' name="adm_cost_amount" id="adm_cost_amount" value=""/>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <input class="form-control" type="checkbox" style='text-align:left' name="adm_cost_check" id="adm_cost_check" value="1"/>
                     </div>
                 </div>
             </div>

@@ -314,7 +314,7 @@ class SalesCollectionDiscountController extends Controller
 
         $collection_total_amount = $data['collection_allocated'] + $data['collection_shortover'];
         $selisih_shortover = $data['collection_total_amount'] - $collection_total_amount;
-        $transaction_module_code 	= "SC";
+        $transaction_module_code 	= "SCD";
 
         $transactionmodule 		    = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
         ->first();
