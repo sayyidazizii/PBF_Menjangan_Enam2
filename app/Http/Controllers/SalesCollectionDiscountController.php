@@ -162,7 +162,7 @@ class SalesCollectionDiscountController extends Controller
 
         $salesinvoiceowing = SalesInvoice::select('sales_invoice.sales_invoice_id', 'sales_invoice.customer_id', 'sales_invoice.owing_amount', 'sales_invoice.sales_invoice_date', 'sales_invoice.paid_amount','sales_invoice.buyers_acknowledgment_no', 'sales_invoice.sales_invoice_no', 'sales_invoice.subtotal_amount', 'sales_invoice.discount_percentage', 'sales_invoice.discount_amount', 'sales_invoice.total_amount', 'sales_invoice.goods_received_note_no','sales_invoice.total_discount_amount', 'sales_invoice.paid_discount_amount','sales_invoice.owing_discount_amount')
         ->where('sales_invoice.customer_id', $customer_id)
-        ->where('sales_invoice.owing_amount', '>', 0)
+        ->where('sales_invoice.owing_discount_amount', '>', 0)
         ->where('sales_invoice.data_state', 0)
         ->get(); 
 
@@ -459,44 +459,6 @@ class SalesCollectionDiscountController extends Controller
                 'journal_voucher_amount'		=> ABS($request->piutang_amount),
                 'journal_voucher_credit_amount'	=> ABS($request->piutang_amount),
                 'account_id_default_status'		=> $account_id_default_status_return,
-                'account_id_status'				=> 0,
-            );
-            AcctJournalVoucherItem::create($data_credit);
-        }
-//jika check Piutang Promosi
-        $accountReturn 		= AcctAccount::where('account_id', 50)
-        ->where('data_state', 0)
-        ->first();
-        $account_id_default_status_promosi 		= $accountReturn['account_default_status'];
-
-        $cekPromosi = $request->promosi;
-        if($cekPromosi == 1){
-            $data_credit = array (
-                'journal_voucher_id'			=> $journal_voucher_id,
-                'account_id'					=> 50,
-                'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                'journal_voucher_amount'		=> ABS($request->promotion_amount),
-                'journal_voucher_credit_amount'	=> ABS($request->promotion_amount),
-                'account_id_default_status'		=> $account_id_default_status_promosi,
-                'account_id_status'				=> 0,
-            );
-            AcctJournalVoucherItem::create($data_credit);
-        }
-//jika check Adm Bank
-        $accountReturn 		= AcctAccount::where('account_id', 528)
-        ->where('data_state', 0)
-        ->first();
-        $account_id_default_status_adm_cost 		= $accountReturn['account_default_status'];
-
-        $cekAdmCost = $request->adm_cost;
-        if($cekAdmCost == 1){
-            $data_credit = array (
-                'journal_voucher_id'			=> $journal_voucher_id,
-                'account_id'					=> 528,
-                'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                'journal_voucher_amount'		=> ABS($request->adm_cost_amount),
-                'journal_voucher_credit_amount'	=> ABS($request->adm_cost_amount),
-                'account_id_default_status'		=> $account_id_default_status_adm_cost,
                 'account_id_status'				=> 0,
             );
             AcctJournalVoucherItem::create($data_credit);

@@ -249,7 +249,7 @@ class SalesCollectionController extends Controller
                 $transfer_account_id = $valTransfer['transfer_account_id'];
                 $data = array (
                     'collection_date'                   => $fields['collection_date'],
-                    'cash_account_id'				    => 8,
+                    'cash_account_id'				    => $payment_account_id,
                     'customer_id'						=> $request->customer_id,
                     'collection_remark'					=> $request->collection_remark,
                     'collection_amount'					=> $request->collection_amount,
@@ -368,7 +368,7 @@ class SalesCollectionController extends Controller
 //----------Kas
             if($data['collection_total_cash_amount'] != '' || $data['collection_total_cash_amount'] != 0){
 
-                $account = AcctAccount::where('account_id', $data['cash_account_id'])
+                $account = AcctAccount::where('account_id', 5)
                 ->where('data_state', 0)
                 ->first();
 
@@ -376,7 +376,7 @@ class SalesCollectionController extends Controller
 
                 $data_debet = array (
                     'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> $data['cash_account_id'],
+                    'account_id'					=> 5,
                     'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
                     'journal_voucher_amount'		=> ABS($data['collection_total_cash_amount']),
                     'journal_voucher_debit_amount'	=> ABS($data['collection_total_cash_amount']),

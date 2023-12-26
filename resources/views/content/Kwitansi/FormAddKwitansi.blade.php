@@ -75,10 +75,56 @@ function handleChange($no) {
 <br/>
 
 <div id="accordion">
-    <form  method="post" action="{{route('filter-print-kwitansi')}}" enctype="multipart/form-data">
+    <form  method="post" action="{{route('filter-print-kwitansi-add')}}" enctype="multipart/form-data">
     @csrf
+    <input hidden type="text" name="customer_id" id="customer_id" value="{{ $customer_id }}">
+
+        <div class="card border border-dark">
+        <div class="card-header bg-dark" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <h5 class="mb-0">
+                Filter
+            </h5>
+        </div>
+      
+    
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <div class = "row">
+                    <div class = "col-md-6">
+                        <div class="form-group form-md-line-input">
+                            <section class="control-label">Tanggal Mulai
+                                <span class="required text-danger">
+                                    *
+                                </span>
+                            </section>
+                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="start_date" id="start_date" onChange="function_elements_add(this.name, this.value);" value="{{$start_date}}" style="width: 15rem;"/>
+                        </div>
+                    </div>
+
+                    <div class = "col-md-6">
+                        <div class="form-group form-md-line-input">
+                            <section class="control-label">Tanggal Akhir
+                                <span class="required text-danger">
+                                    *
+                                </span>
+                            </section>
+                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="end_date" id="end_date" onChange="function_elements_add(this.name, this.value);" value="{{$end_date}}" style="width: 15rem;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <div class="form-actions float-right">
+                    <button type="reset" name="Reset" class="btn btn-danger btn-sm" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</button>
+                    <button type="submit" name="Find" class="btn btn-primary btn-sm" title="Search Data"><i class="fa fa-search"></i> Cari</button>
+                    {{-- <a href="{{ url('sales-delivery-note/export') }}"name="Find" class="btn btn-sm btn-info" title="Export Excel"><i class="fa fa-print"></i>Export</a> --}}
+                </div>
+            </div>
+        </div>
+        </div>
     </form>
 </div>
+
 <br/>
 @if(session('msg'))
 <div class="alert alert-info" role="alert">
@@ -99,6 +145,7 @@ function handleChange($no) {
         <div class="table-responsive">
             <form method="post" action="{{route('process-add-kwitansi')}}" enctype="multipart/form-data">
                 @csrf
+
                 <div class="col-md-6">
                     <div class="form-group">
                         {{-- <a class="text-dark">Jenis Cetak<a class='red'> *</a></a>
@@ -123,7 +170,7 @@ function handleChange($no) {
                         <th width="10%" style='text-align:center'>Tanggal Invoice</th>
                         <th width="10%" style='text-align:center'>No. Invoice</th>
                         <th width="10%" style='text-align:center'>No. BPB</th>
-                        <th width="10%" style='text-align:center'>Jumlah</th>
+                        <th width="10%" style='text-align:center'>Jumlah Diskon</th>
                         <th width="10%" style='text-align:center'>Aksi</th>
                     </tr>
                 </thead>
@@ -142,7 +189,7 @@ function handleChange($no) {
                         </td>
                         <td >{{ $item['buyers_acknowledgment_no']}}
                             <input class='form-control' type='hidden' name='buyers_acknowledgment_id_{{$no}}' id='buyers_acknowledgment_id_{{$no}}' value='{{$item['buyers_acknowledgment_id']}}'/>  </td>
-                        <td>{{ number_format($item['total_amount'])}}</td>
+                        <td>{{ number_format($item['total_discount_amount'])}}</td>
                         <td style='text-align:center'>
                             <input type='checkbox' class='checkboxes' name='checkbox_view_{{$no}}' id='checkbox_view_{{$no}}' onchange="handleChange({{ $no }})"/>
                             <input class='form-control' type='hidden' name='checkbox_{{$no}}' id='checkbox_{{ $no }}' value="1"/> 

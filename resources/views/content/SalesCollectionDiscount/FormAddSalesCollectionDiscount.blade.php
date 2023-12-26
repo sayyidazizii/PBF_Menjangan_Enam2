@@ -27,23 +27,21 @@
         if(!elements['collection_total_cash_amount']){
             $("#collection_total_cash_amount").val(0);
         }
-        $('#piutang_amount').attr('readonly', true);
-        $('#promotion_amount').attr('readonly', true);
-        $('#adm_cost_amount').attr('readonly', true);
+        $('#lain_lain_amount').attr('readonly', true);
 
 
-        $("#piutang_amount_check").change(function(){
-            var ppn = $("#piutang").val();
+        $("#lain_lain_amount_check").change(function(){
+            var ppn = $("#lain_lain").val();
                 // Check the state of the checkbox
                 if($(this).is(":checked")){
                     // If checkbox is checked, set text value to 1
-                    $("#piutang").val("1");
-                    $('#piutang_amount').attr('readonly', false);
+                    $("#lain_lain").val("1");
+                    $('#lain_lain_amount').attr('readonly', false);
                     console.log(ppn);
                 } else {
                     // If checkbox is not checked, set text value to 0
-                    $("#piutang").val("0");
-                    $('#piutang_amount').attr('readonly', true);
+                    $("#lain_lain").val("0");
+                    $('#lain_lain_amount').attr('readonly', true);
                     console.log(ppn);
                 }
         });
@@ -495,14 +493,14 @@
             <div class="row form-group">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <a class="text-dark">Piutang Retur Penjualan</a>
-                        <input class="form-control" hidden type="text" style='text-align:left' name="piutang" id="piutang" value="0"/>
-                        <input class="form-control input-bb" type="text" style='text-align:right' name="piutang_amount" id="piutang_amount" value=""/>
+                        <a class="text-dark">Pend.Lain Lain</a>
+                        <input class="form-control" hidden type="text" style='text-align:left' name="lain_lain" id="lain_lain" value="0"/>
+                        <input class="form-control input-bb" type="text" style='text-align:right' name="lain_lain_amount" id="lain_lain_amount" value=""/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                    <input class="form-control" type="checkbox" style='text-align:left' name="piutang_amount_check" id="piutang_amount_check" value="1"/>
+                    <input class="form-control" type="checkbox" style='text-align:left' name="lain_lain_amount_check" id="lain_lain_amount_check" value="1"/>
                     </div>
                 </div>
             </div>

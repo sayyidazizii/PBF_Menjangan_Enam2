@@ -789,6 +789,8 @@ Route::post('/print-kwitansi/save', [KwitansiController::class, 'processAddKwita
 Route::post('/print-kwitansi/filter', [KwitansiController::class, 'filterKwitansi'])->name('filter-print-kwitansi');
 Route::get('/print-kwitansi/cetak-multiple/{sales_kwitansi_id}', [KwitansiController::class, 'printKwitansi'])->name('print-multiple');
 Route::get('/print-kwitansi/cetak-single/{sales_kwitansi_id}', [KwitansiController::class, 'printKwitansiSingle'])->name('print-single');
+Route::get('/print-kwitansi/cetak-pengantar/{sales_kwitansi_id}', [KwitansiController::class, 'printKwitansiPengantar'])->name('print-pengantar');
+Route::post('/print-kwitansi/filter-print', [KwitansiController::class, 'filterKwitansiAdd'])->name('filter-print-kwitansi-add');
 
 
 Route::get('/sales-discount-collection', [SalesCollectionDiscountController::class, 'index'])->name('sales-collection-discount');

@@ -168,8 +168,8 @@
                         <td>{{ $item['sales_kwitansi_no']}}</td>
                         <td style='text-align:center'>
                           {{-- <a href="/print-kwitansi/{{ $item['sales_kwitansi_id'] }}" class="btn btn-outline-primary">detail</a> --}}
-
-                          <a href=" {{ url('/print-kwitansi/cetak-multiple/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-warning">MultiPle</a>
+                          <a href=" {{ url('/print-kwitansi/cetak-pengantar/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-secondary">Pengantar</a>
+                          <a href=" {{ url('/print-kwitansi/cetak-multiple/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-warning">Multi</a>
                           <a href=" {{ url('/print-kwitansi/cetak-single/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-info">Single</a>
                         </td>
                     </tr>

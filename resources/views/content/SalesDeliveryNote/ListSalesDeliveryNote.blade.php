@@ -118,7 +118,7 @@
                             <a type="button" class="btn btn-outline-warning btn-sm" href="{{ url('/sales-delivery-note/edit/'.$item['sales_delivery_note_id']) }}">Edit</a>
                             <a type="button" class="btn btn-outline-primary btn-sm" href="{{ url('/sales-delivery-note/detail/'.$item['sales_delivery_note_id']) }}">Detail</a>
                             <a type="button" class="btn btn-outline-dark btn-sm" href="{{ url('/sales-delivery-note/printing/'.$item['sales_delivery_note_id']) }}"  target='_blank'>Print</a>
-                            <a type="button" class="btn btn-outline-danger btn-sm" href="{{ url('/sales-delivery-note/void/'.$item['sales_delivery_note_id']) }}">Void</a>
+                            {{-- <a type="button" class="btn btn-outline-danger btn-sm" href="{{ url('/sales-delivery-note/void/'.$item['sales_delivery_note_id']) }}">Void</a> --}}
                         </td>
                     </tr>
                     <?php $no++; ?>
