@@ -7,6 +7,7 @@ use App\Http\Controllers\AcctCashReceiptController;
 use App\Http\Controllers\AcctBankReceiptController;
 use App\Http\Controllers\AcctCheckReceiptController;
 use App\Http\Controllers\AcctAccountController;
+use App\Http\Controllers\AcctAgingApReportController;
 use App\Http\Controllers\AcctJournalVoucherController;
 use App\Http\Controllers\AcctJournalVoucherPurchaseController;
 use App\Http\Controllers\AcctJournalVoucherSalesController;
@@ -808,5 +809,6 @@ Route::get('/sales-discount-collection/detail-claim-/sales-discount-collection/{
 Route::get('/sales-discount-collection/detail-/sales-discount-collection/{sales_invoice_id}', [SalesCollectionDiscountController::class, 'detailClaimSalesCollection'])->name('detail-claim-sales-collection');
 
 
+Route::get('/aging-account-payable', [AcctAgingApReportController::class, 'index'])->name('aging-account-payable');
 
 ?>

@@ -4358,7 +4358,7 @@ CREATE TABLE `inv_warehouse_transfer_type` (
 
 insert  into `inv_warehouse_transfer_type`(`warehouse_transfer_type_id`,`warehouse_transfer_type_name`,`warehouse_transfer_type_remark`,`data_state`,`created_id`,`created_at`,`deleted_id`,`deleted_at`,`updated_at`) values 
 (9,'Waste','Barang Busuk',1,3,'2022-01-04 03:18:20',0,NULL,'2023-06-23 10:52:22'),
-(10,'READY SMD','PRODUK BERADA DI SAMARINDA SIAP DIKIRIM KE PEMBELI',0,3,'2022-01-07 13:11:54',0,NULL,'2023-06-23 10:52:22');
+(10,'READY SMG','PRODUK BERADA DI SEMARANG SIAP DIKIRIM KE PEMBELI',0,3,'2022-01-07 13:11:54',0,NULL,'2023-12-27 09:42:31');
 
 /*Table structure for table `migrations` */
 
@@ -4493,7 +4493,7 @@ CREATE TABLE `preference_company` (
 /*Data for the table `preference_company` */
 
 insert  into `preference_company`(`company_id`,`company_name`,`company_address`,`company_phone_number`,`company_mobile_number`,`company_email`,`company_website`,`company_tax_number`,`company_account_receivable_due_date`,`company_account_payable_due_date`,`company_logo`,`CDBO_no`,`distribution_no`,`account_inventory_trade_id`,`account_vat_in_id`,`account_vat_out_id`,`account_payable_id`,`account_bank_or_cash_id`,`account_pdp_id`,`account_bank_cash_hpp_id`,`account_receivable_id`,`account_shortover_id`,`account_sales_id`,`ppn_amount_in`,`ppn_amount_out`,`sales_discount_id`,`purchase_discount_id`,`pharmacist_license_no`,`account_sales_return_id`,`account_hpp_id`,`account_bank_id`,`account_cash_id`,`account_cash_on_way_id`,`account_delivery_id`,`account_expense_id`,`created_at`,`updated_at`) values 
-(2,'PBF Koperasi Menjangan Enam','Jl. Simongan 103, Semarang (50148)','( 024 ) 76623702','02476623702','pbfme@gmail.com','www.menjanganenam.id','',0,0,NULL,'CDOB1827/S/4-3306/09/2020','FP.01.04/IV/0118-/2019',79,99,230,197,0,82,0,30,1,308,11,11,0,0,'A1111111',340,356,0,1,1,1,0,NULL,'2023-09-11 07:32:03');
+(2,'PBF Koperasi Menjangan Enam','Jl. Simongan 103, Semarang (50148)','( 024 ) 76623702','02476623702','pbfme@gmail.com','www.menjanganenam.id','',0,0,NULL,'CDOB1827/S/4-3306/09/2020','FP.01.04/IV/0118-/2019',79,99,230,205,0,82,0,42,11,308,11,11,0,0,'A1111111',340,356,0,5,5,528,0,NULL,'2023-12-27 09:47:15');
 
 /*Table structure for table `preference_transaction_module` */
 
@@ -5825,12 +5825,13 @@ CREATE TABLE `sales_kwitansi` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`sales_kwitansi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi` */
 
 insert  into `sales_kwitansi`(`sales_kwitansi_id`,`sales_kwitansi_no`,`sales_tagihan_no`,`customer_id`,`start_date`,`end_date`,`sales_kwitansi_date`,`print_type`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(30,'0001/MO.ME/KMARGIN/XII/2023','0001/MO.ME/TMARGIN/XII/2023',1,'2023-12-01','2023-12-26','2023-12-26',NULL,0,3,'2023-12-26 08:51:57','2023-12-26 08:51:57');
+(30,'0001/MO.ME/KMARGIN/XII/2023','0001/MO.ME/TMARGIN/XII/2023',1,'2023-12-01','2023-12-26','2023-12-26',NULL,0,3,'2023-12-26 08:51:57','2023-12-26 08:51:57'),
+(31,'0002/MO.ME/KMARGIN/XII/2023','0002/MO.ME/TMARGIN/XII/2023',1,'2023-12-14','2023-12-21','2023-12-27',NULL,0,3,'2023-12-27 08:05:37','2023-12-27 08:05:37');
 
 /*Table structure for table `sales_kwitansi_item` */
 
@@ -5846,14 +5847,16 @@ CREATE TABLE `sales_kwitansi_item` (
   `created_at` date DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`sales_kwitansi_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sales_kwitansi_item` */
 
 insert  into `sales_kwitansi_item`(`sales_kwitansi_item_id`,`sales_kwitansi_id`,`sales_invoice_id`,`buyers_acknowledgment_id`,`checked`,`created_id`,`created_at`,`updated_at`) values 
 (86,30,16,53,1,3,'2023-12-26','2023-12-26 08:51:57'),
 (87,30,17,54,1,3,'2023-12-26','2023-12-26 08:51:57'),
-(88,30,18,55,1,3,'2023-12-26','2023-12-26 08:51:57');
+(88,30,18,55,1,3,'2023-12-26','2023-12-26 08:51:57'),
+(89,31,16,53,1,3,'2023-12-27','2023-12-27 08:05:37'),
+(90,31,17,54,1,3,'2023-12-27','2023-12-27 08:05:37');
 
 /*Table structure for table `sales_order` */
 
@@ -6395,7 +6398,7 @@ insert  into `system_menu`(`id_menu`,`id`,`type`,`indent_level`,`text`,`image`,`
 ('131','warehouse-in-approval','file',3,'Persetujuan Penambahan Barang Gudang',NULL,'2023-06-23 10:52:23'),
 ('17','item-stock-card','file',2,'Kartu Stock',NULL,'2023-06-23 10:52:23'),
 ('241','purchase-order-return','file',2,'Return Pembelian',NULL,'2023-06-23 10:52:23'),
-('34','sales-order-return','file',2,'Return Penjualan',NULL,'2023-06-23 10:52:23'),
+('35','sales-order-return','file',2,'Return Penjualan',NULL,'2023-12-27 16:31:44'),
 ('43','return-pdp','file',2,'Return Perjalanan',NULL,'2023-07-14 09:16:00'),
 ('44','return-pdp-lost-on-expedition','file',2,'PDP Hilang Di Expedisi',NULL,'2023-06-23 10:52:23'),
 ('615','check-receipt','file',3,'Penerimaan Giro',NULL,'2023-06-23 10:52:23'),
@@ -6403,7 +6406,7 @@ insert  into `system_menu`(`id_menu`,`id`,`type`,`indent_level`,`text`,`image`,`
 ('617','purchase-payment','file',3,'Pelunasan Hutang',NULL,'2023-06-23 10:52:23'),
 ('618','sales-collection','file',3,'Pelunasan Piutang',NULL,'2023-06-23 10:52:23'),
 ('624','report-bank-disbursement','file',3,'Laporan Pengeluaran Bank',NULL,'2023-06-23 10:52:23'),
-('625','debt-card','file',3,'Kartu Hutang',NULL,'2023-06-23 10:52:23'),
+('625','debt-card','file',3,'Kartu Hutang',NULL,'2023-12-27 16:36:38'),
 ('45','buyers-acknowledgment','file',2,'Penerimaan Pihak Pembeli',NULL,'2023-09-01 11:15:34'),
 ('74','profit-loss-report','file',2,'PHU',NULL,'2023-06-27 23:07:17'),
 ('75','balance-sheet-report','file',2,'Neraca',NULL,'2023-06-23 10:54:43'),
@@ -6414,11 +6417,13 @@ insert  into `system_menu`(`id_menu`,`id`,`type`,`indent_level`,`text`,`image`,`
 ('82','ppn','file',2,'Setting Default PPN',NULL,'2023-07-24 15:01:41'),
 ('24','#','folder',2,'Laporan',NULL,'2023-07-26 15:36:17'),
 ('240','purchase-order-return-report','file',3,'Laporan Retur Pembelian',NULL,'2023-07-26 15:40:54'),
-('35','print-kwitansi','file',2,'Cetak Kwitansi',NULL,'2023-09-04 10:54:55'),
+('36','print-kwitansi','file',2,'Cetak Kwitansi',NULL,'2023-12-27 16:31:40'),
 ('64','sales-promotion','file',2,'Cetak Promosi',NULL,'2023-09-06 12:02:42'),
 ('619','sales-discount-collection','file',3,'Pelunasan Piutang Diskon',NULL,'2023-12-11 12:09:13'),
-('36','#','folder',2,'Laporan',NULL,'2023-12-14 16:55:21'),
-('361','sales-invoice-report','file',3,'Laporan Penjualan',NULL,'2023-12-14 16:56:11');
+('34','#','folder',2,'Laporan',NULL,'2023-12-27 16:31:31'),
+('341','sales-invoice-report','file',3,'Laporan Penjualan',NULL,'2023-12-27 16:32:30'),
+('626','aging-account-payable','file',3,'Laporan Aging Hutang ',NULL,'2023-12-27 16:41:02'),
+('627','aging-account-receivable','file',3,'Laporan Aging Piutang ',NULL,'2023-12-27 16:40:57');
 
 /*Table structure for table `system_menu_mapping` */
 
@@ -6436,7 +6441,6 @@ CREATE TABLE `system_menu_mapping` (
 /*Data for the table `system_menu_mapping` */
 
 insert  into `system_menu_mapping`(`menu_mapping_id`,`user_group_level`,`id_menu`,`created_at`,`updated_at`) values 
-(0,1,'64',NULL,'2023-09-06 12:02:54'),
 (297,2,'0','2022-01-11 00:19:24','2023-06-23 10:52:23'),
 (300,2,'1','2022-01-11 00:19:24','2023-06-23 10:52:23'),
 (301,2,'11','2022-01-11 00:19:24','2023-06-23 10:52:23'),
@@ -6722,7 +6726,9 @@ insert  into `system_menu_mapping`(`menu_mapping_id`,`user_group_level`,`id_menu
 (994,1,'35',NULL,'2023-09-04 10:55:17'),
 (995,1,'619',NULL,'2023-12-11 12:05:07'),
 (996,1,'36',NULL,'2023-12-14 16:56:32'),
-(997,1,'361',NULL,'2023-12-14 16:56:40');
+(997,1,'341',NULL,'2023-12-14 16:56:40'),
+(998,1,'626',NULL,'2023-12-27 13:15:41'),
+(999,1,'627',NULL,'2023-12-27 13:53:11');
 
 /*Table structure for table `system_user` */
 

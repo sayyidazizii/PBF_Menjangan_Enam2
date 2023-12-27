@@ -152,7 +152,9 @@
                         <th width="2%" style='text-align:center'>No</th>
                         <th width="10%" style='text-align:center'>Customer</th>
                         <th width="10%" style='text-align:center'>Tanggal Kwitansi</th>
+                        <th width="10%" style='text-align:center'>Periode</th>
                         <th width="10%" style='text-align:center'>No. Kwitansi</th>
+                        <th width="10%" style='text-align:center'>No. Tagihan</th>
                         <th width="10%" style='text-align:center'>Aksi</th>
                     </tr>
                 </thead>
@@ -165,7 +167,9 @@
                         <td style='text-align:center'>{{$no}}</td>
                         <td>{{ $Kwitansi->getCustomerName($item['customer_id'])}}</td>
                         <td>{{$item['sales_kwitansi_date']}}</td>
+                        <td>{{$item['start_date'] }} S/D {{$item['end_date'] }}</td>
                         <td>{{ $item['sales_kwitansi_no']}}</td>
+                        <td>{{ $item['sales_tagihan_no']}}</td>
                         <td style='text-align:center'>
                           {{-- <a href="/print-kwitansi/{{ $item['sales_kwitansi_id'] }}" class="btn btn-outline-primary">detail</a> --}}
                           <a href=" {{ url('/print-kwitansi/cetak-pengantar/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-secondary">Pengantar</a>

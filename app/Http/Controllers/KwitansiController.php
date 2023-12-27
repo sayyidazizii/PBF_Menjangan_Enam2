@@ -486,16 +486,10 @@ class KwitansiController extends Controller
                 </table>
                     ";
         $pdf::writeHTML($html2, true, false, true, false, '');
-       // $pdf::Image($path, 98, 98, 15, 15, 'PNG', '', 'LT', false, 300, '', false, false, 1, false, false, false);
-
-
-
+        // $pdf::Image($path, 98, 98, 15, 15, 'PNG', '', 'LT', false, 300, '', false, false, 1, false, false, false);
         // ob_clean();
-
         $filename = 'SK_'.$saleskwitansi['sales_kwitansi_no'].'.pdf';
         $pdf::Output($filename, 'I');
-
-        
     }
 
     public function printKwitansiSingle($sales_kwitansi_id) {
@@ -704,7 +698,7 @@ class KwitansiController extends Controller
 
 
 
-    //halaman depan
+    //Pengantar
     public function printKwitansiPengantar($sales_kwitansi_id){
         $saleskwitansi = SalesKwitansi::select('*')
         ->where('data_state', '=', 0)
@@ -724,9 +718,7 @@ class KwitansiController extends Controller
 
 
         //pdf
-
         $pdf = new TCPDF('P', PDF_UNIT, 'F4', true, 'UTF-8', false);
-        //$path = public_path('resources/assets/img/TTD.png');
 
         $pdf::SetPrintHeader(false);
         $pdf::SetPrintFooter(false);
@@ -755,8 +747,15 @@ class KwitansiController extends Controller
             $totalppn += $this->getPpnItem($val['sales_delivery_note_item_id']);
             $totalbayar += $total - $diskon  + $ppn;
             $totalDiskon += $val['discount_A'] + $val['discount_B'];
+            
            
             $no++;
+        }
+        $materai = 0;
+        if($totalDiskon > 5000000){
+            $materai = 10000;
+        }else{
+            $materai = 0;
         }
 
         $pdf::SetFont('helvetica', 'B', 20);
@@ -764,117 +763,229 @@ class KwitansiController extends Controller
         $pdf::AddPage();
 
         $pdf::SetFont('helvetica', '', 8);
-
-        $tbl = "
-        <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
-            <tr>
-
-            <td>
-                <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
-                    <tr>
-                        <td><div style=\"text-align: left; font-size:12px; font-weight: bold\">PBF MENJANGAN ENAM</div></td>
-                    </tr>
-                    <tr>
-                        <td><div style=\"text-align: left; font-size:10px\">Jl.Puspowarno Raya No 55D Bojong Salaman, Semarang Barat</div></td>
-                    </tr>
-                    <tr>
-                        <td><div style=\"text-align: left; font-size:10px\">APA : ISTI RAHMADANI,S.Farm, Apt</div></td>
-                    </tr>
-                    <tr>
-                        <td><div style=\"text-align: left; font-size:10px\">" . $company['CDBO_no'] . "</div></td>
-                    </tr>
-                    <tr>
-                        <td><div style=\"text-align: left; font-size:10px\">" . $company['distribution_no'] . "</div></td>
-                    </tr>
-                    <tr>
-                        <td><div style=\"text-align: left; font-size:10px\">SIKA: 449.2/16/DPM-PTSP/SIKA.16/11/2019</div></td>
-                    </tr>
-                </table>
-            </td>
-
-            <td>
-                <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
-                   
-                </table>
-            </td>
-
-            </tr>
-            <tr>
-
-            <td>
-                <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
-                  
-                </table>
-            </td>
-
-            <td>
-                <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
-                    <tr>
-                        <td style=\"text-align: right; font-size:20px; font-weight: bold\">
-                        KWITANSI
-                        </td>
-                    </tr>
-                    <tr>
-                    <td style=\"text-align: right; font-size:10px;\">
-                    ".
-                    $saleskwitansi['sales_kwitansi_no']."
-                        </td>
-                    </tr>
-                </table>
-            </td>
-
-            </tr>
-
-        </table>
-        <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
-        <tr>
-            <td>
-                Telah Terima Dari 
-            </td>
-            <td colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">PT. PHAPROS TBK</td>
-        </tr>
-        <tr>
-            <td>
-                Uang Sebanyak
-            </td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->numtotxt($totalDiskon)."</td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-        </tr>
-        <tr>
-            <td>
-                Guna Membayar
-            </td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal    ".
-            $saleskwitansi['start_date']." S/D ".
-            $saleskwitansi['end_date']." </td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->getCustomerName($saleskwitansi['customer_id'])
-            ." </td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-            <td style=\"text-align: left; font-size:10px;\"></td>
-        </tr>
-        </table>
-        <table style=\"text-align: left;\" cellspacing=\"0\";>
+        if($materai == 10000){
+            $tbl = "
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                <tr>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
                         <tr>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
-                            <th style=\"text-align: center; font-size:12px;\">Semarang , ".$saleskwitansi['sales_kwitansi_date']." &nbsp;&nbsp;</th>
+                            <td><div style=\"text-align: left; font-size:12px; font-weight: bold\">PBF MENJANGAN ENAM</div></td>
                         </tr>
                         <tr>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: center; font-size:12px;\">Hormat Kami</th>
+                            <td><div style=\"text-align: left; font-size:10px\">Jl.Puspowarno Raya No 55D Bojong Salaman, Semarang Barat</div></td>
                         </tr>
-        </table>
-        ";
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">APA : ISTI RAHMADANI,S.Farm, Apt</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['CDBO_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['distribution_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">SIKA: 449.2/16/DPM-PTSP/SIKA.16/11/2019</div></td>
+                        </tr>
+                    </table>
+                </td>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                       
+                    </table>
+                </td>
+    
+                </tr>
+                <tr>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                      
+                    </table>
+                </td>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                        <tr>
+                            <td style=\"text-align: right; font-size:20px; font-weight: bold\">
+                            KWITANSI
+                            </td>
+                        </tr>
+                        <tr>
+                        <td style=\"text-align: right; font-size:10px;\">
+                        ".
+                        $saleskwitansi['sales_kwitansi_no']."
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+    
+                </tr>
+    
+            </table>
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+            <tr>
+                <td>
+                    Telah Terima Dari 
+                </td>
+                <td colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">PT. PHAPROS TBK</td>
+            </tr>
+            <tr>
+                <td>
+                    Uang Sebanyak
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->numtotxt($totalDiskon)."</td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td>
+                    Guna Membayar
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal    ".
+                $saleskwitansi['start_date']." S/D ".
+                $saleskwitansi['end_date']." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->getCustomerName($saleskwitansi['customer_id'])
+                ." dan Materai ".$materai." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            </table>
+            <table style=\"text-align: left;\" cellspacing=\"0\";>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Semarang , ".$saleskwitansi['sales_kwitansi_date']." &nbsp;&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Hormat Kami</th>
+                            </tr>
+            </table>
+            ";
+        }else{
+            $tbl = "
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                <tr>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:12px; font-weight: bold\">PBF MENJANGAN ENAM</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">Jl.Puspowarno Raya No 55D Bojong Salaman, Semarang Barat</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">APA : ISTI RAHMADANI,S.Farm, Apt</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['CDBO_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['distribution_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">SIKA: 449.2/16/DPM-PTSP/SIKA.16/11/2019</div></td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                    
+                    </table>
+                </td>
+
+                </tr>
+                <tr>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                    
+                    </table>
+                </td>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                        <tr>
+                            <td style=\"text-align: right; font-size:20px; font-weight: bold\">
+                            KWITANSI
+                            </td>
+                        </tr>
+                        <tr>
+                        <td style=\"text-align: right; font-size:10px;\">
+                        ".
+                        $saleskwitansi['sales_kwitansi_no']."
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+                </tr>
+
+            </table>
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+            <tr>
+                <td>
+                    Telah Terima Dari 
+                </td>
+                <td colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">PT. PHAPROS TBK</td>
+            </tr>
+            <tr>
+                <td>
+                    Uang Sebanyak
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->numtotxt($totalDiskon)."</td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td>
+                    Guna Membayar
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal    ".
+                $saleskwitansi['start_date']." S/D ".
+                $saleskwitansi['end_date']." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->getCustomerName($saleskwitansi['customer_id'])
+                ." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            </table>
+            <table style=\"text-align: left;\" cellspacing=\"0\";>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Semarang , ".$saleskwitansi['sales_kwitansi_date']." &nbsp;&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Hormat Kami</th>
+                            </tr>
+            </table>
+            ";
+        }
         $pdf::writeHTML($tbl, true, false, false, false, '');
 
        
@@ -887,7 +998,6 @@ class KwitansiController extends Controller
                             <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
                         </tr>
                     </table>
-
                     <table style=\"text-align: left;\" cellspacing=\"0\";>
                         <tr>
                             <th style=\"text-align: left; font-size:12px;\"></th>
@@ -916,7 +1026,6 @@ class KwitansiController extends Controller
                     ";
 
 
-                                      
         $pdf::writeHTML($html2, true, false, true, false, '');
         $pdf::AddPage();
 
@@ -970,7 +1079,7 @@ class KwitansiController extends Controller
                     <tr>
                         <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">No. </div></td>
                         <td style=\"text-align:left;width:2%\"> : </td>
-                        <td style=\"text-align:left;width:45%\"><div style=\"text-align: left; font-size:11px\"></div></td>
+                        <td style=\"text-align:left;width:45%\"><div style=\"text-align: left; font-size:11px\">".$saleskwitansi['sales_tagihan_no']."</div></td>
                         <td style=\"text-align:left;width:5%\"></td>
                         <td style=\"text-align:left;width:12%\"></td>
                         <td style=\"text-align:left;width:2%\"> </td>
@@ -1020,8 +1129,7 @@ class KwitansiController extends Controller
                 </td>
             </tr>
         </table>
-
-        <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+        <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
         <tr>
             <td>
                 Client
@@ -1041,16 +1149,16 @@ class KwitansiController extends Controller
             <td>
                 Total
             </td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">: Rp.". number_format($totalDiskon)."</td>
+            <td  style=\"text-align: left; font-size:10px;\">: Rp.". number_format($totalDiskon)."</td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
         </tr>
         <tr>
-            <td>
+            <td  style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">
                 Materai
             </td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">:</td>
+            <td   style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">: Rp.". number_format($materai)."</td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
@@ -1059,22 +1167,20 @@ class KwitansiController extends Controller
             <td>
                 Total Tagihan
             </td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">:</td>
+            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">: Rp.". number_format($totalDiskon + $materai)."</td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
         </tr>
         </table>
-        <table style=\"text-align: left;\" cellspacing=\"0\";>
+        <table style=\"text-align: left;\" cellspacing=\"2\";>
                         <tr>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
-                            <th style=\"text-align: center; font-size:12px;\">Semarang , ".$saleskwitansi['sales_kwitansi_date']." &nbsp;&nbsp;</th>
+                            <th style=\"text-align: left; font-size:12px;font-weight: bold\">Terbilang</th>
+                            <th style=\"text-align: center; font-size:12px;\"></th>
                         </tr>
                         <tr>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: center; font-size:12px;\">Hormat Kami</th>
+                            <th style=\"text-align: left; font-size:12px;font-weight: bold\">#".$this->numtotxt($totalDiskon)."#</th>
+                            <th style=\"text-align: center; font-size:12px;\"></th>
                         </tr>
         </table>
         ";
@@ -1083,55 +1189,59 @@ class KwitansiController extends Controller
        
         $path = '<img width="60"; height="60" src="resources/assets/img/ttd.png">';
         $html2 = "
-                    <table style=\"text-align: left;\" cellspacing=\"20\";>
-                        <tr>
-                            <th style=\"text-align: left; font-size:12px;border-top-width:0.5px;border-bottom-width:0.5px;\">Rp.#". number_format($totalDiskon)."#</th>
-                            <th style=\"text-align: left; font-size:12px; \"></th>
-                            <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
-                        </tr>
-                    </table>
-
-                    <table style=\"text-align: left;\" cellspacing=\"0\";>
-                        <tr>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
-                            <th style=\"text-align: center; font-size:12px;\"></th>
-                        </tr>
-                        <tr>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: center; font-size:12px;\"></th>
-                        </tr>
-                        <tr>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: center; font-size:12px;\"></th>
-                        </tr>
-                        <tr>
-                            <th style=\"text-align: left; font-size:12px;\">Catatan</th>
-                            <th style=\"text-align: left; font-size:12px;\"></th>
-                            <th style=\"text-align: center; font-size:12px;border-bottom-width:0.5px;\">Isti Rahmadani, SFarm,Apt</th>
-                        </tr><tr>
-                            <th  colspan=\"2\"  style=\"text-align: left; font-size:8px;\">Jatuh Tempo Pembayaran 7 (tujuh) hari kerja terhitung dari tanggal kwitansi</th>
-                            <th style=\"text-align: center; font-size:12px;\">Apoteker</th>
-                        </tr>
-                    </table>
-                    ";
-
-
+        <table style=\"text-align: center;\" cellspacing=\"0\";>
+            <tr>
+                <th width=\"60%\">
+                <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px; \">Pembayaran mohon ditransfer ke :</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">Bank&nbsp;: Mandiri Mpu Tantular Semarang</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">A/n &nbsp;&nbsp;&nbsp;: " . $company['company_name'] . " </div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">A/c &nbsp;&nbsp;&nbsp;: 136.007.663270.9 </div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">Demikian Tagihan ini kami sampaikan atas kerjasamanya kami ucapakan terimakasih.</div></td>
+                </tr>
+            
+                </table>
+                </th>
+            </tr>
+        </table>
+        <table style=\"text-align: left;\" cellspacing=\"5\";>            
+            <tr>
+                <th>Semarang , ".date('d M Y')." &nbsp;&nbsp;</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>".$path."</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Isti Ramadhani S.Farm.,Apt</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style=\"text-align: left; font-size:10px;\">Apoteker</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>";
                                       
         $pdf::writeHTML($html2, true, false, true, false, '');
-
-
-        
-        // $pdf::Image($path, 98, 98, 15, 15, 'PNG', '', 'LT', false, 300, '', false, false, 1, false, false, false);
-        // ob_clean();
         $filename = 'SK_'.$saleskwitansi['sales_kwitansi_no'].'.pdf';
         $pdf::Output($filename, 'I');
 
-        
     }
-
 
 
 
@@ -1144,7 +1254,6 @@ class KwitansiController extends Controller
 
         return $unit['customer_name'] ?? '';
     }
-    
     public function getInvItemTypeName($item_type_id){
         $item = InvItemType::select('item_type_name')
         ->where('item_type_id', $item_type_id)
@@ -1153,8 +1262,6 @@ class KwitansiController extends Controller
 
         return $item['item_type_name'];
     }
-
-
     public function getNoteStokID($sales_delivery_note_item_id)
     {
         $unit = SalesDeliveryNoteItemStock::where('sales_delivery_note_item_id', $sales_delivery_note_item_id)
@@ -1163,8 +1270,6 @@ class KwitansiController extends Controller
 
         return $unit['item_stock_id'] ?? '';
     }
-
-       
     public function getItemBatchNumber($item_stock_id){
         $item = InvItemStock::select('item_batch_number')
         ->where('item_stock_id', $item_stock_id)
