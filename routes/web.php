@@ -725,18 +725,15 @@ Route::post('/sales-collection-piece/process-cancel-claim/', [SalesCollectionPie
 Route::get('/sales-collection-piece/detail-claim-sales-collection-piece/{sales_collection_piece_id}', [SalesCollectionPieceController::class, 'detailClaimSalesCollectionPiece'])->name('detail-claim-sales-collection-piece');
 Route::get('/sales-collection-piece/detail-sales-collection-piece/{sales_invoice_id}', [SalesCollectionPieceController::class, 'detailClaimSalesCollection'])->name('detail-claim-sales-collection');
 
-
 Route::get('/sales-promotion', [SalesPromotionController::class, 'index'])->name('sales-promotion');
 Route::post('/sales-promotion/filter', [SalesPromotionController::class, 'filterSalesPromotion'])->name('filter-sales-promotion');
 Route::get('/sales-promotion/filter-reset', [SalesPromotionController::class, 'resetFilterSalesCollectionPiece'])->name('filter-reset-sales-promotion');
 Route::get('/sales-promotion/export', [SalesPromotionController::class, 'export'])->name('sales-promotion-export');
 
 
-
 Route::get('/debt-card', [AcctDebtCardController::class, 'index'])->name('debt-card');
 Route::get('/debt-card/print/{sales_order_id}', [AcctDebtCardController::class, 'processPrinting'])->name('kwitansi-debt-card');
 Route::post('/debt-card/filter', [AcctDebtCardController::class, 'filter'])->name('filter-debt-card');
-
 
 Route::get('/item-stock-adjustment',[InvItemStockAdjustmentController::class,'index'])->name('stock-adjustment');
 Route::post('/item-stock-adjustment/filter-list', [InvItemStockAdjustmentController::class, 'filterList'])->name('filter-list-stock-adjustment');
@@ -746,7 +743,6 @@ Route::post('/item-stock-adjustment/get-item-type', [InvItemStockAdjustmentContr
 Route::post('/item-stock-adjustment/get-list-item-stock', [InvItemStockAdjustmentController::class,'getListItemStock'])->name('get-list-item-stock-adjustment');
 Route::post('/item-stock-adjustment/add-elements',[InvItemStockAdjustmentController::class, 'elements_add'])->name('add-elements-stock-adjustment');
 Route::post('/item-stock-adjustment/process-add', [InvItemStockAdjustmentController::class, 'processAdd'])->name('process-add-stock-adjustment');
-
 
 Route::get('/warehouse-in-requisition', [InvWarehouseInRequisitionController::class, 'index'])->name('warehouse-in-requisition');
 Route::get('/warehouse-in-requisition/add', [InvWarehouseInRequisitionController::class, 'addInvWarehouseInRequisition'])->name('add-warehouse-in-requisition');
@@ -762,12 +758,10 @@ Route::post('/warehouse-in-requisition/item-stock-detail', [InvWarehouseInRequis
 Route::get('/warehouse-in-requisition/reset-array', [InvWarehouseInRequisitionController::class, 'resetArrayInvWarehouseInRequisition'])->name('reset-array-warehouse-in-requisition');
 Route::get('/warehouse-in-requisition/delete-array/{record_id}', [InvWarehouseInRequisitionController::class, 'deleteArrayInvWarehouseInRequisitionItem'])->name('warehouse-in-requisition-delete-array');
 
-
 Route::get('/warehouse-in-approval', [InvWarehouseInApprovalController::class, 'index'])->name('warehouse-in-approval');
 Route::get('/warehouse-in-approval/approve/{id}', [InvWarehouseInApprovalController::class, 'approveInvWarehouseInApproval'])->name('approve-warehouse-in-approval');
 Route::get('/warehouse-in-approval/process-approve/{id}', [InvWarehouseInApprovalController::class, 'processApproveInvWarehouseInApproval'])->name('process-approve-warehouse-in-approval');
 Route::post('/warehouse-in-approval/process-disapprove', [InvWarehouseInApprovalController::class, 'processDisapproveInvWarehouseInApproval'])->name('process-disapprove-warehouse-in-approval');
-
 
 Route::get('/warehouse-in-type', [InvWarehouseInTypeController::class, 'index'])->name('warehouse-in-type');
 Route::get('/warehouse-in-type/add', [InvWarehouseInTypeController::class, 'addInvWarehouseInType'])->name('add-warehouse-in-type');
@@ -793,7 +787,6 @@ Route::get('/print-kwitansi/cetak-single/{sales_kwitansi_id}', [KwitansiControll
 Route::get('/print-kwitansi/cetak-pengantar/{sales_kwitansi_id}', [KwitansiController::class, 'printKwitansiPengantar'])->name('print-pengantar');
 Route::post('/print-kwitansi/filter-print', [KwitansiController::class, 'filterKwitansiAdd'])->name('filter-print-kwitansi-add');
 
-
 Route::get('/sales-discount-collection', [SalesCollectionDiscountController::class, 'index'])->name('sales-collection-discount');
 Route::get('/sales-discount-collection/add/{customer_id}', [SalesCollectionDiscountController::class, 'addSalesCollectionDiscount'])->name('add-sales-collection');
 Route::post('/sales-discount-collection/add-discount', [SalesCollectionDiscountController::class, 'processAddSalesCollectionDiscount'])->name('add-sales-discount-collection');
@@ -801,14 +794,12 @@ Route::post('/sales-discount-collection/delete-discount', [SalesCollectionDiscou
 Route::post('/sales-discount-collection/filter', [SalesCollectionDiscountController::class, 'filterSalesCollectionDiscount'])->name('filter-sales-discount-collection');
 Route::get('/sales-discount-collection/filter-reset', [SalesCollectionDiscountController::class, 'resetFilterSalesCollectionDiscount'])->name('filter-reset-sales-discount-collection');
 Route::get('/sales-discount-collection/search', [SalesCollectionDiscountController::class, 'searchCoreCustomer'])->name('search-core-supplier-sales-collection');
-Route::get('/sales-discount-collection/claim-/sales-discount-collection/{sales_collection_piece_id}', [SalesCollectionDiscountController::class, 'ClaimSalesCollectionDiscount'])->name('claim-sales-discount-collection');
-Route::post('/sales-discount-collection/process-claim/', [SalesCollectionDiscountController::class, 'processClaimSalesCollectionDiscount'])->name('process-claim');
-Route::get('/sales-discount-collection/cancel-claim-/sales-discount-collection/{sales_invoice_id}', [SalesCollectionDiscountController::class, 'CancelClaimSalesCollectionDiscount'])->name('cancel-claim-sales-discount-collection');
-Route::post('/sales-discount-collection/process-cancel-claim/', [SalesCollectionDiscountController::class, 'processCancelClaimSalesCollectionDiscount'])->name('process-batal-claim');
-Route::get('/sales-discount-collection/detail-claim-/sales-discount-collection/{sales_collection_piece_id}', [SalesCollectionDiscountController::class, 'detailClaimSalesCollectionDiscount'])->name('detail-claim-sales-discount-collection');
 Route::get('/sales-discount-collection/detail-/sales-discount-collection/{sales_invoice_id}', [SalesCollectionDiscountController::class, 'detailClaimSalesCollection'])->name('detail-claim-sales-collection');
 
 
 Route::get('/aging-account-payable', [AcctAgingApReportController::class, 'index'])->name('aging-account-payable');
+Route::post('/aging-account-payable/filter', [AcctAgingApReportController::class, 'filterAcctAgingAp'])->name('filter-aging-account-payable');
+Route::get('/aging-account-payable/filter-reset', [AcctAgingApReportController::class, 'resetFilterAcctAgingAp'])->name('filter-reset-aging-account-payable');
+
 
 ?>

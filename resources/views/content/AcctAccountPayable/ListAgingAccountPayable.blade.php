@@ -35,7 +35,7 @@
 </h3>
 <br/>
 <div id="accordion">
-    <form  method="post" action="{{route('filter-purchase-invoice')}}" enctype="multipart/form-data">
+    <form  method="post" action="{{route('filter-aging-account-payable')}}" enctype="multipart/form-data">
     @csrf
         <div class="card border border-dark">
         <div class="card-header bg-dark" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -77,7 +77,7 @@
             </div>
             <div class="card-footer text-muted">
                 <div class="form-actions float-right">
-                    <a href="{{route('filter-reset-purchase-invoice')}}" type="reset" name="Reset" class="btn btn-danger btn-sm" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</a>
+                    <a href="{{route('filter-reset-aging-account-payable')}}" type="reset" name="Reset" class="btn btn-danger btn-sm" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</a>
                     <button type="submit" name="Find" class="btn btn-primary btn-sm" title="Search Data"><i class="fa fa-search"></i> Cari</button>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                         <th width="10%" style='text-align:center'>No Invoice Pembelian</th>
                         <th width="10%" style='text-align:center'>Tanggal Invoice</th>
                         <th width="10%" style='text-align:center'>Jatuh Tempo</th>
-                        <th width="15%" style='text-align:center'>No Faktur Pajak</th>
+                        <th width="10%" style='text-align:center'>No Faktur Pajak</th>
                         <th width="10%" style='text-align:center'>Umur</th>
                         <th width="20%" style='text-align:center'>Hutang</th>
                         <th width="20%" style='text-align:center'>Saldo Akhir</th>

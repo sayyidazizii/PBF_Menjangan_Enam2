@@ -14,10 +14,10 @@ class SalesCollectionDiscount extends Model
      */
 
      protected $table        = 'sales_collection_discount'; 
-     protected $primaryKey   = 'sales_collection_discount_id';
+     protected $primaryKey   = 'collection_id';
      
      protected $guarded = [
-         'sales_collection_discount_id',
+         'collection_id',
      ];
  
      /**

@@ -600,13 +600,13 @@ CREATE TABLE `acct_account_balance` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`account_balance_id`),
   KEY `FK_acct_account_balance_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*Data for the table `acct_account_balance` */
 
 insert  into `acct_account_balance`(`account_balance_id`,`company_id`,`branch_id`,`account_id`,`last_balance`,`created_id`,`created_at`,`updated_at`) values 
-(168,2,0,42,-1687599.00,3,NULL,'2023-12-13 14:38:44'),
-(169,2,0,43,-8963.00,3,NULL,'2023-12-13 14:38:44'),
+(168,2,0,42,-2553731.00,3,NULL,'2023-12-13 14:38:44'),
+(169,2,0,43,-18963.00,3,NULL,'2023-12-13 14:38:44'),
 (170,2,0,338,-1465000.00,3,NULL,'2023-12-13 14:38:44'),
 (171,2,0,238,-220815.00,3,NULL,'2023-12-13 14:38:44'),
 (172,2,0,522,-8963.00,3,NULL,'2023-12-13 14:38:44'),
@@ -617,10 +617,11 @@ insert  into `acct_account_balance`(`account_balance_id`,`company_id`,`branch_id
 (177,2,0,105,-36300.00,3,NULL,'2023-12-15 14:23:19'),
 (178,2,0,5,0.00,3,NULL,'2023-12-15 14:23:19'),
 (179,2,0,8,-191500.00,3,NULL,'2023-12-15 14:23:19'),
-(180,2,0,11,462000.00,3,NULL,'2023-12-26 10:11:02'),
-(181,2,0,48,-10000.00,3,NULL,'2023-12-26 10:11:02'),
-(182,2,0,50,-20000.00,3,NULL,'2023-12-26 10:11:02'),
-(183,2,0,528,-15000.00,3,NULL,'2023-12-26 10:11:02');
+(180,2,0,11,1853108.00,3,NULL,'2023-12-26 10:11:02'),
+(181,2,0,48,-25000.00,3,NULL,'2023-12-26 10:11:02'),
+(182,2,0,50,-35000.00,3,NULL,'2023-12-26 10:11:02'),
+(183,2,0,528,-30000.00,3,NULL,'2023-12-26 10:11:02'),
+(184,2,0,520,7912.00,3,NULL,'2023-12-28 10:57:49');
 
 /*Table structure for table `acct_account_balance_detail` */
 
@@ -648,7 +649,7 @@ CREATE TABLE `acct_account_balance_detail` (
   `created_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`account_balance_detail_id`),
   KEY `FK_acct_account_balance_detail_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=369 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*Data for the table `acct_account_balance_detail` */
 
@@ -731,7 +732,32 @@ insert  into `acct_account_balance_detail`(`account_balance_detail_id`,`branch_i
 (340,0,2,57,'SC','2023-12-26',81,50,0.00,0.00,20000.00,0.00,0.00,0.00,0.00,-20000.00,NULL,'2023-12-26 10:11:02',3),
 (341,0,2,57,'SC','2023-12-26',81,528,0.00,0.00,15000.00,0.00,0.00,0.00,0.00,-15000.00,NULL,'2023-12-26 10:11:02',3),
 (342,0,2,57,'SC','2023-12-26',81,42,-1685815.00,0.00,892.00,0.00,0.00,0.00,0.00,-1686707.00,NULL,'2023-12-26 10:11:02',3),
-(343,0,2,57,'SC','2023-12-26',81,42,-1686707.00,0.00,892.00,0.00,0.00,0.00,0.00,-1687599.00,NULL,'2023-12-26 10:11:02',3);
+(343,0,2,57,'SC','2023-12-26',81,42,-1686707.00,0.00,892.00,0.00,0.00,0.00,0.00,-1687599.00,NULL,'2023-12-26 10:11:02',3),
+(344,0,2,57,'SC','2023-12-28',82,5,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-28 09:45:36',3),
+(345,0,2,57,'SC','2023-12-28',82,11,462000.00,500000.00,0.00,0.00,0.00,0.00,0.00,962000.00,NULL,'2023-12-28 09:45:36',3),
+(346,0,2,57,'SC','2023-12-28',82,48,-10000.00,0.00,10000.00,0.00,0.00,0.00,0.00,-20000.00,NULL,'2023-12-28 09:45:36',3),
+(347,0,2,57,'SC','2023-12-28',82,50,-20000.00,0.00,10000.00,0.00,0.00,0.00,0.00,-30000.00,NULL,'2023-12-28 09:45:36',3),
+(348,0,2,57,'SC','2023-12-28',82,528,-15000.00,0.00,10000.00,0.00,0.00,0.00,0.00,-25000.00,NULL,'2023-12-28 09:45:36',3),
+(349,0,2,57,'SC','2023-12-28',82,42,-1687599.00,0.00,38892.00,0.00,0.00,0.00,0.00,-1726491.00,NULL,'2023-12-28 09:45:36',3),
+(350,0,2,57,'SC','2023-12-28',82,42,-1726491.00,0.00,38892.00,0.00,0.00,0.00,0.00,-1765383.00,NULL,'2023-12-28 09:45:36',3),
+(351,0,2,57,'SC','2023-12-28',83,11,962000.00,400000.00,0.00,0.00,0.00,0.00,0.00,1362000.00,NULL,'2023-12-28 09:59:39',3),
+(352,0,2,57,'SC','2023-12-28',83,48,-20000.00,0.00,5000.00,0.00,0.00,0.00,0.00,-25000.00,NULL,'2023-12-28 09:59:39',3),
+(353,0,2,57,'SC','2023-12-28',83,50,-30000.00,0.00,5000.00,0.00,0.00,0.00,0.00,-35000.00,NULL,'2023-12-28 09:59:39',3),
+(354,0,2,57,'SC','2023-12-28',83,528,-25000.00,0.00,5000.00,0.00,0.00,0.00,0.00,-30000.00,NULL,'2023-12-28 09:59:39',3),
+(355,0,2,57,'SC','2023-12-28',83,42,-1765383.00,0.00,319328.00,0.00,0.00,0.00,0.00,-2084711.00,NULL,'2023-12-28 09:59:39',3),
+(356,0,2,57,'SC','2023-12-28',84,11,1362000.00,461108.00,0.00,0.00,0.00,0.00,0.00,1823108.00,NULL,'2023-12-28 10:09:34',3),
+(357,0,2,57,'SC','2023-12-28',84,48,-25000.00,0.00,0.00,0.00,0.00,0.00,0.00,-25000.00,NULL,'2023-12-28 10:09:34',3),
+(358,0,2,57,'SC','2023-12-28',84,50,-35000.00,0.00,0.00,0.00,0.00,0.00,0.00,-35000.00,NULL,'2023-12-28 10:09:34',3),
+(359,0,2,57,'SC','2023-12-28',84,528,-30000.00,0.00,0.00,0.00,0.00,0.00,0.00,-30000.00,NULL,'2023-12-28 10:09:34',3),
+(360,0,2,57,'SC','2023-12-28',84,42,-2084711.00,0.00,461108.00,0.00,0.00,0.00,0.00,-2545819.00,NULL,'2023-12-28 10:09:34',3),
+(361,0,2,64,'SCD','2023-12-28',88,11,1823108.00,10000.00,0.00,0.00,0.00,0.00,0.00,1833108.00,NULL,'2023-12-28 10:49:00',3),
+(362,0,2,64,'SCD','2023-12-28',88,42,-2545819.00,0.00,7912.00,0.00,0.00,0.00,0.00,-2553731.00,NULL,'2023-12-28 10:49:00',3),
+(363,0,2,64,'SCD','2023-12-28',89,11,1833108.00,10000.00,0.00,0.00,0.00,0.00,0.00,1843108.00,NULL,'2023-12-28 10:57:49',3),
+(364,0,2,64,'SCD','2023-12-28',89,43,-8963.00,0.00,7912.00,0.00,0.00,0.00,0.00,-16875.00,NULL,'2023-12-28 10:57:49',3),
+(365,0,2,64,'SCD','2023-12-28',89,520,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,'2023-12-28 10:57:49',3),
+(366,0,2,64,'SCD','2023-12-28',90,11,1843108.00,10000.00,0.00,0.00,0.00,0.00,0.00,1853108.00,NULL,'2023-12-28 11:04:20',3),
+(367,0,2,64,'SCD','2023-12-28',90,43,-16875.00,0.00,2088.00,0.00,0.00,0.00,0.00,-18963.00,NULL,'2023-12-28 11:04:20',3),
+(368,0,2,64,'SCD','2023-12-28',90,520,0.00,7912.00,0.00,0.00,0.00,0.00,0.00,7912.00,NULL,'2023-12-28 11:04:20',3);
 
 /*Table structure for table `acct_account_mutation` */
 
@@ -1704,7 +1730,7 @@ CREATE TABLE `acct_journal_voucher` (
   KEY `transaction_journal_no` (`transaction_journal_no`),
   KEY `project_id` (`project_id`),
   KEY `project_type_id` (`project_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher` */
 
@@ -1722,7 +1748,16 @@ insert  into `acct_journal_voucher`(`journal_voucher_id`,`company_id`,`branch_id
 (78,2,1,0,0,31,28,'0004/PH/XII/2023','Pembayaran hutang 0004/PH/XII/2023','0011/JV/XII/2023',202312,'2023-12-18',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-18 04:04:16','2023-12-18 04:04:16',0),
 (79,2,1,0,0,31,29,'0005/PH/XII/2023','Pembayaran hutang 0005/PH/XII/2023','0012/JV/XII/2023',202312,'2023-12-18',NULL,NULL,NULL,1,'PP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-18 04:06:59','2023-12-18 04:06:59',0),
 (80,2,1,0,0,63,12,'0004/BPB/2023','Penjualan Atas Produk PHAPROS - 0004/PO/I/2023','0013/JV/XII/2023',202312,'2023-12-22',NULL,NULL,NULL,1,'PPP',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-22 07:32:50','2023-12-22 07:32:50',0),
-(81,2,1,0,0,57,19,'0001/PO/XII/2023','Pelunasan Piutang 0001/PO/XII/2023','0014/JV/XII/2023',202312,'2023-12-26',NULL,NULL,NULL,1,'SC',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-26 03:11:02','2023-12-26 03:11:02',0);
+(81,2,1,0,0,57,19,'0001/PO/XII/2023','Pelunasan Piutang 0001/PO/XII/2023','0014/JV/XII/2023',202312,'2023-12-26',NULL,NULL,NULL,1,'SC',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-26 03:11:02','2023-12-26 03:11:02',0),
+(82,2,1,0,0,57,20,'0002/PO/XII/2023','Pelunasan Piutang 0002/PO/XII/2023','0015/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SC',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(83,2,1,0,0,57,21,'0003/PO/XII/2023','Pelunasan Piutang 0003/PO/XII/2023','0016/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SC',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 02:59:39','2023-12-28 02:59:39',0),
+(84,2,1,0,0,57,22,'0004/PO/XII/2023','Pelunasan Piutang 0004/PO/XII/2023','0017/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SC',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 03:09:33','2023-12-28 03:09:33',0),
+(85,2,1,0,0,57,23,'0005/PP/XII/2023','Pelunasan Piutang 0005/PP/XII/2023','0018/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SC',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 03:36:27','2023-12-28 03:36:27',0),
+(86,2,1,0,0,57,24,'0006/PP/XII/2023','Pelunasan Piutang 0006/PP/XII/2023','0019/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SC',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 03:44:54','2023-12-28 03:44:54',0),
+(87,2,1,0,0,64,1,'0001/PPD/XII/2023','Pelunasan Piutang Diskon0001/PPD/XII/2023','0020/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SCD',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 03:47:16','2023-12-28 03:47:16',0),
+(88,2,1,0,0,64,2,'0002/PPD/XII/2023','Pelunasan Piutang Diskon0002/PPD/XII/2023','0021/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SCD',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 03:49:00','2023-12-28 03:49:00',0),
+(89,2,1,0,0,64,3,'0003/PPD/XII/2023','Pelunasan Piutang Diskon -0003/PPD/XII/2023','0022/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SCD',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 03:57:49','2023-12-28 03:57:49',0),
+(90,2,1,0,0,64,4,'0004/PPD/XII/2023','Pelunasan Piutang Diskon -0004/PPD/XII/2023','0023/JV/XII/2023',202312,'2023-12-28',NULL,NULL,NULL,1,'SCD',0,0,NULL,0,0,NULL,NULL,0,3,'2023-12-28 04:04:20','2023-12-28 04:04:20',0);
 
 /*Table structure for table `acct_journal_voucher_item` */
 
@@ -1750,7 +1785,7 @@ CREATE TABLE `acct_journal_voucher_item` (
   UNIQUE KEY `journal_voucher_item_token_void` (`journal_voucher_item_token_void`),
   KEY `FK_acct_journal_voucher_item_journal_voucher_id` (`journal_voucher_id`) USING BTREE,
   KEY `FK_acct_journal_voucher_item_account_id` (`account_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=400 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=425 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 /*Data for the table `acct_journal_voucher_item` */
 
@@ -1833,7 +1868,32 @@ insert  into `acct_journal_voucher_item`(`journal_voucher_item_id`,`journal_vouc
 (396,81,2,50,NULL,20000.00,0,1,0.00,20000.00,NULL,NULL,0,'2023-12-26 03:11:02','2023-12-26 03:11:02',0),
 (397,81,2,528,NULL,15000.00,0,1,0.00,15000.00,NULL,NULL,0,'2023-12-26 03:11:02','2023-12-26 03:11:02',0),
 (398,81,2,42,NULL,892.12,0,1,0.00,892.12,NULL,NULL,0,'2023-12-26 03:11:02','2023-12-26 03:11:02',0),
-(399,81,2,42,NULL,892.12,0,1,0.00,892.12,NULL,NULL,0,'2023-12-26 03:11:02','2023-12-26 03:11:02',0);
+(399,81,2,42,NULL,892.12,0,1,0.00,892.12,NULL,NULL,0,'2023-12-26 03:11:02','2023-12-26 03:11:02',0),
+(400,82,2,5,NULL,0.00,1,1,0.00,0.00,NULL,NULL,0,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(401,82,2,11,NULL,500000.00,1,1,500000.00,0.00,NULL,NULL,0,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(402,82,2,48,NULL,10000.00,0,1,0.00,10000.00,NULL,NULL,0,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(403,82,2,50,NULL,10000.00,0,1,0.00,10000.00,NULL,NULL,0,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(404,82,2,528,NULL,10000.00,0,1,0.00,10000.00,NULL,NULL,0,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(405,82,2,42,NULL,38892.12,0,1,0.00,38892.12,NULL,NULL,0,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(406,82,2,42,NULL,38892.12,0,1,0.00,38892.12,NULL,NULL,0,'2023-12-28 02:45:36','2023-12-28 02:45:36',0),
+(407,83,2,11,NULL,400000.00,1,1,400000.00,0.00,NULL,NULL,0,'2023-12-28 02:59:39','2023-12-28 02:59:39',0),
+(408,83,2,48,NULL,5000.00,0,1,5000.00,0.00,NULL,NULL,0,'2023-12-28 02:59:39','2023-12-28 02:59:39',0),
+(409,83,2,50,NULL,5000.00,0,1,5000.00,0.00,NULL,NULL,0,'2023-12-28 02:59:39','2023-12-28 02:59:39',0),
+(410,83,2,528,NULL,5000.00,0,1,5000.00,0.00,NULL,NULL,0,'2023-12-28 02:59:39','2023-12-28 02:59:39',0),
+(411,83,2,42,NULL,319327.88,0,1,0.00,319327.88,NULL,NULL,0,'2023-12-28 02:59:39','2023-12-28 02:59:39',0),
+(412,84,2,11,NULL,461107.88,1,1,461107.88,0.00,NULL,NULL,0,'2023-12-28 03:09:34','2023-12-28 03:09:34',0),
+(413,84,2,48,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-28 03:09:34','2023-12-28 03:09:34',0),
+(414,84,2,50,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-28 03:09:34','2023-12-28 03:09:34',0),
+(415,84,2,528,NULL,0.00,0,1,0.00,0.00,NULL,NULL,0,'2023-12-28 03:09:34','2023-12-28 03:09:34',0),
+(416,84,2,42,NULL,461107.88,0,1,0.00,461107.88,NULL,NULL,0,'2023-12-28 03:09:34','2023-12-28 03:09:34',0),
+(417,88,2,11,NULL,10000.00,1,1,10000.00,0.00,NULL,NULL,0,'2023-12-28 03:49:00','2023-12-28 03:49:00',0),
+(418,88,2,42,NULL,7912.00,0,1,0.00,7912.00,NULL,NULL,0,'2023-12-28 03:49:00','2023-12-28 03:49:00',0),
+(419,89,2,11,NULL,10000.00,1,1,10000.00,0.00,NULL,NULL,0,'2023-12-28 03:57:49','2023-12-28 03:57:49',0),
+(420,89,2,43,NULL,7912.00,0,1,0.00,7912.00,NULL,NULL,0,'2023-12-28 03:57:49','2023-12-28 03:57:49',0),
+(421,89,2,520,NULL,0.00,0,0,0.00,0.00,NULL,NULL,0,'2023-12-28 03:57:49','2023-12-28 03:57:49',0),
+(422,90,2,11,NULL,10000.00,1,1,10000.00,0.00,NULL,NULL,0,'2023-12-28 04:04:20','2023-12-28 04:04:20',0),
+(423,90,2,43,NULL,2088.00,0,1,0.00,2088.00,NULL,NULL,0,'2023-12-28 04:04:20','2023-12-28 04:04:20',0),
+(424,90,2,520,NULL,7912.00,0,0,0.00,7912.00,NULL,NULL,0,'2023-12-28 04:04:20','2023-12-28 04:04:20',0);
 
 /*Table structure for table `acct_journal_voucher_type` */
 
@@ -2451,7 +2511,7 @@ CREATE TABLE `core_agency` (
 /*Data for the table `core_agency` */
 
 insert  into `core_agency`(`agency_id`,`branch_id`,`agency_code`,`agency_name`,`agency_phone_number`,`agency_contact_person`,`agency_address`,`agency_email`,`agency_profit_sharing_percentage`,`agency_remark`,`mou_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,1,'B001','Buyer','0526525','sam','Surakarta','-',2.00,NULL,0,0,121,'2019-10-24 11:18:12','2023-08-09 09:41:21'),
+(1,1,'B001','EXAMPLE AGENSI','0526525','SMG','SEMARANG','-',2.00,NULL,0,0,121,'2019-10-24 11:18:12','2023-12-28 04:42:51'),
 (2,0,'tes1','tes','1212','tes','tes','tes',12.00,'tes',0,1,3,'2021-10-15 02:43:48','2023-06-23 10:52:21');
 
 /*Table structure for table `core_bank` */
@@ -3457,8 +3517,8 @@ CREATE TABLE `core_supplier` (
 /*Data for the table `core_supplier` */
 
 insert  into `core_supplier`(`supplier_id`,`branch_id`,`province_id`,`city_id`,`supplier_code`,`supplier_name`,`supplier_id_number`,`supplier_address`,`supplier_city`,`supplier_home_phone`,`supplier_mobile_phone1`,`supplier_mobile_phone2`,`supplier_fax_number`,`supplier_email`,`supplier_contact_person`,`supplier_bank_acct_name`,`supplier_bank_acct_no`,`supplier_tax_no`,`supplier_npwp_no`,`supplier_npwp_address`,`supplier_payment_terms`,`supplier_status`,`supplier_remark`,`advance_account_id`,`giro_account_id`,`payable_account_id`,`created_id`,`created_at`,`data_state`,`updated_at`) values 
-(7,1,71,1048,'','KIMIA FARMA',NULL,'Jl. Gedong Songo Timur No.1','','(024) 7604307',NULL,NULL,NULL,NULL,NULL,'1','1',NULL,'1',NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:54:36',0,'2023-12-09 23:38:35'),
-(8,1,71,1048,'','PHAPROS, PT',NULL,'Jl. Simongan No.131','','(024) 7607330',NULL,NULL,NULL,NULL,NULL,'2','2',NULL,'2',NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:55:48',0,'2023-12-09 23:38:55');
+(7,1,71,1048,'','KIMIA FARMA',NULL,'Jl. Gedong Songo Timur No.1','','(024) 7604307',NULL,NULL,NULL,NULL,NULL,'Mandiri KIMIA FARMA','1234567',NULL,'1',NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:54:36',0,'2023-12-28 04:41:31'),
+(8,1,71,1048,'','PHAPROS, PT',NULL,'Jl. Simongan No.131','','(024) 7607330',NULL,NULL,NULL,NULL,NULL,'Mandiri PHAPROS, PT','12345678',NULL,'2',NULL,NULL,0,NULL,0,0,0,74,'2023-06-24 03:55:48',0,'2023-12-28 04:42:01');
 
 /*Table structure for table `failed_jobs` */
 
@@ -5149,39 +5209,70 @@ CREATE TABLE `sales_collection` (
   KEY `FK_sales_collection_customer_id` (`customer_id`),
   KEY `FK_sales_collection_salesman_id` (`salesman_id`),
   KEY `FK_sales_collection_section_id` (`section_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_collection` */
 
 insert  into `sales_collection`(`collection_id`,`branch_id`,`salesman_id`,`customer_id`,`section_id`,`project_id`,`cash_account_id`,`collection_no`,`collection_date`,`reference_number`,`collection_remark`,`collection_amount`,`collection_allocated`,`collection_shortover`,`collection_total_amount`,`collection_shortover_remark`,`collection_total_cash_amount`,`collection_total_transfer_amount`,`collection_total_giro_amount`,`collection_giro_status`,`collection_token`,`collection_token_void`,`voided_id`,`voided_on`,`voided_remark`,`posted`,`posted_by`,`posted_on`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(19,1,0,1,NULL,0,8,'0001/PO/XII/2023','2023-12-26','',NULL,462000.00,461107.88,0.00,462000.00,NULL,0.00,462000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-26 03:11:02','2023-12-26 03:11:02');
+(19,1,0,1,NULL,0,8,'0001/PO/XII/2023','2023-12-26','',NULL,462000.00,461107.88,0.00,462000.00,NULL,0.00,462000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-26 03:11:02','2023-12-26 03:11:02'),
+(20,1,0,1,NULL,0,8,'0002/PO/XII/2023','2023-12-28','',NULL,500000.00,461107.88,0.00,500000.00,NULL,0.00,500000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 02:45:36','2023-12-28 02:45:36'),
+(21,1,0,1,NULL,0,8,'0003/PO/XII/2023','2023-12-28','',NULL,400000.00,319327.88,0.00,400000.00,NULL,0.00,400000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 02:59:39','2023-12-28 02:59:39'),
+(22,1,0,1,NULL,0,8,'0004/PO/XII/2023','2023-12-28','',NULL,461107.88,461107.88,0.00,461107.88,NULL,0.00,461107.88,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 03:09:33','2023-12-28 03:09:33'),
+(23,1,0,1,NULL,0,8,'0005/PP/XII/2023','2023-12-28','',NULL,10000.00,2088.00,0.00,10000.00,NULL,0.00,10000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 03:36:27','2023-12-28 03:36:27'),
+(24,1,0,1,NULL,0,8,'0006/PP/XII/2023','2023-12-28','',NULL,10000.00,2088.00,0.00,10000.00,NULL,0.00,10000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 03:44:54','2023-12-28 03:44:54');
 
 /*Table structure for table `sales_collection_discount` */
 
 DROP TABLE IF EXISTS `sales_collection_discount`;
 
 CREATE TABLE `sales_collection_discount` (
-  `sales_collection_discount_id` int(11) NOT NULL AUTO_INCREMENT,
-  `sales_invoice_id` int(11) DEFAULT NULL,
-  `sales_invoice_no` varchar(255) DEFAULT NULL,
-  `sales_collection_discount_remark` varchar(255) DEFAULT NULL,
-  `sales_collection_discount_type_id` int(11) NOT NULL,
-  `memo_no` varchar(25) NOT NULL,
-  `promotion_no` varchar(255) NOT NULL,
-  `customer_id` int(11) DEFAULT NULL,
-  `total_amount` int(11) DEFAULT NULL,
-  `piece_amount` int(11) DEFAULT NULL,
-  `total_amount_after_discount` int(11) DEFAULT NULL,
-  `claim_date` date DEFAULT NULL,
-  `claim_status` int(11) DEFAULT 0,
-  `data_state` int(11) DEFAULT 0,
-  `created_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`sales_collection_discount_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `collection_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `branch_id` int(11) DEFAULT 0,
+  `salesman_id` int(11) DEFAULT 0,
+  `customer_id` bigint(20) DEFAULT NULL,
+  `section_id` int(11) DEFAULT NULL,
+  `project_id` int(11) DEFAULT 0,
+  `cash_account_id` int(11) NOT NULL DEFAULT 0,
+  `collection_no` varchar(20) DEFAULT '',
+  `collection_date` date DEFAULT NULL,
+  `reference_number` varchar(20) DEFAULT '',
+  `collection_remark` text DEFAULT NULL,
+  `collection_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_allocated` decimal(20,2) DEFAULT 0.00,
+  `collection_shortover` decimal(20,2) DEFAULT 0.00,
+  `collection_total_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_shortover_remark` text DEFAULT NULL,
+  `collection_total_cash_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_total_transfer_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_total_giro_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_giro_status` decimal(1,0) DEFAULT 0,
+  `collection_token` varchar(250) DEFAULT NULL,
+  `collection_token_void` varchar(250) DEFAULT NULL,
+  `voided_id` int(11) DEFAULT 0,
+  `voided_on` datetime DEFAULT NULL,
+  `voided_remark` text DEFAULT NULL,
+  `posted` enum('1','0') DEFAULT '0',
+  `posted_by` varchar(20) DEFAULT '',
+  `posted_on` datetime DEFAULT NULL,
+  `data_state` decimal(1,0) DEFAULT 0,
+  `created_id` int(11) DEFAULT 0,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`collection_id`),
+  UNIQUE KEY `collection_token` (`collection_token`),
+  UNIQUE KEY `collection_token_void` (`collection_token_void`),
+  KEY `FK_sales_collection_customer_id` (`customer_id`),
+  KEY `FK_sales_collection_salesman_id` (`salesman_id`),
+  KEY `FK_sales_collection_section_id` (`section_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_collection_discount` */
+
+insert  into `sales_collection_discount`(`collection_id`,`branch_id`,`salesman_id`,`customer_id`,`section_id`,`project_id`,`cash_account_id`,`collection_no`,`collection_date`,`reference_number`,`collection_remark`,`collection_amount`,`collection_allocated`,`collection_shortover`,`collection_total_amount`,`collection_shortover_remark`,`collection_total_cash_amount`,`collection_total_transfer_amount`,`collection_total_giro_amount`,`collection_giro_status`,`collection_token`,`collection_token_void`,`voided_id`,`voided_on`,`voided_remark`,`posted`,`posted_by`,`posted_on`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(1,1,0,1,NULL,0,8,'0001/PPD/XII/2023','2023-12-28','',NULL,10000.00,2088.00,0.00,10000.00,NULL,0.00,10000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 03:47:16','2023-12-28 03:47:16'),
+(2,1,0,1,NULL,0,8,'0002/PPD/XII/2023','2023-12-28','',NULL,10000.00,2088.00,0.00,10000.00,NULL,0.00,10000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 03:49:00','2023-12-28 03:49:00'),
+(3,1,0,1,NULL,0,8,'0003/PPD/XII/2023','2023-12-28','',NULL,10000.00,2088.00,0.00,10000.00,NULL,0.00,10000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 03:57:49','2023-12-28 03:57:49'),
+(4,1,0,1,NULL,0,8,'0004/PPD/XII/2023','2023-12-28','',NULL,10000.00,2088.00,0.00,10000.00,NULL,0.00,10000.00,0.00,0,NULL,NULL,0,NULL,NULL,'0','',NULL,0,3,'2023-12-28 04:04:20','2023-12-28 04:04:20');
 
 /*Table structure for table `sales_collection_giro` */
 
@@ -5206,6 +5297,30 @@ CREATE TABLE `sales_collection_giro` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*Data for the table `sales_collection_giro` */
+
+/*Table structure for table `sales_collection_giro_discount` */
+
+DROP TABLE IF EXISTS `sales_collection_giro_discount`;
+
+CREATE TABLE `sales_collection_giro_discount` (
+  `collection_giro_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `collection_id` bigint(20) DEFAULT 0,
+  `account_id` int(11) NOT NULL DEFAULT 0,
+  `collection_giro_bank_name` varchar(50) DEFAULT '',
+  `collection_giro_number` varchar(20) DEFAULT '',
+  `collection_giro_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_giro_due_date` date DEFAULT NULL,
+  `collection_giro_account_name` varchar(50) DEFAULT '',
+  `collection_giro_token` varchar(250) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`collection_giro_id`),
+  UNIQUE KEY `collection_giro_token` (`collection_giro_token`),
+  KEY `FK_sales_collection_giro_bank_id` (`collection_giro_bank_name`),
+  KEY `FK_sales_collection_giro_collection_id` (`collection_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+/*Data for the table `sales_collection_giro_discount` */
 
 /*Table structure for table `sales_collection_item` */
 
@@ -5237,14 +5352,68 @@ CREATE TABLE `sales_collection_item` (
   UNIQUE KEY `collection_item_token_void` (`collection_item_token_void`),
   KEY `FK_sales_collection_collection_id` (`collection_id`) USING BTREE,
   KEY `FK_sales_collection_sales_invoice_id` (`sales_invoice_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 /*Data for the table `sales_collection_item` */
 
 insert  into `sales_collection_item`(`collection_item_id`,`collection_id`,`sales_invoice_id`,`sales_invoice_no`,`sales_invoice_date`,`sales_invoice_amount`,`subtotal_invoice_amount`,`discount_percentage`,`discount_amount`,`total_amount`,`paid_amount`,`owing_amount`,`shortover_amount`,`allocation_amount`,`collection_discount`,`last_balance`,`collection_item_token`,`collection_item_token_void`,`created_at`,`updated_at`) values 
 (23,19,16,'0001/TMO.ME/12/2023','2023-12-14',248501,0,0,0,248501.25,0.00,248501.25,0.00,248501.25,0.00,0.00,NULL,NULL,'2023-12-26 03:11:02','2023-12-26 03:11:02'),
 (24,19,17,'0002/TMO.ME/12/2023','2023-12-14',19328,0,0,0,19327.88,0.00,19327.88,0.00,19327.88,0.00,0.00,NULL,NULL,'2023-12-26 03:11:02','2023-12-26 03:11:02'),
-(25,19,18,'0003/TMO.ME/12/2023','2023-12-22',193279,0,0,0,193278.75,0.00,193278.75,0.00,193278.75,0.00,0.00,NULL,NULL,'2023-12-26 03:11:02','2023-12-26 03:11:02');
+(25,19,18,'0003/TMO.ME/12/2023','2023-12-22',193279,0,0,0,193278.75,0.00,193278.75,0.00,193278.75,0.00,0.00,NULL,NULL,'2023-12-26 03:11:02','2023-12-26 03:11:02'),
+(26,20,16,'0001/TMO.ME/12/2023','2023-12-14',248501,0,0,0,248501.25,0.00,248501.25,0.00,248501.25,0.00,0.00,NULL,NULL,'2023-12-28 02:45:36','2023-12-28 02:45:36'),
+(27,20,17,'0002/TMO.ME/12/2023','2023-12-14',19328,0,0,0,19327.88,0.00,19327.88,0.00,19327.88,0.00,0.00,NULL,NULL,'2023-12-28 02:45:36','2023-12-28 02:45:36'),
+(28,20,18,'0003/TMO.ME/12/2023','2023-12-22',193279,0,0,0,193278.75,0.00,193278.75,0.00,193278.75,0.00,0.00,NULL,NULL,'2023-12-28 02:45:36','2023-12-28 02:45:36'),
+(29,21,16,'0001/TMO.ME/12/2023','2023-12-14',248501,0,0,0,248501.25,0.00,248501.25,0.00,200000.00,0.00,48501.25,NULL,NULL,'2023-12-28 02:59:39','2023-12-28 02:59:39'),
+(30,21,17,'0002/TMO.ME/12/2023','2023-12-14',19328,0,0,0,19327.88,0.00,19327.88,0.00,19327.88,0.00,0.00,NULL,NULL,'2023-12-28 02:59:39','2023-12-28 02:59:39'),
+(31,21,18,'0003/TMO.ME/12/2023','2023-12-22',193279,0,0,0,193278.75,0.00,193278.75,0.00,100000.00,0.00,93278.75,NULL,NULL,'2023-12-28 02:59:39','2023-12-28 02:59:39'),
+(32,22,16,'0001/TMO.ME/12/2023','2023-12-14',248501,0,0,0,248501.25,0.00,248501.25,0.00,248501.25,0.00,0.00,NULL,NULL,'2023-12-28 03:09:33','2023-12-28 03:09:33'),
+(33,22,17,'0002/TMO.ME/12/2023','2023-12-14',19328,0,0,0,19327.88,0.00,19327.88,0.00,19327.88,0.00,0.00,NULL,NULL,'2023-12-28 03:09:33','2023-12-28 03:09:33'),
+(34,22,18,'0003/TMO.ME/12/2023','2023-12-22',193279,0,0,0,193278.75,0.00,193278.75,0.00,193278.75,0.00,0.00,NULL,NULL,'2023-12-28 03:09:34','2023-12-28 03:09:34');
+
+/*Table structure for table `sales_collection_item_discount` */
+
+DROP TABLE IF EXISTS `sales_collection_item_discount`;
+
+CREATE TABLE `sales_collection_item_discount` (
+  `collection_item_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `collection_id` bigint(20) DEFAULT 0,
+  `sales_invoice_id` bigint(20) DEFAULT 0,
+  `sales_invoice_no` varchar(20) DEFAULT '',
+  `sales_invoice_date` date DEFAULT NULL,
+  `sales_invoice_amount` decimal(20,0) DEFAULT 0,
+  `subtotal_invoice_amount` decimal(20,0) DEFAULT 0,
+  `discount_percentage` decimal(20,0) DEFAULT 0,
+  `discount_amount` decimal(20,0) DEFAULT 0,
+  `total_amount` decimal(20,2) DEFAULT 0.00,
+  `paid_amount` decimal(20,2) DEFAULT 0.00,
+  `owing_amount` decimal(20,2) DEFAULT 0.00,
+  `shortover_amount` decimal(20,2) DEFAULT 0.00,
+  `allocation_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_discount` decimal(20,2) DEFAULT 0.00,
+  `last_balance` decimal(20,2) DEFAULT 0.00,
+  `collection_item_token` varchar(250) DEFAULT NULL,
+  `collection_item_token_void` varchar(250) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`collection_item_id`),
+  UNIQUE KEY `collection_item_token` (`collection_item_token`),
+  UNIQUE KEY `collection_item_token_void` (`collection_item_token_void`),
+  KEY `FK_sales_collection_collection_id` (`collection_id`),
+  KEY `FK_sales_collection_sales_invoice_id` (`sales_invoice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+
+/*Data for the table `sales_collection_item_discount` */
+
+insert  into `sales_collection_item_discount`(`collection_item_id`,`collection_id`,`sales_invoice_id`,`sales_invoice_no`,`sales_invoice_date`,`sales_invoice_amount`,`subtotal_invoice_amount`,`discount_percentage`,`discount_amount`,`total_amount`,`paid_amount`,`owing_amount`,`shortover_amount`,`allocation_amount`,`collection_discount`,`last_balance`,`collection_item_token`,`collection_item_token_void`,`created_at`,`updated_at`) values 
+(35,2,16,'0001/TMO.ME/12/2023','2023-12-14',1125,0,0,0,1125.00,0.00,1125.00,0.00,1125.00,0.00,0.00,NULL,NULL,'2023-12-28 03:49:00','2023-12-28 03:49:00'),
+(36,2,17,'0002/TMO.ME/12/2023','2023-12-14',88,0,0,0,88.00,0.00,88.00,0.00,88.00,0.00,0.00,NULL,NULL,'2023-12-28 03:49:00','2023-12-28 03:49:00'),
+(37,2,18,'0003/TMO.ME/12/2023','2023-12-22',875,0,0,0,875.00,0.00,875.00,0.00,875.00,0.00,0.00,NULL,NULL,'2023-12-28 03:49:00','2023-12-28 03:49:00'),
+(38,3,16,'0001/TMO.ME/12/2023','2023-12-14',1125,0,0,0,1125.00,0.00,1125.00,0.00,1125.00,0.00,0.00,NULL,NULL,'2023-12-28 03:57:49','2023-12-28 03:57:49'),
+(39,3,17,'0002/TMO.ME/12/2023','2023-12-14',88,0,0,0,88.00,0.00,88.00,0.00,88.00,0.00,0.00,NULL,NULL,'2023-12-28 03:57:49','2023-12-28 03:57:49'),
+(40,3,18,'0003/TMO.ME/12/2023','2023-12-22',875,0,0,0,875.00,0.00,875.00,0.00,875.00,0.00,0.00,NULL,NULL,'2023-12-28 03:57:49','2023-12-28 03:57:49'),
+(41,4,16,'0001/TMO.ME/12/2023','2023-12-14',1125,0,0,0,1125.00,0.00,1125.00,0.00,1125.00,0.00,0.00,NULL,NULL,'2023-12-28 04:04:20','2023-12-28 04:04:20'),
+(42,4,17,'0002/TMO.ME/12/2023','2023-12-14',88,0,0,0,88.00,0.00,88.00,0.00,88.00,0.00,0.00,NULL,NULL,'2023-12-28 04:04:20','2023-12-28 04:04:20'),
+(43,4,18,'0003/TMO.ME/12/2023','2023-12-22',875,0,0,0,875.00,0.00,875.00,0.00,875.00,0.00,0.00,NULL,NULL,'2023-12-28 04:04:20','2023-12-28 04:04:20');
 
 /*Table structure for table `sales_collection_transfer` */
 
@@ -5264,12 +5433,40 @@ CREATE TABLE `sales_collection_transfer` (
   PRIMARY KEY (`collection_giro_id`),
   UNIQUE KEY `collection_transfer_token` (`collection_transfer_token`),
   KEY `sales_collection_transfer_collection_id` (`collection_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*Data for the table `sales_collection_transfer` */
 
 insert  into `sales_collection_transfer`(`collection_giro_id`,`collection_id`,`account_id`,`collection_transfer_bank_name`,`collection_transfer_amount`,`collection_transfer_account_name`,`collection_transfer_account_no`,`collection_transfer_token`,`created_at`,`updated_at`) values 
-(9,19,11,'Mandiri mpu Tantular',462000.00,'1','136-00-76632709',NULL,'2023-12-26 03:11:02','2023-12-26 03:11:02');
+(9,19,11,'Mandiri mpu Tantular',462000.00,'1','136-00-76632709',NULL,'2023-12-26 03:11:02','2023-12-26 03:11:02'),
+(10,20,11,'mandiri',500000.00,'Koperasi Menjangan Enam','136-00-766322709',NULL,'2023-12-28 02:45:36','2023-12-28 02:45:36'),
+(11,21,11,'1',400000.00,'1','1',NULL,'2023-12-28 02:59:39','2023-12-28 02:59:39'),
+(12,22,11,'1',461107.88,'1','1',NULL,'2023-12-28 03:09:34','2023-12-28 03:09:34'),
+(13,2,11,'1',10000.00,'1','11',NULL,'2023-12-28 03:49:00','2023-12-28 03:49:00'),
+(14,3,11,'1',10000.00,'1','11',NULL,'2023-12-28 03:57:49','2023-12-28 03:57:49'),
+(15,4,11,'1',10000.00,'1','1',NULL,'2023-12-28 04:04:20','2023-12-28 04:04:20');
+
+/*Table structure for table `sales_collection_transfer_discount` */
+
+DROP TABLE IF EXISTS `sales_collection_transfer_discount`;
+
+CREATE TABLE `sales_collection_transfer_discount` (
+  `collection_giro_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `collection_id` bigint(20) DEFAULT 0,
+  `account_id` int(11) NOT NULL DEFAULT 0,
+  `collection_transfer_bank_name` varchar(50) DEFAULT '',
+  `collection_transfer_amount` decimal(20,2) DEFAULT 0.00,
+  `collection_transfer_account_name` varchar(100) DEFAULT '',
+  `collection_transfer_account_no` varchar(20) DEFAULT '0',
+  `collection_transfer_token` varchar(250) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`collection_giro_id`),
+  UNIQUE KEY `collection_transfer_token` (`collection_transfer_token`),
+  KEY `sales_collection_transfer_collection_id` (`collection_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+/*Data for the table `sales_collection_transfer_discount` */
 
 /*Table structure for table `sales_customer` */
 
@@ -5766,9 +5963,9 @@ CREATE TABLE `sales_invoice` (
 /*Data for the table `sales_invoice` */
 
 insert  into `sales_invoice`(`sales_invoice_id`,`branch_id`,`warehouse_id`,`customer_id`,`sales_order_id`,`sales_delivery_note_id`,`collection_method_account_id`,`services_income_id`,`sales_invoice_no`,`sales_invoice_reference_no`,`sales_invoice_date`,`sales_invoice_due_date`,`sales_invoice_remark`,`sales_invoice_status`,`services_income_amount`,`subtotal_item`,`subtotal_amount`,`subtotal_before_discount`,`discount_percentage`,`discount_amount`,`return_status`,`subtotal_after_discount`,`tax_percentage`,`tax_amount`,`goods_received_note_no`,`faktur_tax_no`,`buyers_acknowledgment_id`,`buyers_acknowledgment_no`,`ttf_no`,`kwitansi_status`,`total_amount`,`paid_amount`,`owing_amount`,`shortover_amount`,`last_balance`,`total_discount_amount`,`paid_discount_amount`,`owing_discount_amount`,`shortover_discount_amount`,`discount_last_balance`,`cash_advance_amount`,`change_amount`,`sales_return_amount`,`sales_collection_date`,`sales_invoice_token`,`sales_invoice_token_void`,`voided_id`,`voided_on`,`voided_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(16,1,8,1,7,10,0,0,'0001/TMO.ME/12/2023','','2023-12-14','2023-12-14',NULL,0,0.00,150.00,248501.25,0.00,0.00,0.00,0,223875.00,0.00,24626.25,'0002/BPB/2023','0001/20230801/01X',53,'0002/BPB/2023','1',0,248501.25,248501.25,0.00,0.00,0.00,1125.00,0.00,1125.00,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-14 03:21:38','2023-12-26 03:11:02'),
-(17,1,8,1,8,11,0,0,'0002/TMO.ME/12/2023','','2023-12-14',NULL,NULL,0,0.00,10.00,19327.88,0.00,0.00,0.00,0,17412.50,0.00,1915.38,NULL,'1',54,'0003/BPB/2023','',0,19327.88,19327.88,0.00,0.00,0.00,88.00,0.00,88.00,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-14 07:33:50','2023-12-26 03:11:02'),
-(18,1,8,1,9,12,0,0,'0003/TMO.ME/12/2023','','2023-12-22',NULL,NULL,0,0.00,100.00,193278.75,0.00,0.00,0.00,0,174125.00,0.00,19153.75,NULL,'0004/20230801/01X',55,'0004/BPB/2023','',0,193278.75,193278.75,0.00,0.00,0.00,875.00,0.00,875.00,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-22 07:34:13','2023-12-26 03:11:02');
+(16,1,8,1,7,10,0,0,'0001/TMO.ME/12/2023','','2023-12-14','2023-12-14',NULL,0,0.00,150.00,248501.25,0.00,0.00,0.00,0,223875.00,0.00,24626.25,'0002/BPB/2023','0001/20230801/01X',53,'0002/BPB/2023','1',0,248501.25,248501.25,0.00,0.00,0.00,1125.00,1125.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-14 03:21:38','2023-12-28 04:04:20'),
+(17,1,8,1,8,11,0,0,'0002/TMO.ME/12/2023','','2023-12-14',NULL,NULL,0,0.00,10.00,19327.88,0.00,0.00,0.00,0,17412.50,0.00,1915.38,NULL,'1',54,'0003/BPB/2023','',0,19327.88,19327.88,0.00,0.00,0.00,88.00,88.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-14 07:33:50','2023-12-28 04:04:20'),
+(18,1,8,1,9,12,0,0,'0003/TMO.ME/12/2023','','2023-12-22',NULL,NULL,0,0.00,100.00,193278.75,0.00,0.00,0.00,0,174125.00,0.00,19153.75,NULL,'0004/20230801/01X',55,'0004/BPB/2023','',0,193278.75,193278.75,0.00,0.00,0.00,875.00,875.00,0.00,0.00,0.00,0.00,0.00,0.00,NULL,NULL,NULL,0,NULL,NULL,0,3,'2023-12-22 07:34:13','2023-12-28 04:04:20');
 
 /*Table structure for table `sales_invoice_item` */
 
@@ -8276,7 +8473,98 @@ DELIMITER $$
 	
 	SET PERIOD = RIGHT(CONCAT('0000', TRIM(CAST(tPeriod AS CHAR(4)))), 4);
 	
-	SET nSalesCollectionNo = CONCAT(PERIOD, '/PO/', monthPeriod, '/', year_period);
+	SET nSalesCollectionNo = CONCAT(PERIOD, '/PP/', monthPeriod, '/', year_period);
+		
+	SET new.collection_no = nSalesCollectionNo;
+    END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `sales_collection_discount` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `insert_sales_collection_discount` */$$
+
+/*!50003 CREATE */ /*!50003 TRIGGER `insert_sales_collection_discount` BEFORE INSERT ON `sales_collection_discount` FOR EACH ROW BEGIN
+	DECLARE year_period 		VARCHAR(20);
+	DECLARE month_period 		VARCHAR(20);
+	DECLARE PERIOD 			VARCHAR(20);
+	DECLARE tPeriod			INT;
+	DECLARE nSalesCollectionNo	VARCHAR(20);
+	DECLARE monthPeriod		VARCHAR(20);
+	DECLARE lenSalesCollectionNo	DECIMAL(10);
+	
+	SET year_period = (YEAR(new.collection_date));
+	
+	SET month_period = (SELECT RIGHT(CONCAT('0', MONTH(new.collection_date)), 2));
+	
+	IF (month_period) = '01' THEN 
+		SET monthPeriod = 'I';
+	END IF;
+	
+	IF (month_period) = '02' THEN 
+		SET monthPeriod = 'II';
+	END IF;
+	
+	IF (month_period) = '03' THEN 
+		SET monthPeriod = 'III';
+	END IF;
+	
+	IF (month_period) = '04' THEN 
+		SET monthPeriod = 'IV';
+	END IF;	
+	
+	IF (month_period) = '05' THEN 
+		SET monthPeriod = 'V';
+	END IF;
+	
+	IF (month_period) = '06' THEN 
+		SET monthPeriod = 'VI';
+	END IF;
+	
+	IF (month_period) = '07' THEN 
+		SET monthPeriod = 'VII';
+	END IF;
+	
+	IF (month_period) = '08' THEN 
+		SET monthPeriod = 'VIII';
+	END IF;
+	
+	IF (month_period) = '09' THEN 
+		SET monthPeriod = 'IX';
+	END IF;
+	
+	IF (month_period) = '10' THEN 
+		SET monthPeriod = 'X';
+	END IF;
+	
+	IF (month_period) = '11' THEN 
+		SET monthPeriod = 'XI';
+	END IF;
+	
+	IF (month_period) = '12' THEN 
+		SET monthPeriod = 'XII';
+	END IF;
+		
+	SET PERIOD = (SELECT LEFT(TRIM(collection_no), 4) 
+			FROM `sales_collection_discount`
+			WHERE RIGHT(TRIM(collection_no), 4) = year_period
+			ORDER BY collection_id DESC 
+			LIMIT 1);
+		
+	IF (PERIOD IS NULL ) THEN 
+		SET PERIOD = "0000";
+	END IF;
+	
+	SET tPeriod = CAST(PERIOD AS DECIMAL(10));
+	
+	SET tPeriod = tPeriod + 1;
+	
+	SET PERIOD = RIGHT(CONCAT('0000', TRIM(CAST(tPeriod AS CHAR(4)))), 4);
+	
+	SET nSalesCollectionNo = CONCAT(PERIOD, '/PPD/', monthPeriod, '/', year_period);
 		
 	SET new.collection_no = nSalesCollectionNo;
     END */$$

@@ -20,6 +20,7 @@ use App\Models\PreferenceCompany;
 use App\Models\PreferenceTransactionModule;
 use App\Models\SalesCollection;
 use App\Models\SalesCollectionDiscount;
+use App\Models\SalesCollectionDiscountItem;
 use App\Models\SalesCollectionItem;
 use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceItem;
@@ -63,51 +64,38 @@ class SalesCollectionDiscountController extends Controller
      */
     public function index()
     {
+        Session::forget('salescollectionelements');
+        Session::forget('datasalescollectiontransfer');
+
         if(!Session::get('start_date')){
             $start_date     = date('Y-m-d');
         }else{
-            $start_date = Session::get('start_date');
+            $start_date     = Session::get('start_date');
         }
 
         if(!Session::get('end_date')){
-            $end_date     = date('Y-m-d');
+            $end_date       = date('Y-m-d');
         }else{
-            $end_date = Session::get('end_date');
+            $end_date       = Session::get('end_date');
         }
 
-        $customer_id = Session::get('customer_id');
-        $sales_collection_piece_type_id = Session::get('sales_collection_piece_type_id');
+        $customer_id        = Session::get('customer_id');
 
-        Session::forget('salesinvoiceitem');
-        Session::forget('salesinvoiceelements');
-
-        $salescolectionpiece = SalesCollectionDiscount::select('sales_collection_discount.*','sales_invoice.sales_invoice_date')
-        ->join('sales_invoice', 'sales_invoice.sales_invoice_id', 'sales_collection_discount.sales_invoice_id')
-        ->where('sales_collection_discount.data_state','=',0)
-        ->where('sales_collection_discount.claim_status', 1)
-        ->where('sales_collection_discount.claim_date', '>=', $start_date)
-        ->where('sales_collection_discount.claim_date', '<=', $end_date);
-        if($customer_id||$customer_id!=null||$customer_id!=''){
-            $salescolectionpiece   = $salescolectionpiece->where('sales_collection_piece.customer_id', $customer_id);
-        }
-
-        if($sales_collection_piece_type_id||$sales_collection_piece_type_id!=null||$sales_collection_piece_type_id!=''){
-            $salescolectionpiece   = $salescolectionpiece->where('sales_collection_piece.sales_collection_piece_type_id', $sales_collection_piece_type_id);
-        }
-
-        $salescolectionpiece       = $salescolectionpiece->get();
-
-        $customer = CoreCustomer::select('customer_id', 'customer_name')
-        ->where('data_state', 0)
+        $corecustomer       = CoreCustomer::where('data_state', 0)
         ->pluck('customer_name', 'customer_id');
-        $sales_collection_piece_type = array(
-            '1' => 'promosi',
-            '2' => 'biasa'
-        );
-        return view('content/SalesCollectionDiscount/ListSalesCollectionDiscount',compact('sales_collection_piece_type_id','sales_collection_piece_type','salescolectionpiece', 'start_date', 'end_date', 'customer_id', 'customer'));
+
+        $salescollection    = SalesCollectionDiscount::where('data_state', 0)
+        ->where('collection_date', '>=', $start_date)
+        ->where('collection_date', '<=',$end_date);
+        if(!$customer_id||$customer_id == ''||$customer_id == null){
+        }else{
+            $salescollection = $salescollection->where('customer_id', $customer_id);
+        }
+        $salescollection    = $salescollection->get();
+        return view('content/SalesCollectionDiscount/ListSalesCollectionDiscount',compact('corecustomer', 'salescollection', 'start_date', 'end_date', 'customer_id'));
     }
     
-    public function filterSalesCollectionPiece(Request $request){
+    public function filterSalesCollectionDiscount(Request $request){
         $start_date     = $request->start_date;
         $end_date       = $request->end_date;
         $customer_id    = $request->customer_id;
@@ -118,16 +106,16 @@ class SalesCollectionDiscountController extends Controller
         Session::put('customer_id', $customer_id);
         Session::put('sales_collection_piece_type_id', $sales_collection_piece_type_id);
 
-        return redirect('/sales-collection-piece');
+        return redirect('/sales-discount-collection');
     }
 
-    public function resetFilterSalesCollectionPiece(){
+    public function resetFilterSalesCollectionDiscount(){
         Session::forget('start_date');
         Session::forget('end_date');
         Session::forget('customer_id');
         Session::forget('sales_collection_piece_type_id');
 
-        return redirect('/sales-collection-piece');
+        return redirect('/sales-discount-collection');
 
     }
 
@@ -178,10 +166,15 @@ class SalesCollectionDiscountController extends Controller
             '2' => 'promosi'
         );
 
+        $payment_type_list = [
+            0 => 'Tunai',
+            1 => 'Transfer',
+        ];
+
         $salescollectionelements = Session::get('salescollectionelements');
         $salescollectiontransfer = Session::get('datasalescollectiontransfer');
         
-        return view('content.SalesCollectionDiscount.FormAddSalesCollectionDiscount',compact('select','customer_id', 'salesinvoiceowing', 'customer', 'acctaccount', 'salescollectionelements', 'salescollectiontransfer'));
+        return view('content.SalesCollectionDiscount.FormAddSalesCollectionDiscount',compact('payment_type_list','select','customer_id', 'salesinvoiceowing', 'customer', 'acctaccount', 'salescollectionelements', 'salescollectiontransfer'));
     }
 
     public function detailSalesCollection($collection_id){
@@ -229,6 +222,8 @@ class SalesCollectionDiscountController extends Controller
             $salescollectionelements['collection_remark']              = '';
             $salescollectionelements['cash_account_id']             = '';
             $salescollectionelements['collection_total_cash_amount']   = '';
+            $salescollectionelements['payment_type']   = '';
+
         }
         $salescollectionelements[$request->name] = $request->value;
         Session::put('salescollectionelements', $salescollectionelements);
@@ -255,7 +250,7 @@ class SalesCollectionDiscountController extends Controller
         }
     }
     
-    public function processAddSalesCollection(Request $request)
+    public function processAddSalesCollectionDiscount(Request $request)
     {
         $allrequest = $request->all();
         $datasalescollectiontransfer = Session::get('datasalescollectiontransfer');
@@ -321,8 +316,8 @@ class SalesCollectionDiscountController extends Controller
         $transaction_module_id 		= $transactionmodule['transaction_module_id'];
         $preferencecompany 			= PreferenceCompany::first();
         
-        if(SalesCollection::create($data)){
-            $SalesCollection_last 		= SalesCollection::select('collection_id', 'collection_no')
+        if(SalesCollectionDiscount::create($data)){
+            $SalesCollection_last 		= SalesCollectionDiscount::select('collection_id', 'collection_no')
             ->where('created_id', $data['created_id'])
             ->orderBy('collection_id', 'DESC')
             ->first();
@@ -333,7 +328,7 @@ class SalesCollectionDiscountController extends Controller
                 'branch_id'						=> $data['branch_id'],
                 'journal_voucher_period' 		=> $journal_voucher_period,
                 'journal_voucher_date'			=> $data['collection_date'],
-                'journal_voucher_title'			=> 'Pelunasan Piutang '.$SalesCollection_last['collection_no'],
+                'journal_voucher_title'			=> 'Pelunasan Piutang Diskon -'.$SalesCollection_last['collection_no'],
                 'journal_voucher_no'			=> $SalesCollection_last['collection_no'],
                 'journal_voucher_description'	=> $data['collection_remark'],
                 'transaction_module_id'			=> $transaction_module_id,
@@ -351,7 +346,7 @@ class SalesCollectionDiscountController extends Controller
 
             $journal_voucher_id 	= $journalvoucher['journal_voucher_id'];
 
-            $collection = SalesCollection::where('created_id', $data['created_id'])
+            $collection = SalesCollectionDiscount::where('created_id', $data['created_id'])
             ->orderBy('collection_id', 'DESC')
             ->first();
 
@@ -364,35 +359,39 @@ class SalesCollectionDiscountController extends Controller
                     'sales_invoice_no' 		    => $allrequest[$i.'_sales_invoice_no'],
                     'sales_invoice_date' 	    => $allrequest[$i.'_sales_invoice_date'],
                     'sales_invoice_amount'	    => $allrequest[$i.'_sales_invoice_amount'],
-                    'total_amount' 				=> $allrequest[$i.'_total_amount'],
-                    'paid_amount' 				=> $allrequest[$i.'_paid_amount'],
-                    'owing_amount' 				=> $allrequest[$i.'_owing_amount'],
+                    'total_amount' 				=> $allrequest[$i.'_total_discount_amount'],
+                    'paid_amount' 				=> $allrequest[$i.'_paid_discount_amount'],
+                    'owing_amount' 				=> $allrequest[$i.'_owing_discount_amount'],
                     'allocation_amount' 		=> $allrequest[$i.'_allocation'],
                     'shortover_amount'	 		=> $allrequest[$i.'_shortover'],
                     'last_balance' 				=> $allrequest[$i.'_last_balance']
                 );
 
                 if($data_collectionitem['allocation_amount'] > 0){
-                    if(SalesCollectionItem::create($data_collectionitem)){
+                    if(SalesCollectionDiscountItem::create($data_collectionitem)){
 
                         $salesinvoice = SalesInvoice::where('data_state', 0)
                         ->where('sales_invoice_id', $data_collectionitem['sales_invoice_id'])
                         ->first();
 
-                        $salesinvoice->paid_amount       = $salesinvoice['paid_amount'] + $data_collectionitem['allocation_amount'] + $data_collectionitem['shortover_amount'];
-                        $salesinvoice->owing_amount      = $data_collectionitem['last_balance'];
-                        $salesinvoice->shortover_amount  = $salesinvoice['shortover_amount'] + $data_collectionitem['shortover_amount'];
+                        $salesinvoice->paid_discount_amount       = $salesinvoice['paid_discount_amount'] + $data_collectionitem['allocation_amount'] + $data_collectionitem['shortover_amount'];
+                        $salesinvoice->owing_discount_amount      = $data_collectionitem['last_balance'];
+                        $salesinvoice->shortover_discount_amount  = $salesinvoice['shortover_discount_amount'] + $data_collectionitem['shortover_amount'];
                         $salesinvoice->save();
 
-                        $msg = "Tambah Pelunasan Piutang Berhasil";
+                        $msg = "Tambah Pelunasan Piutang Diskon Berhasil";
                         continue;
                     }else{
-                        $msg = "Tambah Pelunasan Piutang Gagal";
-                        return redirect('/sales-collection/add/'.$data['customer_id'])->with('msg',$msg);
+                        $msg = "Tambah Pelunasan Piutang Diskon Gagal";
+                        return redirect('/sales-discount-collection/add/'.$data['customer_id'])->with('msg',$msg);
                     }
                 }
                 
             }
+
+        $paymenttype = $request->payment_type;
+
+        if($paymenttype == 0){
 //----------Kas
             if($data['collection_total_cash_amount'] != '' || $data['collection_total_cash_amount'] != 0){
 
@@ -413,6 +412,7 @@ class SalesCollectionDiscountController extends Controller
                 );
                 AcctJournalVoucherItem::create($data_debet);
             }
+        }else{
 //----------Bank
             if(is_array($datasalescollectiontransfer) && !empty($datasalescollectiontransfer)){
                 foreach ($datasalescollectiontransfer as $keyTransfer => $valTransfer) {
@@ -444,45 +444,49 @@ class SalesCollectionDiscountController extends Controller
                     }
                 }
             }
-//jika check Piutang Retur
-        $accountReturn 		= AcctAccount::where('account_id', 48)
+        }
+//----------Piutang Diskon
+        $account = AcctAccount::where('account_id', 43)
         ->where('data_state', 0)
         ->first();
-        $account_id_default_status_return 		= $accountReturn['account_default_status'];
+        $account_id_default_status = $account['account_default_status'];
+        $data_credit = array (
+            'journal_voucher_id'			=> $journal_voucher_id,
+            'account_id'					=> 43,
+            'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+            'journal_voucher_amount'		=> ABS($collection_total_amount),
+            'journal_voucher_credit_amount'	=> ABS($collection_total_amount),
+            'account_id_default_status'		=> $account_id_default_status,
+            'account_id_status'				=> 0,
+        );
+        AcctJournalVoucherItem::create($data_credit);
 
-        $cekReturn = $request->piutang;
-        if($cekReturn == 1){
-            $data_credit = array (
-                'journal_voucher_id'			=> $journal_voucher_id,
-                'account_id'					=> 48,
-                'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                'journal_voucher_amount'		=> ABS($request->piutang_amount),
-                'journal_voucher_credit_amount'	=> ABS($request->piutang_amount),
-                'account_id_default_status'		=> $account_id_default_status_return,
-                'account_id_status'				=> 0,
-            );
-            AcctJournalVoucherItem::create($data_credit);
+//jika check pend lain
+            $accountReturn 		= AcctAccount::where('account_id',520)
+            ->where('data_state', 0)
+            ->first();
+            $account_id_default_status_return 		= $accountReturn['account_default_status'];
+            $cekReturn = $request->lain_lain;
+                    if($cekReturn == 1){
+                        $data_credit = array (
+                            'journal_voucher_id'			=> $journal_voucher_id,
+                            'account_id'					=>520,
+                            'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                            'journal_voucher_amount'		=> ABS($request->lain_lain_amount),
+                            'journal_voucher_credit_amount'	=> ABS($request->lain_lain_amount),
+                            'account_id_default_status'		=> $account_id_default_status_return,
+                            'account_id_status'				=> 0,
+                        );
+                        AcctJournalVoucherItem::create($data_credit);
+                    }
+        
+        $msg = "Tambah Pelunasan Piutang Diskon Berhasil";
+            return redirect('/sales-discount-collection')->with('msg',$msg);
+        }else{
+            $msg = "Tambah Pelunasan Piutang Diskon Gagal";
+            return redirect('/sales-discount-collection/add/'.$data['customer_id'])->with('msg',$msg);
         }
-//----------Piutang Piutang Non Anggota
-            $account = AcctAccount::where('account_id', 42)
-                ->where('data_state', 0)
-                ->first();
-                $account_id_default_status = $account['account_default_status'];
-                $data_credit = array (
-                    'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> 42,
-                    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                    'journal_voucher_amount'		=> ABS($selisih_shortover),
-                    'journal_voucher_credit_amount'	=> ABS($selisih_shortover),
-                    'account_id_default_status'		=> $account_id_default_status,
-                    'account_id_status'				=> 0,
-                );
-                AcctJournalVoucherItem::create($data_credit);
-
-//----------Piutang Piutang Non Anggota (sisa piutang jika dibayar > 1 kali)
-
-            }
-        }
+    }
 
 
 

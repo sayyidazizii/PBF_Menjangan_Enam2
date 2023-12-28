@@ -130,10 +130,15 @@ class PurchasePaymentController extends Controller
         $corebank = CoreBank::where('data_state', 0)
         ->pluck('bank_name', 'bank_id');
 
+        $payment_type_list = [
+            0 => 'Tunai',
+            1 => 'Transfer',
+        ];
+
         $purchasepaymentelements = Session::get('purchasepaymentelements');
         $purchasepaymenttransfer = Session::get('datapurchasepaymenttransfer');
         
-        return view('content/PurchasePayment/FormAddPurchasePayment',compact('supplier_id', 'purchaseinvoiceowing', 'corebank', 'supplier', 'acctaccount', 'purchasepaymentelements', 'purchasepaymenttransfer','PPN'));
+        return view('content/PurchasePayment/FormAddPurchasePayment',compact('payment_type_list','supplier_id', 'purchaseinvoiceowing', 'corebank', 'supplier', 'acctaccount', 'purchasepaymentelements', 'purchasepaymenttransfer','PPN'));
     }
 
     public function detailPurchasePayment($payment_id){
@@ -181,6 +186,8 @@ class PurchasePaymentController extends Controller
             $purchasepaymentelements['payment_remark']              = '';
             $purchasepaymentelements['cash_account_id']             = '';
             $purchasepaymentelements['payment_total_cash_amount']   = '';
+            $purchasepaymentelements['payment_type']   = '';
+
         }
         $purchasepaymentelements[$request->name] = $request->value;
         Session::put('purchasepaymentelements', $purchasepaymentelements);

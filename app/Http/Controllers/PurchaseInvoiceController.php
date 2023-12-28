@@ -68,7 +68,7 @@ class PurchaseInvoiceController extends Controller
         ->where('purchase_invoice.purchase_invoice_date', '>=', $start_date)
         ->where('purchase_invoice.purchase_invoice_date', '<=', $end_date);
         if($supplier_id||$supplier_id!=null||$supplier_id!=''){
-            $purchaseinvoice   = $purchaseinvoice->where('supplier_id', $supplier_id);
+            $purchaseinvoice   = $purchaseinvoice->where('purchase_invoice.supplier_id', $supplier_id);
         }
         $purchaseinvoice       = $purchaseinvoice->get();
 

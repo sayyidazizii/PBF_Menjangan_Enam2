@@ -36,7 +36,7 @@ class AcctAgingApReportController extends Controller
         ->where('purchase_invoice.purchase_invoice_date', '>=', $start_date)
         ->where('purchase_invoice.purchase_invoice_date', '<=', $end_date);
         if($supplier_id||$supplier_id!=null||$supplier_id!=''){
-            $purchaseinvoice   = $purchaseinvoice->where('supplier_id', $supplier_id);
+            $purchaseinvoice   = $purchaseinvoice->where('purchase_invoice.supplier_id', $supplier_id);
         }
         $purchaseinvoice       = $purchaseinvoice->get();
 
@@ -46,6 +46,28 @@ class AcctAgingApReportController extends Controller
 
         return view('content.AcctAccountPayable.ListAgingAccountPayable',compact('purchaseinvoice', 'start_date', 'end_date', 'supplier_id', 'supplier'));
     }
+
+    public function filterAcctAgingAp(Request $request){
+        $start_date     = $request->start_date;
+        $end_date       = $request->end_date;
+        $supplier_id       = $request->supplier_id;
+
+        Session::put('start_date', $start_date);
+        Session::put('end_date', $end_date);
+        Session::put('supplier_id', $supplier_id);
+
+        return redirect('/aging-account-payable');
+    }
+
+    public function resetFilterAcctAgingAp(){
+        Session::forget('start_date');
+        Session::forget('end_date');
+        Session::forget('supplier_id');
+
+        return redirect('/aging-account-payable');
+
+    }
+
 
     
     // public function printKwitansi($sales_kwitansi_id){

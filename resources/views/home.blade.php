@@ -80,7 +80,6 @@ Dashboard
             </div>
         </div>
     </div>
-    <br>
     <div class="card border border-dark">
         <div class="card-header border-dark bg-dark">
             <h5 class="mb-0 float-left">

@@ -1,41 +1,41 @@
-@inject('SalesCollectionDiscount', 'App\Http\Controllers\SalesCollectionDiscountController')
+@inject('SalesCollection', 'App\Http\Controllers\SalesCollectionController')
 
 @extends('adminlte::page')
+
+@section('title', 'PBF | Koperasi Menjangan Enam')
+<link rel="shortcut icon" href="{{ asset('resources/assets/logo_pbf.ico') }}" />
 
 @section('js')
 <script>
 	$(document).ready(function(){
-        var customer_id    = {!! json_encode($customer_id) !!};
+    var customer_id           = {!! json_encode($customer_id) !!};
         
-        if(customer_id == null){
-            $("#customer_id").select2("val", "0");
-        }
+    if(customer_id == null){
+        $("#customer_id").select2("val", "0");
+    }
     });
 </script>
 @stop
-
-@section('title', 'PBF | Koperasi Menjangan Enam')
-<link rel="shortcut icon" href="{{ asset('resources/assets/logo_pbf.ico') }}" />
 
 @section('content_header')
     
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Daftar Pelunasan Diskon</li>
+      <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Daftar Pelunasan Piutang Diskon</li>
     </ol>
-</nav>
+  </nav>
 
 @stop
 
 @section('content')
 
 <h3 class="page-title">
-    <b>Daftar Pelunasan Diskon</b> <small>Mengelola Potongan Invoice Penjualan</small>
+    <b>Daftar Pelunasan Piutang Diskon</b> <small>Mengelola Pelunasan Piutang Diskon</small>
 </h3>
 <br/>
 <div id="accordion">
-    <form  method="post" action="{{route('filter-sales-collection-piece')}}" enctype="multipart/form-data">
+    <form  method="post" action="{{route('filter-sales-discount-collection')}}" enctype="multipart/form-data">
     @csrf
         <div class="card border border-dark">
         <div class="card-header bg-dark" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -47,38 +47,41 @@
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
                 <div class = "row">
-                    <div class = "col-md-4">
+                    <div class = "col-md-6">
                         <div class="form-group form-md-line-input">
                             <section class="control-label">Tanggal Mulai
                                 <span class="required text-danger">
                                     *
                                 </span>
                             </section>
-                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="start_date" id="date" onChange="function_elements_add(this.name, this.value);" value="{{$start_date}}"/>
+                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="start_date" id="date" onChange="function_elements_add(this.name, this.value);" value="{{$start_date}}" style="width: 15rem;"/>
                         </div>
                     </div>
 
-                    <div class = "col-md-4">
+                    <div class = "col-md-6">
                         <div class="form-group form-md-line-input">
                             <section class="control-label">Tanggal Akhir
                                 <span class="required text-danger">
                                     *
                                 </span>
                             </section>
-                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="end_date" id="date" onChange="function_elements_add(this.name, this.value);" value="{{$end_date}}"/>
+                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="end_date" id="date" onChange="function_elements_add(this.name, this.value);" value="{{$end_date}}" style="width: 15rem;"/>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <a class="text-dark">Pembeli</a>
-                        <br/>
-                        {!! Form::select('customer_id',  $customer, $customer_id, ['class' => 'selection-search-clear select-form', 'id' => 'customer_id']) !!}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">	
+                        <div class="form-group">	
+                            <a class="text-dark">Pelanggan<a class='red'> *</a></a>
+                            {!! Form::select('customer_id',  $corecustomer, $customer_id, ['class' => 'selection-search-clear select-form', 'id' => 'customer_id']) !!}
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer text-muted">
                 <div class="form-actions float-right">
-                    <a href="{{route('filter-reset-sales-collection-piece')}}" type="reset" name="Reset" class="btn btn-danger btn-sm" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</a>
-                    <button type="submit" name="Find" class="btn btn-primary btn-sm" title="Search Data"><i class="fa fa-search"></i> Cari</button>
+                    <button type="reset" name="Reset" class="btn btn-danger" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</button>
+                    <button type="submit" name="Find" class="btn btn-primary" title="Search Data"><i class="fa fa-search"></i> Cari</button>
                 </div>
             </div>
         </div>
@@ -92,47 +95,51 @@
 </div>
 @endif 
 <div class="card border border-dark">
-    <div class="card-header bg-dark clearfix">
-        <h5 class="mb-0 float-left">
-            Daftar
-        </h5>
-        <div class="form-actions float-right">
-            <button onclick="location.href='{{ url('sales-discount-collection/search') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Pelunasan Diskon Baru</button>
-        </div>
+  <div class="card-header bg-dark clearfix">
+    <h5 class="mb-0 float-left">
+        Daftar
+    </h5>
+    <div class="form-actions float-right">
+        <button onclick="location.href='{{ url('sales-discount-collection/search') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Pelunasan Piutang Baru</button>
     </div>
+  </div>
 
     <div class="card-body">
         <div class="table-responsive">
             <table id="example" style="width:100%" class="table table-striped table-bordered table-hover table-full-width">
                 <thead>
                     <tr>
-                        <th width="2%" style='text-align:center'>No.</th>
-                        <th width="20%" style='text-align:center'>Nama Pembeli</th>
-                        <th width="20%" style='text-align:center'>No Invoice Penjualan</th>
-                        <th width="20%" style='text-align:center'>Tanggal Invoice</th>
-                        <th width="20%" style='text-align:center'>Tanggal Claim</th>
-                        <th width="20%" style='text-align:center'>Total Invoice</th>
-                        <th width="20%" style='text-align:center'>Potongan</th>
-                        <th width="20%" style='text-align:center'>Jumlah Setelah Potongan</th>
-                        <th width="15%" style='text-align:center'>Aksi</th>
+                        <th width="2%" style='text-align:center'>No</th>
+                        <th width="15%" style='text-align:center'>Nama Pelanggan</th>
+                        <th width="13%" style='text-align:center'>Tanggal Pelunasan</th>
+                        <th width="15%" style='text-align:center'>No Pelunasan</th>
+                        <th width="15%" style='text-align:center'>Jumlah Pelunasan Tunai</th>
+                        <th width="15%" style='text-align:center'>Jumlah Pelunasan Transfer</th>
+                        <th width="10%" style='text-align:center'>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $no = 1; ?>
-                    @foreach($salescolectionpiece as $item)
+                    @foreach($salescollection as $collection)
                     <tr>
-                        <td style='text-align:center'>{{$no}}.</td>
-                        <td>{{$SalesCollectionPiece->getCustomerName($item['customer_id'])}}</td>
-                        <td>{{$item['sales_invoice_no']}}</td>
-                        <td>{{$item['sales_invoice_date']}}</td>
-                        <td>{{$item['claim_date']}}</td>
-                        <td>{{$item['total_amount']}}</td>
-                        <td>{{$item['piece_amount']}}</td>
-                        <td>{{$item['total_amount_after_piece']}}</td>
-                       
+                        <td style='text-align:center'>{{$no}}</td>
+                        <td>{{$SalesCollection->getCoreCustomerName($collection['customer_id'])}}</td>
+                        <td>{{$collection['collection_date']}}</td>
+                        <td>{{$collection['collection_no']}}</td>
+                    <?php if($collection['collection_total_cash_amount']==null){?>
+                        <td style='text-align:right'>0.00</td>
+                    <?php }else{?>
+                        <td style='text-align:right'>{{number_format($collection['collection_total_cash_amount'], 2)}}</td>
+                    <?php } ?>
+                    <?php if($collection['collection_total_transfer_amount']==null){?>
+                        <td style='text-align:right'>0.00</td>
+                    <?php }else{?>
+                        <td style='text-align:right'>{{number_format($collection['collection_total_transfer_amount'], 2)}}</td>
+                    <?php } ?>
                         <td class="">
-                            <a type="button" class="btn btn-outline-primary btn-sm" href="{{ url('/sales-collection-piece/detail-claim-sales-collection-piece/'.$item['sales_invoice_id']) }}">Detail</a>
-                            <a type="button" class="btn btn-outline-danger btn-sm" href="{{ url('/sales-collection-piece/cancel-claim-sales-collection-piece/'.$item['sales_invoice_id']) }}">Batal</a>
+                            <a type="button" class="btn btn-outline-primary btn-sm" href="{{ url('/sales-collection/detail/'.$collection['collection_id']) }}">Detail</a>
+                            <a type="button" class="btn btn-outline-dark btn-sm" href="{{ url('/sales-collection/printing/'.$collection['collection_id']) }}"  target='_blank'>Print</a>
+                            <a type="button" class="btn btn-outline-danger btn-sm" href="{{ url('/sales-collection/delete/'.$collection['collection_id']) }}">Batal</a>
                         </td>
                     </tr>
                     <?php $no++; ?>
@@ -141,14 +148,13 @@
             </table>
         </div>
     </div>
+  </div>
 </div>
-</div>
-<br>
-<br>
-<br>
 
-@include('footer')
+@stop
 
+@section('footer')
+    
 @stop
 
 @section('css')

@@ -299,10 +299,8 @@
                 <div class="col-md-6">
                     <a class="text-dark">Tipe Pembayaran</a>
                             <br/>
-                             <select class="selection-search-clear" name="payment_type" id="payment_type" style="width: 100% !important">
-                                <option value="0">Tunai</option>
-                                <option value="1">Transfer</option>
-                            </select>
+                            {!! Form::select(0, $payment_type_list, $purchasepaymentelements['payment_type'] ?? '', ['class' => 'form-control selection-search-clear select-form', 'id' => 'payment_type','name' => 'payment_type','onchange'=>'elements_add(this.name, this.value)']) !!}
+
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
