@@ -70,6 +70,7 @@ use App\Http\Controllers\InvItemStockCardController;
 use App\Http\Controllers\ReturnPDP_Controller;
 use App\Http\Controllers\ReturnPDP_LostOnExpedition_Controller;
 use App\Http\Controllers\BuyersAcknowledgmentController;
+use App\Http\Controllers\DebugController;
 use App\Http\Controllers\SalesCollectionPieceController;
 use App\Http\Controllers\KwitansiController;
 use App\Http\Controllers\SalesCollectionDiscountController;
@@ -801,5 +802,8 @@ Route::get('/aging-account-payable', [AcctAgingApReportController::class, 'index
 Route::post('/aging-account-payable/filter', [AcctAgingApReportController::class, 'filterAcctAgingAp'])->name('filter-aging-account-payable');
 Route::get('/aging-account-payable/filter-reset', [AcctAgingApReportController::class, 'resetFilterAcctAgingAp'])->name('filter-reset-aging-account-payable');
 
+
+
+Route::get('/debug-system', [DebugController::class, 'index'])->name('debug');
 
 ?>
