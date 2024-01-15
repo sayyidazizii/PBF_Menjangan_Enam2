@@ -137,7 +137,7 @@
                         <td style='text-align:right'>{{number_format($collection['collection_total_transfer_amount'], 2)}}</td>
                     <?php } ?>
                         <td class="">
-                            <a type="button" class="btn btn-outline-primary btn-sm" href="{{ url('/sales-collection/detail/'.$collection['collection_id']) }}">Detail</a>
+                            <a type="button" class="btn btn-outline-primary btn-sm" href="{{ url('/sales-discount-collection/detail/'.$collection['collection_id']) }}">Detail</a>
                             <a type="button" class="btn btn-outline-dark btn-sm" href="{{ url('/sales-collection/printing/'.$collection['collection_id']) }}"  target='_blank'>Print</a>
                             <a type="button" class="btn btn-outline-danger btn-sm" href="{{ url('/sales-collection/delete/'.$collection['collection_id']) }}">Batal</a>
                         </td>

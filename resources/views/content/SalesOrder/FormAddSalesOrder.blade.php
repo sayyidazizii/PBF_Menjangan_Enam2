@@ -296,6 +296,27 @@
                 });
 		});   
 
+        $("#item_stock_id").change(function(){
+			var item_stock_id 	= $("#item_stock_id").val();
+                $.ajax({
+                    type: "POST",
+                    url : "{{route('item-unit-price-sales-order')}}",
+                    dataType: "html",
+                    data: {
+                        'item_stock_id'	: item_stock_id,
+                        '_token'    : '{{csrf_token()}}',
+                    },
+                    success: function(return_data){ 
+					$('#price').val(return_data);
+                        console.log(return_data);
+                    },
+                    error: function(data)
+                    {
+                        console.log(data);
+                    }
+                });
+		});  
+
        
 
         $("#item_stock_id").change(function(){

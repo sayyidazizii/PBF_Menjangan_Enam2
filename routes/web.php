@@ -452,6 +452,7 @@ Route::post('/sales-order/filter', [SalesOrderController::class, 'filterSalesOrd
 Route::get('/sales-order/filter-reset', [SalesOrderController::class, 'resetFilterSalesOrder'])->name('filter-reset-sales-order');
 Route::post('/sales-order/add-customer', [SalesOrderController::class, 'addCoreCustomer'])->name('add-customer-sales-order');
 Route::post('/sales-order/available-stock', [SalesOrderController::class, 'getAvailableStock'])->name('available-stock-sales-order');
+Route::post('/sales-order/item-unit-price', [SalesOrderController::class, 'getItemUnitPrice'])->name('item-unit-price-sales-order');
 Route::post('/sales-order/select-data-stock', [SalesOrderController::class, 'getSelectDataStock'])->name('select-data-stock-sales-order');
 Route::post('/sales-order/select-data-unit', [SalesOrderController::class, 'getSelectDataUnit'])->name('select-data-unit');
 Route::post('/sales-order/type', [SalesOrderController::class, 'getInvItemType'])->name('sales-order-type');
@@ -795,7 +796,7 @@ Route::post('/sales-discount-collection/delete-discount', [SalesCollectionDiscou
 Route::post('/sales-discount-collection/filter', [SalesCollectionDiscountController::class, 'filterSalesCollectionDiscount'])->name('filter-sales-discount-collection');
 Route::get('/sales-discount-collection/filter-reset', [SalesCollectionDiscountController::class, 'resetFilterSalesCollectionDiscount'])->name('filter-reset-sales-discount-collection');
 Route::get('/sales-discount-collection/search', [SalesCollectionDiscountController::class, 'searchCoreCustomer'])->name('search-core-supplier-sales-collection');
-Route::get('/sales-discount-collection/detail-/sales-discount-collection/{sales_invoice_id}', [SalesCollectionDiscountController::class, 'detailClaimSalesCollection'])->name('detail-claim-sales-collection');
+Route::get('/sales-discount-collection/detail/{sales_collection_discount_id}', [SalesCollectionDiscountController::class, 'detailSalesCollectionDiscount'])->name('detail-sales-collection-discount');
 
 
 Route::get('/aging-account-payable', [AcctAgingApReportController::class, 'index'])->name('aging-account-payable');

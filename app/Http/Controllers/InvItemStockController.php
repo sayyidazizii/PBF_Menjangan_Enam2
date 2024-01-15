@@ -66,7 +66,7 @@ class InvItemStockController extends Controller
             $invitemstock   = $invitemstock->where('inv_item_stock.warehouse_id', $warehouse_id);
         }
         $invitemstock       = $invitemstock->get();
-       // dd($invitemstock);
+    //    dd($invitemstock);
 
         return view('content/InvItemStock/ListInvItemStock',compact('invitemstock', 'invitemcategory', 'invitemtype', 'coregrade', 'invwarehouse', 'item_category_id', 'item_type_id', 'grade_id', 'warehouse_id'));
     }

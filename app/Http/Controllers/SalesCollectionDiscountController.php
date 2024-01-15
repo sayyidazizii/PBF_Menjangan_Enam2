@@ -177,7 +177,7 @@ class SalesCollectionDiscountController extends Controller
         return view('content.SalesCollectionDiscount.FormAddSalesCollectionDiscount',compact('payment_type_list','select','customer_id', 'salesinvoiceowing', 'customer', 'acctaccount', 'salescollectionelements', 'salescollectiontransfer'));
     }
 
-    public function detailSalesCollection($collection_id){
+    public function detailSalesCollectionDiscount($collection_id){
 
         $salescollection = SalesCollection::findOrFail($collection_id);
 
@@ -193,7 +193,7 @@ class SalesCollectionDiscountController extends Controller
         ->where('customer_id', $salescollection['customer_id'])
         ->first();
         
-        return view('content/SalesCollection/FormDetailSalesCollection',compact('collection_id', 'salescollection', 'salescollectionitem', 'salescollectiontransfer',  'customer'));
+        return view('content/SalesCollectionDiscount/FormDetailSalesCollectionDiscount',compact('collection_id', 'salescollection', 'salescollectionitem', 'salescollectiontransfer',  'customer'));
     }
 
     public function deleteSalesCollection($collection_id){

@@ -154,21 +154,21 @@
                 <thead>
                     <tr>
                         <th width="2%" style='text-align:center'>No</th>
-                        <th width="7%" style='text-align:center'>Batch Number</th>
-                        <th width="13%" style='text-align:center'>Kategori Barang</th>
-                        <th width="15%" style='text-align:center'>Nama Barang</th>
+                        <th width="7%" style='text-align:center'>No Batch</th>
+                        <th width="13%" style='text-align:center'>Kategori</th>
+                        <th width="15%" style='text-align:center'>Barang</th>
                         {{-- <th width="10%" style='text-align:center'>Grade</th> --}}
-                        <th width="10%" style='text-align:center'>Qty</th>
-                        <th width="10%" style='text-align:center'>Unit</th>
+                        <th width="5%" style='text-align:center'>Qty</th>
+                        <th width="10%" style='text-align:center'>Satuan</th>
                         <th width="10%" style='text-align:center'>Gudang</th>
                         <th width="10%" style='text-align:center'>PO Customer</th>
-                        <th width="10%" style='text-align:center'>No.Retur Barang</th>
-                        <th width="10%" style='text-align:center'>Nota Retur Pajak</th>
+                        <th width="10%" style='text-align:center'>NRB</th>
+                        <th width="10%" style='text-align:center'>NRP</th>
                         <th width="10%" style='text-align:center'>Tanggal Datang</th>
-                        <th width="5%" style='text-align:center'>HPP</th>
-                        <th width="5%" style='text-align:center'>DPP</th>
-                        <th width="5%" style='text-align:center'>HNA</th>
-                        <th width="10%" style='text-align:center'>Tanggal Kadaluarsa</th>
+                        <th width="10%" style='text-align:center'>Harga Beli</th>
+                        {{-- <th width="5%" style='text-align:center'>DPP</th> --}}
+                        <th width="10%" style='text-align:center'>Harga Jual</th>
+                        <th width="5%" style='text-align:center'>Kadaluarsa</th>
                         {{-- <th width="8%" style='text-align:center'>Aksi</th> --}}
                     </tr>
                 </thead>
@@ -211,9 +211,9 @@
                         <?php } ?> 
 
                         <td>{{date('d/m/Y', strtotime($stock['item_stock_date']))}}</td>
-                        <td>{{$stock['item_unit_cost']}}</td>
-                        <td>{{$stock['item_unit_total']}}</td>
-                        <td>{{$stock['item_unit_price']}}</td>
+                        <td>Rp. {{number_format($stock['item_unit_cost'],2)}}</td>
+                        {{-- <td>{{$stock['item_unit_total']}}</td> --}}
+                        <td>Rp. {{number_format($stock['item_unit_price'],2)}}</td>
                         <?php if($stock['item_stock_expired_date']=='0000-00-00') {?>
                             <td>-</td>
                         <?php } else {?>

@@ -570,34 +570,45 @@ class SalesOrderController extends Controller
         );
     }
 
-    public function getAvailableStock(Request $request){
-        $item_stock_id    = $request->item_stock_id;
-        $available_stock = 0;
+        public function getAvailableStock(Request $request){
+            $item_stock_id    = $request->item_stock_id;
+            $available_stock = 0;
 
-        // $itemtype       = InvItemType::where('data_state', 0)
-        // ->where('item_type_id', $item_type_id)
-        // ->first();
+            $itemstock  = InvItemStock::where('inv_item_stock.data_state', 0)
+            ->where('inv_item_stock.item_stock_id', $item_stock_id)
+            ->where('inv_item_stock.warehouse_id',6)
+            ->sum('quantity_unit');
 
-        // dd($itemtype);
+            $itemunitsecond = InvItemStock::join('inv_item_unit', 'inv_item_stock.item_unit_id', '=', 'inv_item_unit.item_unit_id')
+            ->where('inv_item_stock.item_stock_id', $item_stock_id)
+            ->first();
 
-        $itemstock  = InvItemStock::where('inv_item_stock.data_state', 0)
-        // ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'inv_item_stock.item_type_id')
-        ->where('inv_item_stock.item_stock_id', $item_stock_id)
-        ->where('inv_item_stock.warehouse_id',6)
-        ->sum('quantity_unit');
-
-        $itemunitsecond = InvItemStock::join('inv_item_unit', 'inv_item_stock.item_unit_id', '=', 'inv_item_unit.item_unit_id')
-        ->where('inv_item_stock.item_stock_id', $item_stock_id)
-        ->first();
-
-        if($itemstock == null){
-            $return_data =  'kosong';
-            return $return_data;
-        }else{
-            $return_data =  $itemstock . ' ' .  $itemunitsecond['item_unit_name'];
-            return $return_data;
+            if($itemstock == null){
+                $return_data =  'kosong';
+                return $return_data;
+            }else{
+                $return_data =  $itemstock . ' ' .  $itemunitsecond['item_unit_name'];
+                return $return_data;
+            }
         }
-    }
+
+        public function getItemUnitPrice(Request $request){
+            $item_stock_id    = $request->item_stock_id;
+
+            $itemstock  = InvItemStock::select('item_unit_price')
+            ->where('inv_item_stock.data_state', 0)
+            ->where('inv_item_stock.item_stock_id', $item_stock_id)
+            ->where('inv_item_stock.warehouse_id',6)
+            ->first();
+
+            if($itemstock == null){
+                $return_data =  'kosong';
+                return $return_data;
+            }else{
+                $return_data =  $itemstock;
+                return $return_data['item_unit_price'];
+            }
+        }
 
 
         public function getInvItemType(Request $request)
