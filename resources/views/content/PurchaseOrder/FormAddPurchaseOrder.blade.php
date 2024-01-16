@@ -123,7 +123,7 @@
 			var item_type_id 	= $("#item_type_id").val();
                 $.ajax({
                     type: "POST",
-                    url : "{{route('select-data-unit')}}",
+                    url : "{{route('purchase-order-select-data-unit')}}",
                     dataType: "html",
                     data: {
                         'item_type_id'	: item_type_id,

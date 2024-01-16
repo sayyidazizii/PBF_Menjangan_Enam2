@@ -8,6 +8,7 @@ use App\Http\Controllers\AcctBankReceiptController;
 use App\Http\Controllers\AcctCheckReceiptController;
 use App\Http\Controllers\AcctAccountController;
 use App\Http\Controllers\AcctAgingApReportController;
+use App\Http\Controllers\AcctAgingArReportController;
 use App\Http\Controllers\AcctJournalVoucherController;
 use App\Http\Controllers\AcctJournalVoucherPurchaseController;
 use App\Http\Controllers\AcctJournalVoucherSalesController;
@@ -395,6 +396,7 @@ Route::get('/purchase-order', [PurchaseOrderController::class, 'index'])->name('
 Route::get('/purchase-order/detail/{purchase_order_id}', [PurchaseOrderController::class, 'detailPurchaseOrder'])->name('detail-purchase-order');
 Route::get('/purchase-order/edit/{purchase_order_id}', [PurchaseOrderController::class, 'editPurchaseOrder'])->name('edit-purchase-order');
 Route::get('/purchase-order/add', [PurchaseOrderController::class, 'addPurchaseOrder'])->name('add-purchase-order');
+Route::post('/purchase-order/select-data-unit', [PurchaseOrderController::class, 'getSelectDataUnit'])->name('purchase-order-select-data-unit');
 Route::post('/purchase-order/process-add-purchase-order', [PurchaseOrderController::class, 'processAddPurchaseOrder'])->name('process-add-purchase-order');
 Route::post('/purchase-order/add-array', [PurchaseOrderController::class, 'processAddArrayPurchaseOrderItem'])->name('purchase-order-add-array');
 Route::get('/purchase-order/delete-array/{record_id}', [PurchaseOrderController::class, 'deleteArrayPurchaseOrderItem'])->name('purchase-order-delete-array');
@@ -407,6 +409,7 @@ Route::post('/purchase-order/city', [PurchaseOrderController::class, 'getCoreCit
 Route::post('/purchase-order/add-supplier', [PurchaseOrderController::class, 'addCoreSupplier'])->name('purchase-order-add-supplier');
 Route::post('/purchase-order/add-warehouse', [PurchaseOrderController::class, 'addInvWarehouse'])->name('purchase-order-add-warehouse');
 Route::get('/purchase-order/cetak/{purchase_order_id}', [PurchaseOrderController::class, 'cetakPurchaseOrder'])->name('cetak-purchase-order');
+
 
 
 Route::get('/purchase-order-approval', [PurchaseOrderApprovalController::class, 'index'])->name('purchase-order-approval');
@@ -796,12 +799,18 @@ Route::post('/sales-discount-collection/delete-discount', [SalesCollectionDiscou
 Route::post('/sales-discount-collection/filter', [SalesCollectionDiscountController::class, 'filterSalesCollectionDiscount'])->name('filter-sales-discount-collection');
 Route::get('/sales-discount-collection/filter-reset', [SalesCollectionDiscountController::class, 'resetFilterSalesCollectionDiscount'])->name('filter-reset-sales-discount-collection');
 Route::get('/sales-discount-collection/search', [SalesCollectionDiscountController::class, 'searchCoreCustomer'])->name('search-core-supplier-sales-collection');
-Route::get('/sales-discount-collection/detail/{sales_collection_discount_id}', [SalesCollectionDiscountController::class, 'detailSalesCollectionDiscount'])->name('detail-sales-collection-discount');
+Route::get('/sales-discount-collection/detail/{collection_id}', [SalesCollectionDiscountController::class, 'detailSalesCollectionDiscount'])->name('detail-sales-collection-discount');
+Route::get('/sales-discount-collection/print/{collection_id}', [SalesCollectionDiscountController::class, 'processPrintingSalescollectionDiscount'])->name('detail-sales-collection-discount');
 
 
 Route::get('/aging-account-payable', [AcctAgingApReportController::class, 'index'])->name('aging-account-payable');
 Route::post('/aging-account-payable/filter', [AcctAgingApReportController::class, 'filterAcctAgingAp'])->name('filter-aging-account-payable');
 Route::get('/aging-account-payable/filter-reset', [AcctAgingApReportController::class, 'resetFilterAcctAgingAp'])->name('filter-reset-aging-account-payable');
+
+
+Route::get('/aging-account-receivable', [AcctAgingArReportController::class, 'index'])->name('aging-account-receivable');
+Route::post('/aging-account-receivable/filter', [AcctAgingArReportController::class, 'filterAcctAgingAr'])->name('filter-aging-account-receivable');
+Route::get('/aging-account-receivable/filter-reset', [AcctAgingArReportController::class, 'resetFilterAcctAgingAr'])->name('filter-reset-aging-account-receivable');
 
 
 

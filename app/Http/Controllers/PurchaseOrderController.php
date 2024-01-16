@@ -13,6 +13,7 @@ use App\Models\CoreSupplier;
 use App\Models\CoreProvince;
 use App\Models\CoreCity;
 use App\Models\InvItemCategory;
+use App\Models\InvItemStock;
 use App\Models\InvItemUnit;
 use App\Models\InvItemType;
 use Elibyy\TCPDF\Facades\TCPDF;
@@ -723,6 +724,65 @@ class PurchaseOrderController extends Controller
         } else {
             $msg = 'Tambah Purchase Order Gagal';
             return redirect('/purchase-order/add')->with('msg', $msg);
+        }
+    }
+
+    public function getSelectDataUnit(Request $request){
+
+        // dd($request->all());
+        // $item_stock_id  = $request->item_stock_id;
+        // $item_type_id   = InvItemStock::select('*')
+        // ->where('inv_item_stock.data_state','=',0)
+        // ->where('inv_item_stock.item_stock_id', $item_stock_id)
+        // ->where('inv_item_stock.warehouse_id', 6)
+        // ->first();
+
+        $inv_item_type= InvItemType::where('item_type_id', $request->item_type_id)
+        ->first();
+        
+        $data= '';
+
+        if($inv_item_type != null){
+            $unit1 = InvItemType::select('inv_item_type.item_unit_1','inv_item_unit.*')
+            ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'inv_item_type.item_unit_1')
+            ->where('inv_item_type.item_unit_1', $inv_item_type['item_unit_1'])
+            // ->where('inv_item_type.item_unit_2', $inv_item_type['item_unit_2'])
+            // ->where('inv_item_type.item_unit_3', $inv_item_type['item_unit_3'])
+            ->first();
+            
+            // return $unit1;
+            $unit2 = InvItemType::select('inv_item_type.item_unit_2','inv_item_unit.*')
+            ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'inv_item_type.item_unit_2')
+            ->where('inv_item_type.item_unit_2', $inv_item_type['item_unit_2'])
+            ->first();
+
+            $unit3 = InvItemType::select('inv_item_type.item_unit_3','inv_item_unit.*')
+            ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'inv_item_type.item_unit_3')
+            ->where('inv_item_type.item_unit_3', $inv_item_type['item_unit_3'])
+            ->first();
+        
+
+        $array = [];
+        if($unit1){
+            array_push($array, $unit1);
+        }
+        if($unit2){
+            array_push($array, $unit2);
+        }
+        if($unit3){
+            array_push($array, $unit3);
+        }
+        // $unit = array_merge($unit1, $unit2);
+        // $unit4 = array_merge($unit, $unit3);
+        
+        
+        $data .= "<option value=''>--Choose One--</option>";
+        foreach ($array as $val){
+            print_r($val['item_unit_id']);
+            
+            $data .= "<option value='$val[item_unit_id]'>$val[item_unit_name]</option>\n";	
+        }
+        return $data;
         }
     }
 }
