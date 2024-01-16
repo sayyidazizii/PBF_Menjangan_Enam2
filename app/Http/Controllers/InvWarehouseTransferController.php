@@ -80,7 +80,9 @@ class InvWarehouseTransferController extends Controller
     public function addInvWarehouseTransfer(Request $request)
     {   
         $warehousetransferelements= Session::get('warehousetransferelements');
-        $warehousetransferitem = Session::get('datawarehousetransferitem');     
+        $warehousetransferitem = Session::get('datawarehousetransferitem'); 
+        
+        // dd($warehousetransferitem);
 
         $invitemcategory = InvItemCategory::where('data_state','=',0)
         ->get()
@@ -90,9 +92,9 @@ class InvWarehouseTransferController extends Controller
         
         $invitem = [];
         
-        $invitemunit = InvItemUnit::where('data_state','=',0)
-        ->get()
-        ->pluck('item_unit_name', 'item_unit_id');
+        // $invitemunit = InvItemUnit::where('data_state','=',0)
+        // ->get()
+        // ->pluck('item_unit_name', 'item_unit_id');
 
         $invwarehouse = InvWarehouse::where('data_state', 0)
         ->pluck('warehouse_name', 'warehouse_id');
@@ -116,7 +118,7 @@ class InvWarehouseTransferController extends Controller
             3 => 'All',
         );
 
-        return view('content/InvWarehouseTransfer/FormAddInvWarehouseTransfer', compact('invitemtype','invitemcategory', 'invitem', 'invitemunit', 'warehousetransferitem', 'invwarehouse', 'warehousetransfertype', 'warehousetransferelements', 'location', 'expedition', 'city', 'status'));
+        return view('content/InvWarehouseTransfer/FormAddInvWarehouseTransfer', compact('invitemtype','invitemcategory', 'invitem', 'warehousetransferitem', 'invwarehouse', 'warehousetransfertype', 'warehousetransferelements', 'location', 'expedition', 'city', 'status'));
     }
 
     public function detailInvWarehouseTransfer($warehouse_transfer_id)
@@ -183,6 +185,7 @@ class InvWarehouseTransferController extends Controller
 
     public function processVoidInvWarehouseTransfer(Request $request)
     {
+        // dd($request->all());
         $warehousetransfer = InvWarehouseTransfer::findOrFail($request->warehouse_transfer_id);
         $warehousetransfer->data_state = 1;
 
@@ -191,20 +194,20 @@ class InvWarehouseTransferController extends Controller
             ->where('warehouse_transfer_id', $request->warehouse_transfer_id)
             ->get();
 
-            foreach($warehousetransferitem as $item){
-                $itemstock = InvItemStock::where('data_state', 0)
-                ->where('item_stock_id', $item['item_stock_id'])
-                ->first();
+            // foreach($warehousetransferitem as $item){
+            //     $itemstock = InvItemStock::where('data_state', 0)
+            //     ->where('item_stock_id', $item['item_stock_id'])
+            //     ->first();
 
-                $itemunitfirst  = InvItemUnit::where('item_unit_id', $itemstock['item_unit_id'])->first();
-                $itemunitsecond = InvItemUnit::where('item_unit_id', $item['item_unit_id'])->first();
+            //     $itemunitfirst  = InvItemUnit::where('item_unit_id', $itemstock['item_unit_id'])->first();
+            //     $itemunitsecond = InvItemUnit::where('item_unit_id', $item['item_unit_id'])->first();
 
-                $item_total = $itemstock['item_total'] + ($item['quantity'] * $itemunitsecond['item_unit_default_quantity'] / $itemunitfirst['item_unit_default_quantity']);
+            //     $item_total = $itemstock['quantity_unit'] + ($item['quantity'] * $itemunitsecond['item_unit_default_quantity'] / $itemunitfirst['item_unit_default_quantity']);
 
-                $itemstock->item_total   = $item_total;
-                $itemstock->warehouse_id = $warehousetransfer['warehouse_transfer_from'];
-                $itemstock->save();
-            }
+            //     $itemstock->quantity_unit   = $item_total;
+            //     $itemstock->warehouse_id    = $warehousetransfer['warehouse_transfer_from'];
+            //     $itemstock->save();
+            // }
             $msg = 'Hapus Transfer Gudang Berhasil';
             return redirect('/warehouse-transfer')->with('msg',$msg);
         }else{
@@ -238,25 +241,25 @@ class InvWarehouseTransferController extends Controller
             $dataitem = InvWarehouseTransferItem::create([  
                 'warehouse_transfer_id'             => $lastwarehousetransfer['warehouse_transfer_id'],
                 'item_category_id'                  => $val['item_category_id'],
-                'item_type_id'                      => $val['item_type_id'],
-                'item_id'                           => $val['item_id'],
+                'item_type_id'                      => $this->getItemTypeId($val['item_stock_id']),
                 'item_unit_id'                      => $val['item_unit_id'],
-                'item_stock_id'                     => $val['item_batch_number'],
+                'item_batch_number'                 => $val['item_batch_number'],
+                'item_stock_id'                     => $val['item_stock_id'],
                 'quantity'                          => $val['quantity'],
                 'warehouse_transfer_item_remark'    => $val['warehouse_transfer_item_remark'],
                 'created_id'                        => Auth::id()
             ]);
 
             $itemstock = InvItemStock::where('data_state', 0)
-            ->where('item_stock_id', $val['item_batch_number'])
+            ->where('item_stock_id', $val['item_stock_id'])
             ->first();
 
             $itemunitfirst  = InvItemUnit::where('item_unit_id', $itemstock['item_unit_id'])->first();
             $itemunitsecond = InvItemUnit::where('item_unit_id', $val['item_unit_id'])->first();
 
-            $item_total = $itemstock['item_total'] - ($val['quantity'] * $itemunitsecond['item_unit_default_quantity'] / $itemunitfirst['item_unit_default_quantity']);
+            $item_total = $itemstock['quantity_unit'] - ($val['quantity'] * $itemunitsecond['item_unit_default_quantity'] / $itemunitfirst['item_unit_default_quantity']);
 
-            $itemstock->item_total = $item_total;
+            $itemstock->quantity_unit = $item_total;
             if($item_total <= 0){
                 $itemstock->data_state = 1;
             }
@@ -276,7 +279,8 @@ class InvWarehouseTransferController extends Controller
         $warehousetransferitem = array(
             'item_category_id'                  => $request->item_category_id,
             'item_type_id'                      => $request->item_type_id,
-            'item_id'                           => $request->item_id,
+            // 'item_id'                           => $request->item_id,
+            'item_stock_id'                     => $request->item_stock_id,
             'item_unit_id'                      => $request->item_unit_id,
             'quantity'                          => $request->quantity,
             'item_batch_number'                 => $request->item_batch_number,
@@ -451,78 +455,83 @@ class InvWarehouseTransferController extends Controller
         $item_category_id = $request->item_category_id;
         $data='';
 
-        $type = InvItemType::where('item_category_id', $item_category_id)
+        $type = InvItemStock::where('item_category_id', $item_category_id)
         ->where('data_state','=',0)
+        // ->where('warehouse_id','=',$request->warehouse_from_id)
         ->get();
 
         $data .= "<option value=''>--Choose One--</option>";
         foreach ($type as $mp){
-            $data .= "<option value='$mp[item_type_id]'>$mp[item_type_name]</option>\n";	
+            $typeName = $this->getItemTypeName($mp['item_type_id']);
+            $data .= "<option value='$mp[item_stock_id]'>$typeName $mp[item_batch_number]</option>\n";	
         }
 
         return $data;
+
     }
 
     public function getCoreItem(Request $request){
         $item_category_id   = $request->item_category_id;
-        $item_type_id       = $request->item_type_id;
+        $item_stock_id       = $request->item_type_id;
         $data='';
         
         $itemcategoryname = InvItemCategory::where('item_category_id', $item_category_id)
         ->first();
 
-        $itemtypename    = InvItemType::where('item_type_id', $item_type_id)
+        $data    = InvItemStock::where('item_stock_id', $item_stock_id)
         ->first();
 
-        $item = InvItem::select(DB::raw("inv_item.item_id, CONCAT(inv_item_category.item_category_name, ' ', inv_item_type.item_type_name, ' ', core_grade.grade_name) AS item_name"))
-        ->join('inv_item_category', 'inv_item.item_category_id', 'inv_item_category.item_category_id')
-        ->join('inv_item_type', 'inv_item.item_type_id', 'inv_item_type.item_type_id')
-        ->join('core_grade', 'inv_item.grade_id', 'core_grade.grade_id')
-        ->where('inv_item.item_category_id', $item_category_id)
-        ->where('inv_item.item_type_id', $item_type_id)
-        ->where('inv_item.data_state','=',0)
-        ->get();
-
-        $data .= "<option value=''>--Choose One--</option>";
-            $data .= "<option value='0'>".$itemcategoryname['item_category_name'].' '.$itemtypename['item_type_name'].' No Grade'."</option>\n";
-        foreach ($item as $mp){
-            $data .= "<option value='$mp[item_id]'>$mp[item_name]</option>\n";	
-        }
-
-        return $data;
+        return $data['item_unit_id'];
     }
+
 
     public function getItemBatchNumber(Request $request){
-        $warehouse_from_id  = $request->warehouse_from_id;
-        $item_category_id   = $request->item_category_id;
-        $item_type_id       = $request->item_type_id;
-        $item_id            = $request->item_id;
-        $data               = '';
-
-        $type = InvItemStock::where('item_category_id', $item_category_id)
-        ->where('warehouse_id', $warehouse_from_id)
-        ->where('item_type_id', $item_type_id)
-        ->where('item_id', $item_id)
-        ->where('data_state','=',0)
-        ->get();
-
-        $datas = new stdClass;
-
-        $data .= "<option value=''>--Choose One--</option>";
-        foreach ($type as $mp){
-            $data .= "<option value='$mp[item_stock_id]'>$mp[item_batch_number]</option>\n";	
-        }
-
-        $itemunit = InvItem::where('item_id', $item_id)
-        ->join('inv_item_unit', 'inv_item_unit.item_unit_id', 'inv_item.item_unit_id')
-        ->where('inv_item.data_state', 0)
+        $item_stock_id       = $request->item_type_id;
+        $data='';
+        
+        $data    = InvItemStock::where('item_stock_id', $item_stock_id)
         ->first();
 
-        $datas->data        = $data;
-        $datas->itemunit    = $itemunit['item_unit_name'];
-
-        return response()->json(json_encode($datas));
+        return $data['item_batch_number'];
     }
+
+    public function getItemQty(Request $request){
+        $item_category_id   = $request->item_category_id;
+        $item_stock_id       = $request->item_type_id;
+        $data='';
+        
+        $itemcategoryname = InvItemCategory::where('item_category_id', $item_category_id)
+        ->first();
+
+        $data    = InvItemStock::where('item_stock_id', $item_stock_id)
+        ->first();
+
+        return $data['quantity_unit'];
+    }
+
+    // public function getItemBatchNumber(Request $request){
+    //     $warehouse_from_id  = $request->warehouse_from_id;
+    //     $item_category_id   = $request->item_category_id;
+    //     $item_type_id       = $request->item_type_id;
+    //     $data               = '';
+
+    //     $type = InvItemStock::where('item_category_id', $item_category_id)
+    //     ->where('warehouse_id', $warehouse_from_id)
+    //     ->where('item_type_id', $item_type_id)
+    //     ->where('data_state','=',0)
+    //     ->get();
+
+    //     // dd($type);
+
+    //     // $datas = new stdClass;
+
+    //     $data .= "<option value=''>--Choose One--</option>";
+    //     foreach ($type as $mp){
+    //         $data .= "<option value='$mp[item_stock_id]'>$mp[item_batch_number]</option>\n";	
+    //     }
+
+    //     return response()->json(json_encode($data));
+    // }
 
     public function getItemBatchNumberDetail(Request $request){
         $item_stock_id  = $request->item_stock_id;
@@ -564,10 +573,22 @@ class InvWarehouseTransferController extends Controller
         return $item['warehouse_transfer_type_name'];
     }
 
+    public function getItemTypeId($item_stock_id){
+        $item = InvItemStock::where('item_stock_id',$item_stock_id)->first();
+
+        return $item['item_type_id'];
+    }
+
     public function getItemTypeName($item_type_id){
-        $item = InvItemType::findOrFail($item_type_id);
+        $item = InvItemType::where('item_type_id',$item_type_id)->first();
 
         return $item['item_type_name'];
+    }
+    public function getItemStockName($item_stock_id){
+        $item = InvItemStock::where('item_stock_id',$item_stock_id)->first();
+        $itemName = InvItemType::where('item_type_id',$item['item_type_id'])->first();
+
+        return $itemName['item_type_name'];
     }
 
     public function getItemName($item_id){
@@ -596,7 +617,7 @@ class InvWarehouseTransferController extends Controller
     }
 
     public function getItemBatchNumberName($item_stock_id){
-        $item = InvItemStock::findOrFail($item_stock_id);
+        $item = InvItemStock::where('item_stock_id',$item_stock_id)->first();
 
         return $item['item_batch_number'];
     }

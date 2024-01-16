@@ -273,6 +273,7 @@
                                 } else {
                                     $no =1;
                                     foreach ($warehousetransferitem AS $key => $val){
+                                        
                                         echo"
                                             <tr>
                                                 <td style='text-align  : center'>".$no."</td>";

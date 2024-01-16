@@ -390,13 +390,14 @@ Route::get('/warehouse-transfer/delete-array/{record_id}', [InvWarehouseTransfer
 Route::get('/warehouse-transfer/search-purchase-invoice', [InvWarehouseTransferController::class, 'search'])->name('warehouse-transfer-search-purchase-invoice');
 Route::post('/warehouse-transfer/elements-add', [InvWarehouseTransferController::class, 'elements_add'])->name('elements-add-warehouse-transfer');
 Route::post('/warehouse-transfer/add-transfer-type', [InvWarehouseTransferController::class, 'addWarehouseTransferType'])->name('add-transfer-type-warehouse-transfer');
+Route::post('/warehouse-transfer/item-stock', [InvWarehouseTransferController::class, 'getItemQty'])->name('warehouse-transfer-item-stock');
 
 
 Route::get('/purchase-order', [PurchaseOrderController::class, 'index'])->name('purchase-order');
 Route::get('/purchase-order/detail/{purchase_order_id}', [PurchaseOrderController::class, 'detailPurchaseOrder'])->name('detail-purchase-order');
 Route::get('/purchase-order/edit/{purchase_order_id}', [PurchaseOrderController::class, 'editPurchaseOrder'])->name('edit-purchase-order');
 Route::get('/purchase-order/add', [PurchaseOrderController::class, 'addPurchaseOrder'])->name('add-purchase-order');
-Route::post('/purchase-order/select-data-unit', [PurchaseOrderController::class, 'getSelectDataUnit'])->name('purchase-order-select-data-unit');
+Route::post('/purchase-order/select-data-unit', [PurchaseOrderController::class, 'getSelectDataUnit'])->name('purchaseselect-data-unit');
 Route::post('/purchase-order/process-add-purchase-order', [PurchaseOrderController::class, 'processAddPurchaseOrder'])->name('process-add-purchase-order');
 Route::post('/purchase-order/add-array', [PurchaseOrderController::class, 'processAddArrayPurchaseOrderItem'])->name('purchase-order-add-array');
 Route::get('/purchase-order/delete-array/{record_id}', [PurchaseOrderController::class, 'deleteArrayPurchaseOrderItem'])->name('purchase-order-delete-array');

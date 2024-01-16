@@ -7,7 +7,7 @@
 <script>
 	$(document).ready(function(){
         $("#item_category_id").select2("val", "0");
-        $("#item_unit_id").select2("val", "0");
+        // $("#item_unit_id").select2("val", "0");
         
         var elements = {!! json_encode($warehousetransferelements) !!};
 
@@ -60,7 +60,7 @@
 
             $.ajax({
                 type: "POST",
-                url : "{{route('warehouse-transfer-item')}}",
+                url : "{{route('warehouse-transfer-batch-number')}}",
                 dataType: "html",
                 data: {
                     'item_category_id'	: item_category_id,
@@ -68,7 +68,9 @@
                     '_token'            : '{{csrf_token()}}',
                 },
                 success: function(return_data){ 
-                    $('#item_id').html(return_data);
+                    console.log(return_data);
+                    $('#item_batch_number').val(return_data);
+
                 },
                 error: function(data)
                 {
@@ -78,29 +80,23 @@
             });
 		});
 
-        $("#item_id").change(function(){
-            var warehouse_from_id 	= $("#warehouse_from_id").val();
-            var item_category_id 	= $("#item_category_id").val();
-            var item_type_id 	    = $("#item_type_id").val();
-            var item_id 	        = $("#item_id").val();
+        $("#item_type_id").change(function(){
+			var item_category_id 	= $("#item_category_id").val();
+			var item_type_id 	    = $("#item_type_id").val();
 
             $.ajax({
                 type: "POST",
-                url : "{{route('warehouse-transfer-batch-number')}}",
+                url : "{{route('warehouse-transfer-item')}}",
                 dataType: "html",
                 data: {
-                    'warehouse_from_id'	: warehouse_from_id,
                     'item_category_id'	: item_category_id,
                     'item_type_id'	    : item_type_id,
-                    'item_id'	        : item_id,
                     '_token'            : '{{csrf_token()}}',
                 },
                 success: function(return_data){ 
-                    return_data = JSON.parse(return_data);
-                    return_data = JSON.parse(return_data);
+                    console.log(return_data);
+                    $('#item_unit_id').val(return_data);
 
-                    $('#item_batch_number').html(return_data['data']);
-                    // $('#default_item_unit_id').val(return_data['itemunit']);
                 },
                 error: function(data)
                 {
@@ -108,32 +104,90 @@
 
                 }
             });
-        });
+		});
 
-        $("#item_batch_number").change(function(){
-            var item_stock_id 	= $("#item_batch_number").val();
+        $("#item_type_id").change(function(){
+			var item_category_id 	= $("#item_category_id").val();
+			var item_type_id 	    = $("#item_type_id").val();
 
             $.ajax({
                 type: "POST",
-                url : "{{route('warehouse-transfer-batch-number-detail')}}",
+                url : "{{route('warehouse-transfer-item-stock')}}",
                 dataType: "html",
                 data: {
-                    'item_stock_id'	    : item_stock_id,
+                    'item_category_id'	: item_category_id,
+                    'item_type_id'	    : item_type_id,
                     '_token'            : '{{csrf_token()}}',
                 },
                 success: function(return_data){ 
-                    // return_data = return_data.slice(1);
-                    return_data = JSON.parse(return_data);
-                    return_data = JSON.parse(return_data);
-                    $('#stock_quantity').val(return_data['data']['item_total']);
-                    $('#default_item_unit_id').val(return_data['itemunit']);
+                    console.log(return_data);
+                    $('#stock_quantity').val(return_data);
+
                 },
                 error: function(data)
                 {
                     console.log(data);
+
                 }
             });
-        });
+		});
+
+        // $("#item_id").change(function(){
+        //     var warehouse_from_id 	= $("#warehouse_from_id").val();
+        //     var item_category_id 	= $("#item_category_id").val();
+        //     var item_type_id 	    = $("#item_type_id").val();
+        //     var item_id 	        = $("#item_id").val();
+
+        //     $.ajax({
+        //         type: "POST",
+        //         url : "{{route('warehouse-transfer-batch-number')}}",
+        //         dataType: "html",
+        //         data: {
+        //             'warehouse_from_id'	: warehouse_from_id,
+        //             'item_category_id'	: item_category_id,
+        //             'item_type_id'	    : item_type_id,
+        //             'item_id'	        : item_id,
+        //             '_token'            : '{{csrf_token()}}',
+        //         },
+        //         success: function(return_data){ 
+        //             return_data = JSON.parse(return_data);
+        //             return_data = JSON.parse(return_data);
+
+        //             $('#item_batch_number').html(return_data['data']);
+        //             // $('#default_item_unit_id').val(return_data['itemunit']);
+        //         },
+        //         error: function(data)
+        //         {
+        //             console.log(data);
+
+        //         }
+        //     });
+        // });
+
+        // $("#item_batch_number").change(function(){
+        //     var item_stock_id 	= $("#item_batch_number").val();
+
+        //     $.ajax({
+        //         type: "POST",
+        //         url : "{{route('warehouse-transfer-batch-number-detail')}}",
+        //         dataType: "html",
+        //         data: {
+        //             'item_stock_id'	    : item_stock_id,
+        //             '_token'            : '{{csrf_token()}}',
+        //         },
+        //         success: function(return_data){ 
+        //             // return_data = return_data.slice(1);
+        //             return_data = JSON.parse(return_data);
+        //             return_data = JSON.parse(return_data);
+        //             $('#stock_quantity').val(return_data['data']['item_total']);
+        //             $('#default_item_unit_id').val(return_data['itemunit']);
+        //         },
+        //         error: function(data)
+        //         {
+        //             console.log(data);
+        //         }
+        //     });
+        // });
     
 	});
     
@@ -160,10 +214,8 @@
     
     function processAddArrayWarehouseTransferItem(){
         var item_category_id	                = document.getElementById("item_category_id").value;
-        var item_type_id		                = document.getElementById("item_type_id").value;
-        var item_id			                    = document.getElementById("item_id").value;
+        var item_stock_id		                = document.getElementById("item_type_id").value;
         var item_unit_id		                = document.getElementById("item_unit_id").value;
-        var default_item_unit_id		        = document.getElementById("default_item_unit_id").value;
         var quantity			                = document.getElementById("quantity").value;
         var item_batch_number			        = document.getElementById("item_batch_number").value;
         var warehouse_transfer_item_remark		= document.getElementById("warehouse_transfer_item_remark").value;
@@ -181,8 +233,7 @@
             url : "{{route('warehouse_transfer-add-array')}}",
             data: {
                 'item_category_id'	                : item_category_id,
-                'item_type_id' 		                : item_type_id, 
-                'item_id' 			                : item_id,
+                'item_stock_id' 		            : item_stock_id, 
                 'item_unit_id' 		                : item_unit_id,
                 'quantity' 			                : quantity,
                 'item_batch_number' 			    : item_batch_number,
@@ -437,30 +488,20 @@
                     {!! Form::select('item_category_id',  $invitemcategory, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_category_id']) !!}
                 </div>
                 <div class="col-md-6">
-                    <a class="text-dark">Tipe Barang</a>
+                    <a class="text-dark">Barang</a>
                     {!! Form::select('item_type_id',  $invitemtype, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_type_id']) !!}
                 </div>
             </div>
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <a class="text-dark">Barang</a>
-                    {!! Form::select('item_id',  $invitem, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_id']) !!}
-                </div>
+            <div class="row form-group" hidden>
                 <div class="col-md-6">
                     <a class="text-dark">Batch Number</a>
-                    {!! Form::select('item_batch_number',  $invitem, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_batch_number']) !!}
+                    <input class="form-control input-bb" type="text" name="item_batch_number" id="item_batch_number" value="" />
                 </div>
-            </div>
-            <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Satuan Default</a>
-                        <input class="form-control input-bb" type="text" name="default_item_unit_id" id="default_item_unit_id" value="" readonly/>
+                        <input class="form-control input-bb" type="text" name="item_unit_id" id="item_unit_id" value="" />
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <a class="text-dark">Satuan Barang</a>
-                    {!! Form::select('item_unit_id',  $invitemunit, 0, ['class' => 'selection-search-clear select-form', 'id' => 'item_unit_id']) !!}
                 </div>
             </div>
             <div class="row form-group">
@@ -527,15 +568,9 @@
                                         echo"
                                             <tr>
                                                 <td style='text-align  : center'>".$no."</td>";
-                                            if($val['item_id']==0){
                                                 echo"
-                                                <td style='text-align  : left !important;'>".$InvWarehouseTransfer->getItemNameItemId0($val['item_id'], $val['item_type_id'], $val['item_category_id'])."</td>";
-                                            }else{
-                                                echo"
-                                                <td style='text-align  : left !important;'>".$InvWarehouseTransfer->getItemName($val['item_id'])."</td>";
-                                            }
-                                                echo"
-                                                <td style='text-align  : left !important;'>".$InvWarehouseTransfer->getItemBatchNumberName($val['item_batch_number'])."</td>
+                                                <td style='text-align  : left !important;'>".$InvWarehouseTransfer->getItemStockName($val['item_stock_id'])."</td>
+                                                <td style='text-align  : left !important;'>".$InvWarehouseTransfer->getItemBatchNumberName($val['item_stock_id'])."</td>
                                                 <td style='text-align  : right !important;'>".$val['quantity']."</td>
                                                 <td style='text-align  : left !important;'>".$InvWarehouseTransfer->getItemUnitName($val['item_unit_id'])."</td>
                                                 <td style='text-align  : left !important;'>".$val['warehouse_transfer_item_remark']."</td>
