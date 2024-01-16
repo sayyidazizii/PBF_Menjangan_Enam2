@@ -138,8 +138,8 @@
                     <?php } ?>
                         <td class="">
                             <a type="button" class="btn btn-outline-primary btn-sm" href="{{ url('/sales-discount-collection/detail/'.$collection['collection_id']) }}">Detail</a>
-                            <a type="button" class="btn btn-outline-dark btn-sm" href="{{ url('/sales-collection/printing/'.$collection['collection_id']) }}"  target='_blank'>Print</a>
-                            <a type="button" class="btn btn-outline-danger btn-sm" href="{{ url('/sales-collection/delete/'.$collection['collection_id']) }}">Batal</a>
+                            <a type="button" class="btn btn-outline-dark btn-sm" href="{{ url('/sales-discount-collection/print/'.$collection['collection_id']) }}"  target='_blank'>Print</a>
+                            <a type="button" class="btn btn-outline-danger btn-sm" hidden href="{{ url('/sales-discount-collection/delete/'.$collection['collection_id']) }}">Batal</a>
                         </td>
                     </tr>
                     <?php $no++; ?>

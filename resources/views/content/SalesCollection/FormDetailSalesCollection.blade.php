@@ -55,7 +55,7 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Nama Pemasok</a>
+                        <a class="text-dark">Nama Customer</a>
                         <input class="form-control input-bb" type="text" name="customer_name" id="customer_name" value="{{$customer['customer_name']}}" readonly/>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Kas</a>
+                        <a class="text-dark">Pembayaran</a>
                         <input class="form-control input-bb" type="text" name="cash_account_name" id="cash_account_name" value="{{$SalesCollection->getAccountName($salescollection['cash_account_id'])}}" readonly/>
                     </div>
                 </div>

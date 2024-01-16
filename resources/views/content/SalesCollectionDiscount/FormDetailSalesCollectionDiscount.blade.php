@@ -21,7 +21,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('sales-collection') }}">Daftar Pelunasan Piutang</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('sales-discount-collection') }}">Daftar Pelunasan Piutang Diskon</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Pelunasan Piutang</li>
     </ol>
   </nav>
@@ -31,7 +31,7 @@
 @section('content')
 
 <h3 class="page-title">
-    Form Detail Pelunasan Piutang
+    Form Detail Pelunasan Piutang Diskon
 </h3>
 <br/>
 @if(session('msg'))
@@ -54,28 +54,28 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Nama Pemasok</a>
-                        <input class="form-control input-bb" type="text" name="customer_name" id="customer_name" value="" readonly/>
+                        <a class="text-dark">Nama Customer</a>
+                        <input class="form-control input-bb" type="text" name="customer_name" id="customer_name" value="{{ $customer['customer_name'] }}" readonly/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Tanggal Pelunasan</a>
-                        <input class="form-control input-bb" type="text" name="collection_date" id="collection_date" value="" readonly/>
+                        <input class="form-control input-bb" type="text" name="collection_date" id="collection_date" value="{{ $salescollection['collection_date'] }}" readonly/>
                     </div>
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Kas</a>
-                        <input class="form-control input-bb" type="text" name="cash_account_name" id="cash_account_name" value="" readonly/>
+                        <a class="text-dark">Pembayaran</a>
+                        <input class="form-control input-bb" type="text" name="cash_account_name" id="cash_account_name" value="{{$SalesCollection->getAccountName($salescollection['cash_account_id'])}}" readonly/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Jumlah Pelunasan Tunai</a>
-                        <input class="form-control input-bb" type="text" name="collection_total_cash_amount" id="collection_total_cash_amount" value="" readonly/>
+                        <input class="form-control input-bb" type="text" name="collection_total_cash_amount" id="collection_total_cash_amount" value="{{number_format($salescollection['collection_total_cash_amount'], 2)}}" readonly/>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Jumlah Pelunasan Transfer</a>
-                        <input class="form-control input-bb" type="text" name="collection_total_transfer_amount" id="collection_total_transfer_amount" value="" readonly/>
+                        <input class="form-control input-bb" type="text" name="collection_total_transfer_amount" id="collection_total_transfer_amount" value="{{number_format($salescollection['collection_total_transfer_amount'], 2)}}" readonly/>
                     </div>
                 </div>
             </div>
@@ -125,38 +125,38 @@
                         </thead>
                         <tbody>
                             <?php
-                                // if(count($salescollectionitem)<1){
-                                //     echo "<tr><th colspan='9' style='text-align  : center !important;'>Data Kosong</th></tr>";
-                                // } else {
-                                //     $no =1;
-                                //     $total_allocation = 0;
-                                //     $total_shortover  = 0;
-                                //     foreach ($salescollectionitem AS $key => $val){
-                                //         echo"
-                                //             <tr>
-                                //                 <td style='text-align  : center'>".$no."</td>
-                                //                 <td style='text-align  : left'>".$val['sales_invoice_date']."</td>
-                                //                 <td style='text-align  : left'>".$val['sales_invoice_no']."</td>
-                                //                 <td style='text-align  : right'>".number_format($val['total_amount'], 2)."</td>
-                                //                 <td style='text-align  : right'>".number_format($val['paid_amount'], 2)."</td>
-                                //                 <td style='text-align  : right'>".number_format($val['owing_amount'], 2)."</td>
-                                //                 <td style='text-align  : right'>".number_format($val['allocation_amount'], 2)."</td>
-                                //                 <td style='text-align  : right'>".number_format($val['shortover_value'], 2)."</td>
-                                //                 <td style='text-align  : right'>".number_format($val['last_balance'], 2)."</td>";
-                                //                 echo"
-                                //             </tr>
-                                //         ";
-                                //         $no++;
-                                //         $total_allocation+=$val['allocation_amount'];
-                                //         $total_shortover+=$val['shortover_value'];
-                                //     }
-                                //         echo"
-                                //         <th style='text-align  : center' colspan='6'>Total</th>
-                                //         <th style='text-align  : right'>".number_format($total_allocation,2)."</th>
-                                //         <th style='text-align  : right'>".number_format($total_shortover,2)."</th>
-                                //         <th style='text-align  : center'></th>
-                                //         ";
-                                // }
+                                if(count($salescollectionitem)<1){
+                                    echo "<tr><th colspan='9' style='text-align  : center !important;'>Data Kosong</th></tr>";
+                                } else {
+                                    $no =1;
+                                    $total_allocation = 0;
+                                    $total_shortover  = 0;
+                                    foreach ($salescollectionitem AS $key => $val){
+                                        echo"
+                                            <tr>
+                                                <td style='text-align  : center'>".$no."</td>
+                                                <td style='text-align  : left'>".$val['sales_invoice_date']."</td>
+                                                <td style='text-align  : left'>".$val['sales_invoice_no']."</td>
+                                                <td style='text-align  : right'>".number_format($val['total_amount'], 2)."</td>
+                                                <td style='text-align  : right'>".number_format($val['paid_amount'], 2)."</td>
+                                                <td style='text-align  : right'>".number_format($val['owing_amount'], 2)."</td>
+                                                <td style='text-align  : right'>".number_format($val['allocation_amount'], 2)."</td>
+                                                <td style='text-align  : right'>".number_format($val['shortover_value'], 2)."</td>
+                                                <td style='text-align  : right'>".number_format($val['last_balance'], 2)."</td>";
+                                                echo"
+                                            </tr>
+                                        ";
+                                        $no++;
+                                        $total_allocation+=$val['allocation_amount'];
+                                        $total_shortover+=$val['shortover_value'];
+                                    }
+                                        echo"
+                                        <th style='text-align  : center' colspan='6'>Total</th>
+                                        <th style='text-align  : right'>".number_format($total_allocation,2)."</th>
+                                        <th style='text-align  : right'>".number_format($total_shortover,2)."</th>
+                                        <th style='text-align  : center'></th>
+                                        ";
+                                }
                             ?>
                         </tbody>
                     </table>
@@ -187,30 +187,30 @@
                         </thead>
                         <tbody>
                             <?php
-                                // if(count($salescollectiontransfer)<1){
-                                //     echo "<tr><th colspan='5' style='text-align  : center !important;'>Data Kosong</th></tr>";
-                                // } else {
-                                //     $no =1;
-                                //     $total_transfer = 0;
-                                    // foreach ($salescollectiontransfer AS $key => $val){
-                                    //     echo"
-                                    //         <tr>
-                                    //             <td style='text-align  : center'>".$no."</td>
-                                    //             <td style='text-align  : left'>".$val['collection_transfer_bank_name']."</td>
-                                    //             <td style='text-align  : left'>".$val['collection_transfer_account_name']."</td>
-                                    //             <td style='text-align  : left'>".$val['collection_transfer_account_no']."</td>
-                                    //             <td style='text-align  : right'>".number_format($val['collection_transfer_amount'], 2)."</td>";
-                                    //             echo"
-                                    //         </tr>
-                                    //     ";
-                                    //     $no++;
-                                    //     $total_transfer+=$val['collection_transfer_amount'];
-                                    // }
-                                        // echo"
-                                        // <th style='text-align  : center' colspan=4'>Total</th>
-                                        // <th style='text-align  : right'>".number_format($total_transfer, 2)."</th>
-                                        // ";
-                                // }
+                                if(count($salescollectiontransfer)<1){
+                                    echo "<tr><th colspan='5' style='text-align  : center !important;'>Data Kosong</th></tr>";
+                                } else {
+                                    $no =1;
+                                    $total_transfer = 0;
+                                    foreach ($salescollectiontransfer AS $key => $val){
+                                        echo"
+                                            <tr>
+                                                <td style='text-align  : center'>".$no."</td>
+                                                <td style='text-align  : left'>".$val['collection_transfer_bank_name']."</td>
+                                                <td style='text-align  : left'>".$val['collection_transfer_account_name']."</td>
+                                                <td style='text-align  : left'>".$val['collection_transfer_account_no']."</td>
+                                                <td style='text-align  : right'>".number_format($val['collection_transfer_amount'], 2)."</td>";
+                                                echo"
+                                            </tr>
+                                        ";
+                                        $no++;
+                                        $total_transfer+=$val['collection_transfer_amount'];
+                                    }
+                                        echo"
+                                        <th style='text-align  : center' colspan=4'>Total</th>
+                                        <th style='text-align  : right'>".number_format($total_transfer, 2)."</th>
+                                        ";
+                                }
                             ?>
                         </tbody>
                     </table>
