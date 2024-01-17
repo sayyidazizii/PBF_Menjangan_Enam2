@@ -3788,8 +3788,8 @@ CREATE TABLE `inv_item_stock` (
 /*Data for the table `inv_item_stock` */
 
 insert  into `inv_item_stock`(`item_stock_id`,`goods_received_note_id`,`goods_received_note_item_id`,`item_stock_date`,`item_stock_expired_date`,`item_batch_number`,`purchase_order_item_id`,`warehouse_id`,`purchase_order_no`,`buyers_acknowledgment_no`,`no_retur_barang`,`nota_retur_pajak`,`item_category_id`,`item_type_id`,`item_id`,`item_unit_id`,`category`,`barang`,`satuan`,`item_total`,`item_unit_cost`,`item_unit_total`,`item_unit_price`,`item_unit_id_default`,`item_default_quantity_unit`,`quantity_unit`,`item_weight_default`,`item_weight_unit`,`package_id`,`package_total`,`package_unit_id`,`package_price`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
-(1,0,0,'2024-01-15','2025-06-22','66002254',0,6,'','','','',1,1,0,1,'PHAPROS','Antimo tab/cc 10\'s','strip',0,3348,0,4300,1,'','93240',0,'',0,0,0,0,0,3,'2023-12-12 09:37:25','2023-12-22 07:32:20'),
-(2,0,0,'2024-01-15','2025-06-22','66002257',0,6,'','','','',1,1,0,1,'PHAPROS','Antimo tab/cc 10\'s','strip',0,3348,0,4300,1,'','69552',0,'',0,0,0,0,0,3,'2023-12-12 09:37:25','2023-12-22 07:32:20'),
+(1,0,0,'2024-01-15','2025-06-22','66002254',0,6,'','','','',1,1,0,1,'PHAPROS','Antimo tab/cc 10\'s','strip',0,3348,0,4300,1,'','93240',0,'',0,0,0,0,0,3,'2023-12-12 09:37:25','2024-01-16 08:27:46'),
+(2,0,0,'2024-01-15','2025-06-22','66002257',0,6,'','','','',1,1,0,1,'PHAPROS','Antimo tab/cc 10\'s','strip',0,3348,0,4300,1,'','69552',0,'',0,0,0,0,0,3,'2023-12-12 09:37:25','2024-01-16 08:27:46'),
 (3,0,0,'2024-01-15','2026-10-04','66002262',0,6,'','','','',1,1,0,1,'PHAPROS','Antimo tab/cc 10\'s','strip',0,3348,0,4300,1,'','54',0,'',0,0,0,0,0,3,'2023-12-12 09:38:55','2023-12-12 09:38:55'),
 (4,0,0,'2024-01-15','2026-10-04','66002298',0,6,'','','','',1,1,0,1,'PHAPROS','Antimo tab/cc 10\'s','strip',0,3999,0,4300,1,'','90989',0,'',0,0,0,0,0,3,'2023-12-12 09:38:55','2023-12-12 09:38:55'),
 (5,0,0,'2024-01-15','2025-06-02','66002299',0,6,'','','','',1,1,0,1,'PHAPROS','Antimo tab/cc 10\'s','strip',0,3999,0,4300,1,'','17011',0,'',0,0,0,0,0,3,'2023-12-13 03:15:12','2023-12-13 03:51:36'),
@@ -4481,9 +4481,12 @@ CREATE TABLE `inv_warehouse_transfer` (
   KEY `FK_inv_warehouse_transfer_warehouse_transform_to` (`warehouse_transfer_to`),
   KEY `FK_inv_warehouse_transfer_warehouse_transfer_type_id` (`warehouse_transfer_type_id`),
   KEY `FK_inv_warehouse_transfer_expedition_id` (`expedition_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*Data for the table `inv_warehouse_transfer` */
+
+insert  into `inv_warehouse_transfer`(`warehouse_transfer_id`,`expedition_id`,`warehouse_transfer_no`,`warehouse_transfer_date`,`warehouse_transfer_remark`,`warehouse_transfer_from`,`warehouse_transfer_to`,`warehouse_transfer_type_id`,`warehouse_transfer_status`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(3,14,'0001/WT/I/2024','2024-01-16',NULL,6,8,10,0,1,3,'2024-01-16 08:27:46','2024-01-16 08:40:40');
 
 /*Table structure for table `inv_warehouse_transfer_item` */
 
@@ -4511,9 +4514,13 @@ CREATE TABLE `inv_warehouse_transfer_item` (
   KEY `FK_inv_warehouse_transfer_item_type_id` (`item_type_id`),
   KEY `FK_inv_warehouse_transfer_item_item_unit_id` (`item_unit_id`),
   KEY `FK_inv_warehouse_transfer_item_item_stock_id` (`item_stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*Data for the table `inv_warehouse_transfer_item` */
+
+insert  into `inv_warehouse_transfer_item`(`warehouse_transfer_item_id`,`warehouse_transfer_id`,`purchase_invoice_id`,`item_id`,`item_category_id`,`item_type_id`,`item_unit_id`,`item_stock_id`,`quantity`,`warehouse_transfer_item_remark`,`data_state`,`created_id`,`created_at`,`updated_at`) values 
+(8,3,0,0,1,1,1,1,1.00,NULL,0,3,'2024-01-16 08:27:46','2024-01-16 08:27:46'),
+(9,3,0,0,1,1,1,2,1.00,NULL,0,3,'2024-01-16 08:27:46','2024-01-16 08:27:46');
 
 /*Table structure for table `inv_warehouse_transfer_received_note` */
 
