@@ -143,7 +143,7 @@ class InvItemStockController extends Controller
         ->where('data_state', 0)
         ->first();
 
-        return $item['item_category_name'];
+        return $item['item_category_name'] ?? '';
     }
 
     public function getInvItemTypeName($item_type_id){
@@ -152,7 +152,7 @@ class InvItemStockController extends Controller
         ->where('data_state', 0)
         ->first();
 
-        return $item['item_type_name'];
+        return $item['item_type_name'] ?? '';
     }
 
     public function getInvItemUnitName($item_unit_id){
@@ -161,7 +161,7 @@ class InvItemStockController extends Controller
         ->where('data_state', 0)
         ->first();
 
-        return $unit['item_unit_name'];
+        return $unit['item_unit_name'] ?? '';
     }
 
     public function getInvWarehouseName($warehouse_id){
@@ -170,7 +170,7 @@ class InvItemStockController extends Controller
         ->where('data_state', 0)
         ->first();
 
-        return $warehouse['warehouse_name'];
+        return $warehouse['warehouse_name'] ?? '';
     }
 
     public function export(){
@@ -264,7 +264,7 @@ class InvItemStockController extends Controller
                 $sheet->setCellValue('C'.$j, $this->getInvItemCategoryName($val['item_category_id']));
                 $sheet->setCellValue('D'.$j, $this->getInvItemTypeName($val['item_type_id']));
                 $sheet->setCellValue('E'.$j, $val['item_batch_number']);
-                $sheet->setCellValue('F'.$j, $val['item_total']);
+                $sheet->setCellValue('F'.$j, $val['quantity_unit']);
                 $sheet->setCellValue('G'.$j, $this->getInvItemUnitName($val['item_unit_id']));
                 $sheet->setCellValue('H'.$j, $this->getInvWarehouseName($val['warehouse_id']));
                 $sheet->setCellValue('I'.$j, $val['purchase_order_no']);
@@ -278,7 +278,7 @@ class InvItemStockController extends Controller
                 }
                 
 
-                    
+                $no++;
                 $j++;
                 $lastno = $no;
                 $lastj = $j;
