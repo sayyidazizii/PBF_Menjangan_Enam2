@@ -122,7 +122,11 @@
                             <?php
                         }else if($item['sales_order_status']==2) {
                             ?>
-                            <td>Sudah diterima</td>
+                            <td>Intransit</td>
+                            <?php
+                        }else if($item['sales_order_status']==3) {
+                            ?>
+                            <td>Sudah Diterima</td>
                             <?php
                         }else{
                             ?>

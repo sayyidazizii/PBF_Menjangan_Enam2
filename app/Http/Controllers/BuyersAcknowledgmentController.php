@@ -796,6 +796,9 @@ class BuyersAcknowledgmentController extends Controller
 
                 }
 
+                SalesOrder::where('sales_order_id',$request->sales_order_id_1)
+                ->update(['sales_order_status' => 3]);
+
               
                 DB::commit();
                 $msg = 'Tambah Penerimaan Pihak Pembeli Berhasil';
