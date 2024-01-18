@@ -125,7 +125,7 @@ class SalesDeliveryNoteController extends Controller
         ->where('data_state', 0)
         ->first();
 
-        return $poNum['purchase_order_no'];
+        return $poNum['purchase_order_no'] ?? '';
     }
 
     public function addSalesDeliveryNote($sales_delivery_order_id)
