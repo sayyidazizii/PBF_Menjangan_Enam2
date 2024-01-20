@@ -135,7 +135,7 @@ class SalesCollectionDiscountController extends Controller
         ->orderBy('core_customer.customer_name', 'ASC')
         ->get();
         
-        return view('content/SalesCollectionDiscount/searchCoreCustomer',compact('corecustomer'));
+        return view('content/SalesCollectionDiscount/SearchCoreCustomer',compact('corecustomer'));
     }
 
 
