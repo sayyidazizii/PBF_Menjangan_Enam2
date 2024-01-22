@@ -815,6 +815,6 @@ Route::get('/aging-account-receivable/filter-reset', [AcctAgingArReportControlle
 
 
 
-Route::get('/debug-system', [DebugController::class, 'index'])->name('debug');
+// Route::get('/debug-system', [DebugController::class, 'index'])->name('debug');
 
 ?>
