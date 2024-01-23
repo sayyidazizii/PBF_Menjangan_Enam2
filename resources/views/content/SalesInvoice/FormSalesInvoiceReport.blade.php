@@ -109,6 +109,7 @@
                         <th width="20%" style='text-align:center'>Nama Pembeli</th>
                         <th width="10%" style='text-align:center'>No Invoice Penjualan</th>
                         <th width="20%" style='text-align:center'>Nama Obat</th>
+                        <th width="5%" style='text-align:center'>Qty</th>
                         <th width="5%" style='text-align:center'>Jumlah</th>
                         <th width="5%" style='text-align:center'>HPP</th>
                         <th width="5%" style='text-align:center'>DISKON</th>
@@ -128,6 +129,7 @@
                     $dpp            = 0;
                     $diskonPersen   = 0;
 
+                    $totalQty       = 0;
                     $totalJumlah    = 0;
                     $totalHpp       = 0;
                     $totalDiskon    = 0;
@@ -148,6 +150,7 @@
                     $diskonPersen   = $SalesInvoice->getDiscountAmt($item['sales_delivery_note_item_id']) + $SalesInvoice->getDiscountAmtB($item['sales_delivery_note_item_id']) ;
 
 
+                    $totalQty       += $item['quantity'];
                     $totalJumlah    += $item['item_unit_price'] * $item['quantity'];
                     $totalHpp       += $itemunitcost * $item['quantity'];
                     $totalDiskon    += $jumlahDiskon;
@@ -162,6 +165,7 @@
                         <td>{{ $SalesInvoice->getCustomerName($item['customer_id'])}}</td>
                         <td>{{ $item['sales_invoice_no']}}</td>
                         <td>{{ $SalesInvoice->getItemTypeName($item['item_type_id']) }}</td>
+                        <td>{{ $item['quantity']}}</td>
                         <td>{{ $item['item_unit_price'] * $item['quantity']}}</td>
                         <td>{{ $itemunitcost * $item['quantity']}}</td>
                         <td>{{ $jumlahDiskon }}</td>
@@ -174,6 +178,7 @@
                 </tbody>
                 <tr class="text-bold">
                         <td colspan="6" style='text-align:center'> JUMLAH TOTAL</td>
+                        <td>{{ $totalQty }}</td>
                         <td>{{ $totalJumlah }}</td>
                         <td>{{ $totalHpp }}</td>
                         <td>{{ $totalDiskon }}</td>
@@ -183,7 +188,7 @@
                     </tr>
                     <tr class="text-bold">
                         <td colspan="10" style='text-align:center'></td>
-                        <td colspan="2" style='text-align:center'>
+                        <td colspan="3" style='text-align:center'>
                             <a href="{{ url('sales-invoice/export') }}"name="Find" class="btn btn-sm btn-info" title="Export Excel"><i class="fa fa-print"></i>Export</a>
                         </td>
                     </tr>

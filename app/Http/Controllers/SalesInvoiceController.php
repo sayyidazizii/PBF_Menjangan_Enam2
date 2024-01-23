@@ -1438,14 +1438,14 @@ class SalesInvoiceController extends Controller
        if(count($salesinvoice)>=0){
            $spreadsheet->getProperties()->setCreator("TRADING SYSTEM")
                ->setLastModifiedBy("TRADING SYSTEM")
-               ->setTitle("Sales Promotion")
+               ->setTitle("SALES INVOICE REPORT")
                ->setSubject("") 
-               ->setDescription("Sales Promotion")
-               ->setKeywords("Sales Promotion")
-               ->setCategory("Sales Promotion");
+               ->setDescription("SALES INVOICE REPORT")
+               ->setKeywords("SALES INVOICE REPORT")
+               ->setCategory("SALES INVOICE REPORT");
 
            $sheet = $spreadsheet->getActiveSheet(0);
-           $spreadsheet->getActiveSheet()->setTitle("Sales Promotion");
+           $spreadsheet->getActiveSheet()->setTitle("SALES INVOICE REPORT");
            $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
            $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
            $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(5);
@@ -1461,15 +1461,17 @@ class SalesInvoiceController extends Controller
            $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(20);
            $spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(20);
            $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+           $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(20);
 
 
-           $spreadsheet->getActiveSheet()->mergeCells("B5:N5");
-           $spreadsheet->getActiveSheet()->mergeCells("B6:N6");
-           $spreadsheet->getActiveSheet()->mergeCells("B7:N7");
-           $spreadsheet->getActiveSheet()->mergeCells("B8:N8");
-           $spreadsheet->getActiveSheet()->mergeCells("B9:N9");
-           $spreadsheet->getActiveSheet()->mergeCells("B10:N10");
-           $spreadsheet->getActiveSheet()->mergeCells("B11:N11");
+
+           $spreadsheet->getActiveSheet()->mergeCells("B5:O5");
+           $spreadsheet->getActiveSheet()->mergeCells("B6:O6");
+           $spreadsheet->getActiveSheet()->mergeCells("B7:O7");
+           $spreadsheet->getActiveSheet()->mergeCells("B8:O8");
+           $spreadsheet->getActiveSheet()->mergeCells("B9:O9");
+           $spreadsheet->getActiveSheet()->mergeCells("B10:O10");
+           $spreadsheet->getActiveSheet()->mergeCells("B11:O11");
            $spreadsheet->getActiveSheet()->getStyle('B5')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
            $spreadsheet->getActiveSheet()->getStyle('B6')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
            $spreadsheet->getActiveSheet()->getStyle('B7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -1479,8 +1481,8 @@ class SalesInvoiceController extends Controller
            $spreadsheet->getActiveSheet()->getStyle('B11')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
            $spreadsheet->getActiveSheet()->getStyle('B11')->getFont()->setBold(true)->setSize(16);
 
-           $spreadsheet->getActiveSheet()->getStyle('B12:N12')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-           $spreadsheet->getActiveSheet()->getStyle('B12:N12')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+           $spreadsheet->getActiveSheet()->getStyle('B12:O12')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+           $spreadsheet->getActiveSheet()->getStyle('B12:O12')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
 
 
@@ -1498,13 +1500,14 @@ class SalesInvoiceController extends Controller
            $sheet->setCellValue('E12', "CABANG");
            $sheet->setCellValue('F12', "NO INVOICE");
            $sheet->setCellValue('G12', "NAMA OBAT");
-           $sheet->setCellValue('H12', "JUMLAH");
-           $sheet->setCellValue('I12', "HPP");
-           $sheet->setCellValue('J12', "DISKON");
-           $sheet->setCellValue('K12', "DPP");
-           $sheet->setCellValue('L12', "PPN");
-           $sheet->setCellValue('M12', "TOTAL BAYAR");
-           $sheet->setCellValue('N12', "%DISKON");
+           $sheet->setCellValue('H12', "QTY");
+           $sheet->setCellValue('I12', "JUMLAH");
+           $sheet->setCellValue('J12', "HPP");
+           $sheet->setCellValue('K12', "DISKON");
+           $sheet->setCellValue('L12', "DPP");
+           $sheet->setCellValue('M12', "PPN");
+           $sheet->setCellValue('N12', "TOTAL BAYAR");
+           $sheet->setCellValue('O12', "%DISKON");
            
            $j  = 13;
            $no = 1;
@@ -1527,8 +1530,8 @@ class SalesInvoiceController extends Controller
 
                $sheet = $spreadsheet->getActiveSheet(0);
                $spreadsheet->getActiveSheet()->setTitle("LAPORAN PENJUALAN");
-               $spreadsheet->getActiveSheet()->getStyle('B'.$j.':N'.$j)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-               $spreadsheet->getActiveSheet()->getStyle('N'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+               $spreadsheet->getActiveSheet()->getStyle('B'.$j.':O'.$j)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+               $spreadsheet->getActiveSheet()->getStyle('O'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
              
                $sheet->setCellValue('B'.$j, $no);
                $sheet->setCellValue('C'.$j, $val['sales_invoice_date']);
@@ -1536,13 +1539,14 @@ class SalesInvoiceController extends Controller
                $sheet->setCellValue('E'.$j, $this->getCustomerName($val['customer_id']));
                $sheet->setCellValue('F'.$j, $val['sales_invoice_no']);
                $sheet->setCellValue('G'.$j, $this->getItemTypeName($val['item_type_id']));
-               $sheet->setCellValue('H'.$j, $val['item_unit_price'] * $val['quantity']);
-               $sheet->setCellValue('I'.$j, $itemunitcost * $val['quantity']);
-               $sheet->setCellValue('J'.$j, $jumlahDiskon);
-               $sheet->setCellValue('K'.$j, $dpp);
-               $sheet->setCellValue('L'.$j, $ppn);
-               $sheet->setCellValue('M'.$j, $dpp + $ppn);
-               $sheet->setCellValue('N'.$j, " $diskonPersen  %");
+               $sheet->setCellValue('H'.$j, $val['quantity']);
+               $sheet->setCellValue('I'.$j, $val['item_unit_price'] * $val['quantity']);
+               $sheet->setCellValue('J'.$j, $itemunitcost * $val['quantity']);
+               $sheet->setCellValue('K'.$j, $jumlahDiskon);
+               $sheet->setCellValue('L'.$j, $dpp);
+               $sheet->setCellValue('M'.$j, $ppn);
+               $sheet->setCellValue('N'.$j, $dpp + $ppn);
+               $sheet->setCellValue('O'.$j, " $diskonPersen  %");
          
                $no++;
                $j++;
@@ -1552,7 +1556,7 @@ class SalesInvoiceController extends Controller
            }
 
             $sheet = $spreadsheet->getActiveSheet(0);
-            $spreadsheet->getActiveSheet()->getStyle('B'.$lastj.':M'.$lastj)->getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $spreadsheet->getActiveSheet()->getStyle('B'.$lastj.':N'.$lastj)->getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             $sheet->setCellValue('G' . $lastj , 'Jumlah Total:');
             $sumrangeQty = 'H'. $lastno - 1 .':H'.$j;
             $sheet->setCellValue('H' . $lastj , '=SUM('.$sumrangeQty.')');
@@ -1572,6 +1576,9 @@ class SalesInvoiceController extends Controller
             $sumrangetotal = 'M'. $lastno - 1 .':M'.$j;
             $sheet->setCellValue('M' . $lastj , '=SUM('.$sumrangetotal.')');
 
+            $sumrangetotalB = 'N'. $lastno - 1 .':N'.$j;
+            $sheet->setCellValue('N' . $lastj , '=SUM('.$sumrangetotalB.')');
+
             $sheet->setCellValue('F' . $lastj + 1, 'Mengetahui');
             $sheet->setCellValue('K' . $lastj + 1, 'Dibuat Oleh');
 
@@ -1590,7 +1597,7 @@ class SalesInvoiceController extends Controller
         }
 
            ob_clean();
-           $filename='SALES INVOICE '.date('d M Y').'.xls';
+           $filename='SALES INVOICE REPORT '.date('d M Y').'.xls';
            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
            header('Content-Disposition: attachment;filename="'.$filename.'"');
            header('Cache-Control: max-age=0');
