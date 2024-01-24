@@ -284,6 +284,7 @@
                                                 <td style='text-align  : left !important;'></td>
                                                 <td style='text-align  : left !important;'></td>
                                                 <td style='text-align  : left !important;'></td>
+                                                <td style='text-align  : left !important;'></td>
                                                 <td style='text-align  : right !important;'></td>
                                                 <td style='text-align  : right !important;'></td>
                                                 <td style='text-align  : right !important;'>
@@ -316,7 +317,7 @@
                                         $total_no = $no - 1;
                                         echo"
                                         <tbody></tbody>
-                                        <th style='text-align  : center' colspan='6'>Total</th>
+                                        <th style='text-align  : center' colspan='7'>Total</th>
                                         <th style='text-align  : right'>
                                             <input class='form-control' style='text-align:right;'type='text' name='quantity_received_total' id='quantity_received_total' value='' readonly/>
                                             <input class='form-control' style='text-align:right;'type='hidden' name='total_no' id='total_no' value='".$total_no."' readonly/>

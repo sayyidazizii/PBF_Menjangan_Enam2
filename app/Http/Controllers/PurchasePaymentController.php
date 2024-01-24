@@ -112,7 +112,7 @@ class PurchasePaymentController extends Controller
 
     public function addPurchasePayment($supplier_id){
         
-        $purchaseinvoiceowing = PurchaseInvoice::select('purchase_invoice.faktur_tax_no','purchase_invoice.purchase_invoice_id', 'purchase_invoice.supplier_id', 'purchase_invoice.owing_amount', 'purchase_invoice.purchase_invoice_date', 'purchase_invoice.paid_amount', 'purchase_invoice.purchase_invoice_no', 'purchase_invoice.subtotal_amount', 'purchase_invoice.discount_percentage', 'purchase_invoice.discount_amount', 'purchase_invoice.tax_amount', 'purchase_invoice.total_amount')
+        $purchaseinvoiceowing = PurchaseInvoice::select('purchase_invoice.faktur_tax_no','purchase_invoice.purchase_invoice_id', 'purchase_invoice.supplier_id', 'purchase_invoice.owing_amount', 'purchase_invoice.purchase_invoice_date','purchase_invoice.ppn_in_amount', 'purchase_invoice.paid_amount', 'purchase_invoice.purchase_invoice_no', 'purchase_invoice.subtotal_amount', 'purchase_invoice.discount_percentage', 'purchase_invoice.discount_amount', 'purchase_invoice.tax_amount', 'purchase_invoice.total_amount')
         ->where('purchase_invoice.supplier_id', $supplier_id)
         ->where('purchase_invoice.owing_amount', '>', 0)
         ->where('purchase_invoice.data_state', 0)
@@ -194,7 +194,7 @@ class PurchasePaymentController extends Controller
     }
     
     public function processAddTransferArray(Request $request)
-    {
+    {   
         $purchasepaymenttransfer = array(
             'bank_id'                       => $request->bank_id,
             'payment_transfer_account_name' => $request->payment_transfer_account_name,
@@ -337,7 +337,11 @@ class PurchasePaymentController extends Controller
                     'owing_amount' 				=> $allrequest[$i.'_owing_amount'],
                     'allocation_amount' 		=> $allrequest[$i.'_allocation'],
                     'shortover_amount'	 		=> $allrequest[$i.'_shortover'],
-                    'last_balance' 				=> $allrequest[$i.'_last_balance']
+                    'last_balance' 				=> $allrequest[$i.'_last_balance'],
+                    'ppn_in_amount' 			=> $allrequest[$i.'_ppn_in_amount'],
+                    'promotion_amount' 			=> $allrequest[$i.'_promotion_amount'],
+                    'adm_cost_amount' 			=> $allrequest[$i.'_adm_cost_amount'],
+
                 );
 
                 if($data_paymentitem['allocation_amount'] > 0){
@@ -362,7 +366,6 @@ class PurchasePaymentController extends Controller
                 
             }
 
-
 //-----------Hutang Supplier
             $account 		= AcctAccount::where('account_id', 205)
             ->where('data_state', 0)
@@ -374,63 +377,61 @@ class PurchasePaymentController extends Controller
                 'journal_voucher_id'			=> $journal_voucher_id,
                 'account_id'					=> 205,
                 'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                'journal_voucher_amount'		=> ABS($payment_total_amount),
-                'journal_voucher_debit_amount'	=> ABS($payment_total_amount),
+                'journal_voucher_amount'		=> ABS($request->total_owing),
+                'journal_voucher_debit_amount'	=> ABS($request->total_owing),
                 'account_id_default_status'		=> $account_id_default_status,
                 'account_id_status'				=> 1,
             );
 
             AcctJournalVoucherItem::create($data_debit);
 
-//-----------Hutang Supplier (sisa hutang jika dibayar > 1 kali)
-            if($selisih_shortover > 0){
+// -----------Hutang Supplier (sisa hutang jika dibayar > 1 kali)
+            // if($selisih_shortover > 0){
 
-                $account 		= AcctAccount::where('account_id', 205)
-                ->where('data_state', 0)
-                ->first();
+            //     $account 		= AcctAccount::where('account_id', 205)
+            //     ->where('data_state', 0)
+            //     ->first();
 
-                $account_id_default_status 		= $account['account_default_status'];
+            //     $account_id_default_status 		= $account['account_default_status'];
 
-                $data_debit = array (
-                    'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> 205,
-                    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                    'journal_voucher_amount'		=> ABS($selisih_shortover),
-                    'journal_voucher_debit_amount'	=> ABS($selisih_shortover),
-                    'account_id_default_status'		=> $account_id_default_status,
-                    'account_id_status'				=> 1,
-                );
+            //     $data_debit = array (
+            //         'journal_voucher_id'			=> $journal_voucher_id,
+            //         'account_id'					=> 205,
+            //         'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+            //         'journal_voucher_amount'		=> ABS($selisih_shortover),
+            //         'journal_voucher_debit_amount'	=> ABS($selisih_shortover),
+            //         'account_id_default_status'		=> $account_id_default_status,
+            //         'account_id_status'				=> 1,
+            //     );
 
-                AcctJournalVoucherItem::create($data_debit);
-            } else if($selisih_shortover < 0){
+            //     AcctJournalVoucherItem::create($data_debit);
+            // } else if($selisih_shortover < 0){
 
-                $account 		= AcctAccount::where('account_id', 205)
-                ->where('data_state', 0)
-                ->first();
+            //     $account 		= AcctAccount::where('account_id', 205)
+            //     ->where('data_state', 0)
+            //     ->first();
 
-                $account_id_default_status 		= $account['account_default_status'];
+            //     $account_id_default_status 		= $account['account_default_status'];
 
-                $data_credit = array (
-                    'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> 205,
-                    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                    'journal_voucher_amount'		=> ABS($selisih_shortover),
-                    'journal_voucher_credit_amount'	=> ABS($selisih_shortover),
-                    'account_id_default_status'		=> $account_id_default_status,
-                    'account_id_status'				=> 0,
-                );
+            //     $data_credit = array (
+            //         'journal_voucher_id'			=> $journal_voucher_id,
+            //         'account_id'					=> 205,
+            //         'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+            //         'journal_voucher_amount'		=> ABS($selisih_shortover),
+            //         'journal_voucher_credit_amount'	=> ABS($selisih_shortover),
+            //         'account_id_default_status'		=> $account_id_default_status,
+            //         'account_id_status'				=> 0,
+            //     );
 
-                AcctJournalVoucherItem::create($data_credit);
-            }
+            //     AcctJournalVoucherItem::create($data_credit);
+            // }
 
 //-----------PPN MASUKAN 
             $account 		= AcctAccount::where('account_id', 105)
             ->where('data_state', 0)
             ->first();
-            //dd($account);
             $account_id_default_status 		= $account['account_default_status'];
-        
-//jika check PPN
+//jika check PPN Masukan
         $cekPPN = $request->ppn_in;
         if($cekPPN == 1){
             $data_debit = array (
@@ -455,6 +456,67 @@ class PurchasePaymentController extends Controller
             );
             AcctJournalVoucherItem::create($data_debit);
         }
+//-----------Kas
+// if($data['payment_total_cash_amount'] != '' || $data['payment_total_cash_amount'] != ''){
+    if($paymenttype == 0){
+        $account 		= AcctAccount::where('account_id', 5)
+        ->where('data_state', 0)
+        ->first();
+        //dd($account);
+        $account_id_default_status 		= $account['account_default_status'];
+
+        $data_credit = array (
+            'journal_voucher_id'			=> $journal_voucher_id,
+            'account_id'					=> 5,
+            'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+            'journal_voucher_amount'		=> ABS($request->allocation_total),
+            'journal_voucher_credit_amount'	=> ABS($request->allocation_total),
+            'account_id_default_status'		=> $account_id_default_status,
+            'account_id_status'				=> 0,
+        );
+        AcctJournalVoucherItem::create($data_credit);
+    }else{
+        //  }else if(is_array($datapurchasepaymenttransfer) && !empty($datapurchasepaymenttransfer)){
+//-----------Bank                
+    foreach ($datapurchasepaymenttransfer as $keyTransfer => $valTransfer) {
+        $transfer_bank = CoreBank::where('bank_id', $valTransfer['bank_id'])
+        ->first();
+
+        $transfer_account_id = $transfer_bank['account_id'];
+
+        $datatransfer = array(
+            'payment_id'							=> $payment_id,
+            'bank_id'							    => $valTransfer['bank_id'],
+            'account_id'							=> $transfer_account_id,
+            'payment_transfer_bank_name'			=> $transfer_bank['bank_name'],
+            'payment_transfer_amount'				=> $valTransfer['payment_transfer_amount'],
+            'payment_transfer_account_name'			=> $valTransfer['payment_transfer_account_name'],
+            'payment_transfer_account_no'			=> $valTransfer['payment_transfer_account_no'],
+        );
+
+        if(PurchasePaymentTransfer::create($datatransfer)){
+
+            $account 		= AcctAccount::where('account_id', $transfer_account_id)
+            ->where('data_state', 0)
+            ->first();
+
+            $account_id_default_status 		= $account['account_default_status'];
+
+            $data_credit = array (
+                'journal_voucher_id'			=> $journal_voucher_id,
+                'account_id'					=> $transfer_account_id,
+                'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
+                'journal_voucher_amount'		=> ABS($request->allocation_total),
+                'journal_voucher_credit_amount'	=> ABS($request->allocation_total),
+                'account_id_default_status'		=> $account_id_default_status,
+                'account_id_status'				=> 0,
+            );
+
+            AcctJournalVoucherItem::create($data_credit);
+        }
+    }
+// }
+    }
 
 //jika check Promosi
         $accountPromotion 		= AcctAccount::where('account_id', 50)
@@ -476,7 +538,6 @@ class PurchasePaymentController extends Controller
             );
             AcctJournalVoucherItem::create($data_credit);
         }
-        
 //jika check Biaya kirim
         $accountAdmCost 		= AcctAccount::where('account_id', 58)
         ->where('data_state', 0)
@@ -496,66 +557,10 @@ class PurchasePaymentController extends Controller
                 'account_id_status'				=> 0,
             );
             AcctJournalVoucherItem::create($data_credit);
-        }                
-//-----------Kas
-            if($data['payment_total_cash_amount'] != '' || $data['payment_total_cash_amount'] != ''){
+        }        
 
-                $account 		= AcctAccount::where('account_id', 5)
-                ->where('data_state', 0)
-                ->first();
-                //dd($account);
-                $account_id_default_status 		= $account['account_default_status'];
 
-                $data_credit = array (
-                    'journal_voucher_id'			=> $journal_voucher_id,
-                    'account_id'					=> 5,
-                    'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                    'journal_voucher_amount'		=> ABS($data['payment_total_cash_amount']),
-                    'journal_voucher_credit_amount'	=> ABS($data['payment_total_cash_amount']),
-                    'account_id_default_status'		=> $account_id_default_status,
-                    'account_id_status'				=> 0,
-                );
-                AcctJournalVoucherItem::create($data_credit);
-            }else if(is_array($datapurchasepaymenttransfer) && !empty($datapurchasepaymenttransfer)){
-//-----------Bank                
-                foreach ($datapurchasepaymenttransfer as $keyTransfer => $valTransfer) {
-                    $transfer_bank = CoreBank::where('bank_id', $valTransfer['bank_id'])
-                    ->first();
-
-                    $transfer_account_id = $transfer_bank['account_id'];
-
-                    $datatransfer = array(
-                        'payment_id'							=> $payment_id,
-                        'bank_id'							    => $valTransfer['bank_id'],
-                        'account_id'							=> $transfer_account_id,
-                        'payment_transfer_bank_name'			=> $transfer_bank['bank_name'],
-                        'payment_transfer_amount'				=> $valTransfer['payment_transfer_amount'],
-                        'payment_transfer_account_name'			=> $valTransfer['payment_transfer_account_name'],
-                        'payment_transfer_account_no'			=> $valTransfer['payment_transfer_account_no'],
-                    );
-
-                    if(PurchasePaymentTransfer::create($datatransfer)){
-
-                        $account 		= AcctAccount::where('account_id', $transfer_account_id)
-                        ->where('data_state', 0)
-                        ->first();
         
-                        $account_id_default_status 		= $account['account_default_status'];
-
-                        $data_credit = array (
-                            'journal_voucher_id'			=> $journal_voucher_id,
-                            'account_id'					=> $transfer_account_id,
-                            'journal_voucher_description'	=> $data_journal['journal_voucher_description'],
-                            'journal_voucher_amount'		=> ABS($datatransfer['payment_transfer_amount']),
-                            'journal_voucher_credit_amount'	=> ABS($datatransfer['payment_transfer_amount']),
-                            'account_id_default_status'		=> $account_id_default_status,
-                            'account_id_status'				=> 0,
-                        );
-
-                        AcctJournalVoucherItem::create($data_credit);
-                    }
-                }
-            }
 //-----------PPN MASUKAN BELUM DITERIMA
              $account 		= AcctAccount::where('account_id', 106)
                 ->where('data_state', 0)

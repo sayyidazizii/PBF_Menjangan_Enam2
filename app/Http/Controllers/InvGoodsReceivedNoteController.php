@@ -127,12 +127,12 @@ class InvGoodsReceivedNoteController extends Controller
         $add_type_purchaseorderitem = PurchaseOrderItem::where('purchase_order_item.data_state', 0)
         ->where('purchase_order_id', $purchase_order_id)
         ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'purchase_order_item.item_type_id')
-        // ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'purchase_order_item.item_unit_id')
+        ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'purchase_order_item.item_unit_id')
         ->pluck('item_type_name', 'purchase_order_item.purchase_order_item_id');
 
         $add_unit_purchaseorderitem = PurchaseOrderItem::where('purchase_order_item.data_state', 0)
         ->where('purchase_order_id', $purchase_order_id)
-        // ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'purchase_order_item.item_type_id')
+        ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'purchase_order_item.item_type_id')
         ->join('inv_item_unit', 'inv_item_unit.item_unit_id', '=', 'purchase_order_item.item_unit_id')
         ->pluck('item_unit_name', 'purchase_order_item.item_unit_id');
 
