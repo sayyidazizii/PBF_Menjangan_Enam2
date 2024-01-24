@@ -9,7 +9,15 @@
     
 	$(document).ready(function(){
         $("#account_id").select2("val", "0");
-        $('#collection_total_cash_amount').attr('readonly', true);
+
+        var payment_type = $("#payment_type").val();
+               if(payment_type == 0){
+                $('#payment_total_cash_amount').attr('readonly', false);
+                $('#tranfer-bank').hide();
+               }else{
+                $('#payment_total_cash_amount').attr('readonly', true);
+                $('#tranfer-bank').show();
+               }
 
         var elements = {!! json_encode($salescollectionelements) !!};
 
@@ -32,12 +40,15 @@
         $('#promotion_amount').attr('readonly', true);
         $('#adm_cost_amount').attr('readonly', true);
 
-        $("#payment_type").change(function(){
+         //payment type
+         $("#payment_type").change(function(){
             var payment_type = $("#payment_type").val();
                if(payment_type == 0){
-                $('#collection_total_cash_amount').attr('readonly', false);
+                $('#payment_total_cash_amount').attr('readonly', false);
+                $('#tranfer-bank').hide();
                }else{
-                $('#collection_total_cash_amount').attr('readonly', true);
+                $('#payment_total_cash_amount').attr('readonly', true);
+                $('#tranfer-bank').show();
                }
         });
 
@@ -452,105 +463,108 @@
                 </div>
             </div>
             <br/>
-            <div class="row">
-                <h5 class="form-section"><b>Transfer Bank</b></h5>
-            </div>
-            <hr style="margin:0;">
-            <br/>
-            
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <a class="text-dark">No Perkiraan Bank</a>
-                    {!! Form::select('transfer_account_id',  $acctaccount, $salescollectionelements == null ? '' : $salescollectionelements['transfer_account_id'], ['class' => 'selection-search-clear select-form', 'id' => 'transfer_account_id', 'onchange' => 'elements_add(this.name, this.value);']) !!}
+            <div class="container" id="tranfer-bank">
+                <div  class="row">
+                    <h5 class="form-section"><b>Transfer Bank</b></h5>
                 </div>
-            </div>
-            {{-- <br/>
-            <div class="row">
-                <p class="form-section"><b>Data Bank Pelanggan</b></p>
-            </div>
-            <br/> --}}
-            {{-- <div class="row form-group">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Nama Bank</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_bank_name" id="collection_transfer_bank_name" value="" autocomplete='off'/>
+                <hr style="margin:0;">
+                <br/>
+                
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <a class="text-dark">No Perkiraan Bank</a>
+                        {!! Form::select('transfer_account_id',  $acctaccount, $salescollectionelements == null ? '' : $salescollectionelements['transfer_account_id'], ['class' => 'selection-search-clear select-form', 'id' => 'transfer_account_id', 'onchange' => 'elements_add(this.name, this.value);']) !!}
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Nama Akun</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_account_name" id="collection_transfer_account_name" value="" autocomplete='off'/>
-                    </div>
+                {{-- <br/>
+                <div class="row">
+                    <p class="form-section"><b>Data Bank Pelanggan</b></p>
                 </div>
-            </div> --}}
-            <div class="row form-group">
-                {{-- <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">No Rekening</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_account_no" id="collection_transfer_account_no" value="" autocomplete='off'/>
+                <br/> --}}
+                {{-- <div class="row form-group">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">Nama Bank</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_bank_name" id="collection_transfer_bank_name" value="" autocomplete='off'/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">Nama Akun</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_account_name" id="collection_transfer_account_name" value="" autocomplete='off'/>
+                        </div>
                     </div>
                 </div> --}}
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Jumlah Transfer</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_amount" id="collection_transfer_amount" value="" autocomplete='off'/>
+                <div class="row form-group">
+                    {{-- <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">No Rekening</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_account_no" id="collection_transfer_account_no" value="" autocomplete='off'/>
+                        </div>
+                    </div> --}}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">Jumlah Transfer</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_amount" id="collection_transfer_amount" value="" autocomplete='off'/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-12" style='text-align:right'>
-                    <div class="form-actions float-right">
-                        <a type="submit" name="Save" class="btn btn-primary" title="Save" id="buttonAddArraySalesCollectionTransfer" onclick="processAddArraySalesCollectionTransfer()">Tambah</a>
+                <div class="row form-group">
+                    <div class="col-md-12" style='text-align:right'>
+                        <div class="form-actions float-right">
+                            <a type="submit" name="Save" class="btn btn-primary" title="Save" id="buttonAddArraySalesCollectionTransfer" onclick="processAddArraySalesCollectionTransfer()">Tambah</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            	
-            <br>
-            <br>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-advance table-hover">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th style='text-align:center' width="20%">Bank</th>
-                                    {{-- <th style='text-align:center' width="20%">Nama Akun</th> --}}
-                                    {{-- <th style='text-align:center' width="20%">No. Akun</th> --}}
-                                    <th style='text-align:center' width="20%">Jumlah Transfer</th>
-                                    <th style='text-align:center' width="10%">Aksi</th>	
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    $total_transfer = 0;
-                                    if(!is_array($salescollectiontransfer)){
-                                        echo "<tr><th colspan='9' style='text-align:center'>Data Kosong</th></tr>";
-                                    } else {
-                                        foreach ($salescollectiontransfer as $key=>$val){
+                    
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-advance table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th style='text-align:center' width="20%">Bank</th>
+                                        {{-- <th style='text-align:center' width="20%">Nama Akun</th> --}}
+                                        {{-- <th style='text-align:center' width="20%">No. Akun</th> --}}
+                                        <th style='text-align:center' width="20%">Jumlah Transfer</th>
+                                        <th style='text-align:center' width="10%">Aksi</th>	
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $total_transfer = 0;
+                                        if(!is_array($salescollectiontransfer)){
+                                            echo "<tr><th colspan='9' style='text-align:center'>Data Kosong</th></tr>";
+                                        } else {
+                                            foreach ($salescollectiontransfer as $key=>$val){
+                                                echo"
+                                                    <tr>
+                                                        <td style='text-align  : left !important;'>".$SalesCollection->getAccountName($val['transfer_account_id'])."</td>
+                                                        <td style='text-align  : right !important;'>".number_format($val['collection_transfer_amount'], 2)."</td>";
+                                                        ?>
+                                                        <td style='text-align  : center !important;'>
+                                                            <a href="{{route('delete-transfer-array-sales-collection', ['record_id' => $key, 'customer_id' => $customer_id])}}" name='Reset' class='btn btn-danger btn-sm' onClick='javascript:return confirm(\"apakah yakin ingin dihapus ?\")'></i> Hapus</a>
+                                                        </td>
+                                                        <?php
+                                                        echo"
+                                                    </tr>								
+                                                ";	
+                                                $total_transfer += $val['collection_transfer_amount'];													
+                                            }
                                             echo"
-                                                <tr>
-                                                    <td style='text-align  : left !important;'>".$SalesCollection->getAccountName($val['transfer_account_id'])."</td>
-                                                    <td style='text-align  : right !important;'>".number_format($val['collection_transfer_amount'], 2)."</td>";
-                                                    ?>
-                                                    <td style='text-align  : center !important;'>
-                                                        <a href="{{route('delete-transfer-array-sales-collection', ['record_id' => $key, 'customer_id' => $customer_id])}}" name='Reset' class='btn btn-danger btn-sm' onClick='javascript:return confirm(\"apakah yakin ingin dihapus ?\")'></i> Hapus</a>
-                                                    </td>
-                                                    <?php
-                                                    echo"
-                                                </tr>								
-                                            ";	
-                                            $total_transfer += $val['collection_transfer_amount'];													
+                                                <input class='form-control input-bb' type='hidden' name='collection_total_transfer_amount' id='collection_total_transfer_amount' value='".$total_transfer."' autocomplete='off'/>
+                                            ";
                                         }
-                                        echo"
-                                            <input class='form-control input-bb' type='hidden' name='collection_total_transfer_amount' id='collection_total_transfer_amount' value='".$total_transfer."' autocomplete='off'/>
-                                        ";
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <br>
             <br>
             <div class="row form-group">
@@ -685,7 +699,7 @@
                                         <th style='text-align  : right' colspan='6'>Total Potongan Retur</th>
                                         <th  colspan='3'>
                                             <input class='form-control input-bb' type='text' style='text-align:right' name='piutang_amount_view' id='piutang_amount_view' value='".$piutang_amount."'' readonly/>
-                                            <input class='form-control input-bb' type='text' style='text-align:right' name='piutang_amount' id='piutang_amount' value='".$piutang_amount."'' readonly/>
+                                            <input class='form-control input-bb' hidden type='text' style='text-align:right' name='piutang_amount' id='piutang_amount' value='".$piutang_amount."'' readonly/>
                                             <input class='form-control input-bb' type='hidden' name='item_total' id='item_total' value='".$no."'/>
                                         </th>
                                         <th>
@@ -703,8 +717,8 @@
                                     <tr id='record-retur'>
                                         <th style='text-align  : right' colspan='6'>Total Potongan Promosi</th>
                                         <th  colspan='3'>
-                                            <input class='form-control input-bb' type='text'  style='text-align:right' name='promotion_amount_view' id='promotion_amount_view' value='".$promosi_amount."'/>
-                                            <input class='form-control input-bb' type='text'  style='text-align:right' name='promotion_amount' id='promotion_amount' value='".$promosi_amount."'/>
+                                            <input class='form-control input-bb' type='text'  style='text-align:right' name='promotion_amount_view' id='promotion_amount_view' value='".$promosi_amount."'readonly/>
+                                            <input class='form-control input-bb' type='text' hidden  style='text-align:right' name='promotion_amount' id='promotion_amount' value='".$promosi_amount."'readonly/>
                                         </th>
                                         <th>
                                             <input class='form-control' type='checkbox' style='text-align:left' name='piutang_promosi_check' id='piutang_promosi_check' value='1'/>
@@ -721,8 +735,8 @@
                                     <tr id='record-retur'>
                                         <th style='text-align  : right' colspan='6'>Total Potongan Biaya adm</th>
                                         <th  colspan='3'>
-                                            <input class='form-control input-bb' type='text'  style='text-align:right' name='adm_cost_amount_view' id='adm_cost_amount_view' value='".$adm_cost_amount."'/>
-                                            <input class='form-control input-bb' type='text'  style='text-align:right' name='adm_cost_amount' id='adm_cost_amount' value='".$adm_cost_amount."'/>
+                                            <input class='form-control input-bb' type='text'  style='text-align:right' name='adm_cost_amount_view' id='adm_cost_amount_view' value='".$adm_cost_amount."'readonly/>
+                                            <input class='form-control input-bb' type='text' hidden  style='text-align:right' name='adm_cost_amount' id='adm_cost_amount' value='".$adm_cost_amount."'readonly/>
                                         </th>
                                         <th>
                                             <input class='form-control' type='checkbox' style='text-align:left' name='adm_cost_check' id='adm_cost_check' value='1'/>
