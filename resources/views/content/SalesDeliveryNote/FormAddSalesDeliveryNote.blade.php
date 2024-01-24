@@ -32,6 +32,8 @@ function elements_add(name, value){
 
 
 	$(document).ready(function(){
+        $("#expedition_id").select2("val", "0");
+
 
         var elements = {!! json_encode($salesdeliveryordernoteelements) !!};
 
