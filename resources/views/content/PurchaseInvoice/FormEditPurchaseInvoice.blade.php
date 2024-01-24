@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <a class="text-dark">Faktur Tax No</a>
+                <a class="text-dark">No Faktur</a>
                 <input class="form-control input-bb" type="text" name="faktur_tax_no" id="faktur_tax_no" />
             </div>
             <div class="row form-group">
