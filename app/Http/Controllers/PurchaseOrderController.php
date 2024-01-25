@@ -692,9 +692,9 @@ class PurchaseOrderController extends Controller
             'supplier_id'                   => $fields['supplier_id'],
             'total_item'                    => $fields['total_item_all'],
             'total_amount'                  => $fields['total_amount'],
-            'ppn_in_percentage'                => $request['ppn_in_percentage'],
-            'ppn_in_amount'                    => $request['ppn_in_amount'],
-            'subtotal_after_ppn_in'            => $request['subtotal_after_ppn_in'],
+            'ppn_in_percentage'             => $request['ppn_in_percentage'],
+            'ppn_in_amount'                 => $request['ppn_in_amount'],
+            'subtotal_after_ppn_in'         => $request['subtotal_after_ppn_in'],
             'purchase_order_remark'         => $request->purchase_order_remark,
             'branch_id'                     => Auth::user()->branch_id,
         );
