@@ -34,6 +34,8 @@ use App\Models\SalesOrder;
 use App\Models\SalesOrderItem;
 use App\Models\SystemLogUser;
 use App\Models\SalesDeliveryNoteItemStock;
+use App\Models\SalesKwitansi;
+use App\Models\SalesKwitansiItem;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -127,15 +129,12 @@ class SalesCollectionDiscountController extends Controller
         Session::forget('salescollectionelements');
         Session::forget('datasalescollectiontransfer');
 
-        $corecustomer = SalesInvoice::select('sales_invoice.customer_id', 'core_customer.customer_name', 'core_customer.customer_address', DB::raw("SUM(sales_invoice.owing_discount_amount) as total_owing_amount"))
-        ->join('core_customer', 'core_customer.customer_id', 'sales_invoice.customer_id')
-        ->where('sales_invoice.data_state', 0)
-        ->where('core_customer.data_state', 0)
-        ->groupBy('sales_invoice.customer_id')
-        ->orderBy('core_customer.customer_name', 'ASC')
+        $kwitansi =  SalesKwitansi::select('*')
+        ->join('core_customer', 'core_customer.customer_id', 'sales_kwitansi.customer_id')
+        ->where('sales_kwitansi.data_state', 0)
         ->get();
         
-        return view('content/SalesCollectionDiscount/SearchCoreCustomer',compact('corecustomer'));
+        return view('content/SalesCollectionDiscount/SearchKwitansi',compact('kwitansi'));
     }
 
 
@@ -148,15 +147,24 @@ class SalesCollectionDiscountController extends Controller
         return ($salescollectionpiece);
     }
 
-    public function addSalesCollectionDiscount($customer_id){
+    public function addSalesCollectionDiscount($sales_kwitansi_id){
 
-        $salesinvoiceowing = SalesInvoice::select('sales_invoice.sales_invoice_id', 'sales_invoice.customer_id', 'sales_invoice.owing_amount', 'sales_invoice.sales_invoice_date', 'sales_invoice.paid_amount','sales_invoice.buyers_acknowledgment_no', 'sales_invoice.sales_invoice_no', 'sales_invoice.subtotal_amount', 'sales_invoice.discount_percentage', 'sales_invoice.discount_amount', 'sales_invoice.total_amount', 'sales_invoice.goods_received_note_no','sales_invoice.total_discount_amount', 'sales_invoice.paid_discount_amount','sales_invoice.owing_discount_amount')
-        ->where('sales_invoice.customer_id', $customer_id)
-        ->where('sales_invoice.owing_discount_amount', '>', 0)
+        $salesinvoiceowing = SalesKwitansiItem::select('*')
+        ->join('sales_invoice','sales_invoice.sales_invoice_id','sales_kwitansi_item.sales_invoice_id')
+        ->where('sales_kwitansi_item.sales_kwitansi_id', $sales_kwitansi_id)
         ->where('sales_invoice.data_state', 0)
         ->get(); 
 
-        $customer = CoreCustomer::findOrfail($customer_id);
+        $sales_kwitansi_id = SalesKwitansi::select('*')
+        ->where('sales_kwitansi_id',$sales_kwitansi_id)
+        ->first();
+
+        $customer = CoreCustomer::findOrfail($sales_kwitansi_id['customer_id']);
+
+        $customer_id = SalesKwitansi::select('customer_id')
+        ->where('customer_id',$sales_kwitansi_id['customer_id'])
+        ->first();
+
 
         $acctaccount    = AcctAccount::select('account_id', DB::raw('CONCAT(account_code, " - ", account_name) AS full_name'))
         ->where('acct_account.data_state', 0)
@@ -176,7 +184,7 @@ class SalesCollectionDiscountController extends Controller
         $salescollectionelements = Session::get('salescollectionelements');
         $salescollectiontransfer = Session::get('datasalescollectiontransfer');
         
-        return view('content.SalesCollectionDiscount.FormAddSalesCollectionDiscount',compact('payment_type_list','select','customer_id', 'salesinvoiceowing', 'customer', 'acctaccount', 'salescollectionelements', 'salescollectiontransfer'));
+        return view('content.SalesCollectionDiscount.FormAddSalesCollectionDiscount',compact('payment_type_list','select','customer_id', 'salesinvoiceowing', 'customer', 'acctaccount', 'salescollectionelements', 'sales_kwitansi_id','salescollectiontransfer'));
     }
 
     public function detailSalesCollectionDiscount($collection_id){
@@ -253,6 +261,23 @@ class SalesCollectionDiscountController extends Controller
             Session::push('datasalescollectiontransfer', $salescollectiontransfer);
         }
     }
+
+    public function deleteTransferArray($record_id, $sales_kwitansi_id)
+    {
+        $arrayBaru			= array();
+        $dataArrayHeader	= Session::get('datasalescollectiontransfer');
+        
+        foreach($dataArrayHeader as $key=>$val){
+            if($key != $record_id){
+                $arrayBaru[$key] = $val;
+            }
+        }
+        Session::forget('datasalescollectiontransfer');
+        Session::put('datasalescollectiontransfer', $arrayBaru);
+
+        return redirect('/sales-discount-collection/add/'.$sales_kwitansi_id);
+    }
+
     
     public function processAddSalesCollectionDiscount(Request $request)
     {

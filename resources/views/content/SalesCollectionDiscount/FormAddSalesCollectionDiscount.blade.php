@@ -10,11 +10,33 @@
 	$(document).ready(function(){
         $("#account_id").select2("val", "0");
 
+        var payment_type = $("#payment_type").val();
+               if(payment_type == 0){
+                $('#collection_total_cash_amount').attr('readonly', false);
+                $('#tranfer-bank').hide();
+               }else{
+                $('#collection_total_cash_amount').attr('readonly', true);
+                $('#tranfer-bank').show();
+               }
+
         var elements = {!! json_encode($salescollectionelements) !!};
 
         if(!elements || elements==''){
             elements = [];
         }
+
+
+        //payment type
+        $("#payment_type").change(function(){
+            var payment_type = $("#payment_type").val();
+               if(payment_type == 0){
+                $('#collection_total_cash_amount').attr('readonly', false);
+                $('#tranfer-bank').hide();
+               }else{
+                $('#collection_total_cash_amount').attr('readonly', true);
+                $('#tranfer-bank').show();
+               }
+        });
 
         if(!elements['cash_account_id']){
             $("#cash_account_id").select2("val", "0");
@@ -95,6 +117,8 @@
         var item_total      = $("#item_total").val();
         var allocationtotal = 0;
         var shortovertotal  = 0;
+        var lainlaintotal   = 0;
+
 
 
         for(i=0; i<item_total; i++){
@@ -102,6 +126,8 @@
             var owing_amount 	= $("#"+i+"_owing_discount_amount").val();
             var allocation 	    = $("#"+i+"_allocation").val();
             var shortover 	    = $("#"+i+"_shortover").val();
+            var lain_lain 	    = $("#"+i+"_lain_lain_amount").val();
+            
             
             if(isNaN(allocation)){
                 allocation = 0;
@@ -109,11 +135,16 @@
             if(isNaN(shortover)){
                 shortover = 0;
             }
+            if(isNaN(lain_lain)){
+                lain_lain = 0;
+            }
 
             allocationtotal += parseFloat(allocation);
             shortovertotal  += parseFloat(shortover);
+            lainlaintotal   += parseFloat(lain_lain);
 
-            lastbalance = parseFloat(owing_amount) - parseFloat(allocation) - parseFloat(shortover);
+
+            lastbalance = parseFloat(owing_amount) - parseFloat(allocation) - parseFloat(shortover) - parseFloat(lain_lain);
             $("#"+i+"_last_balance_view").val(toRp(lastbalance));
             $("#"+i+"_last_balance").val(lastbalance);
         }
@@ -122,6 +153,11 @@
         $("#shortover_total").val(shortovertotal);
         $("#allocation_total_view").val(toRp(allocationtotal));
         $("#shortover_total_view").val(toRp(shortovertotal));
+
+        $("#lain_lain_amount_view").val(toRp(lainlaintotal));
+        $("#lain_lain_amount").val(lainlaintotal);
+
+
         $("#collection_allocated_move_view").val(toRp(parseFloat(collection_amount) - parseFloat(allocationtotal) - parseFloat(shortovertotal)));
         $("#collection_allocated_move").val(parseFloat(collection_amount) - parseFloat(allocationtotal) - parseFloat(shortovertotal));
     }
@@ -368,109 +404,109 @@
                 </div>
             </div>
             <br/>
-            <div class="row">
-                <h5 class="form-section"><b>Transfer Bank</b></h5>
-            </div>
-            <hr style="margin:0;">
-            <br/>
-            
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <a class="text-dark">No Perkiraan</a>
-                    {!! Form::select('transfer_account_id',  $acctaccount, $salescollectionelements == null ? '' : $salescollectionelements['transfer_account_id'], ['class' => 'selection-search-clear select-form', 'id' => 'transfer_account_id', 'onchange' => 'elements_add(this.name, this.value);']) !!}
+            <div class="container" id="tranfer-bank">
+                <div class="row">
+                    <h5 class="form-section"><b>Transfer Bank</b></h5>
                 </div>
-            </div>
-            <br/>
-            <div class="row">
-                <p class="form-section"><b>Data Bank Pelanggan</b></p>
-            </div>
-            <br/>
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Nama Bank</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_bank_name" id="collection_transfer_bank_name" value="" autocomplete='off'/>
+                <hr style="margin:0;">
+                <br/>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <a class="text-dark">No Perkiraan</a>
+                        {!! Form::select('transfer_account_id',  $acctaccount, $salescollectionelements == null ? '' : $salescollectionelements['transfer_account_id'], ['class' => 'selection-search-clear select-form', 'id' => 'transfer_account_id', 'onchange' => 'elements_add(this.name, this.value);']) !!}
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Nama Akun</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_account_name" id="collection_transfer_account_name" value="" autocomplete='off'/>
+                <br/>
+                <div class="row">
+                    <p class="form-section"><b>Data Bank</b></p>
+                </div>
+                <br/>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">Nama Bank</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_bank_name" id="collection_transfer_bank_name" value="" autocomplete='off'/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">Nama Akun</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_account_name" id="collection_transfer_account_name" value="" autocomplete='off'/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">No Rekening</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_account_no" id="collection_transfer_account_no" value="" autocomplete='off'/>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">No Rekening</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_account_no" id="collection_transfer_account_no" value="" autocomplete='off'/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <a class="text-dark">Jumlah Transfer</a>
+                            <input class="form-control input-bb" type="text" name="collection_transfer_amount" id="collection_transfer_amount" value="" autocomplete='off'/>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <a class="text-dark">Jumlah Transfer</a>
-                        <input class="form-control input-bb" type="text" name="collection_transfer_amount" id="collection_transfer_amount" value="" autocomplete='off'/>
+                <div class="row form-group">
+                    <div class="col-md-12" style='text-align:right'>
+                        <div class="form-actions float-right">
+                            <a type="submit" name="Save" class="btn btn-primary" title="Save" id="buttonAddArraySalesCollectionTransfer" onclick="processAddArraySalesCollectionTransfer()">Tambah</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-12" style='text-align:right'>
-                    <div class="form-actions float-right">
-                        <a type="submit" name="Save" class="btn btn-primary" title="Save" id="buttonAddArraySalesCollectionTransfer" onclick="processAddArraySalesCollectionTransfer()">Tambah</a>
-                    </div>
-                </div>
-            </div>
-            	
-            <br>
-            <br>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-advance table-hover">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th style='text-align:center' width="20%">Bank</th>
-                                    <th style='text-align:center' width="20%">Nama Akun</th>
-                                    <th style='text-align:center' width="20%">No. Akun</th>
-                                    <th style='text-align:center' width="20%">Jumlah Transfer</th>
-                                    <th style='text-align:center' width="10%">Aksi</th>	
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    $total_transfer = 0;
-                                    if(!is_array($salescollectiontransfer)){
-                                        echo "<tr><th colspan='9' style='text-align:center'>Data Kosong</th></tr>";
-                                    } else {
-                                        foreach ($salescollectiontransfer as $key=>$val){
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="example" style="width:100%" class="table table-striped table-bordered table-hover table-full-width">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th style='text-align:center' width="20%">Bank</th>
+                                        <th style='text-align:center' width="20%">Nama Akun</th>
+                                        <th style='text-align:center' width="20%">No. Akun</th>
+                                        <th style='text-align:center' width="20%">Jumlah Transfer</th>
+                                        <th style='text-align:center' width="10%">Aksi</th>	
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $total_transfer = 0;
+                                        if(!is_array($salescollectiontransfer)){
+                                            echo "<tr><th colspan='9' style='text-align:center'>Data Kosong</th></tr>";
+                                        } else {
+                                            foreach ($salescollectiontransfer as $key=>$val){
+                                                echo"
+                                                    <tr>
+                                                        <td style='text-align  : left !important;'>".$SalesCollection->getAccountName($val['transfer_account_id'])."</td>
+                                                        <td style='text-align  : left !important;'>".$val['collection_transfer_account_name']."</td>
+                                                        <td style='text-align  : left !important;'>".$val['collection_transfer_account_no']."</td>
+                                                        <td style='text-align  : right !important;'>".number_format($val['collection_transfer_amount'], 2)."</td>";
+                                                        ?>
+                                                        <td style='text-align  : center !important;'>
+                                                            <a href="{{route('delete-transfer-array-sales-discount-collection', ['record_id' => $key, 'sales_kwitansi_id' => $sales_kwitansi_id])}}" name='Reset' class='btn btn-danger btn-sm' onClick='javascript:return confirm(\"apakah yakin ingin dihapus ?\")'></i> Hapus</a>
+                                                        </td>
+                                                        <?php
+                                                        echo"
+                                                    </tr>								
+                                                ";	
+                                                $total_transfer += $val['collection_transfer_amount'];													
+                                            }
                                             echo"
-                                                <tr>
-                                                    <td style='text-align  : left !important;'>".$SalesCollection->getAccountName($val['transfer_account_id'])."</td>
-                                                    <td style='text-align  : left !important;'>".$val['collection_transfer_account_name']."</td>
-                                                    <td style='text-align  : left !important;'>".$val['collection_transfer_account_no']."</td>
-                                                    <td style='text-align  : right !important;'>".number_format($val['collection_transfer_amount'], 2)."</td>";
-                                                    ?>
-                                                    <td style='text-align  : center !important;'>
-                                                        <a href="{{route('delete-transfer-array-sales-collection', ['record_id' => $key, 'customer_id' => $customer_id])}}" name='Reset' class='btn btn-danger btn-sm' onClick='javascript:return confirm(\"apakah yakin ingin dihapus ?\")'></i> Hapus</a>
-                                                    </td>
-                                                    <?php
-                                                    echo"
-                                                </tr>								
-                                            ";	
-                                            $total_transfer += $val['collection_transfer_amount'];													
+                                                <input class='form-control input-bb' type='hidden' name='collection_total_transfer_amount' id='collection_total_transfer_amount' value='".$total_transfer."' autocomplete='off'/>
+                                            ";
                                         }
-                                        echo"
-                                            <input class='form-control input-bb' type='hidden' name='collection_total_transfer_amount' id='collection_total_transfer_amount' value='".$total_transfer."' autocomplete='off'/>
-                                        ";
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                <br>
+                <br>
             </div>
-            <br>
-            <br>
             <div class="row form-group">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -479,25 +515,11 @@
                         <input class="form-control input-bb" type="hidden"  style='text-align:right' name="collection_amount" id="collection_amount" value=""/>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" hidden>
                     <div class="form-group">
                         <a class="text-dark">Total Alokasi</a>
                         <input class="form-control input-bb" type="text" style='text-align:right' name="collection_allocated_move_view" id="collection_allocated_move_view" value="" readonly/>
                         <input class="form-control input-bb" type="hidden" style='text-align:right' name="collection_allocated_move" id="collection_allocated_move" value=""/>
-                    </div>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <a class="text-dark">Pend.Lain Lain</a>
-                        <input class="form-control" hidden type="text" style='text-align:left' name="lain_lain" id="lain_lain" value="0"/>
-                        <input class="form-control input-bb" type="text" style='text-align:right' name="lain_lain_amount" id="lain_lain_amount" value=""/>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                    <input class="form-control" type="checkbox" style='text-align:left' name="lain_lain_amount_check" id="lain_lain_amount_check" value="1"/>
                     </div>
                 </div>
             </div>
@@ -525,14 +547,15 @@
                     <thead class="thead-light">
                         <tr>
                             <th style='text-align:center'>Tanggal</th>
-                            <th style='text-align:center'>No. Invoice</th>
-                            <th style='text-align:center'>No. Penerimaan</th>
-                            <th style='text-align:center'>Jumlah Diskon</th>
-                            <th style='text-align:center'>Jumlah yang telah Dibayar</th>
-                            <th style='text-align:center'>Jumlah Sisa Piutang</th>
-                            <th style='text-align:center'>Alokasi</th>
+                            <th style='text-align:center'>No_Invoice</th>
+                            <th style='text-align:center'>No_Penerimaan</th>
+                            <th style='text-align:center'>Jumlah_Diskon</th>
+                            <th style='text-align:center'>Dibayar</th>
+                            <th style='text-align:center'>Sisa</th>
+                            <th style='text-align:center'>Alokasi_Pembayaran</th>
                             <th style='text-align:center'>Pembulatan</th>
-                            <th style='text-align:center'>Saldo Akhir</th>
+                            <th style='text-align:center'>potongan_lain_lain</th>
+                            <th style='text-align:center'>Saldo_Akhir_margin</th>
                             <!-- <th style='text-align:center'>Aksi</th> -->
                             <!-- <th style='text-align:center' colspan="3">Potongan -->
                         </tr>
@@ -546,6 +569,8 @@
                                 $nos =0;
                                 $allocation_total = 0;
                                 $shortover_total  = 0;
+                                $lain_lain_total  = 0;
+
                                 foreach ($salesinvoiceowing AS $key => $val){?>
                                 <tr>
                                     <td style='text-align  : center'>{{$val['sales_invoice_date']}}</td>
@@ -561,6 +586,9 @@
                                         <input class="form-control" type="text" style='text-align:right' name="{{$no}}_shortover" id="{{$no}}_shortover" value="0" onChange="calculateAllocation()"/>
                                     </td>
                                     <td style='text-align  : center'>
+                                        <input class="form-control" type="text" style='text-align:right' name="{{$no}}_lain_lain_amount" id="{{$no}}_lain_lain_amount" value="0" onChange="calculateAllocation()"/>
+                                    </td>
+                                    <td style='text-align  : center'>
                                         <input class="form-control" type="text" style='text-align:right' name="{{$no}}_last_balance_view" id="{{$no}}_last_balance_view" value="{{number_format($val['owing_discount_amount'],2)}}" readonly/>
                                         <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_last_balance" id="{{$no}}_last_balance" value="{{$val['owing_discount_amount'],2}}" readonly/>
 
@@ -573,92 +601,13 @@
                                         <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_paid_discount_amount" id="{{$no}}_paid_discount_amount" value="{{$val['paid_discount_amount']}}" readonly/>
                                         <input class="form-control" type="hidden" style='text-align:right' name="{{$no}}_owing_discount_amount" id="{{$no}}_owing_discount_amount" value="{{$val['owing_discount_amount']}}" readonly/>
                                     </td>
-                                    <td hidden style='text-align  : center'>
-                                           <a href='#addtstock_{{ $no }}' data-toggle='modal' name="Find" class="btn btn-success btn-sm" title="Add Data"><i class="fa fa-plus"> </i> Tambah Potongan</a>
-                                    </td>
-                                    <td hidden>
-                                        <a target="_blank" href="/PBF_Menjangan_Enam/sales-collection-piece/detail-sales-collection-piece/{{$val['sales_invoice_id']}}" class="btn btn-outline-primary">Detail</a>
-                                    </td>
-                                        {{-- @php
-                                            $piece = $SalesCollection->getPiece($val['sales_invoice_id']);
-                                        @endphp
-                                        @foreach ($piece as $item)
-                                        <td>
-                                            {{ $item->piece_amount }}
-                                        </td>
-                                        @php
-                                        if($item->sales_collection_piece_type_id == 1){
-                                          $claim = 'Promosi';
-                                        }
-                                        if($item->sales_collection_piece_type_id == 2){
-                                          $claim = 'biasa';
-                                        }
-                                    @endphp   
-                                    <td>{{ $claim }}</td>
-                                        <td>
-                                            <input class="form-control" type="hidden" style='text-align:right' name="id-piece_{{ $item->sales_collection_piece_id }}" id="id-piece_{{ $item->sales_collection_piece_id }}" value="{{$item->sales_collection_piece_id}}" readonly/>
-                                            <button id="delete-piece-button_{{ $item->sales_collection_piece_id }}" onclick="data_delete({{ $item->sales_collection_piece_id }});" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                        </td>      --}}
-                                        {{-- <input class="form-control" type="" style='text-align:right' name="{{$no}}_piece_amount" id="{{$no}}_piece_amount" value="{{ $val['sales_invoice_id']) }}" readonly/> --}}
-                                        {{-- @endforeach --}}
-                                       
-                                    {{-- <form action="{{url('/sales-delivery-order/add-item-stock')}}" method="POST"> --}}
-    @csrf
-    
-    <div class="modal fade bs-modal-md" id="addtstock_{{ $no }}" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header"  style='text-align:left !important'>
-                    <h4>Form Tambah Potongan</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <input type="hidden" name="sales_invoice_id" id="sales_invoice_id_{{$no}}" value="{{$val['sales_invoice_id']}}">
-                        <div class="col-md-12 mb-3">
-                            <a class="text-dark">No Invoice<a class='red'> </a></a>
-                          <input type="text" class="form-control input-bb" name="sales_invoice_no" id="sales_invoice_no_{{ $no }}" value="{{$val['sales_invoice_no']}}" autocomplete="off" readonly>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <a class="text-dark">Jumlah Invoice<a class='red'> </a></a>
-                            <input type="text" class="form-control input-bb" name="total_amount_view" id="total_amount_view{{ $no }}" value="{{number_format($val['owing_amount'], 2)}}" autocomplete="off" readonly>    
-                            <input type="hidden" class="form-control input-bb" name="total_amount" id="total_amount_{{ $no }}" value="{{$val['owing_amount']}}" autocomplete="off" readonly> 
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <a class="text-dark">Jenis Potongan<a class='red'> </a></a>
-                            <select class="selection-search-clear" name="sales_collection_piece_type_id" id="sales_collection_piece_type_id_{{$no}}"  onchange="change_type({{ $no }});" style="width: 100% !important" >
-                                <option value="1">Promosi</option>
-                                <option value="2">Biasa</option>
-                            </select>
-                        </div>
-                        <div class="col-md-12">
-                            <a class="text-dark" id="label_promosi">Nomor Promosi<a class='red'></a></a>
-                            <input type="text" class="form-control input-bb" name="promotion_no" id="nomor_promosi_{{ $no }}"  autocomplete="off">
-                        </div>
-                        <div class="col-md-12" id="label_memo">
-                            <a class="text-dark">Nomor Memo<a class='red'> </a></a>
-                            <input type="text" class="form-control input-bb" name="memo_no" id="nomor_memo_{{ $no }}"  autocomplete="off">
-                        </div>
-                        <div class="col-md-12">
-                            <a class="text-dark">Jumlah Potongan<a class='red'>* </a></a>
-                            <input type="number" class="form-control input-bb" name="piece_amount" id="piece_amount_{{ $no }}" value="" autocomplete="off">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="modal-footer">
-                        <a id="add-piece-button_{{$no}}"  type="button" onclick="datapiece_add({{ $no }});" class="btn btn-primary btn-sm" >Simpan</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-{{-- </form> --}}
                                 </tr>
                                 <?php
                                 $no++;
                                 $nos++;
                                 }
                                     echo"
-                                    <th style='text-align  : center' colspan='5'>Total</th>
+                                    <th style='text-align  : right' colspan='6'>Total</th>
                                     <th style='text-align  : right'>
                                         <input class='form-control' type='text' style='text-align:right' name='allocation_total_view' id='allocation_total_view' value='".$allocation_total."' readonly/>
                                         <input class='form-control' type='hidden' style='text-align:right' name='allocation_total' id='allocation_total' value='".$allocation_total."' readonly/>
@@ -670,6 +619,27 @@
                                     <th>
                                         <input class='form-control input-bb' type='hidden' name='item_total' id='item_total' value='".$no."'/>
                                     </th>
+                                    <th>
+                                    </th>
+
+                                    ";
+
+                                    echo"
+                                    <tr>
+                                        <th style='text-align  : right' colspan='6'>Total Lain - Lain</th>
+                                    <th style='text-align  : right'colspan='2' >
+                                        <input class='form-control' hidden type='text' style='text-align:left' name='lain_lain' id='lain_lain' value='0'/>
+                                        <input class='form-control input-bb' type='text' style='text-align:right' name='lain_lain_amount_view' id='lain_lain_amount_view' value='".$lain_lain_total."'/>
+                                        <input class='form-control input-bb' hidden type='text' style='text-align:right' name='lain_lain_amount' id='lain_lain_amount' value='".$lain_lain_total."'/>
+                                    </th>
+                                    <th>
+                                        <input class='form-control' type='checkbox' style='text-align:left' name='lain_lain_amount_check' id='lain_lain_amount_check' value='1'/>
+                                        <input class='form-control input-bb' type='hidden' name='item_total' id='item_total' value='".$no."'/>
+                                    </th>
+                                    <th>
+                                    </th>
+                                    </tr>
+                                   
                                     ";
                             }
                         ?>

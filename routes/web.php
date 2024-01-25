@@ -794,7 +794,7 @@ Route::get('/print-kwitansi/cetak-pengantar/{sales_kwitansi_id}', [KwitansiContr
 Route::post('/print-kwitansi/filter-print', [KwitansiController::class, 'filterKwitansiAdd'])->name('filter-print-kwitansi-add');
 
 Route::get('/sales-discount-collection', [SalesCollectionDiscountController::class, 'index'])->name('sales-collection-discount');
-Route::get('/sales-discount-collection/add/{customer_id}', [SalesCollectionDiscountController::class, 'addSalesCollectionDiscount'])->name('add-sales-collection');
+Route::get('/sales-discount-collection/add/{sales_kwitansi_id}', [SalesCollectionDiscountController::class, 'addSalesCollectionDiscount'])->name('add-sales-collection');
 Route::post('/sales-discount-collection/add-discount', [SalesCollectionDiscountController::class, 'processAddSalesCollectionDiscount'])->name('add-sales-discount-collection');
 Route::post('/sales-discount-collection/delete-discount', [SalesCollectionDiscountController::class, 'processDeleteSalesCollectionDiscount'])->name('delete-sales-discount-collection');
 Route::post('/sales-discount-collection/filter', [SalesCollectionDiscountController::class, 'filterSalesCollectionDiscount'])->name('filter-sales-discount-collection');
@@ -802,6 +802,7 @@ Route::get('/sales-discount-collection/filter-reset', [SalesCollectionDiscountCo
 Route::get('/sales-discount-collection/search', [SalesCollectionDiscountController::class, 'searchCoreCustomer'])->name('search-core-supplier-sales-collection');
 Route::get('/sales-discount-collection/detail/{collection_id}', [SalesCollectionDiscountController::class, 'detailSalesCollectionDiscount'])->name('detail-sales-collection-discount');
 Route::get('/sales-discount-collection/print/{collection_id}', [SalesCollectionDiscountController::class, 'processPrintingSalescollectionDiscount'])->name('detail-sales-collection-discount');
+Route::get('/sales-discount-collection/delete-transfer-array/{record_id}/{sales_kwitansi_id}', [SalesCollectionDiscountController::class, 'deleteTransferArray'])->name('delete-transfer-array-sales-discount-collection');
 
 
 Route::get('/aging-account-payable', [AcctAgingApReportController::class, 'index'])->name('aging-account-payable');
