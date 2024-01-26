@@ -248,11 +248,12 @@
                                                 <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemCategoryName($val['item_category_id'])."</td>
                                                 <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemTypeName($val['item_type_id'])."</td>
                                                 <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemUnitName($val['item_unit_id'])."</td>
-                                                <td style='text-align  : right !important;'>".$val['item_unit_cost']."</td>
+                                                <td style='text-align  : right !important;'>".$val['item_unit_cost']." 
+                                                    <input class='form-control' style='text-align:right;'type='' name='item_unit_cost_".$no."' id='item_unit_cost_".$no."' value='".$val['item_unit_cost']."'/>
+                                                </td>
                                                 <td style='text-align  : right !important;'>".$val['quantity']."</td>
                                                 <td style='text-align  : right !important;'>".$val['quantity_outstanding']."</td>
                                                 <td style='text-align  : right !important;'>
-                                                    <input hidden class='form-control' style='text-align:right;' type='number' name='item_unit_cost_".$no."' id='item_unit_cost_".$no."' value='".$val['item_unit_cost']."'/>
 
                                                     <input class='form-control' style='text-align:right;' type='number' name='quantity_received_".$no."' id='quantity_received_".$no."' value='".$val['quantity_outstanding']."' onchange='quantityReceivedChange(".$no.",this.value);' autocomplete='off'/>
 
@@ -262,14 +263,13 @@
 
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='item_unit_id_".$no."' id='item_unit_id_".$no."' value='".$val['item_unit_id']."'/>
 
-                                                    <input class='form-control' style='text-align:right;'type='hidden' name='item_unit_cost_".$no."' id='item_unit_cost_".$no."' value='".$val['item_unit_cost']."'/>
 
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='purchase_order_id_".$no."' id='purchase_order_id_".$no."' value='".$val['purchase_order_id']."'/>
 
                                                     <input class='form-control' style='text-align:right;'type='hidden' name='purchase_order_item_id_".$no."' id='purchase_order_item_id_".$no."' value='".$val['purchase_order_item_id']."'/>
                                                 </td>
                                                 <td>
-                                                    <input class='form-control' style='text-align:right;'type='text' name='item_batch_number_".$no."' id='item_batch_number_".$no."' autocomplete='off'/>
+                                                    <input class='form-control' style='text-align:right;'type='text' name='item_batch_number_".$no."' id='item_batch_number_".$no."' autocomplete='off' required/>
                                                 </td>
                                                 <td>
                                                     <input class='form-control' style='text-align:right;'type='date' name='item_expired_date_".$no."' id='item_expired_date_".$no."' autocomplete='off' autocomplete='off'/>

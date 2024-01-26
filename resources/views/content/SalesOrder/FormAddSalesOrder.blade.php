@@ -455,6 +455,94 @@
 
 
 		});
+
+        
+
+        $("#discount_amount_item").change(function(){
+            var discount_percentage_item 	                = $("#discount_percentage_item").val();
+            var discount_percentage_item_b 	                = $("#discount_percentage_item_b").val();
+			var total_price 	                            = $("#total_price").val();
+            var ppn_out_percentage 	                        = $("#ppn_out_percentage").val();
+            var discount_amount_item_text                   = $("#discount_amount_item").val();
+            var discount_amount_item_b_text                 = $("#discount_amount_item_b").val();
+            
+            var discount_item                               = discount_percentage_item * 1/100;
+            var discount_item_b                             = discount_percentage_item_b * 1/100;
+            var ppn_item                                    = ppn_out_percentage * 1/100;
+            var discount_amount_item                        = discount_item * total_price;
+
+            var discount_percentage                         = discount_amount_item_text / total_price * 100;
+            var discount_percentage_b                       = discount_amount_item_b_text / total_price * 100;
+
+            var total_price_after_discount_item_a 	        = total_price - discount_amount_item_text;
+            var discount_amount_item_b                      = discount_item_b * total_price_after_discount_item_a;
+            var total_price_after_discount_item_b 	        = total_price_after_discount_item_a - discount_amount_item_b_text;
+            var ppn_amount_item                             = ppn_item * total_price_after_discount_item_b;
+            var total_price_after_ppn_amount                = ppn_amount_item + total_price_after_discount_item_b;
+
+            // $("#discount_amount_item").val(discount_amount_item);
+            // $("#discount_amount_item_b").val(discount_amount_item_b);
+
+            $("#discount_percentage_item").val(discount_percentage);
+            $("#discount_percentage_item_b").val(discount_percentage_b);
+
+            $("#discount_amount_item_view").val(toRp(discount_amount_item + discount_amount_item_b));
+
+            $("#subtotal_after_discount_item_a").val(total_price_after_discount_item_a);
+            $("#subtotal_after_discount_item_view_a").val(toRp(total_price_after_discount_item_a));
+
+            $("#subtotal_after_discount_item_b").val(total_price_after_discount_item_b);
+            $("#subtotal_after_discount_item_view_b").val(toRp(total_price_after_discount_item_b));
+
+            $("#total_price_after_ppn_amount_view").val(total_price_after_ppn_amount);
+            $("#total_price_after_ppn_amount").val(total_price_after_ppn_amount);
+            $("#ppn_amount_item").val(ppn_amount_item);
+
+		});
+
+
+        $("#discount_amount_item_b").change(function(){
+            var discount_percentage_item 	                = $("#discount_percentage_item").val();
+            var discount_percentage_item_b 	                = $("#discount_percentage_item_b").val();
+			var total_price 	                            = $("#total_price").val();
+            var ppn_out_percentage 	                        = $("#ppn_out_percentage").val();
+            var discount_amount_item_text                   = $("#discount_amount_item").val();
+            var discount_amount_item_b_text                 = $("#discount_amount_item_b").val();
+            
+            var discount_item                               = discount_percentage_item * 1/100;
+            var discount_item_b                             = discount_percentage_item_b * 1/100;
+            var ppn_item                                    = ppn_out_percentage * 1/100;
+            var discount_amount_item                        = discount_item * total_price;
+
+            var discount_percentage                         = discount_amount_item_text / total_price * 100;
+            var discount_percentage_b                       = discount_amount_item_b_text / total_price * 100;
+
+            var total_price_after_discount_item_a 	        = total_price - discount_amount_item_text;
+            var discount_amount_item_b                      = discount_item_b * total_price_after_discount_item_a;
+            var total_price_after_discount_item_b 	        = total_price_after_discount_item_a - discount_amount_item_b_text;
+            var ppn_amount_item                             = ppn_item * total_price_after_discount_item_b;
+            var total_price_after_ppn_amount                = ppn_amount_item + total_price_after_discount_item_b;
+
+            // $("#discount_amount_item").val(discount_amount_item);
+            // $("#discount_amount_item_b").val(discount_amount_item_b);
+
+            $("#discount_percentage_item").val(discount_percentage);
+            $("#discount_percentage_item_b").val(discount_percentage_b);
+
+            $("#discount_amount_item_view").val(toRp(discount_amount_item + discount_amount_item_b));
+
+            $("#subtotal_after_discount_item_a").val(total_price_after_discount_item_a);
+            $("#subtotal_after_discount_item_view_a").val(toRp(total_price_after_discount_item_a));
+
+            $("#subtotal_after_discount_item_b").val(total_price_after_discount_item_b);
+            $("#subtotal_after_discount_item_view_b").val(toRp(total_price_after_discount_item_b));
+
+            $("#total_price_after_ppn_amount_view").val(total_price_after_ppn_amount);
+            $("#total_price_after_ppn_amount").val(total_price_after_ppn_amount);
+            $("#ppn_amount_item").val(ppn_amount_item);
+		});
+
+
     });
 
 
@@ -533,6 +621,7 @@
             $("#subtotal_after_ppn_out_view").val(toRp(total_price_after_ppn_out));
 
 		});
+        
     });
 
     $(document).ready(function(){
@@ -882,7 +971,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <a class="text-dark">Nominal Discount A</a>
-                        <input class="form-control input-bb" type="text" name="discount_amount_item" id="discount_amount_item" value="" readonly/>
+                        <input class="form-control input-bb" type="text" name="discount_amount_item" id="discount_amount_item" value="" />
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -904,7 +993,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <a class="text-dark">Nominal Discount B</a>
-                        <input class="form-control input-bb" type="text" name="discount_amount_item_b" id="discount_amount_item_b" value="" readonly/>
+                        <input class="form-control input-bb" type="text" name="discount_amount_item_b" id="discount_amount_item_b" value="" />
                     </div>
                 </div>
                 <div class="col-md-4">

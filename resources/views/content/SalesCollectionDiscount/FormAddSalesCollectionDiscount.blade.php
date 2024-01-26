@@ -314,9 +314,9 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('sales-collection') }}">Daftar Pelunasan Piutang Diskon</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('sales-collection') }}">Daftar Pelunasan Diskon Margin</a></li>
         <li class="breadcrumb-item"><a href="{{ url('sales-collection/search') }}">Daftar Pelanggan</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Tambah Pelunasan Piutang Diskon</li>
+        <li class="breadcrumb-item active" aria-current="page">Tambah Pelunasan Diskon Margin</li>
     </ol>
   </nav>
 
@@ -325,7 +325,7 @@
 @section('content')
 
 <h3 class="page-title">
-    Form Tambah Pelunasan Piutang Diskon
+    Form Tambah Pelunasan Diskon Margin
 </h3>
 <br/>
 @if(session('msg'))

@@ -25,6 +25,7 @@ use App\Models\PreferenceTransactionModule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class InvGoodsReceivedNoteController extends Controller
@@ -337,6 +338,7 @@ class InvGoodsReceivedNoteController extends Controller
     }
 
     public function processAddInvGoodsReceivedNote(Request $request){
+        // dd($request->all());
 
         $purchaseorderitem_temporary = Session::get('purchaseorderitem');
 
@@ -440,11 +442,27 @@ class InvGoodsReceivedNoteController extends Controller
                 // dd($invgoodsreceivednoteitem);
                 InvGoodsReceivedNoteItem::create($invgoodsreceivednoteitem);
 
+                //item unit cost
+                // $item_unit_cost = array (
+                //     'item_unit_cost'					    => $temprequest['item_unit_cost_'.$i],
+                // );
+
                 //update purchase order item
                 $purchaseorderitem = PurchaseOrderItem::findOrFail($invgoodsreceivednoteitem['purchase_order_item_id']);
                 $purchaseorderitem->quantity_outstanding = $purchaseorderitem['quantity_outstanding'] - $invgoodsreceivednoteitem['quantity'];
                 $purchaseorderitem->quantity_received    = $purchaseorderitem['quantity_received'] + $invgoodsreceivednoteitem['quantity'];
                 $purchaseorderitem->save();
+
+
+                // DB::table('inv_item_stock')
+                //   ->update([
+                //      'item_unit_cost' => $temprequest['item_unit_cost_'.$i],
+                //     ]);
+
+                //update harga stock
+                $itemunitcost                   = InvItemStock::findOrFail($temprequest['item_type_id_'.$i]);
+                $itemunitcost->item_unit_cost    = $temprequest['item_unit_cost_'.$i];
+                $itemunitcost->save();
 
                 // $total_received_item = $total_received_item + $purchaseorderitem['quantity_received'] + $invgoodsreceivednoteitem['quantity'];
 
@@ -520,6 +538,7 @@ class InvGoodsReceivedNoteController extends Controller
                     $itemstockupdate = InvItemStock::findOrFail($data_item_stock['item_stock_id']);
                     $itemstockupdate->item_total += $invitemstock['item_total'];
                     $itemstockupdate->quantity_unit += $invitemstock['quantity_unit'];
+                    $itemstockupdate->item_unit_cost = $invitemstock['item_unit_cost'];
                     // $itemstockupdate->item_weight_unit += $invitemstock['item_weight_unit'];
                     // $itemstockupdate->item_stock_date = $invitemstock['item_stock_date'];
                     $itemstockupdate->save();

@@ -22,7 +22,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Daftar Pelunasan Piutang Diskon</li>
+      <li class="breadcrumb-item active" aria-current="page">Daftar Diskon Margin</li>
     </ol>
   </nav>
 
@@ -31,7 +31,7 @@
 @section('content')
 
 <h3 class="page-title">
-    <b>Daftar Pelunasan Piutang Diskon</b> <small>Mengelola Pelunasan Piutang Diskon</small>
+    <b>Daftar Diskon Margin</b> <small>Mengelola Diskon Margin</small>
 </h3>
 <br/>
 <div id="accordion">

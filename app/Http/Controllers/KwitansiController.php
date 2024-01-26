@@ -428,12 +428,12 @@ class KwitansiController extends Controller
                             <td>" . $no . "</td>
                             <td>".$this->getBpbNo($val['sales_invoice_id']) ."<br>".$this->getInvItemTypeName($val['item_type_id'])."</td>
                             <td style=\"text-align: center;\">".$val['quantity']."</td>
-                            <td style=\"text-align: right;\">".$val['item_unit_price']."</td>
-                            <td style=\"text-align: right;\">".$val['item_unit_price'] * $val['quantity']."</td>
-                            <td style=\"text-align: right;\">".$val['discount_A'] + $val['discount_B']." </td>
-                            <td style=\"text-align: right;\">".$total - $diskon."</td>
-                            <td style=\"text-align: right;\">".$ppn."</td>
-                            <td style=\"text-align: right;\">".$dpp."</td>
+                            <td style=\"text-align: right;\">".number_format($val['item_unit_price'],2)."</td>
+                            <td style=\"text-align: right;\">".number_format($val['item_unit_price'] * $val['quantity'],2)."</td>
+                            <td style=\"text-align: right;\">".number_format($val['discount_A'] + $val['discount_B'],2)." </td>
+                            <td style=\"text-align: right;\">".number_format($total - $diskon,2)."</td>
+                            <td style=\"text-align: right;\">".number_format($ppn,2)."</td>
+                            <td style=\"text-align: right;\">".number_format($dpp,2)."</td>
                         </tr> 
                         ";
             $no++;
@@ -442,21 +442,21 @@ class KwitansiController extends Controller
         $html2  .= "
                     <tr>
                         <td colspan=\"6\" style=\"text-align: left;font-weight: bold\";></td>
-                        <td style=\"text-align: right;\">".$totaldpp."</td>
-                        <td style=\"text-align: right;\">".$totalppn."</td>
-                        <td style=\"text-align: right;\">".$totalbayar."</td>
+                        <td style=\"text-align: right;\">".number_format($totaldpp,2)."</td>
+                        <td style=\"text-align: right;\">".number_format($totalppn,2)."</td>
+                        <td style=\"text-align: right;\">".number_format($totalbayar,2)."</td>
                     </tr>
                     <tr>
                         <td colspan=\"6\" style=\"text-align: right;font-weight: bold\";>TOTAL PPN</td>
                         <td style=\"text-align: right;\"></td>
                         <td style=\"text-align: right;\"></td>
-                        <td style=\"text-align: right;\">".$totalppn."</td>
+                        <td style=\"text-align: right;\">".number_format($totalppn,2)."</td>
                     </tr>
                     <tr>
                         <td colspan=\"6\" style=\"text-align: right;font-weight: bold\";>TOTAL BAYAR</td>
                         <td style=\"text-align: right;\"></td>
                         <td style=\"text-align: right;\"></td>
-                        <td style=\"text-align: right;\">".$totalbayar."</td>
+                        <td style=\"text-align: right;\">".number_format($totalbayar,2)."</td>
                     </tr>
                     ";
         $html2 .= "</table>";
@@ -465,9 +465,10 @@ class KwitansiController extends Controller
         $html2 .= "
                     <table style=\"text-align: center;font-weight: bold\" cellspacing=\"20\";>
                         <tr>
-                            <th style=\"text-align: left; font-size:12px; font-weight: bold\">KASIR TERBILANG</th>
-                            <th></th>
-                            <th></th>
+                            <th style=\"text-align: left; font-size:12px; font-weight: bold\">KASIR TERBILANG </th>
+                        </tr>
+                        <tr style=\"text-align: left; font-size:12px; font-weight: bold\">
+                            <th>".$this->numtotxt($totalbayar)."</th>
                         </tr>
                     </table>
                     <table style=\"text-align: left;\" cellspacing=\"0\";>
@@ -622,8 +623,8 @@ class KwitansiController extends Controller
                 <td>". $this->getInvItemTypeName($saleskwitansiItem[$i]['item_type_id'])."</td>
                 <td style=\"text-align: center;\">".$this->getItemBatchNumber($this->getNoteStokID($saleskwitansiItem[$i]['sales_delivery_note_item_id']))."</td>
                 <td style=\"text-align: center;\">".$saleskwitansiItem[$i]['quantity']."".$this->getItemUnitName($saleskwitansiItem[$i]['item_unit_id']) ."</td>
-                <td style=\"text-align: center;\">". "@Rp".$saleskwitansiItem[$i]['item_unit_price']."</td>
-                <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B']."</td>
+                <td style=\"text-align: center;\">". "@Rp".number_format($saleskwitansiItem[$i]['item_unit_price'],2)."</td>
+                <td style=\"text-align: right;\">".number_format($saleskwitansiItem[$i]['subtotal_price_B'],2)."</td>
             </tr> 
             ";
             $no++;
@@ -632,27 +633,27 @@ class KwitansiController extends Controller
         $html2  .= " 
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>TOTAL</td>
-                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B']."</td>
+                        <td style=\"text-align: right;\">".number_format($saleskwitansiItem[$i]['subtotal_price_B'],2)."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>POTONGAN</td>
-                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B']."</td>
+                        <td style=\"text-align: right;\">".number_format($saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B'],2)."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>NETTO</td>
-                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B'] - $saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B']."</td>
+                        <td style=\"text-align: right;\">".number_format($saleskwitansiItem[$i]['subtotal_price_B'] - $saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B'],2)."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>PPN</td>
-                        <td style=\"text-align: right;\">".$this->getPpnItem($saleskwitansiItem[$i]['sales_delivery_note_item_id'])."</td>
+                        <td style=\"text-align: right;\">".number_format($this->getPpnItem($saleskwitansiItem[$i]['sales_delivery_note_item_id']),2)."</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=\"5\" style=\"text-align: right;font-weight: bold\";>TOTAL BAYAR</td>
-                        <td style=\"text-align: right;\">".$saleskwitansiItem[$i]['subtotal_price_B'] - ($saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B'])+$saleskwitansiItem[$i]['ppn_amount_item']."</td>
+                        <td style=\"text-align: right;\">".number_format($saleskwitansiItem[$i]['subtotal_price_B'] - ($saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B'])+$saleskwitansiItem[$i]['ppn_amount_item'],2)."</td>
                         <td></td>
                     </tr>
                     ";
@@ -660,11 +661,12 @@ class KwitansiController extends Controller
         $path = '<img width="60"; height="60" src="resources/assets/img/ttd.png">';
         //dd($path);        
         $html2 .= "
-                    <table style=\"text-align: center;font-weight: bold\" cellspacing=\"20\";>
+                    <table style=\"text-align: left;font-weight: bold\" cellspacing=\"20\";>
                         <tr>
-                            <th style=\"text-align: left; font-size:12px; font-weight: bold\">KASIR &nbsp; &nbsp; &nbsp; TERBILANG</th>
-                            <th></th>
-                            <th></th>
+                            <th style=\"text-align: left; font-size:12px; font-weight: bold\">KASIR TERBILANG  </th>
+                        </tr>
+                        <tr>
+                            <th tyle=\"text-align: left; font-size:12px; font-weight: bold\">".$this->numtotxt($saleskwitansiItem[$i]['subtotal_price_B'] - ($saleskwitansiItem[$i]['discount_A'] + $saleskwitansiItem[$i]['discount_B'])+$saleskwitansiItem[$i]['ppn_amount_item'])."</th>
                         </tr>
                     </table>
                     <table style=\"text-align: left;\" cellspacing=\"0\";>
