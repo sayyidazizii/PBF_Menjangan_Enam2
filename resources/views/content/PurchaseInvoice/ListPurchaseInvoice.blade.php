@@ -79,6 +79,7 @@
                 <div class="form-actions float-right">
                     <a href="{{route('filter-reset-purchase-invoice')}}" type="reset" name="Reset" class="btn btn-danger btn-sm" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</a>
                     <button type="submit" name="Find" class="btn btn-primary btn-sm" title="Search Data"><i class="fa fa-search"></i> Cari</button>
+                    <a href="{{ url('purchase-invoice/export') }}"name="Find" class="btn btn-sm btn-info" title="Export Excel"><i class="fa fa-print"></i>Export</a>
                 </div>
             </div>
         </div>
