@@ -27,5 +27,9 @@ class PurchaseInvoiceItem extends Model
      */
     protected $hidden = [
     ];
+    public function purchaseInvoice()
+    {
+        return $this->belongsTo(PurchaseInvoice::class, 'purchase_invoice_id');
+    }
 
 }
