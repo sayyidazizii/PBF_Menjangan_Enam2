@@ -123,7 +123,7 @@ class InvGoodsReceivedNoteController extends Controller
             array_multisort($key_type, SORT_ASC, $merge_data, SORT_DESC, $merge_data);
         }
         // dd($merge_data);
-        
+                        
         $add_type_purchaseorderitem = PurchaseOrderItem::where('purchase_order_item.data_state', 0)
         ->where('purchase_order_id', $purchase_order_id)
         ->join('inv_item_type', 'inv_item_type.item_type_id', '=', 'purchase_order_item.item_type_id')
@@ -478,6 +478,7 @@ class InvGoodsReceivedNoteController extends Controller
 
                     // dd($quantity_unit, $default_quantity, $item_weight, $item_weight_default);
                     
+                     
                 }else if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_3']){
                     $quantity_unit = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_quantity_default_3'];
                     $default_quantity = $item_type['item_quantity_default_3'];  
@@ -511,13 +512,14 @@ class InvGoodsReceivedNoteController extends Controller
                 // dd($invitemstock);
 
                 $data_item_stock = InvItemStock::where('item_type_id', $invitemstock['item_type_id'])
-                ->where('item_batch_number', $invitemstock['item_batch_number'])->first();
+                ->where('item_batch_number', $invitemstock['item_batch_number'])
+                ->first();
                 // dd($item);
                 
                 if($data_item_stock == null){
                     InvItemStock::create($invitemstock);
                 }else{
-                    $itemstockupdate = InvItemStock::findOrFail($data_item_stock['item_stock_id']);
+                    $itemstockupdate = InvItemStock::findOrFail($data_item_stock['item_stock_id']);   
                     $itemstockupdate->item_total += $invitemstock['item_total'];
                     $itemstockupdate->quantity_unit += $invitemstock['quantity_unit'];
                     // $itemstockupdate->item_weight_unit += $invitemstock['item_weight_unit'];
@@ -660,6 +662,7 @@ class InvGoodsReceivedNoteController extends Controller
 
         $fields = $request->validate([
             'purchase_order_item_id'           => 'required',
+            'item_unit_cost'           => 'required',
             'quantity'                         => 'required',
             // 'item_unit_id'           => 'required',
         ]);
@@ -671,7 +674,7 @@ class InvGoodsReceivedNoteController extends Controller
             'quantity'	            =>  $fields['quantity'],
             'quantity_outstanding'  =>  $request['quantity'],
             'item_category_id'      =>  $add_purchaseorderitem['item_category_id'],
-            'item_unit_cost'        =>  $add_purchaseorderitem['item_unit_cost'],
+            'item_unit_cost'        =>  $fields['item_unit_cost'],
             'item_unit_id'          =>  $add_purchaseorderitem['item_unit_id'],
         );
 
