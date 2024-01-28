@@ -665,9 +665,9 @@ $total_amount               = $request->total_amount;
            if(count($purchaseinvoice)==0){
             $lastno = 2;
             $lastj = 13;
-           }else{
-            $no = 1;
+        }else{
             $overallSubtotalTotal = 0; 
+            $no = 1;
             foreach ($purchaseinvoice as $key => $val) {
                 $supplierName = $this->getSupplierName($val['supplier_id']);
                 $sheet->setCellValue('B'.$j, $no);
@@ -683,34 +683,44 @@ $total_amount               = $request->total_amount;
 
                 $subtotalTotal = 0; 
                 foreach ($invoiceItems as $item) {
+                    $supplierName = $this->getSupplierName($val['supplier_id']);
+                    $sheet->setCellValue('B'.$j, $no);
+                    $sheet->setCellValue('C'.$j, $supplierName);
+                    $sheet->setCellValue('D'.$j, $val['purchase_invoice_no']);
+                    $sheet->setCellValue('E'.$j, $val['purchase_order_date']);
+                    $sheet->setCellValue('F'.$j, $val['purchase_invoice_date']);
+                    $sheet->setCellValue('G'.$j, $val['purchase_invoice_due_date']);
                     $categoryName = $this->getItemCategoryName($item['item_category_id']);
                     $typeName = $this->getItemTypeName($item['item_type_id']);
                     $unitName = $this->getItemUnitName($item['item_unit_id']);
-                
+
                     $sheet->setCellValue('H'.$j, $categoryName);
                     $sheet->setCellValue('I'.$j, $typeName);
                     $sheet->setCellValue('J'.$j, $unitName);
                     $sheet->setCellValue('K'.$j, $item['quantity']);
                     $sheet->setCellValue('L'.$j, number_format($item['item_unit_cost'], 2, ',', '.'));
                     $sheet->setCellValue('M'.$j, number_format($item['subtotal_amount'], 2, ',',));
+
                     $subtotalTotal += $item['subtotal_amount'];
+                    $sheet->getStyle('B'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                     $sheet->getStyle('J'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                     $sheet->getStyle('K'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    $sheet->getStyle('L'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    $sheet->getStyle('M'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    $overallSubtotalTotal += $subtotalTotal; for ($col = 'B'; $col <= 'M'; $col++) {
+                        $sheet->getStyle($col.$j)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                    }
+                    $no++;
                     $j++;
                 }
-                $overallSubtotalTotal += $subtotalTotal;
-                $no++;
                 $lastno = $no;
                 $lastj = $j;
             }
 
-           
-
             $sheet = $spreadsheet->getActiveSheet(0);
             $spreadsheet->getActiveSheet()->getStyle('B'.$lastj.':M'.$lastj)->getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $sheet->setCellValue('L' . $lastj , 'Jumlah Total:');
+            $sheet->setCellValue('L' . $lastj , 'Jumlah Total : ');
             $sheet->setCellValue('M' . $lastj , number_format($overallSubtotalTotal, 2, ',', '.'));
-
             $sheet->setCellValue('F' . $lastj + 1, 'Mengetahui');
             $sheet->setCellValue('K' . $lastj + 1, 'Dibuat Oleh');
 
