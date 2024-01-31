@@ -453,17 +453,6 @@ class InvGoodsReceivedNoteController extends Controller
                 $purchaseorderitem->quantity_received    = $purchaseorderitem['quantity_received'] + $invgoodsreceivednoteitem['quantity'];
                 $purchaseorderitem->save();
 
-
-                // DB::table('inv_item_stock')
-                //   ->update([
-                //      'item_unit_cost' => $temprequest['item_unit_cost_'.$i],
-                //     ]);
-
-                //update harga stock
-                $itemunitcost                   = InvItemStock::findOrFail($temprequest['item_type_id_'.$i]);
-                $itemunitcost->item_unit_cost    = $temprequest['item_unit_cost_'.$i];
-                $itemunitcost->save();
-
                 // $total_received_item = $total_received_item + $purchaseorderitem['quantity_received'] + $invgoodsreceivednoteitem['quantity'];
 
                 $goodsreceivednoteitem = InvGoodsReceivedNoteItem::select('inv_goods_received_note_item.goods_received_note_item_id')
@@ -597,7 +586,6 @@ class InvGoodsReceivedNoteController extends Controller
                 $ppn_in_amount = $purchaseorder['ppn_in_amount'];
                 
                 $account_id_default_status 		= $account['account_default_status'];
-
 
                 
                 $data_debit2 = array (
