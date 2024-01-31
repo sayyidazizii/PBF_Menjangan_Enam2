@@ -248,8 +248,8 @@
                                                 <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemCategoryName($val['item_category_id'])."</td>
                                                 <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemTypeName($val['item_type_id'])."</td>
                                                 <td style='text-align  : left !important;'>".$InvGoodsReceivedNote->getItemUnitName($val['item_unit_id'])."</td>
-                                                <td style='text-align  : right !important;'>".$val['item_unit_cost']." 
-                                                    <input class='form-control' style='text-align:right;'type='' name='item_unit_cost_".$no."' id='item_unit_cost_".$no."' value='".$val['item_unit_cost']."'/>
+                                                <td style='text-align  : right !important;'> 
+                                                    <input class='form-control' style='text-align:right;'type='' name='item_unit_cost_".$no."' id='item_unit_cost_".$no."' value='".$val['item_unit_cost']."' required/>
                                                 </td>
                                                 <td style='text-align  : right !important;'>".$val['quantity']."</td>
                                                 <td style='text-align  : right !important;'>".$val['quantity_outstanding']."</td>
