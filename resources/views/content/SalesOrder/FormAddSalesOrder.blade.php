@@ -880,7 +880,7 @@
                 <div class="col-md-6">
                     <section class="control-label">Nomor PO
                     </section>
-                    <input type ="text" class="form-control form-control-inline input-medium date-picker input-date"  name="purchase_order_no" id="purchase_order_no" onChange="elements_add(this.name, this.value);" value="{{$salesorderelements == null ? '' : $salesorderelements['purchase_order_no']}}" style="width: 15rem;"/>
+                    <input type ="text" class="form-control form-control-inline input-medium date-picker input-date"  name="purchase_order_no" id="purchase_order_no" onChange="elements_add(this.name, this.value);" value="{{$salesorderelements == null ? '' : $salesorderelements['purchase_order_no']}}" style="width: 15rem;" required/>
                 </div>
                 <div class="col-md-6">
                     <section class="control-label">Tanggal Kadaluarsa PO

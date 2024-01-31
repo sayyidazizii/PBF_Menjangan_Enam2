@@ -609,6 +609,7 @@ Route::get('/purchase-invoice/void/{purchase_invoice_id}', [PurchaseInvoiceContr
 Route::post('/purchase-invoice/process-add-purchase-invoice', [PurchaseInvoiceController::class, 'processAddPurchaseInvoice'])->name('process-add-purchase-invoice');
 Route::post('/purchase-invoice/process-edit-purchase-invoice', [PurchaseInvoiceController::class, 'processEditPurchaseInvoice'])->name('process-edit-purchase-invoice');
 Route::post('/purchase-invoice/process-void-purchase-invoice', [PurchaseInvoiceController::class, 'processVoidPurchaseInvoice'])->name('process-void-purchase-invoice');
+Route::get('/purchase-invoice/export', [PurchaseInvoiceController::class, 'export'])->name('purchase-invoice-export');
 
 
 Route::get('/sales-invoice', [SalesInvoiceController::class, 'index'])->name('sales-invoice');
