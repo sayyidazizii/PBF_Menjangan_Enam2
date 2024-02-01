@@ -16,6 +16,7 @@ use App\Models\SalesOrderItemStockTemporary;
 use App\Models\InvWarehouse;
 use App\Models\CoreCustomer;
 use App\Models\InvItemCategory;
+use Illuminate\Validation\Rule;
 use App\Models\InvItemUnit;
 use App\Models\InvItemType;
 use App\Models\InvItem;
@@ -406,15 +407,21 @@ class SalesOrderController extends Controller
     }
 
     public function processAddSalesOrder(Request $request){
-        $fields = $request->validate([
+        $validationRules = [
             'sales_order_date'               => 'required',
             'sales_order_delivery_date'      => 'required',
             'customer_id'                    => 'required',
+            'purchase_order_no'              => [
+                'required',
+                Rule::unique('sales_order', 'purchase_order_no'),
+            ],
             'sales_order_type_id'            => 'required',
             'total_item_all'                 => 'required',
             'total_price_all'                => 'required',
-        ]);
+        ];
 
+        
+        $validatedData = $request->validate($validationRules);
         $fileNameToStore = '';
 
         if($request->hasFile('receipt_image')){
@@ -437,12 +444,12 @@ class SalesOrderController extends Controller
         // print_r($request->file('receipt_image'));
 
         $salesorder = array (
-            'sales_order_date'           => $fields['sales_order_date'],
-            'sales_order_delivery_date'  => $fields['sales_order_delivery_date'],
-            'customer_id'                => $fields['customer_id'],
-            'sales_order_type_id'        => $fields['sales_order_type_id'],
-            'total_item'                 => $fields['total_item_all'],
-            'total_amount'               => $fields['total_price_all'],
+            'sales_order_date'           => $validatedData['sales_order_date'],
+            'sales_order_delivery_date'  => $validatedData['sales_order_delivery_date'],
+            'customer_id'                => $validatedData['customer_id'],
+            'sales_order_type_id'        => $validatedData['sales_order_type_id'],
+            'total_item'                 => $validatedData['total_item_all'],
+            'total_amount'               => $validatedData['total_price_all'],
             'sales_order_remark'         => $request->sales_order_remark,
             'discount_percentage'        => $request->discount_percentage,
             'discount_amount'            => $request->discount_amount,
@@ -452,9 +459,14 @@ class SalesOrderController extends Controller
             'subtotal_after_ppn_out'	 => $request['subtotal_after_ppn_out'],
             'receipt_image'              => $fileNameToStore,
             'branch_id'                  => Auth::user()->branch_id,
-            'purchase_order_no'          => $request['purchase_order_no'],
+            'purchase_order_no'          => $validatedData['purchase_order_no'],
             'purchase_order_due_date'    => $request['purchase_order_due_date'],
+
         );
+        if (SalesOrder::where('purchase_order_no', $validatedData['purchase_order_no'])->exists()) {
+            $msg = 'Nomor PO sudah ada.';
+            return redirect('/sales-order/add')->with('msg', $msg);
+        }
        // dd($salesorder);
 
         if(SalesOrder::create($salesorder)){
