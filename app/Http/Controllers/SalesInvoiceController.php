@@ -137,17 +137,6 @@ class SalesInvoiceController extends Controller
         return redirect('/sales-invoice-report');
     }
 
-    // public function search()
-    // {
-    //     $salesdeliverynote = SalesDeliveryNote::where('data_state', 0)
-    //     ->where('sales_invoice_status', 0)
-    //     ->get();
-
-
-    //     return view('content/SalesInvoice/SearchSalesDeliveryNote',compact('salesdeliverynote'));
-    // }
-
-
     public function search()
     {
         $buyersAcknowledgment = BuyersAcknowledgment::where('data_state', 0)
@@ -157,18 +146,6 @@ class SalesInvoiceController extends Controller
 
         return view('content/SalesInvoice/SearchBuyersAcknowledgment', compact('buyersAcknowledgment'));
     }
-
-    // public function getP($sales_delivery_note_id)
-    // {
-
-    //     $sales_delivery_note = SalesDeliveryNote::select('ppn_out_amount')
-    //         ->where('sales_delivery_note_id', $sales_delivery_note_id)
-    //         ->where('data_state', 0)
-    //         ->first();
-
-    //     return $sales_delivery_note['ppn_out_amount'];
-    // }
-
 
     public function getPpnOut($sales_delivery_note_id)
     {
@@ -180,8 +157,6 @@ class SalesInvoiceController extends Controller
 
         return $sales_delivery_note['ppn_out_amount'];
     }
-
-
     
     public function getPpnItem($sales_order_item_id)
     {
@@ -204,8 +179,6 @@ class SalesInvoiceController extends Controller
 
         return $sales_delivery_note['sales_order_item_id'];
     }
-
-
 
     public function getDiscount($sales_order_item_id)
     {
@@ -274,14 +247,6 @@ class SalesInvoiceController extends Controller
 
     public function addSalesInvoice($buyers_acknowledgment_id)
     {
-        // $salesdeliverynote = SalesDeliveryNote::select('sales_delivery_note.*', 'sales_order.*','inv_warehouse.*')
-        // ->where('sales_delivery_note_id', $sales_delivery_note_id)
-        // ->join('sales_order', 'sales_order.sales_order_id', 'sales_delivery_note.sales_order_id')
-        // ->join('inv_warehouse', 'inv_warehouse.warehouse_id', 'sales_delivery_note.warehouse_id')
-        // // ->join('core_expedition', 'core_expedition.expedition_id', 'sales_delivery_note.expedition_id')
-        // ->where('sales_delivery_note.data_state', 0)
-        // ->first();
-
         $buyersAcknowledgment = BuyersAcknowledgment::select('buyers_acknowledgment.*', 'sales_order.*', 'sales_delivery_note.*')
             ->where('buyers_acknowledgment.buyers_acknowledgment_id', $buyers_acknowledgment_id)
             ->join('sales_delivery_note', 'sales_delivery_note.sales_delivery_note_id', 'buyers_acknowledgment.sales_delivery_note_id')
@@ -289,7 +254,6 @@ class SalesInvoiceController extends Controller
             // ->join('inv_warehouse', 'inv_warehouse.warehouse_id', 'buyers_acknowledgment.warehouse_id')
             ->where('buyers_acknowledgment.data_state', 0)
             ->first();
-	// dd($buyersAcknowledgment);
 
         $coreexpedition = CoreExpedition::where('expedition_id', $buyersAcknowledgment['expedition_id'])
             ->first();
@@ -298,19 +262,19 @@ class SalesInvoiceController extends Controller
             ->where('buyers_acknowledgment_item.buyers_acknowledgment_id', $buyers_acknowledgment_id)
             ->where('data_state', 0)
             ->get();
-
-
-        // $salesdeliverynoteitem = SalesDeliveryNoteItem::select()
-        // ->where('sales_delivery_note_id', $sales_delivery_note_id)
-        // ->where('data_state', 0)
-        // ->get();
-        //dd($buyersAcknowledgment);
-
+    
         return view('content/SalesInvoice/FormAddSalesInvoice', compact('buyersAcknowledgment', 'buyersAcknowledgmentitem', 'buyers_acknowledgment_id', 'coreexpedition'));
     }
 
     public function editSalesInvoice($sales_invoice_id)
     {
+
+        $invitemtype = InvItemType::where('inv_item_type.data_state','=',0)
+            ->select('*')
+            ->join('inv_item_category', 'inv_item_category.item_category_id', 'inv_item_type.item_category_id')
+            ->join('inv_item_stock', 'inv_item_type.item_type_id', 'inv_item_stock.item_type_id')
+            ->pluck('inv_item_type.item_type_name','inv_item_type.item_type_id');
+
         $salesinvoice = SalesInvoice::findOrFail($sales_invoice_id);
 
         $salesorder = SalesOrder::where('sales_order_id', $salesinvoice['sales_order_id'])
@@ -328,7 +292,7 @@ class SalesInvoiceController extends Controller
             ->where('sales_delivery_note.sales_delivery_note_id', $salesinvoice['sales_delivery_note_id'])
             ->first();
 
-        return view('content/SalesInvoice/FormEditSalesInvoice', compact('salesinvoice', 'salesinvoiceitem', 'salesdeliverynote', 'salesorder', 'sales_invoice_id'));
+        return view('content/SalesInvoice/FormEditSalesInvoice', compact('invitemtype','salesinvoice', 'salesinvoiceitem', 'salesdeliverynote', 'salesorder', 'sales_invoice_id'));
     }
 
     public function detailSalesInvoice($sales_invoice_id)
@@ -409,7 +373,6 @@ class SalesInvoiceController extends Controller
         }
     }
 
-
     //Report 
     public function ReportSalesInvoice()
     {
@@ -446,8 +409,7 @@ class SalesInvoiceController extends Controller
             ->pluck('customer_name', 'customer_id');
 
         return view('content/SalesInvoice/FormSalesInvoiceReport', compact('salesinvoice', 'start_date', 'end_date', 'customer_id', 'customer'));
-   }
-
+    }
 
     public function processAddSalesInvoice(Request $request)
     {
@@ -457,7 +419,6 @@ class SalesInvoiceController extends Controller
             ->where('data_state', 0)
             ->get();
 
-        //dd($buyersAcknowledgmentitem);
 
         $salesinvoice = array(
             'sales_invoice_date'            => $request->sales_invoice_date,
@@ -480,7 +441,6 @@ class SalesInvoiceController extends Controller
             'branch_id'                     => Auth::user()->branch_id,
             'created_id'                    => Auth::id(),
         );
-        //dd($salesinvoice);
 
         if (SalesInvoice::create($salesinvoice)) {
 
@@ -519,7 +479,7 @@ class SalesInvoiceController extends Controller
                 ->update(['sales_invoice_status' => 1]);
             
 
-//-------------Update Discount Sumary
+                //Update Discount Sumary
                 $diskonA = DB::table('sales_order_item')
 		        ->where('sales_order_id', $request->sales_order_id)
                 ->sum('discount_amount_item');
@@ -537,135 +497,6 @@ class SalesInvoiceController extends Controller
                         'a.owing_discount_amount' => $totalDiscount 
                     ]);
                 }
-                
-
-
-
-            //----------------------------------------------------------Journal Voucher-------------------------------------------------------------------//
-
-            // $preferencecompany             = PreferenceCompany::first();
-
-            // $transaction_module_code     = "SI";
-
-            // $transactionmodule             = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)
-            //     ->first();
-
-            // $transaction_module_id         = $transactionmodule['transaction_module_id'];
-
-            // $journal_voucher_period     = date("Ym", strtotime($sales_invoice_id['sales_invoice_date']));
-
-            // $data_journal = array(
-            //     'branch_id'                        => 1,
-            //     'journal_voucher_period'         => $journal_voucher_period,
-            //     'journal_voucher_date'            => $sales_invoice_id['sales_invoice_date'],
-            //     'journal_voucher_title'            => 'Invoice Penjualan ' . $sales_invoice_id['sales_invoice_no'],
-            //     'journal_voucher_no'            => $sales_invoice_id['sales_invoice_no'],
-            //     'journal_voucher_description'    => $sales_invoice_id['sales_invoice_remark'],
-            //     'transaction_module_id'            => $transaction_module_id,
-            //     'transaction_module_code'        => $transaction_module_code,
-            //     'transaction_journal_id'         => $sales_invoice_id['sales_invoice_id'],
-            //     'transaction_journal_no'         => $sales_invoice_id['sales_invoice_no'],
-            //     'created_id'                     => Auth::id(),
-            // );
-
-            // AcctJournalVoucher::create($data_journal);
-            //---------------------------------------------------------End Journal Voucher----------------------------------------------------------------//
-
-
-            //----------------------------------------------------------Journal Voucher Item-------------------------------------------------------------------//
-
-
-            // $total_amount               = $request->total_amount;
-
-            // $journalvoucher = AcctJournalVoucher::where('created_id', Auth::id())
-            //     ->orderBy('journal_voucher_id', 'DESC')
-            //     ->first();
-
-
-            // $journal_voucher_id     = $journalvoucher['journal_voucher_id'];
-
-
-            // //------account_id Persediaan Barang Dagang------//
-            // $preference_company = PreferenceCompany::first();
-
-            // $account = AcctAccount::where('account_id', $preference_company['account_sales_id'])
-            //     ->where('data_state', 0)
-            //     ->first();
-
-            // $account_id_default_status         = $account['account_default_status'];
-
-
-            // $data_debit1 = array(
-            //     'journal_voucher_id'            => $journal_voucher_id,
-            //     'account_id'                    => $account['account_id'],
-            //     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
-            //     'journal_voucher_amount'        => ABS($total_amount),
-            //     'journal_voucher_debit_amount'    => ABS($total_amount),
-            //     'account_id_default_status'        => $account_id_default_status,
-            //     'account_id_status'                => 1,
-            // );
-
-            // // dd($data_debit1);
-
-            // AcctJournalVoucherItem::create($data_debit1);
-
-            // //------account_id PPN Masukan------//
-            // $account = AcctAccount::where('account_id', $preference_company['account_vat_out_id'])
-            //     ->where('data_state', 0)
-            //     ->first();
-
-            // $ppn_out_amount = $request->tax_amount;
-            // // +
-            // $account_id_default_status         = $account['account_default_status'];
-
-
-
-            // $data_debit2 = array(
-            //     'journal_voucher_id'            => $journal_voucher_id,
-            //     'account_id'                    => $account['account_id'],
-            //     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
-            //     'journal_voucher_amount'        => ABS((int)$ppn_out_amount),
-            //     'journal_voucher_debit_amount'    => ABS((int)$ppn_out_amount),
-            //     'account_id_default_status'        => $account_id_default_status,
-            //     'account_id_status'                => 1,
-            // );
-
-            // // dd($data_debit2);
-
-            // AcctJournalVoucherItem::create($data_debit2);
-
-
-            // $account         = AcctAccount::where('account_id', $preferencecompany['account_payable_id'])
-            //     ->where('data_state', 0)
-            //     ->first();
-
-            // $subtotal_after_ppn_out = $request->total_amount;
-            // // dd($request->all());
-            // //  dd($subtotal_after_ppn_out);
-
-            // $account_id_default_status         = $account['account_default_status'];
-
-            // $data_credit = array(
-            //     'journal_voucher_id'            => $journal_voucher_id,
-            //     'account_id'                    => $preferencecompany['account_receivable_id'],
-            //     'journal_voucher_description'    => $data_journal['journal_voucher_description'],
-            //     'journal_voucher_amount'        => ABS((int)$subtotal_after_ppn_out),
-            //     'journal_voucher_credit_amount'    => ABS((int)$subtotal_after_ppn_out),
-            //     'account_id_default_status'        => $account_id_default_status,
-            //     'account_id_status'                => 0,
-            // );
-            // // dd($data_credit);
-
-
-            // AcctJournalVoucherItem::create($data_credit);
-
-
-            // //--------------------------------------------------------End Journal Voucher-----------------------------------------------------------------//
-
-
-
-
-            // return($itemstock);
 
             $msg = 'Tambah Sales Invoice Berhasil';
             return redirect('/sales-invoice')->with('msg', $msg);
@@ -727,7 +558,6 @@ class SalesInvoiceController extends Controller
         }
     }
 
-
     public function getItemStock($sales_delivery_note_item_id)
     {
         $item = SalesDeliveryNoteItemStock::select('item_stock_id')
@@ -737,7 +567,6 @@ class SalesInvoiceController extends Controller
 
         return $item['item_stock_id'];
     }
-
 
     public function getCustomerName($customer_id)
     {
@@ -871,6 +700,7 @@ class SalesInvoiceController extends Controller
 
         return $data['item_stock_expired_date'] ?? '';
     }
+
     public function getUnitCost($sales_order_item_id)
     {
         $data = BuyersAcknowledgmentItem::select('item_unit_cost')
@@ -910,7 +740,6 @@ class SalesInvoiceController extends Controller
 
         return $data['sales_order_item_id'] ?? '';
     }
-
 
     public function getDiscountAmt($sales_delivery_note_item_id)
     {
@@ -975,7 +804,6 @@ class SalesInvoiceController extends Controller
 
         return response()->json(json_encode($data));
     }
-
 
     public function set_log($user_id, $username, $id, $class, $pk, $remark)
     {
