@@ -128,148 +128,222 @@
                     <?php $no = 1; 
                        
                     ?>
-                    @foreach ($income as $val)
+                    @foreach ($profitloss as $val)
                         <?php
                             if($val['report_tab'] == 0){
-                                $report_tab = ' ';
-                            } else if($val['report_tab'] == 1){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            } else if($val['report_tab'] == 2){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            } else if($val['report_tab'] == 3){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            } else if($val['report_tab'] == 4){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            } else if($val['report_tab'] == 5){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            } else if($val['report_tab'] == 6){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            } else if($val['report_tab'] == 7){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            }
-                             else if($val['report_tab'] == 8){
-                                $report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            }
+																$report_tab = ' ';
+															} else if($val['report_tab'] == 1){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															} else if($val['report_tab'] == 2){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															} else if($val['report_tab'] == 3){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															} else if($val['report_tab'] == 4){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															} else if($val['report_tab'] == 5){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															} else if($val['report_tab'] == 6){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															} else if($val['report_tab'] == 7){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															} else if($val['report_tab'] == 8){
+																$report_tab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+															}
 
-                            if($val['report_bold'] == 1){
-                                $report_bold = 'bold';
-                            } else {
-                                $report_bold = 'normal';
-                            }
+															if($val['report_bold'] == 1){
+																$report_bold = 'bold';
+															} else {
+																$report_bold = 'normal';
+															}
 
-                            echo "
-                                <tr>";
+															echo "
+																<tr>";
 
-                                if($val['report_type'] == 1){
-                                    echo "
-                                        <td colspan='2'><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
-                                        ";
-                                }
-                                
-                            echo "
-                                </tr>";
+																if($val['report_type'] == 1){
+																	echo "
+																		<td colspan='2'><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
+																	";
+																}
+																
+															echo "
+																</tr>";
+															echo "
+																<tr>";
 
-                            echo "
-                                <tr>";
+																if($val['report_type']	== 2){
+																	echo "
+																		<td style='width: 75%'><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
+																		<td style='width: 25%'><div style='font-weight:".$report_bold."'></div></td>
+																	";
+																}
+																	
+															echo "
+																</tr>";
+															echo "
+																<tr>";
 
-                                if($val['report_type']	== 2){
-                                    echo "
-                                        <td style='width: 75%'><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
-                                        <td style='width: 25%'><div style='font-weight:".$report_bold."'></div></td>
-                                        ";
-                                }
-                                    
-                            echo "
-                                </tr>";
+																if($val['report_type']	== 3){
+																	$account_subtotal 	= $APLR->getAmountAccount($val['account_id']);
 
-                            echo "
-                                <tr>";
+																	echo "
+																		<td><div style='font-weight:".$report_bold."'>".$report_tab."(".$val['account_code'].") ".$val['account_name']."</div> </td>
+																		<td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($account_subtotal, 2)."</div></td>
+																	";
 
-                                if($val['report_type']	== 3){
-                                    $income_subtotal 	= $APLR->getAmountAccount($val['account_id']);
+																	$account_amount[$val['report_no']] = $account_subtotal;
+																}
 
-                                    echo "
-                                        <td><div style='font-weight:".$report_bold."'>".$report_tab."(".$val['account_code'].") ".$val['account_name']."</div> </td>
-                                        <td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($income_subtotal, 2)."</div></td>
-                                    ";
- 
-                                    $account_amount[$val['report_no']] = $income_subtotal;
-                                }
-                                
-                            echo "
-                                </tr>";
+															echo "
+																</tr>";
 
-                                echo "
-                                <tr>";
+																echo "
+																<tr>";
 
-                                if($val['report_type']	== 4){
-                                    $income_subtotal 	= $APLR->getAmountAccount($val['account_id']);
+																if($val['report_type'] == 4){
+																	if(!empty($val['report_formula']) && !empty($val['report_operator'])){
+																		$report_formula 	= explode('#', $val['report_formula']);
+																		$report_operator 	= explode('#', $val['report_operator']);
 
-                                    $account_amount[$val['report_no']] = $income_subtotal;
-                                }
-                                
-                            echo "
-                                </tr>";
+																		$total_account_amount	= 0;
+																		for($i = 0; $i < count($report_formula); $i++){
+																			if($report_operator[$i] == '-'){
+																				if($total_account_amount == 0 ){
+																					$total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+																				} else {
+																					$total_account_amount = $total_account_amount - $account_amount[$report_formula[$i]];
+																				}
+																			} else if($report_operator[$i] == '+'){
+																				if($total_account_amount == 0){
+																					$total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+																				} else {
+																					$total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+																				}
+																			}
+																		}
 
-                            echo "
-                                <tr>";
+																		echo "
+																			<td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
+																			<td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($total_account_amount, 2)."</div></td>
+																		";
+																}
+															}
 
-                                if($val['report_type'] == 5){
-                                    if(!empty($val['report_formula']) && !empty($val['report_operator'])){
-                                        $report_formula 	= explode('#', $val['report_formula']);
-                                        $report_operator 	= explode('#', $val['report_operator']);
+															echo "			
+																</tr>";
+															
 
-                                        $total_account_amount	= 0;
-                                        for($i = 0; $i < count($report_formula); $i++){
-                                            if($report_operator[$i] == '-'){
-                                                if($total_account_amount == 0 ){
-                                                    $total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
-                                                } else {
-                                                    $total_account_amount = $total_account_amount - $account_amount[$report_formula[$i]];
-                                                }
-                                            } else if($report_operator[$i] == '+'){
-                                                if($total_account_amount == 0){
-                                                    $total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
-                                                } else {
-                                                    $total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
-                                                }
-                                            }
-                                        }
+															echo "
+																<tr>";
 
-                                        echo "
-                                            <td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
-                                            <td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($total_account_amount, 2)."</div></td>
-                                            ";
-                                }
+																if($val['report_type'] == 5){
+																	if(!empty($val['report_formula']) && !empty($val['report_operator'])){
+																		$report_formula 	= explode('#', $val['report_formula']);
+																		$report_operator 	= explode('#', $val['report_operator']);
 
-                            }
+																		$total_account_amount	= 0;
+																		for($i = 0; $i < count($report_formula); $i++){
+																			if($report_operator[$i] == '-'){
+																				if($total_account_amount == 0 ){
+																					$total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+																				} else {
+																					$total_account_amount = $total_account_amount - $account_amount[$report_formula[$i]];
+																				}
+																			} else if($report_operator[$i] == '+'){
+																				if($total_account_amount == 0){
+																					$total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+																				} else {
+																					$total_account_amount = $total_account_amount + $account_amount[$report_formula[$i]];
+																				}
+																			}
+																		}
+
+																		echo "
+																			<td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
+																			<td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($total_account_amount, 2)."</div></td>
+																		";
+																}
+															}
+
+															echo "			
+																</tr>";
+			
+															if($val['report_type'] == 6){
+																if(!empty($val['report_formula']) && !empty($val['report_operator'])){
+																	$report_formula 	= explode('#', $val['report_formula']);
+																	$report_operator 	= explode('#', $val['report_operator']);
+
+																	$grand_total_account_amount1	= 0;
+																	for($i = 0; $i < count($report_formula); $i++){
+																		if($report_operator[$i] == '-'){
+																			if($grand_total_account_amount1 == 0 ){
+																				$grand_total_account_amount1 = $grand_total_account_amount1 + $account_amount[$report_formula[$i]];
+																			} else {
+																				$grand_total_account_amount1 = $grand_total_account_amount1 - $account_amount[$report_formula[$i]];
+																			}
+																		} else if($report_operator[$i] == '+'){
+																			if($grand_total_account_amount1 == 0){
+																				$grand_total_account_amount1 = $grand_total_account_amount1 + $account_amount[$report_formula[$i]];
+																			} else {
+																				$grand_total_account_amount1 = $grand_total_account_amount1 + $account_amount[$report_formula[$i]];
+																			}
+																		}
+																	}
+																	
+																	// if($val['category_type'] == 1){
+																	// 	$grand_total_all += $grand_total_account_amount1;
+																	// }
+
+																	echo "
+																		<td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
+																		<td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($grand_total_account_amount1, 2)."</div></td>
+																	";
+																}
+															}
+
+															if($val['report_type'] == 7){
+																	$shu_sebelum_lain_lain = $total_account_amount - $grand_total_account_amount1;
+																	echo "
+																		<td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
+																		<td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($shu_sebelum_lain_lain , 2)."</div></td>
+																	";
+															}
+
+															echo "
+																<tr>";
+
+																if($val['report_type'] == 8){
+																	if(!empty($val['report_formula']) && !empty($val['report_operator'])){
+																		$report_formula 	= explode('#', $val['report_formula']);
+																		$report_operator 	= explode('#', $val['report_operator']);
+
+																		$pendapatan_biaya_lain	= 0;
+																		for($i = 0; $i < count($report_formula); $i++){
+																			if($report_operator[$i] == '-'){
+																				if($pendapatan_biaya_lain == 0 ){
+																					$pendapatan_biaya_lain = $pendapatan_biaya_lain + $account_amount[$report_formula[$i]];
+																				} else {
+																					$pendapatan_biaya_lain = $pendapatan_biaya_lain - $account_amount[$report_formula[$i]];
+																				}
+																			} else if($report_operator[$i] == '+'){
+																				if($pendapatan_biaya_lain == 0){
+																					$pendapatan_biaya_lain = $pendapatan_biaya_lain + $account_amount[$report_formula[$i]];
+																				} else {
+																					$pendapatan_biaya_lain = $pendapatan_biaya_lain + $account_amount[$report_formula[$i]];
+																				}
+																			}
+																		}
+
+																		echo "
+																			<td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
+																			<td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($pendapatan_biaya_lain, 2)."</div></td>
+																		";
+																}
+															}
+
+															echo "			
+																</tr>";
 
 
-                            echo "			
-                                </tr>";
-
-                            echo "
-                                </tr>";
-
-                                echo "
-                                <tr>";
-                                    
-                                if($val['report_type']	== 6){
-                                    
-                                    $expenditure_subtotal 	= $total_account_amount;
-
-
-                                    $account_amount[$val['report_no']] = $expenditure_subtotal;
-                                      echo "
-                                            <td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
-                                            <td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($expenditure_subtotal, 2)."</div></td>
-                                            ";
-                                }
-
-                            echo "
-                                </tr>";
-                             echo "
-                                <tr>";
                          ?>
                     @endforeach
                    
