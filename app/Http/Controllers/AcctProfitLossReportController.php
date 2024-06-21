@@ -42,22 +42,13 @@ class AcctProfitLossReportController extends Controller
         }
     
 
-        $income = AcctProfitLossReport::select('report_tab','report_bold','report_type','account_name','account_id','account_code','report_no','report_formula','report_operator')
+        $profitloss = AcctProfitLossReport::select('report_tab','report_bold','report_type','account_name','account_id','account_code','report_no','report_formula','report_operator')
         ->where('data_state',0)
         // ->where('account_type_id',2)
         // ->where('company_id', Auth::user()->company_id)
         ->get();
 
-        // $expenditure = AcctProfitLossReport::select('report_tab','report_bold','report_type','account_name','account_id','account_code','report_no','report_formula','report_operator')
-        // ->where('data_state',0)
-        // ->where('account_type_id',3)
-        // // // ->where('company_id', Auth::user()->company_id)
-        // ->get();
-
-        // echo json_encode($unit_status);exit;
-
-
-        return view('content.AcctProfitLossReport.ListAcctProfitLossReport',compact('start_date','end_date','income','journal_voucher_id'));
+        return view('content.AcctProfitLossReport.ListAcctProfitLossReport',compact('start_date','end_date','profitloss','journal_voucher_id'));
     }
 
     public function filterProfitLossReport(Request $request)
