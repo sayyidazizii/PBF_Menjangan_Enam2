@@ -53,23 +53,21 @@ class AcctBalanceSheetReportController extends Controller
 
         $acctbalancesheetreport_left = AcctBalanceSheetReport::select('report_tab1','report_bold1','report_type1','account_name1','account_code1','report_no','report_formula1','report_operator1','account_id1')
         ->where('data_state', 0)
-        // ->where('company_id', Auth::user()->company_id)
         ->get();
 
         $acctbalancesheetreport_right = AcctBalanceSheetReport::select('report_tab2','report_bold2','report_type2','account_name2','account_code2','report_no','report_formula2','report_operator2','account_id2')
         ->where('data_state', 0)
-        // // ->where('company_id', Auth::user()->company_id)
         ->get();
 
 
-        $income = AcctProfitLossReport::select('report_tab','report_bold','report_type','account_name','account_id','account_code','report_no','report_formula','report_operator')
+        $profitloss = AcctProfitLossReport::select('report_tab','report_bold','report_type','account_name','account_id','account_code','report_no','report_formula','report_operator')
         ->where('data_state',0)
         // ->where('account_type_id',2)
         // ->where('company_id', Auth::user()->company_id)
         ->get();
 
 
-        return view('content.AcctBalanceSheetReport.ListAcctBalanceSheetReport', compact('monthlist','yearlist','month','year','acctbalancesheetreport_left','acctbalancesheetreport_right','income'));
+        return view('content.AcctBalanceSheetReport.ListAcctBalanceSheetReport', compact('monthlist','yearlist','month','year','acctbalancesheetreport_left','acctbalancesheetreport_right','profitloss'));
     }
 
     public function filterAcctBalanceSheetReport(Request $request)
@@ -162,7 +160,7 @@ class AcctBalanceSheetReportController extends Controller
                 // $amount = $amount1;
             
         }
-        // echo json_encode($amount1);exit;
+        // echo json_encode($amount);exit;
         return ($amount);
     }
 
@@ -831,11 +829,6 @@ class AcctBalanceSheetReportController extends Controller
 
             }
 // --------------------------------------------------End SHU Berjalan-------------------------------------------------------
-
-
-
-
-
             $j = 4;
             $no = 0;
             $grand_total = 0;
@@ -1035,9 +1028,6 @@ class AcctBalanceSheetReportController extends Controller
 
                 $j++;
             }
-
-
-
 
             $total_row_left = $j;
 
