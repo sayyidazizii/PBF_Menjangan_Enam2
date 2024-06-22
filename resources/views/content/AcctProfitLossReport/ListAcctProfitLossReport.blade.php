@@ -189,7 +189,7 @@
 																		<td><div style='font-weight:".$report_bold."'>".$report_tab."(".$val['account_code'].") ".$val['account_name']."</div> </td>
 																		<td style='text-align:right'><div style='font-weight:".$report_bold."'>".number_format($account_subtotal, 2)."</div></td>
 																	";
-
+																	// print_r($account_subtotal);
 																	$account_amount[$val['report_no']] = $account_subtotal;
 																}
 
@@ -256,6 +256,8 @@
 																				}
 																			}
 																		}
+																	// print_r($report_formula);
+
 
 																		echo "
 																			<td><div style='font-weight:".$report_bold."'>".$report_tab."".$val['account_name']."</div></td>
@@ -347,7 +349,21 @@
                          ?>
                     @endforeach
                    
-                    
+                    <tr>
+						<td style="width: 70%">
+							<div style='font-weight:bold; font-size:16px'>
+								SHU TAHUN BERJALAN
+							</div>
+						</td >
+						<td style="width: 25%; text-align:right" >
+							<div style='font-weight:bold; font-size:16px'>
+								<?php
+									$shu = $shu_sebelum_lain_lain + $pendapatan_biaya_lain;
+									echo number_format($shu, 2);
+								?>	
+							</div>
+						</td>
+					</tr>
                 </tbody>
             </table>
 
