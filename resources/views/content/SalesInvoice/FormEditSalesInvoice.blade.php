@@ -311,14 +311,14 @@ function toRp(number) {
                                             </td>
                                             <td style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='total_view_{{ $no }}' id='total_view_{{ $no }}' value='{{ number_format($total, 2)}}' readonly/>  
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='total_{{ $no }}' id='total_{{ $no }}' value='{{ $total }}' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' hidden name='total_{{ $no }}' id='total_{{ $no }}' value='{{ $total }}' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='discount_A_{{ $no }}' id='discount_A_{{ $no }}' onchange="calculateTotal( {{ $no }} )" value='{{ $val['discount_A'] }}' />  
                                             </td>
                                              <td  style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A_view{{ $no }}' id='subtotal_price_A_view{{ $no }}' value='{{ number_format($total - $val['discount_A'] , 2) }}' readonly/>  
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A_{{ $no }}' id='subtotal_price_A_{{ $no }}' value='{{ $total - $val['discount_A'] }}' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' hidden name='subtotal_price_A_{{ $no }}' id='subtotal_price_A_{{ $no }}' value='{{ $total - $val['discount_A'] }}' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='discount_B_{{ $no }}' id='discount_B_{{ $no }}'  onchange="calculateTotal( {{ $no }} )" value='{{ $val['discount_B'] }}' />  
@@ -329,7 +329,7 @@ function toRp(number) {
 
                                             <td style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='total_bayar_view_{{ $no }}' id='total_bayar_view_{{ $no }}' value='{{ number_format(($totalBayar), 2)}}' readonly/>  
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='total_bayar_{{ $no }}' id='total_bayar_{{ $no }}' value='{{ $totalBayar }}' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' hidden name='total_bayar_{{ $no }}' id='total_bayar_{{ $no }}' value='{{ $totalBayar }}' readonly/>  
                                             </td>
                                         </tr>
                                     <?php 
@@ -350,14 +350,14 @@ function toRp(number) {
                                 <th style='text-align  : left' colspan='8'>Total</th>
                                 <th style='text-align  : right' colspan='3'>
                                     <input class='form-control' style='text-align  : right !important;' type='text' name='total_amount_view' id='total_amount_view' value='{{ number_format($DPP, 2)}}' readonly/>   
-                                    <input class='form-control' style='text-align  : right !important;' type='text' name='total_amount' id='total_amount' value='{{ $DPP }}' readonly/>   
+                                    <input class='form-control' style='text-align  : right !important;' hidden type='text' name='total_amount' id='total_amount' value='{{ $DPP }}' readonly/>   
                                     <div class='row mt-2'>
                                         <div class='col'>
                                             <label style='text-align  : left !important;'>PPN</label>
                                         </div>
                                         <div class='col'>
                                             <input class='form-control' style='text-align:right;'type='text' name='ppn_view' id='ppn_view' value='{{ number_format($ppn, 2 )}}' readonly/>
-                                            <input class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='{{ $ppn }}' readonly/>
+                                            <input class='form-control' style='text-align:right;' hidden type='text' name='ppn' id='ppn' value='{{ $ppn }}' readonly/>
                                         </div>
                                     </div>
                                     <div class='row mt-2'>
@@ -366,7 +366,7 @@ function toRp(number) {
                                         </div>
                                         <div class='col'>
                                             <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out_view' id='subtotal_after_ppn_out_view' value='{{ number_format($DPP + $ppn,2)}}' readonly/>
-                                            <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ $DPP + $ppn }}' readonly/>
+                                            <input class='form-control' style='text-align:right;' hidden type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ $DPP + $ppn }}' readonly/>
                                         </div>
                                     </div>
                                     <input class='form-control' type='hidden' name='total_item' id='total_item' value='{{  $total_item }}'/>    
