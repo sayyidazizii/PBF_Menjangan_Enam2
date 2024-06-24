@@ -742,8 +742,6 @@ class SalesDeliveryNoteController extends Controller
         return $unit['item_unit_name'];
     }
 
-
-
     public function getSalesOrderItemStock($sales_order_item_id){
         $orderitem = SalesOrderItem::select('sales_order_item.*','sales_order.customer_id','sales_order.sales_order_no','sales_order.sales_order_date', DB::raw('CONCAT(inv_item_category.item_category_name, " ", inv_item_type.item_type_name) AS item_name'))
         ->where('sales_order_item.sales_order_item_id', $sales_order_item_id)
@@ -838,6 +836,7 @@ class SalesDeliveryNoteController extends Controller
 
         return $unit['customer_name'];
     }
+
     public function getCustomerId($sales_order_id){
         $unit = SalesOrder::select('core_customer.customer_id')
         ->join('core_customer', 'core_customer.customer_id', 'sales_order.customer_id')
@@ -907,6 +906,7 @@ class SalesDeliveryNoteController extends Controller
 
         return $item['item_category_name']?? '';
     }
+
     public function getInvItemCategoryNameStock($item_stock_id){
         $item = SalesDeliveryNoteItemStock::select('sales_delivery_note_item_stock.*','inv_item_category.*')
         ->join('inv_item_category', 'sales_delivery_note_item_stock.item_category_id', 'inv_item_category.item_category_id')
@@ -1265,6 +1265,7 @@ class SalesDeliveryNoteController extends Controller
         $filename = 'Surat Jalan'.$salesdeliverynote['sales_delivery_note_no'].'.pdf';
         $pdf::Output($filename, 'I');
     }
+
     public function export(){
         if(!Session::get('start_date')){
             $start_date     = date('Y-m-d');
@@ -1288,8 +1289,6 @@ class SalesDeliveryNoteController extends Controller
         
         ->get();
         Session::forget('salesdeliveryordernoteelements');
-   // dd($salesdeliverynote);
-
 
        $spreadsheet = new Spreadsheet();
 
@@ -1442,7 +1441,5 @@ class SalesDeliveryNoteController extends Controller
        }else{
            echo "Maaf data yang di eksport tidak ada !";
        }
-
-
     }
 }

@@ -508,14 +508,34 @@ class SalesInvoiceController extends Controller
 
     public function processEditSalesInvoice(Request $request)
     {
+        dd($request->total_no);
         $salesinvoice = SalesInvoice::findOrFail($request->sales_invoice_id);
         $salesinvoice->sales_invoice_due_date   = $request->sales_invoice_due_date;
         $salesinvoice->sales_invoice_remark     = $request->sales_invoice_remark;
         $salesinvoice->faktur_tax_no            = $request->faktur_tax_no;
         $salesinvoice->goods_received_note_no   = $request->goods_received_note_no;
         $salesinvoice->ttf_no                   = $request->ttf_no;
+        $salesinvoice->total_amount             = $request->subtotal_after_ppn_out;
+        $salesinvoice->owing_amount             = $request->subtotal_after_ppn_out;
+        $salesinvoice->subtotal_after_discount  = $request->total_amount;
 
         if ($salesinvoice->save()) {
+
+            $total_no = $request->total_no;
+            for ($i = 1; $i <= $total_no; $i++) {
+
+                $salesinvoiceitem                   = SalesInvoiceItem::findOrFail($request['sales_invoice_item_id_'.$i]);
+                $salesinvoiceitem->item_type_id     = $request['item_type_id_'.$i];
+                $salesinvoiceitem->quantity         = $request['quantity_'.$i];
+                $salesinvoiceitem->item_unit_price  = $request['item_unit_price_'.$i];
+                $salesinvoiceitem->discount_A       = $request['discount_A_'.$i];
+                $salesinvoiceitem->subtotal_price_A = $request['subtotal_price_A_'.$i];
+                $salesinvoiceitem->discount_B       = $request['discount_B_'.$i];
+                $salesinvoiceitem->subtotal_price_B = $request['total_bayar_'.$i];
+                $salesinvoiceitem->save();
+                
+            }
+
             $msg = 'Edit Sales Invoice Berhasil';
             return redirect('/sales-invoice')->with('msg', $msg);
         } else {

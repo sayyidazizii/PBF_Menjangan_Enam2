@@ -283,17 +283,27 @@ function toRp(number) {
                             $no             = 1;
                             $total_price    = 0;
                             $total_item     = 0;
-                            $total = 0;
-                            $totalBayar = 0;
-                            $ppn = 0;
-                            $DPP = 0;
+                            $total          = 0;
+                            $totalBayar     = 0;
+                            $ppn            = 0;
+                            $DPP            = 0;
+                            $discountA      = 0; 
+                            $discountB      = 0; 
+                            $total_discount = 0;
+                            $discount_A     = 0;
+                            $discount_B     = 0;
                             if(count($salesinvoiceitem)>0){ 
 
                                 foreach($salesinvoiceitem as $val){
                                     $item = $SalesInvoice->getSalesDeliveryNoteItem($val['sales_delivery_note_item_id']);
+                                    $discount_A = $SalesInvoice->getDiscount($SalesInvoice->getSalesOrderItem($val['sales_delivery_note_item_id']));
+                                    $discount_B = $SalesInvoice->getDiscountB($SalesInvoice->getSalesOrderItem($val['sales_delivery_note_item_id']));
                                     $total = $item['quantity'] * $val['item_unit_price'];
-                                    $totalBayar =$val['subtotal_price_A'] - $val['discount_B']; 
+                                    $totalBayar =$val['subtotal_price_A'] - $discount_B;
                                     $ppn += $SalesInvoice->getPpnItem($SalesInvoice->getSalesOrderItem($val['sales_delivery_note_item_id']));
+                                    $discountA += $discount_A; 
+                                    $discountB += $discount_B; 
+                                    $total_discount = $discountA + $discountB;
                                 ?>
                                     <tr>
                                             <td style='text-align  : center'>{{ $no }}</td>
@@ -301,6 +311,7 @@ function toRp(number) {
                                                 {!! Form::select('item_type_id_'.$no,  $invitemtype, $val['item_type_id'], ['class' => 'selection-search-clear select-form', 'id' => 'item_type_id_'.$no]) !!}
                                             </td>
                                             <td style='text-align  : right !important;'>
+                                                <input class='form-control' type='text' name='sales_invoice_item_id_{{ $no }}' id='sales_invoice_item_id_{{ $no }}' value='{{  $val['sales_invoice_item_id'] }}' readonly/>  
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='quantity_{{ $no }}' id='quantity_{{ $no }}' onchange="calculateTotal({{ $no }})" value='{{ $val['quantity'] }}' />  
                                             </td>   
                                             <td style='text-align  : left !important;'>
@@ -314,14 +325,14 @@ function toRp(number) {
                                                 <input style='text-align  : right !important;' class='form-control' type='text' hidden name='total_{{ $no }}' id='total_{{ $no }}' value='{{ $total }}' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_A_{{ $no }}' id='discount_A_{{ $no }}' onchange="calculateTotal( {{ $no }} )" value='{{ $val['discount_A'] }}' />  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_A_{{ $no }}' id='discount_A_{{ $no }}' onchange="calculateTotal( {{ $no }} )" value='{{  $discount_A }}' />  
                                             </td>
                                              <td  style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A_view{{ $no }}' id='subtotal_price_A_view{{ $no }}' value='{{ number_format($total - $val['discount_A'] , 2) }}' readonly/>  
-                                                <input style='text-align  : right !important;' class='form-control' type='text' hidden name='subtotal_price_A_{{ $no }}' id='subtotal_price_A_{{ $no }}' value='{{ $total - $val['discount_A'] }}' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A_view{{ $no }}' id='subtotal_price_A_view{{ $no }}' value='{{ number_format($total -  $discount_A , 2) }}' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' hidden name='subtotal_price_A_{{ $no }}' id='subtotal_price_A_{{ $no }}' value='{{ $total -  $discount_A }}' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_B_{{ $no }}' id='discount_B_{{ $no }}'  onchange="calculateTotal( {{ $no }} )" value='{{ $val['discount_B'] }}' />  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_B_{{ $no }}' id='discount_B_{{ $no }}'  onchange="calculateTotal( {{ $no }} )" value='{{ $discount_A }}' />  
                                             </td>
  						                    <td hidden style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='ppn_item_amount_{{ $no }}' id='ppn_item_amount_{{ $no }}' value='{{  $SalesInvoice->getPpnItem($SalesInvoice->getSalesOrderItem($val['sales_delivery_note_item_id']))}}' readonly/>  
@@ -347,6 +358,9 @@ function toRp(number) {
                                     <td style='text-align  : center; font-weight: bold;' colspan='6'>Data Kosong</td>    
                                 </tr>
                             <?php } ?>
+                            <input class='form-control' style='text-align  : right !important;' hidden type='text' name='total_no' id='total_no' value='{{ count($salesinvoiceitem) }}' readonly/>   
+                            <input class='form-control' style='text-align  : right !important;' hidden type='text' name='total_discount_amount' id='total_discount_amount' value='{{ number_format($total_discount, 2, '.', '') }}' readonly/>
+
                                 <th style='text-align  : left' colspan='8'>Total</th>
                                 <th style='text-align  : right' colspan='3'>
                                     <input class='form-control' style='text-align  : right !important;' type='text' name='total_amount_view' id='total_amount_view' value='{{ number_format($DPP, 2)}}' readonly/>   
