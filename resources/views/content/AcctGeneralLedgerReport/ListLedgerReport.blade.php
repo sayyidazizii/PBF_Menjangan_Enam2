@@ -179,7 +179,7 @@
                         $voucher_credit         = 0;
                         $last_balance_debit     = 0;
                         $last_balance_credit    = 0;
-                        $last_balance           = $accountbalancedetail_old['last_balance'] ?? 0;
+                        $last_balance           = $accountbalancedetail_old['last_balance'];
                         foreach ($acctgeneralledgerreport as $key => $val) {
                             if($val['data_state']==0){
                                 if($val['account_in'] > 0){
