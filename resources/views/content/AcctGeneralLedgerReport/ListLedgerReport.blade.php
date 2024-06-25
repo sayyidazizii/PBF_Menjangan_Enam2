@@ -1,8 +1,8 @@
 @inject('AcctLedgerReport','App\Http\Controllers\AcctLedgerReportController')
 @extends('adminlte::page')
 
-@section('title',  "PBF | Koperasi Menjangan Enam")
-<link rel="shortcut icon" href="{{ asset('resources/assets/logo_pbf.ico') }}" />
+@section('title', 'MOZAIC Minimarket')
+
 @section('content_header')
     
 <nav aria-label="breadcrumb">
@@ -10,8 +10,7 @@
       <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
       <li class="breadcrumb-item active" aria-current="page"> Daftar Buku Besar </li>
     </ol>
-  </nav>
-
+</nav>
 @stop
 
 @section('content')
@@ -100,7 +99,8 @@
         Daftar
     </h5>
   </div>
-  <div class="card-body">
+
+    <div class="card-body">
         <div class="table-responsive">
             <table id="" style="width:100%" class="table table-striped table-bordered table-hover table-full-width">
                 <thead>
@@ -125,75 +125,119 @@
                         <td></td>
                         <td></td>
                         <?php 
-                            // if($account['account_default_status']==0 || $accountbalancedetail_old['last_balance'] >= 0){  
-                            //     // if (isset($accountbalancedetail_old['last_balance'])) {
-                            //     //     if($accountbalancedetail_old['last_balance'] >= 0){
-                            //     //         echo "
-                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old?? '' ['last_balance'],2,'.',',')."</td>
-                            //     //             <td style='text-align: right'>0.00</td>
-                            //     //         ";
-                            //     //     } else {
-                            //     //         echo "
-                            //     //             <td style='text-align: right'>0.00</td>
-                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
-                            //     //         ";
-                            //     //     }
-                            //     // } else {
-                            //     //     echo "
-                            //     //         <td style='text-align: right'>0.00</td>
-                            //     //         <td style='text-align: right'>0.00</td>
-                            //     //     ";
-                            //     // }
+                            
+                            if($account['account_default_status']==0 || $accountbalancedetail_old['last_balance'] >= 0){  
+                                if (isset($accountbalancedetail_old['last_balance'])) {
+                                    if($accountbalancedetail_old['last_balance'] >= 0){
+                                        echo "
+                                            <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
+                                            <td style='text-align: right'>0.00</td>
+                                        ";
+                                    } else {
+                                        echo "
+                                            <td style='text-align: right'>0.00</td>
+                                            <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
+                                        ";
+                                    }
+                                } else {
+                                    echo "
+                                        <td style='text-align: right'>0.00</td>
+                                        <td style='text-align: right'>0.00</td>
+                                    ";
+                                }
                                 
                             
-                            // } else {
-                            //     // if (isset($accountbalancedetail_old['last_balance'])) {
-                            //     //     if($accountbalancedetail_old['last_balance'] >= 0){
-                            //     //         echo "
-                            //     //             <td style='text-align: right'>0.00</td>
-                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
+                            } else {
+                                if (isset($accountbalancedetail_old['last_balance'])) {
+                                    if($accountbalancedetail_old['last_balance'] >= 0){
+                                        echo "
+                                            <td style='text-align: right'>0.00</td>
+                                            <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
                                             
-                            //     //         ";
-                            //     //     } else {
-                            //     //         echo "
-                            //     //             <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
-                            //     //             <td style='text-align: right'>0.00</td>
-                            //     //         ";
-                            //     //     }
-                            //     // } else {
-                            //     //     echo "
-                            //     //         <td style='text-align: right'>0.00</td>
-                            //     //         <td style='text-align: right'>0.00</td>
-                            //     //     ";
-                            //     // }
-                            // }
+                                        ";
+                                    } else {
+                                        echo "
+                                            <td style='text-align: right'>".number_format($accountbalancedetail_old['last_balance'],2,'.',',')."</td>
+                                            <td style='text-align: right'>0.00</td>
+                                        ";
+                                    }
+                                } else {
+                                    echo "
+                                        <td style='text-align: right'>0.00</td>
+                                        <td style='text-align: right'>0.00</td>
+                                    ";
+                                }
+                            }
                         ?>
                     </tr>
                     
                         <?php
-                        $no = 1;
-                        $voucher_debit = 0;
-                        $voucher_credit = 0;
-                        $last_balance_debit = 0;
-                        $last_balance_credit = 0;
+                        $no                     = 1;
+                        $voucher_debit          = 0;
+                        $voucher_credit         = 0;
+                        $last_balance_debit     = 0;
+                        $last_balance_credit    = 0;
+                        $last_balance           = $accountbalancedetail_old['last_balance'] ?? 0;
                         foreach ($acctgeneralledgerreport as $key => $val) {
                             if($val['data_state']==0){
+                                if($val['account_in'] > 0){
+                                    $last_balance += $val['account_in'];
+                                }else{
+                                    (int)$last_balance -= (int)$val['account_out'];
+                                }
                                 echo "<tr>
-                                    <td>".$no++."</td>
+                                    <td class='text-center'>".$no++.".</td>
                                     <td>".$val['date']."</td>
                                     <td>".$val['no_journal']."</td>
                                     <td>".$val['description']."</td>
                                     <td>".$AcctLedgerReport->getAccountName($val['account_id'])."</td>
                                     <td style='text-align: right'>".number_format($val['account_in'],2,'.',',')."</td>
-                                    <td style='text-align: right'>".number_format($val['account_out'],2,'.',',')."</td>
-                                    <td style='text-align: right'>".number_format($val['last_balance_debit'],2,'.',',')."</td>
-                                    <td style='text-align: right'>".number_format($val['last_balance_credit'],2,'.',',')."</td>
-                                ";
+                                    <td style='text-align: right'>".number_format($val['account_out'],2,'.',',')."</td>";
+                                    if($account['account_default_status']==0){
+                                        if($last_balance>0){
+                                            echo "
+                                                <td style='text-align: right'>".number_format($last_balance, 2,'.',',')."</td>
+                                                <td style='text-align: right'>0.00</td>
+                                            ";
+                                        }else{
+                                            echo "
+                                                <td style='text-align: right'>0.00</td>
+                                                <td style='text-align: right'>".number_format($last_balance, 2,'.',',')."</td>
+                                            ";
+                                        }
+                                    }else{
+                                        if($last_balance>0){
+                                            echo "
+                                                <td style='text-align: right'>0.00</td>
+                                                <td style='text-align: right'>".number_format($last_balance, 2,'.',',')."</td>
+                                            ";
+                                        }else{
+                                            echo "
+                                                <td style='text-align: right'>".number_format($last_balance, 2,'.',',')."</td>
+                                                <td style='text-align: right'>0.00</td>
+                                            ";
+                                        }
+                                    }
                             }
                                 $voucher_debit += $val['account_in'];
                                 $voucher_credit += $val['account_out'];
-                                $last_balance_debit = $val['last_balance_debit'];
-                                $last_balance_credit = $val['last_balance_credit'];
+                                if($account['account_default_status']==0){
+                                    if($last_balance>0){
+                                        $last_balance_debit  = $last_balance;
+                                        $last_balance_credit = 0;
+                                    }else{
+                                        $last_balance_debit  = 0;
+                                        $last_balance_credit = $last_balance;
+                                    }
+                                }else{
+                                    if($last_balance>0){
+                                        $last_balance_credit = $last_balance;
+                                        $last_balance_debit  = 0;
+                                    }else{
+                                        $last_balance_credit = 0;
+                                        $last_balance_debit  = $last_balance;
+                                    }
+                                }
                         }
                         ?>
                     
@@ -219,11 +263,10 @@
             </table>
         </div>
     </div>
- 
     <div class="card-footer text-muted">
         <div class="form-actions float-right">
-            <a class="btn btn-danger" href="{{route('print-ledger-report')}}"> Preview</a>
-            <a class="btn btn-primary" href="{{route('export-ledger-report')}}"><i class="fa fa-download"></i> Export Data</a>
+            <a class="btn btn-secondary" href="{{ url('ledger-report/print') }}"><i class="fa fa-file-pdf"></i> Pdf</a>
+            <a class="btn btn-dark" href="{{ url('ledger-report/export') }}"><i class="fa fa-download"></i> Export Data</a>
         </div>
     </div>
   </div>
