@@ -71,14 +71,14 @@ function toRp(number) {
         $("#subtotal_price_A_view" + i).val(toRp(total_A));
         $("#subtotal_price_A_" + i).val(total_A);
         $("#total_bayar_view_" + i).val(toRp(total_B));
-        $("#total_bayar_" + i).val(total_B);
+        $("#bayar_" + i).val(total_B);
         updateTotalAmount();
     }
 
     function updateTotalAmount() {
         var totalAmount = 0;
         var ppn = parseFloat($("#ppn").val()); // Parse ppn as float
-        $("input[name^='total_bayar_']").each(function() {
+        $("input[name^='bayar_']").each(function() {
             var val = parseFloat($(this).val());
             if (!isNaN(val)) {
                 totalAmount += val;
@@ -340,7 +340,7 @@ function toRp(number) {
 
                                             <td style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='total_bayar_view_{{ $no }}' id='total_bayar_view_{{ $no }}' value='{{ number_format(($totalBayar), 2)}}' readonly/>  
-                                                <input style='text-align  : right !important;' class='form-control' type='text' hidden name='total_bayar_{{ $no }}' id='total_bayar_{{ $no }}' value='{{ $totalBayar }}' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' hidden name='bayar_{{ $no }}' id='bayar_{{ $no }}' value='{{ $totalBayar }}' readonly/>  
                                             </td>
                                         </tr>
                                     <?php 
@@ -380,7 +380,7 @@ function toRp(number) {
                                         </div>
                                         <div class='col'>
                                             <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out_view' id='subtotal_after_ppn_out_view' value='{{ number_format($DPP + $ppn,2)}}' readonly/>
-                                            <input class='form-control' style='text-align:right;' type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ $DPP + $ppn }}' readonly/>
+                                            <input class='form-control' style='text-align:right;' type='text' hidden name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ $DPP + $ppn }}' readonly/>
                                         </div>
                                     </div>
                                     <input class='form-control' type='hidden' name='total_item' id='total_item' value='{{  $total_item }}'/>    

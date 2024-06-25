@@ -531,7 +531,7 @@ class SalesInvoiceController extends Controller
                 $salesinvoiceitem->discount_A       = $request['discount_A_'.$i];
                 $salesinvoiceitem->subtotal_price_A = $request['subtotal_price_A_'.$i];
                 $salesinvoiceitem->discount_B       = $request['discount_B_'.$i];
-                $salesinvoiceitem->subtotal_price_B = $request['total_bayar_'.$i];
+                $salesinvoiceitem->subtotal_price_B = $request['bayar_'.$i];
                 $salesinvoiceitem->save();
                 
             }
