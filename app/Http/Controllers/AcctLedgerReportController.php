@@ -80,7 +80,7 @@ class AcctLedgerReportController extends Controller
 
         $accountbalancedetail = AcctAccountBalanceDetail::join('acct_account', 'acct_account.account_id', '=', 'acct_account_balance_detail.account_id')
             ->select('acct_account_balance_detail.transaction_id', 'acct_account_balance_detail.last_balance', 'acct_account_balance_detail.account_in', 'acct_account_balance_detail.account_out', 'acct_account_balance_detail.transaction_date', 'acct_account_balance_detail.account_id')
-            ->where('acct_account_balance_detail.account_id', $account_id)
+            ->where('acct_account_balance_detail.account_id', 5)
             ->whereMonth('acct_account_balance_detail.transaction_date', '>=', $start_month)
             ->whereMonth('acct_account_balance_detail.transaction_date', '<=', $end_month)
             ->whereYear('acct_account_balance_detail.transaction_date', $year)
