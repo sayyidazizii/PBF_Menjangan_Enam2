@@ -311,7 +311,7 @@ function toRp(number) {
                                                 {!! Form::select('item_type_id_'.$no,  $invitemtype, $val['item_type_id'], ['class' => 'selection-search-clear select-form', 'id' => 'item_type_id_'.$no]) !!}
                                             </td>
                                             <td style='text-align  : right !important;'>
-                                                <input class='form-control' type='text' name='sales_invoice_item_id_{{ $no }}' id='sales_invoice_item_id_{{ $no }}' value='{{  $val['sales_invoice_item_id'] }}' readonly/>  
+                                                <input class='form-control' type='text' hidden name='sales_invoice_item_id_{{ $no }}' id='sales_invoice_item_id_{{ $no }}' value='{{  $val['sales_invoice_item_id'] }}' readonly/>  
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='quantity_{{ $no }}' id='quantity_{{ $no }}' onchange="calculateTotal({{ $no }})" value='{{ $val['quantity'] }}' />  
                                             </td>   
                                             <td style='text-align  : left !important;'>
@@ -332,7 +332,7 @@ function toRp(number) {
                                                 <input style='text-align  : right !important;' class='form-control' type='text' hidden name='subtotal_price_A_{{ $no }}' id='subtotal_price_A_{{ $no }}' value='{{ $total -  $discount_A }}' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_B_{{ $no }}' id='discount_B_{{ $no }}'  onchange="calculateTotal( {{ $no }} )" value='{{ $discount_A }}' />  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_B_{{ $no }}' id='discount_B_{{ $no }}'  onchange="calculateTotal( {{ $no }} )" value='{{ $discount_B }}' />  
                                             </td>
  						                    <td hidden style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='ppn_item_amount_{{ $no }}' id='ppn_item_amount_{{ $no }}' value='{{  $SalesInvoice->getPpnItem($SalesInvoice->getSalesOrderItem($val['sales_delivery_note_item_id']))}}' readonly/>  
@@ -380,7 +380,7 @@ function toRp(number) {
                                         </div>
                                         <div class='col'>
                                             <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out_view' id='subtotal_after_ppn_out_view' value='{{ number_format($DPP + $ppn,2)}}' readonly/>
-                                            <input class='form-control' style='text-align:right;' hidden type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ $DPP + $ppn }}' readonly/>
+                                            <input class='form-control' style='text-align:right;' type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='{{ $DPP + $ppn }}' readonly/>
                                         </div>
                                     </div>
                                     <input class='form-control' type='hidden' name='total_item' id='total_item' value='{{  $total_item }}'/>    

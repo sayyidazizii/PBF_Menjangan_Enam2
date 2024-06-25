@@ -84,6 +84,14 @@
             </div>
             <div class="row form-group">
                 <div class="col-md-6">
+                    <div class="form-group">
+                        <a class="text-dark">Kode Pelanggan<a class='red'> *</a></a>
+                        <input class="form-control input-bb" type="text" name="customer_code" id="customer_code" value=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6">
                     <a class="text-dark">Provinsi<a class='red'> *</a></a>
                     {!! Form::select('province_id',  $province, 0, ['class' => 'selection-search-clear select-form', 'id' => 'province_id']) !!}
                 </div>

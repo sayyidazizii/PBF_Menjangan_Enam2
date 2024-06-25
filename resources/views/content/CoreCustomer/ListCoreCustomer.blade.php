@@ -43,7 +43,7 @@
                 <thead>
                     <tr>
                         <th width="2%" style='text-align:center'>No.</th>
-                        {{-- <th width="20%" style='text-align:center'>Kode Pelanggan</th> --}}
+                        <th width="20%" style='text-align:center'>Kode Pelanggan</th>
                         <th width="20%" style='text-align:center'>Nama Pelanggan</th>
                         <th width="20%" style='text-align:center'>Alamat Pelanggan</th>
                         <th width="20%" style='text-align:center'>Contact Person</th>
@@ -55,7 +55,7 @@
                     @foreach($corecustomer as $customer)
                     <tr>
                         <td style='text-align:center'>{{$no}}.</td>
-                        {{-- <td>{{$customer['customer_code']}}</td> --}}
+                        <td>{{$customer['customer_code']}}</td>
                         <td>{{$customer['customer_name']}}</td>
                         <td>{{$customer['customer_address']}}</td>
                         <td>{{$customer['customer_contact_person']}}</td>

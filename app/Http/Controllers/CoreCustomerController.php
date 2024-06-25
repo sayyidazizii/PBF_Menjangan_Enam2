@@ -49,6 +49,7 @@ class CoreCustomerController extends Controller
     {
         $fields = $request->validate([
             'customer_name' => 'required',
+            'customer_code' => 'required',
             'province_id'   => 'required',
             'city_id'       => 'required',
         ]);
@@ -56,6 +57,7 @@ class CoreCustomerController extends Controller
 
         $item = CoreCustomer::create([
             'customer_name'                 => $fields['customer_name'], 
+            'customer_code'                 => $fields['customer_code'], 
             'province_id'                   => $fields['province_id'],   
             'city_id'                       => $fields['city_id'],
             'customer_address'              => $request->customer_address,
@@ -95,12 +97,14 @@ class CoreCustomerController extends Controller
         $fields = $request->validate([
             'customer_id'   => 'required',
             'customer_name' => 'required',
+            'customer_code' => 'required',
             'province_id'   => 'required',
             'city_id'       => 'required',
         ]);
 
         $item = CoreCustomer::findOrFail($fields['customer_id']);
         $item->customer_name                    = $fields['customer_name'];
+        $item->customer_code                    = $fields['customer_code'];
         $item->province_id                      = $fields['province_id'];
         $item->city_id                          = $fields['city_id'];
         $item->customer_address                 = $request->customer_address;

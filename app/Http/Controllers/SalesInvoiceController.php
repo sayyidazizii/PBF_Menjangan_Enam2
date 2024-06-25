@@ -508,16 +508,16 @@ class SalesInvoiceController extends Controller
 
     public function processEditSalesInvoice(Request $request)
     {
-        dd($request->total_no);
         $salesinvoice = SalesInvoice::findOrFail($request->sales_invoice_id);
         $salesinvoice->sales_invoice_due_date   = $request->sales_invoice_due_date;
         $salesinvoice->sales_invoice_remark     = $request->sales_invoice_remark;
         $salesinvoice->faktur_tax_no            = $request->faktur_tax_no;
         $salesinvoice->goods_received_note_no   = $request->goods_received_note_no;
         $salesinvoice->ttf_no                   = $request->ttf_no;
+        $salesinvoice->subtotal_after_discount  = $request->total_amount;
         $salesinvoice->total_amount             = $request->subtotal_after_ppn_out;
         $salesinvoice->owing_amount             = $request->subtotal_after_ppn_out;
-        $salesinvoice->subtotal_after_discount  = $request->total_amount;
+        $salesinvoice->subtotal_amount          = $request->subtotal_after_ppn_out;
 
         if ($salesinvoice->save()) {
 
@@ -858,7 +858,8 @@ class SalesInvoiceController extends Controller
             ->join('sales_order_item', 'sales_order_item.sales_order_id', 'sales_invoice_item.sales_order_id')
             ->join('sales_delivery_note_item_stock', 'sales_delivery_note_item_stock.sales_delivery_note_item_id', 'sales_invoice_item.sales_delivery_note_item_id')
             ->where('sales_invoice_item.sales_invoice_id', $sales_invoice_id)
-            ->groupBy('sales_invoice_item.sales_delivery_note_item_id')
+            ->groupBy('sales_invoice_item.sales_invoice_item_id')
+            ->orderBy('sales_invoice_item.sales_invoice_item_id','ASC')
             ->get();
             //  return json_encode($salesinvoiceitem);
             // exit;
@@ -993,15 +994,6 @@ class SalesInvoiceController extends Controller
                 <td style=\"text-align:left;width:15%\"><div style=\"text-align: left; font-size:11px\">Tagihan Obat</div></td>
                 <td style=\"text-align:left;width:20%\"></td>
             </tr>
-	    <tr>
-                <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">TGL . INV </div></td>
-                <td style=\"text-align:left;width:2%\"> : </td>
-                <td style=\"text-align:left;width:45%\"><div style=\"text-align: left; font-size:11px\">" . date('d M Y', strtotime($salesinvoice['sales_invoice_date'])) . "</div></td>
-                <td style=\"text-align:left;width:5%\"></td>
-                <td style=\"text-align:left;width:12%\"></td>
-                <td style=\"text-align:left;width:2%\"> </td>
-                <td style=\"text-align:left;width:20%\"><div style=\"font-size:13.5px\"></div></td>
-            </tr>
             <tr>
                 <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">No. INV</div></td>
                 <td style=\"text-align:left;width:2%\"> : </td>
@@ -1022,7 +1014,7 @@ class SalesInvoiceController extends Controller
                     <td><div style=\"text-align: left; font-size:10px\">Bp./Ibu Kepala Cabang</div></td>
                 </tr>
                 <tr>
-                    <td><div style=\"text-align: left; font-size:10px;font-weight: bold\">APJ : " .  $salesinvoice['customer_name'] . "</div></td>
+                    <td><div style=\"text-align: left; font-size:10px;font-weight: bold\">" .  $salesinvoice['customer_name'] . "</div></td>
                 </tr>
                 <tr>
                     <td><div style=\"text-align: left; font-size:10px;width:40%\">" . $salesinvoice['customer_address'] . "</div></td>
@@ -1062,16 +1054,15 @@ class SalesInvoiceController extends Controller
         $html2 = "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"100%\">
         <tr style=\"text-align: center;\">
             <td width=\"5%\" ><div style=\"text-align: center;\">No</div></td>
-            <td width=\"10%\" ><div style=\"text-align: center;\">Nama Item</div></td>
-            <td width=\"10%\" ><div style=\"text-align: center;\">Satuan</div></td>
+            <td width=\"15%\" ><div style=\"text-align: center;\">Nama Item</div></td>
+            <td width=\"8%\" ><div style=\"text-align: center;\">Satuan</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Batch</div></td>
-            <td width=\"10%\" ><div style=\"text-align: center;\">Exp Date</div></td>
-            <td width=\"5%\" ><div style=\"text-align: center;\">Qty</div></td>
+            <td width=\"8%\" ><div style=\"text-align: center;\">Qty</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Harga</div></td>
-            <td width=\"10%\" ><div style=\"text-align: center;\">Total</div></td>
+            <td width=\"12%\" ><div style=\"text-align: center;\">Total</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Diskon 1</div></td>
             <td width=\"10%\" ><div style=\"text-align: center;\">Diskon 2</div></td>
-            <td width=\"10%\" ><div style=\"text-align: center;\">Total Bayar</div></td>
+            <td width=\"12%\" ><div style=\"text-align: center;\">Total Bayar</div></td>
         </tr>";
         $no = 1;
         $tbl2 = "";
@@ -1091,9 +1082,8 @@ class SalesInvoiceController extends Controller
                     <td>" . $this->getItemTypeName($val['item_type_id']) . "</td>
                     <td style=\"text-align: center;\">" . $this->getItemUnitName($val['item_unit_id']) . "</td>
                     <td style=\"text-align: center;\">" . $this->getBatchNum($val['item_stock_id']) . "</td>
-                    <td style=\"text-align: center;\">" . $this->getExpDate($val['item_stock_id']) . "</td>
                     <td style=\"text-align: center;\">" . $this->getQtyBpb($val['sales_order_item_id']) . "</td>
-                    <td style=\"text-align: right;\">" . $this->getItemUnitPrice($val['sales_invoice_item_id']). "</td>
+                    <td style=\"text-align: right;\">" . number_format($this->getItemUnitPrice($val['sales_invoice_item_id'] ), 2). "</td>
                     <td style=\"text-align: right;\">" . number_format($qtyTotal, 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['discount_A'], 2) . "</td>
                     <td style=\"text-align: right;\">" . number_format($val['discount_B'], 2) . "</td>
@@ -1105,38 +1095,25 @@ class SalesInvoiceController extends Controller
                 
                 $dpp += $totalBayar;
                 $ppn += $this->getPpn($val['sales_order_item_id']);
-                // if ($customer_tax_no != '') {
-                //     // $ppn = $dpp * 0.1;
-                //     if ($salesinvoice['customer_kawasan_berikat'] == 1) {
-                //         $ppn = $salesinvoice['ppn_amount'];
-                //         $total = $salesinvoice['total_amount'] + $ppn;
-                //     } else if ($salesinvoice['customer_kawasan_berikat'] == 0) {
-
-                //         $total = $salesinvoice['total_amount'];
-                //         $ppn = $total - $dpp;
-                //     }
-                // } else {
-                //     $ppn = 0;
-                //     $total = $salesinvoice['total_amount'];
-                // }
                 $no++;
             }
         }
 
+
             $html2  .= "
             <tr>
-                <td colspan=\"10\" style=\"text-align: right;font-weight: bold\";>DPP</td>
-                <td style=\"text-align: right;\">" . number_format($dpp, 2) . "</td>
+                <td colspan=\"8\" style=\"text-align: right;font-weight: bold\";>DPP</td>
+                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($dpp, 2) . "</td>
                 <td></td>
             </tr>
             <tr>
-                <td colspan=\"10\" style=\"text-align: right;font-weight: bold\";>PPN</td>
-                <td style=\"text-align: right;\">" . number_format($ppn, 2) . "</td>
+                <td colspan=\"8\" style=\"text-align: right;font-weight: bold\";>PPN</td>
+                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($ppn, 2) . "</td>
                 <td></td>
             </tr>
             <tr>
-                <td colspan=\"10\" style=\"text-align: right;font-weight: bold\";>Jumlah Total</td>
-                <td style=\"text-align: right;\">" . number_format($dpp + $ppn, 2) . "</td>
+                <td colspan=\"8\" style=\"text-align: right;font-weight: bold\";>Jumlah Total</td>
+                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($dpp + $ppn, 2) . "</td>
                 <td></td>
             </tr>
             ";
@@ -1149,6 +1126,10 @@ class SalesInvoiceController extends Controller
 
         ";
             $path = '<img width="100"; height="100" src="resources/assets/img/ttd.png">';
+            $date = $salesinvoice['sales_invoice_date'];
+            setlocale(LC_TIME, 'id_ID.UTF-8'); // Atur locale ke bahasa Indonesia
+            $formatted_date = strftime("%d %B %Y", strtotime($date));
+
             if ($salesinvoice['section_id'] == 1) {
                 $html2 .= "
             <table style=\"text-align: center;font-weight: bold\" cellspacing=\"20\";>
@@ -1181,7 +1162,7 @@ class SalesInvoiceController extends Controller
             } else {
 
                 $html2 .= "
-            <table style=\"text-align: center;\" cellspacing=\"20\";>
+            <table style=\"text-align: center;\" cellspacing=\"10\";>
                 <tr>
                     <th width=\"60%\">
                     <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
@@ -1205,9 +1186,9 @@ class SalesInvoiceController extends Controller
                     </th>
                 </tr>
             </table>
-            <table style=\"text-align: center;\" cellspacing=\"10\";>            
+            <table style=\"text-align: center;\" cellspacing=\"5\";>            
             <tr>
-                <th>Semarang , ".date('d M Y')." &nbsp;&nbsp;</th>
+                <th>Semarang , ".$formatted_date." &nbsp;&nbsp;</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -1246,15 +1227,16 @@ class SalesInvoiceController extends Controller
         
     }
 
+    
     public function export(){
         if (!Session::get('start_date')) {
-            $start_date     = date('Y-m-d');
+            $start_date = date('Y-m-d');
         } else {
             $start_date = Session::get('start_date');
         }
 
         if (!Session::get('end_date')) {
-            $end_date     = date('Y-m-d');
+            $end_date = date('Y-m-d');
         } else {
             $end_date = Session::get('end_date');
         }
@@ -1264,199 +1246,153 @@ class SalesInvoiceController extends Controller
         Session::forget('salesinvoiceitem');
         Session::forget('salesinvoiceelements');
 
-        $salesinvoice = SalesInvoice::select('*')
-            ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_invoice.sales_invoice_id')
-            ->join('sales_order','sales_order.sales_order_id','sales_invoice.sales_order_id')
+        $salesinvoice = SalesInvoice::select('sales_invoice.*', 'core_customer.customer_code','sales_invoice_item.*')
+            ->join('sales_invoice_item', 'sales_invoice_item.sales_invoice_id', 'sales_invoice.sales_invoice_id')
+            ->join('sales_order', 'sales_order.sales_order_id', 'sales_invoice.sales_order_id')
+            ->join('core_customer', 'core_customer.customer_id', 'sales_invoice.customer_id')
             ->where('sales_invoice.data_state', '=', 0)
             ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
             ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
+
         if ($customer_id || $customer_id != null || $customer_id != '') {
-            $salesinvoice   = $salesinvoice->where('sales_invoice.customer_id', $customer_id);
+            $salesinvoice = $salesinvoice->where('sales_invoice.customer_id', $customer_id);
         }
-        $salesinvoice       = $salesinvoice->get();
 
-        $customer = CoreCustomer::select('customer_id', 'customer_name')
-            ->where('data_state', 0)
-            ->pluck('customer_name', 'customer_id');
+        $salesinvoice = $salesinvoice->get();
 
-        $preference_company         = PreferenceCompany::first();
+        $preference_company = PreferenceCompany::first();
 
-       $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet();
 
-       if(count($salesinvoice)>=0){
-           $spreadsheet->getProperties()->setCreator("TRADING SYSTEM")
-               ->setLastModifiedBy("TRADING SYSTEM")
-               ->setTitle("SALES INVOICE REPORT")
-               ->setSubject("") 
-               ->setDescription("SALES INVOICE REPORT")
-               ->setKeywords("SALES INVOICE REPORT")
-               ->setCategory("SALES INVOICE REPORT");
+        if (count($salesinvoice) > 0) {
+            $spreadsheet->getProperties()->setCreator("TRADING SYSTEM")
+                ->setLastModifiedBy("TRADING SYSTEM")
+                ->setTitle("SALES INVOICE REPORT")
+                ->setSubject("") 
+                ->setDescription("SALES INVOICE REPORT")
+                ->setKeywords("SALES INVOICE REPORT")
+                ->setCategory("SALES INVOICE REPORT");
 
-           $sheet = $spreadsheet->getActiveSheet(0);
-           $spreadsheet->getActiveSheet()->setTitle("SALES INVOICE REPORT");
-           $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
-           $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
-           $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(5);
-           $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(25);
-           $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(25);
-           $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('M')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(20);
-           $spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(20);
+            $groupedInvoices = $salesinvoice->groupBy('customer_code');
 
+            foreach ($groupedInvoices as $customer_code => $invoices) {
+                $sheet = $spreadsheet->createSheet();
+                $sheet->setTitle($customer_code);
+                
+                $sheet->mergeCells("B5:O5");
+                $sheet->mergeCells("B6:O6");
+                $sheet->mergeCells("B7:O7");
+                $sheet->mergeCells("B8:O8");
+                $sheet->mergeCells("B9:O9");
+                $sheet->mergeCells("B10:O10");
+                $sheet->mergeCells("B11:O11");
+                $sheet->getStyle('B5')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('B6')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('B7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('B8')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('B9')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('B10')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('B11')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('B11')->getFont()->setBold(true)->setSize(16);
 
+                $sheet->getStyle('B12:O12')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $sheet->getStyle('B12:O12')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-           $spreadsheet->getActiveSheet()->mergeCells("B5:O5");
-           $spreadsheet->getActiveSheet()->mergeCells("B6:O6");
-           $spreadsheet->getActiveSheet()->mergeCells("B7:O7");
-           $spreadsheet->getActiveSheet()->mergeCells("B8:O8");
-           $spreadsheet->getActiveSheet()->mergeCells("B9:O9");
-           $spreadsheet->getActiveSheet()->mergeCells("B10:O10");
-           $spreadsheet->getActiveSheet()->mergeCells("B11:O11");
-           $spreadsheet->getActiveSheet()->getStyle('B5')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-           $spreadsheet->getActiveSheet()->getStyle('B6')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-           $spreadsheet->getActiveSheet()->getStyle('B7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-           $spreadsheet->getActiveSheet()->getStyle('B8')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-           $spreadsheet->getActiveSheet()->getStyle('B9')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-           $spreadsheet->getActiveSheet()->getStyle('B10')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-           $spreadsheet->getActiveSheet()->getStyle('B11')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-           $spreadsheet->getActiveSheet()->getStyle('B11')->getFont()->setBold(true)->setSize(16);
-
-           $spreadsheet->getActiveSheet()->getStyle('B12:O12')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-           $spreadsheet->getActiveSheet()->getStyle('B12:O12')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-
-
-
-           $sheet->setCellValue('B5', "PBF MENJANGAN ENAM ");	
-           $sheet->setCellValue('B6', "Jl.Puspowarno Raya No 55D Bojong Salaman,Semarang Barat");
-           $sheet->setCellValue('B7', "APA : ISTI RAHMADANI,S.Farm, Apt.");
-           $sheet->setCellValue('B8', " SIKA: 449.2/16/DPM-PTSP/SIKA.16/III/2019 ");
-           $sheet->setCellValue('B9', "");
-           $sheet->setCellValue('B10', "");
-           $sheet->setCellValue('B11', "LAPORAN PENJUALAN TANGGAL ".$start_date." - ".$end_date);	
-           $sheet->setCellValue('B12', "No");
-           $sheet->setCellValue('C12', "TGL INV");
-           $sheet->setCellValue('D12', "NOMOR FPP");
-           $sheet->setCellValue('E12', "CABANG");
-           $sheet->setCellValue('F12', "NO INVOICE");
-           $sheet->setCellValue('G12', "NAMA OBAT");
-           $sheet->setCellValue('H12', "QTY");
-           $sheet->setCellValue('I12', "JUMLAH");
-           $sheet->setCellValue('J12', "HPP");
-           $sheet->setCellValue('K12', "DISKON");
-           $sheet->setCellValue('L12', "DPP");
-           $sheet->setCellValue('M12', "PPN");
-           $sheet->setCellValue('N12', "TOTAL BAYAR");
-           $sheet->setCellValue('O12', "%DISKON");
-           
-           $j  = 13;
-           $no = 1;
-
-           if(count($salesinvoice)==0){
-            $lastno = 2;
-            $lastj = 13;
-           }else{
-           
-           foreach($salesinvoice as $key => $val){
-
+                $sheet->setCellValue('B5', "PBF MENJANGAN ENAM ");	
+                $sheet->setCellValue('B6', "Jl.Puspowarno Raya No 55D Bojong Salaman,Semarang Barat");
+                $sheet->setCellValue('B7', "APA : ISTI RAHMADANI,S.Farm, Apt.");
+                $sheet->setCellValue('B8', " SIKA: 449.2/16/DPM-PTSP/SIKA.16/III/2019 ");
+                $sheet->setCellValue('B9', "");
+                $sheet->setCellValue('B10', "REKAPITULASI PENJUALAN TANGGAL ".$start_date." - ".$end_date);
+                $sheet->setCellValue('B11', "$customer_code");	
+                $sheet->setCellValue('B12', "No");
+                $sheet->setCellValue('C12', "TGL INV");
+                $sheet->setCellValue('D12', "NOMOR FPP");
+                $sheet->setCellValue('E12', "CABANG");
+                $sheet->setCellValue('F12', "NO INVOICE");
+                $sheet->setCellValue('G12', "NAMA OBAT");
+                $sheet->setCellValue('H12', "QTY");
+                $sheet->setCellValue('I12', "JUMLAH");
+                $sheet->setCellValue('J12', "HPP");
+                $sheet->setCellValue('K12', "DISKON");
+                $sheet->setCellValue('L12', "DPP");
+                $sheet->setCellValue('M12', "PPN");
+                $sheet->setCellValue('N12', "TOTAL BAYAR");
+                $sheet->setCellValue('O12', "%DISKON");
             
-            $salesorderitem = $this->getSalesOrderItem($val['sales_delivery_note_item_id']);
-            $itemunitcost   = $this->getUnitCost($salesorderitem ?? '');
-            $jumlahDiskon   = $val['discount_A'] + $val['discount_B'];
-            $ppn            = $this->getPpnItem($salesorderitem);
-            $dpp            = ($val['item_unit_price'] * $val['quantity']) - $jumlahDiskon;
+                $j  = 13;
+                $no = 1;
 
-            $diskonPersen   = $this->getDiscountAmt($val['sales_delivery_note_item_id']) + $this->getDiscountAmtB($val['sales_delivery_note_item_id']) ;
+                foreach ($invoices as $val) {
+                    $salesorderitem = $this->getSalesOrderItem($val['sales_delivery_note_item_id']);
+                    $itemunitcost   = $this->getUnitCost($salesorderitem ?? '');
+                    $jumlahDiskon   = $val['discount_A'] + $val['discount_B'];
+                    $ppn            = $this->getPpnItem($salesorderitem);
+                    $dpp            = ($val['item_unit_price'] * $val['quantity']) - $jumlahDiskon;
 
-               $sheet = $spreadsheet->getActiveSheet(0);
-               $spreadsheet->getActiveSheet()->setTitle("LAPORAN PENJUALAN");
-               $spreadsheet->getActiveSheet()->getStyle('B'.$j.':O'.$j)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-               $spreadsheet->getActiveSheet()->getStyle('O'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-             
-               $sheet->setCellValue('B'.$j, $no);
-               $sheet->setCellValue('C'.$j, $val['sales_invoice_date']);
-               $sheet->setCellValue('D'.$j, $val['faktur_tax_no']);
-               $sheet->setCellValue('E'.$j, $this->getCustomerName($val['customer_id']));
-               $sheet->setCellValue('F'.$j, $val['sales_invoice_no']);
-               $sheet->setCellValue('G'.$j, $this->getItemTypeName($val['item_type_id']));
-               $sheet->setCellValue('H'.$j, $val['quantity']);
-               $sheet->setCellValue('I'.$j, $val['item_unit_price'] * $val['quantity']);
-               $sheet->setCellValue('J'.$j, $itemunitcost * $val['quantity']);
-               $sheet->setCellValue('K'.$j, $jumlahDiskon);
-               $sheet->setCellValue('L'.$j, $dpp);
-               $sheet->setCellValue('M'.$j, $ppn);
-               $sheet->setCellValue('N'.$j, $dpp + $ppn);
-               $sheet->setCellValue('O'.$j, " $diskonPersen  %");
-         
-               $no++;
-               $j++;
-               $lastno = $no;
-               $lastj = $j;
-               
-           }
+                    $diskonPersen   = $this->getDiscountAmt($val['sales_delivery_note_item_id']) + $this->getDiscountAmtB($val['sales_delivery_note_item_id']) ;
 
-            $sheet = $spreadsheet->getActiveSheet(0);
-            $spreadsheet->getActiveSheet()->getStyle('B'.$lastj.':N'.$lastj)->getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $sheet->setCellValue('G' . $lastj , 'Jumlah Total:');
-            $sumrangeQty = 'H'. $lastno - 1 .':H'.$j;
-            $sheet->setCellValue('H' . $lastj , '=SUM('.$sumrangeQty.')');
+                    $sheet->getStyle('B'.$j.':O'.$j)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                    $sheet->getStyle('O'.$j)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $sumrangehpp = 'I'. $lastno - 1 .':I'.$j;
-            $sheet->setCellValue('I' . $lastj , '=SUM('.$sumrangehpp.')');
+                    $sheet->setCellValue('B'.$j, $no);
+                    $sheet->setCellValue('C'.$j, $val['sales_invoice_date']);
+                    $sheet->setCellValue('D'.$j, $val['faktur_tax_no']);
+                    $sheet->setCellValue('E'.$j, $this->getCustomerName($val['customer_id']));
+                    $sheet->setCellValue('F'.$j, $val['sales_invoice_no']);
+                    $sheet->setCellValue('G'.$j, $this->getItemTypeName($val['item_type_id']));
+                    $sheet->setCellValue('H'.$j, number_format($val['quantity'], 2, '.', ''));
+                    $sheet->setCellValue('I'.$j, number_format($val['item_unit_price'] * $val['quantity'], 2, '.', ''));
+                    $sheet->setCellValue('J'.$j, number_format($itemunitcost * $val['quantity'], 2, '.', ''));
+                    $sheet->setCellValue('K'.$j, number_format($jumlahDiskon, 2, '.', ''));
+                    $sheet->setCellValue('L'.$j, number_format($dpp, 2, '.', ''));
+                    $sheet->setCellValue('M'.$j, number_format($ppn, 2, '.', ''));
+                    $sheet->setCellValue('N'.$j, number_format($dpp + $ppn, 2, '.', ''));
+                    $sheet->setCellValue('O'.$j, " $diskonPersen  %");
 
-            $sumrangediskon = 'J'. $lastno - 1 .':J'.$j;
-            $sheet->setCellValue('J' . $lastj , '=SUM('.$sumrangediskon.')');
+                    $no++;
+                    $j++;
+                }
 
-            $sumrangedpp = 'K'. $lastno - 1 .':K'.$j;
-            $sheet->setCellValue('K' . $lastj , '=SUM('.$sumrangedpp.')');
+                $lastj = $j;
+                $lastno = $no;
 
-            $sumrangeppn = 'L'. $lastno - 1 .':L'.$j;
-            $sheet->setCellValue('L' . $lastj , '=SUM('.$sumrangeppn.')');
+                $sheet->getStyle('B'.$lastj.':N'.$lastj)->getBorders()->getOutline()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $sheet->setCellValue('G' . $lastj, 'Jumlah Total:');
+                $sheet->setCellValue('H' . $lastj, '=SUM(H13:H'.($lastj-1).')');
+                $sheet->setCellValue('I' . $lastj, '=SUM(I13:I'.($lastj-1).')');
+                $sheet->setCellValue('J' . $lastj, '=SUM(J13:J'.($lastj-1).')');
+                $sheet->setCellValue('K' . $lastj, '=SUM(K13:K'.($lastj-1).')');
+                $sheet->setCellValue('L' . $lastj, '=SUM(L13:L'.($lastj-1).')');
+                $sheet->setCellValue('M' . $lastj, '=SUM(M13:M'.($lastj-1).')');
+                $sheet->setCellValue('N' . $lastj, '=SUM(N13:N'.($lastj-1).')');
 
-            $sumrangetotal = 'M'. $lastno - 1 .':M'.$j;
-            $sheet->setCellValue('M' . $lastj , '=SUM('.$sumrangetotal.')');
+                $sheet->setCellValue('F' . ($lastj + 1), 'Mengetahui');
+                $sheet->setCellValue('K' . ($lastj + 1), 'Dibuat Oleh');
 
-            $sumrangetotalB = 'N'. $lastno - 1 .':N'.$j;
-            $sheet->setCellValue('N' . $lastj , '=SUM('.$sumrangetotalB.')');
+                $sheet->getStyle('E'.($lastj + 5))->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $sheet->getStyle('E'.($lastj + 5))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $sheet->getStyle('G'.($lastj + 5))->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $sheet->getStyle('K'.($lastj + 5))->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
-            $sheet->setCellValue('F' . $lastj + 1, 'Mengetahui');
-            $sheet->setCellValue('K' . $lastj + 1, 'Dibuat Oleh');
+                $sheet->setCellValue('E' . ($lastj + 5), 'Apoteker');
+                $sheet->setCellValue('G' . ($lastj + 5), 'Administrasi Pajak');
+                $sheet->setCellValue('K' . ($lastj + 5), 'Dibuat Oleh');
+            }
 
+            $spreadsheet->removeSheetByIndex(0); // Remove default sheet created by PhpSpreadsheet
 
-            $spreadsheet->getActiveSheet()->getStyle('E'.$lastj + 5)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $spreadsheet->getActiveSheet()->getStyle('E'.$lastj + 5)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            $spreadsheet->getActiveSheet()->getStyle('G'.$lastj + 5)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $spreadsheet->getActiveSheet()->getStyle('K'.$lastj + 5)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-           
-           
-            $sheet->setCellValue('E' . $lastj + 5, 'Apoteker');
-            $sheet->setCellValue('G' . $lastj + 5, 'Administrasi Pajak');
-            $sheet->setCellValue('K' . $lastj + 5, 'Dibuat Oleh');
+            ob_clean();
+            $filename='SALES INVOICE REPORT '.date('d M Y').'.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="'.$filename.'"');
+            header('Cache-Control: max-age=0');
 
-
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+        } else {
+            echo "Maaf data yang di eksport tidak ada !";
         }
-
-           ob_clean();
-           $filename='SALES INVOICE REPORT '.date('d M Y').'.xls';
-           header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-           header('Content-Disposition: attachment;filename="'.$filename.'"');
-           header('Cache-Control: max-age=0');
-
-           $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
-           $writer->save('php://output');
-       }else{
-           echo "Maaf data yang di eksport tidak ada !";
-       }
-
-
     }
 
 }
