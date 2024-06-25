@@ -1,7 +1,7 @@
 @inject('AcctLedgerReport','App\Http\Controllers\AcctLedgerReportController')
 @extends('adminlte::page')
 
-@section('title', 'MOZAIC Minimarket')
+@section('title', 'PBF | Koperasi Menjangan Enam')
 
 @section('content_header')
     
