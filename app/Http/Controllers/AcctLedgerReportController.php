@@ -110,10 +110,15 @@ class AcctLedgerReportController extends Controller
                 ->orderBy('acct_account_balance_detail.account_balance_detail_id', 'DESC')
                 ->first();
             }else{
-                $accountbalancedetail_old = array(
-                    'last_balance' => 0.00,
-                    'opening_balance' => 0.00
-                );
+                $accountbalancedetail_old = AcctAccountBalanceDetail::join('acct_account', 'acct_account.account_id', '=', 'acct_account_balance_detail.account_id')
+                ->select('acct_account_balance_detail.last_balance')
+                ->where('acct_account_balance_detail.account_id', $account_id) 
+                // ->whereMonth('acct_account_balance_detail.transaction_date', $start_month - 1)
+                ->whereYear('acct_account_balance_detail.transaction_date', $year)
+                // ->where('acct_account_balance_detail.company_id', Auth::user()->company_id)
+                ->orderBy('acct_account_balance_detail.transaction_date', 'ASC')
+                ->orderBy('acct_account_balance_detail.account_balance_detail_id', 'ASC')
+                ->first();
 
             }
 
@@ -170,7 +175,7 @@ class AcctLedgerReportController extends Controller
             array_push($acctgeneralledgerreport, $acctgeneralledgerreport_detail);
         }
     }
-    dd($accountbalancedetail,$accountbalancedetail_old,$start_month,$year,$account_id);
+    // dd($accountbalancedetail,$accountbalancedetail_old,$start_month,$year,$account_id);
 
         return view('content.AcctGeneralLedgerReport.ListLedgerReport', compact('monthlist', 'yearlist', 'accountlist', 'acctgeneralledgerreport', 'accountbalancedetail_old', 'account', 'year', 'start_month', 'end_month', 'account_id'));
     }
