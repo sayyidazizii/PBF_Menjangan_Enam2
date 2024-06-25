@@ -175,7 +175,7 @@ class AcctLedgerReportController extends Controller
             array_push($acctgeneralledgerreport, $acctgeneralledgerreport_detail);
         }
     }
-    // dd($accountbalancedetail,$accountbalancedetail_old,$start_month,$year,$account_id);
+    dd($accountbalancedetail,$accountbalancedetail_old,$start_month,$year,$account_id,$acctgeneralledgerreport_detail);
 
         return view('content.AcctGeneralLedgerReport.ListLedgerReport', compact('monthlist', 'yearlist', 'accountlist', 'acctgeneralledgerreport', 'accountbalancedetail_old', 'account', 'year', 'start_month', 'end_month', 'account_id'));
     }
