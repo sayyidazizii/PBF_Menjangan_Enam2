@@ -73,35 +73,37 @@ class SalesInvoiceController extends Controller
             $end_date = Session::get('end_date');
         }
 
-        $customer_id = Session::get('customer_id');
+        // $customer_id = Session::get('customer_id');
+        $customer_code = Session::get('customer_code');
 
         Session::forget('salesinvoiceitem');
         Session::forget('salesinvoiceelements');
 
-        $salesinvoice = SalesInvoice::where('data_state', '=', 0)
-            ->where('sales_invoice_date', '>=', $start_date)
-            ->where('sales_invoice_date', '<=', $end_date);
-        if ($customer_id || $customer_id != null || $customer_id != '') {
-            $salesinvoice   = $salesinvoice->where('customer_id', $customer_id);
+        $salesinvoice = SalesInvoice::where('sales_invoice.data_state', '=', 0)
+            ->join('core_customer','core_customer.customer_id','sales_invoice.customer_id')
+            ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
+            ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
+        if ($customer_code || $customer_code != null || $customer_code != '') {
+            $salesinvoice   = $salesinvoice->where('core_customer.customer_code', $customer_code);
         }
         $salesinvoice       = $salesinvoice->get();
 
-        $customer = CoreCustomer::select('customer_id', 'customer_name')
+        $customer = CoreCustomer::select('customer_code', 'customer_name')
             ->where('data_state', 0)
-            ->pluck('customer_name', 'customer_id');
+            ->pluck('customer_code', 'customer_code');
 
-        return view('content/SalesInvoice/ListSalesInvoice', compact('salesinvoice', 'start_date', 'end_date', 'customer_id', 'customer'));
+        return view('content/SalesInvoice/ListSalesInvoice', compact('salesinvoice', 'start_date', 'end_date', 'customer_code', 'customer'));
     }
 
     public function filterSalesInvoice(Request $request)
     {
         $start_date     = $request->start_date;
         $end_date       = $request->end_date;
-        $customer_id    = $request->customer_id;
+        $customer_code  = $request->customer_code;
 
         Session::put('start_date', $start_date);
         Session::put('end_date', $end_date);
-        Session::put('customer_id', $customer_id);
+        Session::put('customer_code', $customer_code);
 
         return redirect('/sales-invoice');
     }
@@ -110,11 +112,11 @@ class SalesInvoiceController extends Controller
     {
         $start_date     = $request->start_date;
         $end_date       = $request->end_date;
-        $customer_id    = $request->customer_id;
+        $customer_code  = $request->customer_code;
 
         Session::put('start_date', $start_date);
         Session::put('end_date', $end_date);
-        Session::put('customer_id', $customer_id);
+        Session::put('customer_code', $customer_code);
 
         return redirect('/sales-invoice-report');
     }
@@ -123,7 +125,7 @@ class SalesInvoiceController extends Controller
     {
         Session::forget('start_date');
         Session::forget('end_date');
-        Session::forget('customer_id');
+        Session::forget('customer_code');
 
         return redirect('/sales-invoice');
     }
@@ -132,7 +134,7 @@ class SalesInvoiceController extends Controller
     {
         Session::forget('start_date');
         Session::forget('end_date');
-        Session::forget('customer_id');
+        Session::forget('customer_code');
 
         return redirect('/sales-invoice-report');
     }
@@ -388,27 +390,28 @@ class SalesInvoiceController extends Controller
             $end_date = Session::get('end_date');
         }
 
-        $customer_id = Session::get('customer_id');
+        $customer_code = Session::get('customer_code');
 
         Session::forget('salesinvoiceitem');
         Session::forget('salesinvoiceelements');
 
         $salesinvoice = SalesInvoice::where('sales_invoice.data_state', '=', 0)
+        ->join('core_customer','core_customer.customer_id','sales_invoice.customer_id')
         ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_invoice.sales_invoice_id')
         ->join('sales_order','sales_order.sales_order_id','sales_invoice.sales_order_id')
         ->where('sales_invoice.data_state', '=', 0)
         ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
         ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
-        if ($customer_id || $customer_id != null || $customer_id != '') {
-            $salesinvoice   = $salesinvoice->where('sales_invoice.customer_id', $customer_id);
+        if ($customer_code || $customer_code != null || $customer_code != '') {
+            $salesinvoice   = $salesinvoice->where('core_customer.customer_code', $customer_code);
         }
         $salesinvoice       = $salesinvoice->get();
 
-        $customer = CoreCustomer::select('customer_id', 'customer_name')
+        $customer = CoreCustomer::select('customer_id', 'customer_name','customer_code')
             ->where('data_state', 0)
-            ->pluck('customer_name', 'customer_id');
+            ->pluck('customer_code', 'customer_code');
 
-        return view('content/SalesInvoice/FormSalesInvoiceReport', compact('salesinvoice', 'start_date', 'end_date', 'customer_id', 'customer'));
+        return view('content/SalesInvoice/FormSalesInvoiceReport', compact('salesinvoice', 'start_date', 'end_date', 'customer_code', 'customer'));
     }
 
     public function processAddSalesInvoice(Request $request)
@@ -1084,10 +1087,10 @@ class SalesInvoiceController extends Controller
                     <td style=\"text-align: center;\">" . $this->getBatchNum($val['item_stock_id']) . "</td>
                     <td style=\"text-align: center;\">" . $this->getQtyBpb($val['sales_order_item_id']) . "</td>
                     <td style=\"text-align: right;\">" . number_format($this->getItemUnitPrice($val['sales_invoice_item_id'] ), 2). "</td>
-                    <td style=\"text-align: right;\">" . number_format($qtyTotal, 2) . "</td>
-                    <td style=\"text-align: right;\">" . number_format($val['discount_A'], 2) . "</td>
-                    <td style=\"text-align: right;\">" . number_format($val['discount_B'], 2) . "</td>
-                    <td style=\"text-align: right;\">" .number_format($totalBayar, 2)."</td>
+                    <td style=\"text-align: right;\">" . number_format($qtyTotal) . "</td>
+                    <td style=\"text-align: right;\">" . number_format($val['discount_A']) . "</td>
+                    <td style=\"text-align: right;\">" . number_format($val['discount_B']) . "</td>
+                    <td style=\"text-align: right;\">" .number_format($totalBayar)."</td>
                 </tr> 
                 ";
                 
@@ -1103,17 +1106,17 @@ class SalesInvoiceController extends Controller
             $html2  .= "
             <tr>
                 <td colspan=\"8\" style=\"text-align: right;font-weight: bold\";>DPP</td>
-                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($dpp, 2) . "</td>
+                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($dpp) . "</td>
                 <td></td>
             </tr>
             <tr>
                 <td colspan=\"8\" style=\"text-align: right;font-weight: bold\";>PPN</td>
-                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($ppn, 2) . "</td>
+                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($ppn) . "</td>
                 <td></td>
             </tr>
             <tr>
                 <td colspan=\"8\" style=\"text-align: right;font-weight: bold\";>Jumlah Total</td>
-                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($dpp + $ppn, 2) . "</td>
+                <td colspan=\"2\" style=\"text-align: right;\">" . number_format($dpp + $ppn) . "</td>
                 <td></td>
             </tr>
             ";
@@ -1226,7 +1229,6 @@ class SalesInvoiceController extends Controller
             //============================================================+
         
     }
-
     
     public function export(){
         if (!Session::get('start_date')) {
@@ -1241,7 +1243,7 @@ class SalesInvoiceController extends Controller
             $end_date = Session::get('end_date');
         }
 
-        $customer_id = Session::get('customer_id');
+        $customer_code = Session::get('customer_code');
 
         Session::forget('salesinvoiceitem');
         Session::forget('salesinvoiceelements');
@@ -1254,8 +1256,8 @@ class SalesInvoiceController extends Controller
             ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
             ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
 
-        if ($customer_id || $customer_id != null || $customer_id != '') {
-            $salesinvoice = $salesinvoice->where('sales_invoice.customer_id', $customer_id);
+        if ($customer_code || $customer_code != null || $customer_code != '') {
+            $salesinvoice = $salesinvoice->where('core_customer.customer_code', $customer_code);
         }
 
         $salesinvoice = $salesinvoice->get();

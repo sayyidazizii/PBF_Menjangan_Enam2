@@ -243,20 +243,20 @@
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='item_unit_price' id='item_unit_price' value='".number_format($item['item_unit_price'],2,',','.')."' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A' id='subtotal_price_A' value='".number_format($total, 2)."' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_A' id='subtotal_price_A' value='".number_format($total)."' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_A' id='subtotal_price' value='".number_format(($val['discount_A']), 2)."' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_A' id='subtotal_price' value='".number_format(($val['discount_A']))."' readonly/>  
                                             </td>
                                             <td style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_B' id='subtotal_price' value='".number_format(($val['discount_B']), 2)."' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='discount_B' id='subtotal_price' value='".number_format(($val['discount_B']))."' readonly/>  
                                             </td>
  						                    <td hidden style='text-align  : right !important;'>
                                                 <input style='text-align  : right !important;' class='form-control' type='text' name='ppn_item_amount' id='ppn_item_amount' value='".$SalesInvoice->getPpnItem($SalesInvoice->getSalesOrderItem($val['sales_delivery_note_item_id']))."' readonly/>  
                                             </td>
 
                                             <td style='text-align  : right !important;'>
-                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_B' id='subtotal_price_B' value='".number_format(($totalBayar), 2)."' readonly/>  
+                                                <input style='text-align  : right !important;' class='form-control' type='text' name='subtotal_price_B' id='subtotal_price_B' value='".number_format(($totalBayar))."' readonly/>  
                                             </td>";
                                             echo"
                                         </tr>
@@ -275,15 +275,15 @@
                                 ";
                             }
                                 echo"
-                                <th style='text-align  : left' colspan='8'>Total</th>
-                                <th style='text-align  : right'>
-                                    <input class='form-control' style='text-align  : right !important;' type='text' name='total_amount_view' id='total_amount_view' value='".number_format($DPP,2,',','.')."' readonly/>   
+                                <th style='text-align  : left' colspan='7'>Total</th>
+                                <th style='text-align  : right' colspan='2'>
+                                    <input class='form-control' style='text-align  : right !important;' type='text' name='total_amount_view' id='total_amount_view' value='".number_format($DPP)."' readonly/>   
                                     <div class='row mt-2'>
                                         <div class='col'>
                                             <label style='text-align  : left !important;'>PPN</label>
                                         </div>
                                         <div class='col'>
-                                            <input class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='".number_format($ppn,2,',','.')."' readonly/>
+                                            <input class='form-control' style='text-align:right;'type='text' name='ppn' id='ppn' value='".number_format($ppn)."' readonly/>
                                         </div>
                                     </div>
                                     <div class='row mt-2'>
@@ -291,10 +291,10 @@
                                             <label style='text-align  : left !important;'>Jumlah Total</label>
                                         </div>
                                         <div class='col'>
-                                            <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='".number_format($DPP + $ppn,2,',','.')."' readonly/>
+                                            <input class='form-control' style='text-align:right;'type='text' name='subtotal_after_ppn_out' id='subtotal_after_ppn_out' value='".number_format($DPP + $ppn)."' readonly/>
                                         </div>
                                     </div>
-                                    <input class='form-control' type='hidden' name='total_amount' id='total_amount' value='".number_format($total_price + $salesinvoice['tax_amount'],2,',','.')."'/>  
+                                    <input class='form-control' type='hidden' name='total_amount' id='total_amount' value='".number_format($total_price + $salesinvoice['tax_amount'])."'/>  
                                     <input class='form-control' type='hidden' name='total_item' id='total_item' value='".$total_item."'/>    
 
                                 </th>

@@ -5,10 +5,10 @@
 @section('js')
 <script>
 	$(document).ready(function(){
-        var customer_id    = {!! json_encode($customer_id) !!};
+        var customer_code    = {!! json_encode($customer_code) !!};
         
-        if(customer_id == null){
-            $("#customer_id").select2("val", "0");
+        if(customer_code == null){
+            $("#customer_code").select2("val", "0");
         }
     });
 </script>
@@ -69,9 +69,9 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <a class="text-dark">Pembeli</a>
+                        <a class="text-dark">Kode Pembeli</a>
                         <br/>
-                        {!! Form::select('customer_id',  $customer, $customer_id, ['class' => 'selection-search-clear select-form', 'id' => 'customer_id']) !!}
+                        {!! Form::select('customer_code',  $customer, $customer_code, ['class' => 'selection-search-clear select-form', 'id' => 'customer_code']) !!}
                     </div>
                 </div>
             </div>
