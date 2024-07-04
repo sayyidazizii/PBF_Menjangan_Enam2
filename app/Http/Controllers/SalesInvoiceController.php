@@ -20,6 +20,8 @@ use App\Models\SalesDeliveryNote;
 use App\Models\SalesDeliveryNoteItem;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderItem;
+use App\Models\SalesKwitansi;
+use App\Models\SalesKwitansiItem;
 use App\Models\PurchaseOrderItem;
 use App\Models\SystemLogUser;
 use App\Models\SalesDeliveryNoteItemStock;
@@ -108,19 +110,6 @@ class SalesInvoiceController extends Controller
         return redirect('/sales-invoice');
     }
 
-    public function filterSalesInvoiceReport(Request $request)
-    {
-        $start_date     = $request->start_date;
-        $end_date       = $request->end_date;
-        $customer_code  = $request->customer_code;
-
-        Session::put('start_date', $start_date);
-        Session::put('end_date', $end_date);
-        Session::put('customer_code', $customer_code);
-
-        return redirect('/sales-invoice-report');
-    }
-
     public function resetFilterSalesInvoice()
     {
         Session::forget('start_date');
@@ -128,15 +117,6 @@ class SalesInvoiceController extends Controller
         Session::forget('customer_code');
 
         return redirect('/sales-invoice');
-    }
-
-    public function resetFilterSalesInvoiceReport()
-    {
-        Session::forget('start_date');
-        Session::forget('end_date');
-        Session::forget('customer_code');
-
-        return redirect('/sales-invoice-report');
     }
 
     public function search()
@@ -373,45 +353,6 @@ class SalesInvoiceController extends Controller
             $msg = 'Closing Sales Invoice Gagal';
             return redirect('/sales-invoice/closed/' . $request->sales_invoice_id)->with('msg', $msg);
         }
-    }
-
-    //Report 
-    public function ReportSalesInvoice()
-    {
-        if (!Session::get('start_date')) {
-            $start_date     = date('Y-m-d');
-        } else {
-            $start_date = Session::get('start_date');
-        }
-
-        if (!Session::get('end_date')) {
-            $end_date     = date('Y-m-d');
-        } else {
-            $end_date = Session::get('end_date');
-        }
-
-        $customer_code = Session::get('customer_code');
-
-        Session::forget('salesinvoiceitem');
-        Session::forget('salesinvoiceelements');
-
-        $salesinvoice = SalesInvoice::where('sales_invoice.data_state', '=', 0)
-        ->join('core_customer','core_customer.customer_id','sales_invoice.customer_id')
-        ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_invoice.sales_invoice_id')
-        ->join('sales_order','sales_order.sales_order_id','sales_invoice.sales_order_id')
-        ->where('sales_invoice.data_state', '=', 0)
-        ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
-        ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
-        if ($customer_code || $customer_code != null || $customer_code != '') {
-            $salesinvoice   = $salesinvoice->where('core_customer.customer_code', $customer_code);
-        }
-        $salesinvoice       = $salesinvoice->get();
-
-        $customer = CoreCustomer::select('customer_id', 'customer_name','customer_code')
-            ->where('data_state', 0)
-            ->pluck('customer_code', 'customer_code');
-
-        return view('content/SalesInvoice/FormSalesInvoiceReport', compact('salesinvoice', 'start_date', 'end_date', 'customer_code', 'customer'));
     }
 
     public function processAddSalesInvoice(Request $request)
@@ -1229,6 +1170,114 @@ class SalesInvoiceController extends Controller
             //============================================================+
         
     }
+
+    //Report
+    public function filterSalesInvoiceReport(Request $request)
+    {
+        $start_date     = $request->start_date;
+        $end_date       = $request->end_date;
+        $customer_code  = $request->customer_code;
+        $checkbox       = $request->checkbox;
+
+        //customer id
+        $customer_id = CoreCustomer::where('customer_code', '=', $customer_code)->first();
+
+        Session::put('start_date', $start_date);
+        Session::put('end_date', $end_date);
+        Session::put('customer_code', $customer_code);
+        Session::put('checkbox', $checkbox);
+
+        if(isset($checkbox) or $checkbox == 1){
+            $salesinvoice = SalesInvoice::where('sales_invoice.data_state', '=', 0)
+                ->join('core_customer','core_customer.customer_id','sales_invoice.customer_id')
+                ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_invoice.sales_invoice_id')
+                ->join('sales_order','sales_order.sales_order_id','sales_invoice.sales_order_id')
+                ->where('sales_invoice.data_state', '=', 0)
+                ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
+                ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
+
+            if ($customer_code || $customer_code != null || $customer_code != '') {
+                $salesinvoice = $salesinvoice->where('core_customer.customer_code', $customer_code);
+            }
+
+            $salesinvoice = $salesinvoice->get();
+
+            $saleskwitansi = array(
+                'customer_id'                   => $customer_id['customer_id'],
+                'start_date'                    => $start_date,
+                'end_date'                      => $end_date,
+                'sales_kwitansi_date'           => \Carbon\Carbon::now(),
+                'created_id'                    => Auth::id(),
+            );
+
+            if (SalesKwitansi::create($saleskwitansi)) {
+                $saleskwitansi_id = SalesKwitansi::select('*')
+                    ->orderBy('created_at', 'DESC')
+                    ->first()->sales_kwitansi_id;
+
+                foreach ($salesinvoice as $invoice) {
+                    SalesKwitansiItem::create([
+                        'sales_invoice_id'              => $invoice->sales_invoice_id,
+                        'buyers_acknowledgment_id'      => $invoice->buyers_acknowledgment_id,
+                        'sales_kwitansi_id'             => $saleskwitansi_id,
+                        'checked'                       => 1,
+                        'created_id'                    => Auth::id(),
+                    ]);
+                }
+            }
+        }
+        return redirect('/sales-invoice-report');
+    }
+    //Report
+    public function resetFilterSalesInvoiceReport()
+    {
+        Session::forget('start_date');
+        Session::forget('end_date');
+        Session::forget('customer_code');
+        Session::forget('checkbox');
+
+        return redirect('/sales-invoice-report');
+    }
+    //Report 
+    public function ReportSalesInvoice()
+    {
+        if (!Session::get('start_date')) {
+            $start_date     = date('Y-m-d');
+        } else {
+            $start_date = Session::get('start_date');
+        }
+
+        if (!Session::get('end_date')) {
+            $end_date     = date('Y-m-d');
+        } else {
+            $end_date = Session::get('end_date');
+        }
+
+        $customer_code = Session::get('customer_code');
+
+        $checkbox = Session::get('checkbox');
+
+        Session::forget('salesinvoiceitem');
+        Session::forget('salesinvoiceelements');
+
+        $salesinvoice = SalesInvoice::where('sales_invoice.data_state', '=', 0)
+        ->join('core_customer','core_customer.customer_id','sales_invoice.customer_id')
+        ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_invoice.sales_invoice_id')
+        ->join('sales_order','sales_order.sales_order_id','sales_invoice.sales_order_id')
+        ->where('sales_invoice.data_state', '=', 0)
+        ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
+        ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
+        if ($customer_code || $customer_code != null || $customer_code != '') {
+            $salesinvoice   = $salesinvoice->where('core_customer.customer_code', $customer_code);
+        }
+        $salesinvoice       = $salesinvoice->get();
+
+        $customer = CoreCustomer::select('customer_id', 'customer_name','customer_code')
+            ->where('data_state', 0)
+            ->pluck('customer_code', 'customer_code');
+
+        return view('content/SalesInvoice/FormSalesInvoiceReport', compact('checkbox','salesinvoice', 'start_date', 'end_date', 'customer_code', 'customer'));
+    }
     
     public function export(){
         if (!Session::get('start_date')) {
@@ -1395,6 +1444,656 @@ class SalesInvoiceController extends Controller
         } else {
             echo "Maaf data yang di eksport tidak ada !";
         }
+    }
+
+    //Pengantar
+    public function printKwitansiPengantar(){
+        $saleskwitansi = SalesKwitansi::select('*')
+        ->where('data_state', '=', 0)
+        ->orderBy('sales_kwitansi_id', 'desc') // Mengurutkan berdasarkan ID secara descending
+        ->first();
+
+        $saleskwitansiItem = SalesKwitansiItem::select('*')
+        ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_kwitansi_item.sales_invoice_id')
+        ->where('sales_kwitansi_item.sales_kwitansi_id', '=', $saleskwitansi['sales_kwitansi_id'])
+        ->where('checked', '=', 1)
+        ->groupBy('sales_invoice_item.sales_invoice_item_id')
+        ->get();
+
+
+        $company = PreferenceCompany::select('*')
+            ->first();
+
+
+        //pdf
+        $pdf = new TCPDF('P', PDF_UNIT, 'F4', true, 'UTF-8', false);
+
+        $pdf::SetPrintHeader(false);
+        $pdf::SetPrintFooter(false);
+
+        $pdf::SetMargins(10, 10, 10, 10); // put space of 10 on top
+
+        $pdf::setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+            require_once(dirname(__FILE__) . '/lang/eng.php');
+            $pdf::setLanguageArray($l);
+        }
+
+        $no = 1;
+        $totalppn = 0;
+        $totalbayar = 0;
+        $totaldpp = 0;
+        $totalDiskon = 0;
+
+        foreach ($saleskwitansiItem as $key => $val) {
+            $total = $val['item_unit_price'] * $val['quantity'];
+            $diskon = $val['discount_A'] + $val['discount_B'];
+            $dpp = $total - $diskon ; 
+            $totaldpp += $total - $diskon ;
+            $ppn = $this->getPpnItem($val['sales_delivery_note_item_id']);
+            $totalppn += $this->getPpnItem($val['sales_delivery_note_item_id']);
+            $totalbayar += $total - $diskon  + $ppn;
+            $totalDiskon += $val['discount_A'] + $val['discount_B'];
+            
+           
+            $no++;
+        }
+        $materai = 0;
+        if($totalDiskon > 5000000){
+            $materai = 10000;
+        }else{
+            $materai = 0;
+        }
+
+        $pdf::SetFont('helvetica', 'B', 20);
+
+        $pdf::AddPage();
+
+        $pdf::SetFont('helvetica', '', 8);
+        if($materai == 10000){
+            $tbl = "
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                <tr>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:12px; font-weight: bold\">PBF MENJANGAN ENAM</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">Jl.Puspowarno Raya No 55D Bojong Salaman, Semarang Barat</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">APA : ISTI RAHMADANI,S.Farm, Apt</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['CDBO_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['distribution_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">SIKA: 449.2/16/DPM-PTSP/SIKA.16/11/2019</div></td>
+                        </tr>
+                    </table>
+                </td>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                       
+                    </table>
+                </td>
+    
+                </tr>
+                <tr>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                      
+                    </table>
+                </td>
+    
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                        <tr>
+                            <td style=\"text-align: right; font-size:20px; font-weight: bold\">
+                            KWITANSI
+                            </td>
+                        </tr>
+                        <tr>
+                        <td style=\"text-align: right; font-size:10px;\">
+                        ".
+                        $saleskwitansi['sales_kwitansi_no']."
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+    
+                </tr>
+    
+            </table>
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+            <tr>
+                <td>
+                    Telah Terima Dari 
+                </td>
+                <td colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">PT. PHAPROS TBK</td>
+            </tr>
+            <tr>
+                <td>
+                    Uang Sebanyak
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->numtotxt($totalDiskon)."</td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td>
+                    Guna Membayar
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal    ".
+                $saleskwitansi['start_date']." S/D ".
+                $saleskwitansi['end_date']." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->getCustomerName($saleskwitansi['customer_id'])
+                ." dan Materai ".$materai." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            </table>
+            <table style=\"text-align: left;\" cellspacing=\"0\";>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Semarang , ".$saleskwitansi['sales_kwitansi_date']." &nbsp;&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Hormat Kami</th>
+                            </tr>
+            </table>
+            ";
+        }else{
+            $tbl = "
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                <tr>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:12px; font-weight: bold\">PBF MENJANGAN ENAM</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">Jl.Puspowarno Raya No 55D Bojong Salaman, Semarang Barat</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">APA : ISTI RAHMADANI,S.Farm, Apt</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['CDBO_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">" . $company['distribution_no'] . "</div></td>
+                        </tr>
+                        <tr>
+                            <td><div style=\"text-align: left; font-size:10px\">SIKA: 449.2/16/DPM-PTSP/SIKA.16/11/2019</div></td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                    
+                    </table>
+                </td>
+
+                </tr>
+                <tr>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                    
+                    </table>
+                </td>
+
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                        <tr>
+                            <td style=\"text-align: right; font-size:20px; font-weight: bold\">
+                            KWITANSI
+                            </td>
+                        </tr>
+                        <tr>
+                        <td style=\"text-align: right; font-size:10px;\">
+                        ".
+                        $saleskwitansi['sales_kwitansi_no']."
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+                </tr>
+
+            </table>
+            <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+            <tr>
+                <td>
+                    Telah Terima Dari 
+                </td>
+                <td colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">PT. PHAPROS TBK</td>
+            </tr>
+            <tr>
+                <td>
+                    Uang Sebanyak
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->numtotxt($totalDiskon)."</td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td>
+                    Guna Membayar
+                </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal    ".
+                $saleskwitansi['start_date']." S/D ".
+                $saleskwitansi['end_date']." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">".$this->getCustomerName($saleskwitansi['customer_id'])
+                ." </td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+                <td style=\"text-align: left; font-size:10px;\"></td>
+            </tr>
+            </table>
+            <table style=\"text-align: left;\" cellspacing=\"0\";>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Semarang , ".$saleskwitansi['sales_kwitansi_date']." &nbsp;&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: left; font-size:12px;\"></th>
+                                <th style=\"text-align: center; font-size:12px;\">Hormat Kami</th>
+                            </tr>
+            </table>
+            ";
+        }
+        $pdf::writeHTML($tbl, true, false, false, false, '');
+
+       
+        $path = '<img width="60"; height="60" src="resources/assets/img/ttd.png">';
+        $html2 = "
+                    <table style=\"text-align: left;\" cellspacing=\"20\";>
+                        <tr>
+                            <th style=\"text-align: left; font-size:12px;border-top-width:0.5px;border-bottom-width:0.5px;\">Rp.#". number_format($totalDiskon)."#</th>
+                            <th style=\"text-align: left; font-size:12px; \"></th>
+                            <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
+                        </tr>
+                    </table>
+                    <table style=\"text-align: left;\" cellspacing=\"0\";>
+                        <tr>
+                            <th style=\"text-align: left; font-size:12px;\"></th>
+                            <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
+                            <th style=\"text-align: center; font-size:12px;\"></th>
+                        </tr>
+                        <tr>
+                            <th style=\"text-align: left; font-size:12px;\"></th>
+                            <th style=\"text-align: left; font-size:12px;\"></th>
+                            <th style=\"text-align: center; font-size:12px;\"></th>
+                        </tr>
+                        <tr>
+                            <th style=\"text-align: left; font-size:12px;\"></th>
+                            <th style=\"text-align: left; font-size:12px;\"></th>
+                            <th style=\"text-align: center; font-size:12px;\"></th>
+                        </tr>
+                        <tr>
+                            <th style=\"text-align: left; font-size:12px;\">Catatan</th>
+                            <th style=\"text-align: left; font-size:12px;\"></th>
+                            <th style=\"text-align: center; font-size:12px;border-bottom-width:0.5px;\">Isti Rahmadani, SFarm,Apt</th>
+                        </tr><tr>
+                            <th  colspan=\"2\"  style=\"text-align: left; font-size:8px;\">Jatuh Tempo Pembayaran 7 (tujuh) hari kerja terhitung dari tanggal kwitansi</th>
+                            <th style=\"text-align: center; font-size:12px;\">Apoteker</th>
+                        </tr>
+                    </table>
+                    ";
+
+
+        $pdf::writeHTML($html2, true, false, true, false, '');
+        $pdf::AddPage();
+
+        $pdf::SetFont('helvetica', '', 8); 
+        
+        $tbl = "
+        <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+            <tr>
+
+            <td>
+                <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                   
+                </table>
+            </td>
+
+            <td>
+                <table cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
+                <tr>
+                <td><div style=\"text-align: right; font-size:12px; font-weight: bold\">PBF MENJANGAN ENAM</div></td>
+            </tr>
+            <tr>
+                <td><div style=\"text-align: right; font-size:10px\">Jl.Puspowarno Raya No 55D Bojong Salaman, Semarang Barat</div></td>
+            </tr>
+            <tr>
+                <td><div style=\"text-align: right; font-size:10px\">APA : ISTI RAHMADANI,S.Farm, Apt</div></td>
+            </tr>
+            <tr>
+                <td><div style=\"text-align: right; font-size:10px\">" . $company['CDBO_no'] . "</div></td>
+            </tr>
+            <tr>
+                <td><div style=\"text-align: right; font-size:10px\">" . $company['distribution_no'] . "</div></td>
+            </tr>
+            <tr>
+                <td><div style=\"text-align: right; font-size:10px\">SIKA: 449.2/16/DPM-PTSP/SIKA.16/11/2019</div></td>
+            </tr>
+                </table>
+            </td>
+
+            </tr>
+        </table>
+        <table>
+        <tr>
+                <td>
+                    <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
+                    <tr>
+                        <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">Hal</div> </td>
+                        <td style=\"text-align:left;width:2%\"> : </td>
+                        <td style=\"text-align:left;width:50    %\"><div style=\"text-align: left; font-size:11px\">Tagihan Biaya Promosi Penjualan Obat</div></td>
+                        <td style=\"text-align:left;width:20%\"></td>
+                    </tr>
+                    <tr>
+                        <td style=\"text-align:left;width:10%\"><div style=\"text-align: left; font-size:11px\">No. </div></td>
+                        <td style=\"text-align:left;width:2%\"> : </td>
+                        <td style=\"text-align:left;width:45%\"><div style=\"text-align: left; font-size:11px\">".$saleskwitansi['sales_tagihan_no']."</div></td>
+                        <td style=\"text-align:left;width:5%\"></td>
+                        <td style=\"text-align:left;width:12%\"></td>
+                        <td style=\"text-align:left;width:2%\"> </td>
+                        <td style=\"text-align:left;width:20%\"><div style=\"font-size:13.5px\"></div></td>
+                    </tr>
+                    </table>
+                </td>
+            </tr>
+            <br/>
+            <tr>
+                <td  style=\"text-align:left;width:50%;margin-top:15%\">
+                <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px; \">Kepada Yth.</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">PT. PHAPROS TBK</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px;\">JL.SIMONGAN 131 SEMARANG</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px;\"></div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px;width:40%\">UP. Bp. Rahmat Prayoga</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">MANAJER KEUANGAN</div></td>
+                </tr>
+              
+            </table>
+                </td>
+              
+            </tr>
+            <br/>
+            <tr>
+                <td  style=\"text-align:left;width:60%;margin-top:15%\">
+                <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px; \">Dengan Hormat</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">Bersama ini kami sampaikan tagihan atas Biaya Promosi Penjualan obat kepada:</div></td>
+                </tr>
+            </table>
+                </td>
+            </tr>
+        </table>
+        <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
+        <tr>
+            <td>
+                Client
+            </td>
+            <td colspan=\"4\" style=\"text-align: left; font-size:10px;\">:</td>
+        </tr>
+        <tr>
+            <td>
+                Periode
+            </td>
+            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">:</td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+        </tr>
+        <tr>
+            <td>
+                Total
+            </td>
+            <td  style=\"text-align: left; font-size:10px;\">: Rp.". number_format($totalDiskon)."</td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+        </tr>
+        <tr>
+            <td  style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">
+                Materai
+            </td>
+            <td   style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">: Rp.". number_format($materai)."</td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+        </tr>
+        <tr>
+            <td>
+                Total Tagihan
+            </td>
+            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">: Rp.". number_format($totalDiskon + $materai)."</td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+            <td style=\"text-align: left; font-size:10px;\"></td>
+        </tr>
+        </table>
+        <table style=\"text-align: left;\" cellspacing=\"2\";>
+                        <tr>
+                            <th style=\"text-align: left; font-size:12px;font-weight: bold\">Terbilang</th>
+                            <th style=\"text-align: center; font-size:12px;\"></th>
+                        </tr>
+                        <tr>
+                            <th style=\"text-align: left; font-size:12px;font-weight: bold\">#".$this->numtotxt($totalDiskon)."#</th>
+                            <th style=\"text-align: center; font-size:12px;\"></th>
+                        </tr>
+        </table>
+        ";
+        $pdf::writeHTML($tbl, true, false, false, false, '');
+
+       
+        $path = '<img width="60"; height="60" src="resources/assets/img/ttd.png">';
+        $html2 = "
+        <table style=\"text-align: center;\" cellspacing=\"0\";>
+            <tr>
+                <th width=\"60%\">
+                <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px; \">Pembayaran mohon ditransfer ke :</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">Bank&nbsp;: Mandiri Mpu Tantular Semarang</div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">A/n &nbsp;&nbsp;&nbsp;: " . $company['company_name'] . " </div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">A/c &nbsp;&nbsp;&nbsp;: 136.007.663270.9 </div></td>
+                </tr>
+                <tr>
+                    <td><div style=\"text-align: left; font-size:10px\">Demikian Tagihan ini kami sampaikan atas kerjasamanya kami ucapakan terimakasih.</div></td>
+                </tr>
+            
+                </table>
+                </th>
+            </tr>
+        </table>
+        <table style=\"text-align: left;\" cellspacing=\"5\";>            
+            <tr>
+                <th>Semarang , ".date('d M Y')." &nbsp;&nbsp;</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>".$path."</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Isti Ramadhani S.Farm.,Apt</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style=\"text-align: left; font-size:10px;\">Apoteker</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>";
+                                      
+        $pdf::writeHTML($html2, true, false, true, false, '');
+        $filename = 'SK_'.$saleskwitansi['sales_kwitansi_no'].'.pdf';
+        $pdf::Output($filename, 'I');
+
+    }
+
+    function doone2($onestr) {
+	    $tsingle = array("","satu ","dua ","tiga ","empat ","lima ",
+		"enam ","tujuh ","delapan ","sembilan ");
+	      return strtoupper($tsingle[$onestr]);
+	}	
+	 
+	function doone($onestr) {
+	    $tsingle = array("","se","dua ","tiga ","empat ","lima ", "enam ","tujuh ","delapan ","sembilan ");
+	      return strtoupper($tsingle[$onestr]);
+	}	
+
+	function dotwo($twostr) {
+	    $tdouble = array("","puluh ","dua puluh ","tiga puluh ","empat puluh ","lima puluh ", "enam puluh ","tujuh puluh ","delapan puluh ","sembilan puluh ");
+	    $teen = array("sepuluh ","sebelas ","dua belas ","tiga belas ","empat belas ","lima belas ", "enam belas ","tujuh belas ","delapan belas ","sembilan belas ");
+	    if ( substr($twostr,1,1) == '0') {
+			$ret = $this->doone2(substr($twostr,0,1));
+	    } else if (substr($twostr,1,1) == '1') {
+			$ret = $teen[substr($twostr,0,1)];
+	    } else {
+			$ret = $tdouble[substr($twostr,1,1)] . $this->doone2(substr($twostr,0,1));
+	    }
+	    return strtoupper($ret);
+	}
+    
+
+	function numtotxt($num) {
+		$tdiv 	= array("","","ratus ","ribu ", "ratus ", "juta ", "ratus ","miliar ");
+		$divs 	= array( 0,0,0,0,0,0,0);
+		$pos 	= 0; // index into tdiv;
+		// make num a string, and reverse it, because we run through it backwards
+		// bikin num ke string dan dibalik, karena kita baca dari arah balik
+		$num 	= strval(strrev(number_format($num, 2, '.',''))); 
+		$answer = ""; // mulai dari sini
+		while (strlen($num)) {
+			if ( strlen($num) == 1 || ($pos >2 && $pos % 2 == 1))  {
+				$answer = $this->doone(substr($num, 0, 1)) . $answer;
+				$num 	= substr($num,1);
+			} else {
+				$answer = $this->dotwo(substr($num, 0, 2)) . $answer;
+				$num 	= substr($num,2);
+				if ($pos < 2)
+					$pos++;
+			}
+
+			if (substr($num, 0, 1) == '.') {
+				if (! strlen($answer)){
+					$answer = "";
+				}
+
+				$answer = "" . $answer . "";
+				$num 	= substr($num,1);
+				// kasih tanda "nol" jika tidak ada
+				if (strlen($num) == 1 && $num == '0') {
+					$answer = "" . $answer;
+					$num 	= substr($num,1);
+				}
+			}
+		    // add separator
+		    if ($pos >= 2 && strlen($num)) {
+				if (substr($num, 0, 1) != 0  || (strlen($num) >1 && substr($num,1,1) != 0
+					&& $pos %2 == 1)  ) {
+					// check for missed millions and thousands when doing hundreds
+					// cek kalau ada yg lepas pada juta, ribu dan ratus
+					if ( $pos == 4 || $pos == 6 ) {
+						if ($divs[$pos -1] == 0)
+							$answer = $tdiv[$pos -1 ] . $answer;
+					}
+					// standard
+					$divs[$pos] = 1;
+					$answer 	= $tdiv[$pos++] . $answer;
+				} else {
+					$pos++;
+				}
+			}
+	    }
+	    return strtoupper($answer.'rupiah');
+	}
+
+    public function getInvItemTypeName($item_type_id){
+        $item = InvItemType::select('item_type_name')
+        ->where('item_type_id', $item_type_id)
+        ->where('data_state', 0)
+        ->first();
+
+        return $item['item_type_name'];
+    }
+    
+    public function getNoteStokID($sales_delivery_note_item_id)
+    {
+        $unit = SalesDeliveryNoteItemStock::where('sales_delivery_note_item_id', $sales_delivery_note_item_id)
+            ->where('data_state', 0)
+            ->first();
+
+        return $unit['item_stock_id'] ?? '';
+    }
+    
+    public function getItemBatchNumber($item_stock_id){
+        $item = InvItemStock::select('item_batch_number')
+        ->where('item_stock_id', $item_stock_id)
+        ->where('data_state', 0)
+        ->first();
+
+        return $item['item_batch_number']?? '';
     }
 
 }

@@ -633,6 +633,7 @@ Route::get('/sales-invoice/export', [SalesInvoiceController::class, 'export'])->
 Route::get('/sales-invoice-report', [SalesInvoiceController::class, 'ReportSalesInvoice'])->name('sales-invoice-report');
 Route::post('/sales-invoice-report/filter', [SalesInvoiceController::class, 'filterSalesInvoiceReport'])->name('filter-sales-invoice-report');
 Route::get('/sales-invoice-report/filter-reset', [SalesInvoiceController::class, 'resetFilterSalesInvoiceReport'])->name('filter-reset-sales-invoice-report');
+Route::get('/sales-invoice-report/cetak-pengantar', [SalesInvoiceController::class, 'printKwitansiPengantar'])->name('cetak-pengantar-sales-invoice-report');
 
 Route::get('/warehouse-transfer-type', [InvWarehouseTransferTypeController::class, 'index'])->name('warehouse-transfer-type');
 Route::get('/warehouse-transfer-type/add', [InvWarehouseTransferTypeController::class, 'addInvWarehouseTransferType'])->name('add-warehouse-transfer-type');
@@ -793,6 +794,8 @@ Route::get('/print-kwitansi/cetak-multiple/{sales_kwitansi_id}', [KwitansiContro
 Route::get('/print-kwitansi/cetak-single/{sales_kwitansi_id}', [KwitansiController::class, 'printKwitansiSingle'])->name('print-single');
 Route::get('/print-kwitansi/cetak-pengantar/{sales_kwitansi_id}', [KwitansiController::class, 'printKwitansiPengantar'])->name('print-pengantar');
 Route::post('/print-kwitansi/filter-print', [KwitansiController::class, 'filterKwitansiAdd'])->name('filter-print-kwitansi-add');
+Route::get('/print-kwitansi/delete/{sales_kwitansi_id}', [KwitansiController::class, 'processDeleteKwitansi'])->name('process-delete-kwitansi');
+
 
 Route::get('/sales-discount-collection', [SalesCollectionDiscountController::class, 'index'])->name('sales-collection-discount');
 Route::get('/sales-discount-collection/add/{sales_kwitansi_id}', [SalesCollectionDiscountController::class, 'addSalesCollectionDiscount'])->name('add-sales-collection');

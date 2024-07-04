@@ -6,6 +6,12 @@
 <link rel="shortcut icon" href="{{ asset('resources/assets/logo_pbf.ico') }}" />
 @section('js')
 <script>
+    $(function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
        function multiple($id){
         var multiple = $("#input_multiple_"+$id).val();
 
@@ -59,6 +65,12 @@
         });
     }
 
+    function confirmDelete(event, url) {
+        event.preventDefault(); // Prevent the default link behavior
+        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            window.location.href = url; // If confirmed, proceed to the URL
+        }
+    }
 
 </script>
 @stop
@@ -155,7 +167,7 @@
                         <th width="10%" style='text-align:center'>Periode</th>
                         <th width="10%" style='text-align:center'>No. Kwitansi</th>
                         <th width="10%" style='text-align:center'>No. Tagihan</th>
-                        <th width="10%" style='text-align:center'>Aksi</th>
+                        <th width="12%" style='text-align:center'>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -172,9 +184,10 @@
                         <td>{{ $item['sales_tagihan_no']}}</td>
                         <td style='text-align:center'>
                           {{-- <a href="/print-kwitansi/{{ $item['sales_kwitansi_id'] }}" class="btn btn-outline-primary">detail</a> --}}
-                          <a href=" {{ url('/print-kwitansi/cetak-pengantar/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-secondary"><i class="fa fa-file"></i></a>
-                          <a href=" {{ url('/print-kwitansi/cetak-multiple/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-warning"><i class="fa fa-file-invoice"></i></a>
-                          <a href=" {{ url('/print-kwitansi/cetak-single/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-info"><i class="fa fa-file-invoice"></i></a>
+                          <a href=" {{ url('/print-kwitansi/cetak-pengantar/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" title="Cetak Pengantar" data-bs-toggle="tooltip" data-bs-placement="top" class="btn btn-outline-secondary"><i class="fa fa-file"></i></a>
+                          <a href=" {{ url('/print-kwitansi/cetak-multiple/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" title="Cetak Multi" data-bs-toggle="tooltip" data-bs-placement="top" class="btn btn-outline-warning"><i class="fa fa-file-invoice"></i></a>
+                          <a href=" {{ url('/print-kwitansi/cetak-single/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" title="Cetak Single" data-bs-toggle="tooltip" data-bs-placement="top" class="btn btn-outline-info"><i class="fa fa-file-invoice"></i></a>
+                          <a href=" {{ url('/print-kwitansi/delete/'.$item['sales_kwitansi_id']) }}" id="button_multiple" type="button" class="btn btn-outline-danger" title="Hapus" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="confirmDelete(event, '{{ url('/print-kwitansi/delete/'.$item['sales_kwitansi_id']) }}')"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                     <?php

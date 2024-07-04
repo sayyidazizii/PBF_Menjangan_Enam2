@@ -77,8 +77,14 @@
             </div>
             <div class="card-footer text-muted">
                 <div class="form-actions float-right">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="checkbox" onChange="function_elements_add(this.name, this.value);" value="1" id="flexCheckDefault" @if($checkbox == 1) checked @endif>
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Buat Nomor kwitansi
+                        </label>
+                      </div>
                     <a href="{{route('filter-reset-sales-invoice-report')}}" type="reset" name="Reset" class="btn btn-danger btn-sm" onClick="window.location.reload();"><i class="fa fa-times"></i> Batal</a>
-                    <button type="submit" name="Find" class="btn btn-primary btn-sm" title="Search Data"><i class="fa fa-search"></i> Cari</button>
+                    <button type="submit" name="Find" class="btn btn-primary btn-sm" title="Search Data"><i class="fa fa-search"></i> Tampilkan</button>
                 </div>
             </div>
         </div>
@@ -189,7 +195,15 @@
                     <tr class="text-bold">
                         <td colspan="10" style='text-align:center'></td>
                         <td colspan="3" style='text-align:center'>
-                            <a href="{{ url('sales-invoice/export') }}"name="Find" class="btn btn-sm btn-info" title="Export Excel"><i class="fa fa-print"></i>Export</a>
+                            @if($checkbox == 1) 
+                            @if(count($salesinvoice) > 0) 
+                            <a href="{{ url('/sales-invoice-report/cetak-pengantar') }}" type="button" class="btn btn-sm btn-secondary"><i class="fa fa-file"> Cetak Pengantar</i></a>
+                            @endif
+                            @endif
+
+                            @if(count($salesinvoice) > 0) 
+                            <a href="{{ url('sales-invoice/export') }}" name="Find" class="btn btn-sm btn-info" title="Export Excel"><i class="fa fa-print"></i>Export</a>
+                            @endif
                         </td>
                     </tr>
             </table>
