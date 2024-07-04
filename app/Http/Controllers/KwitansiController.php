@@ -79,10 +79,6 @@ class KwitansiController extends Controller
         return $data['buyers_acknowledgment_no'] ?? '';
     }
 
-
- 
-
-
     public function filterKwitansi(Request $request)
     {
         $start_date     = $request->start_date;
@@ -122,7 +118,6 @@ class KwitansiController extends Controller
         return view('content/Kwitansi/SearchCoreCustomer', compact('corecustomer',));
     }
 
-
     public function addKwitansi($customer_id)
     {
         if (!Session::get('start_date')) {
@@ -146,11 +141,8 @@ class KwitansiController extends Controller
         return view('content/Kwitansi/FormAddKwitansi', compact('salesinvoice','customer_id', 'start_date', 'end_date'));
     }
 
-
-
     public function processAddKwitansi(Request $request)
     {
-        // dd($request->all());
         if (!Session::get('start_date')) {
             $start_date     = date('Y-m-d');
         } else {
@@ -188,27 +180,8 @@ class KwitansiController extends Controller
                     'created_id'                    => Auth::id(),
                 ]);
             
-
-
-           // $salesinvoice = SalesInvoice::findOrFail($dataitem['sales_invoice_id_' . $i]);
-           // $salesinvoice->kwitansi_status = $dataitem['checkbox_' . $i];
-           // $salesinvoice->save();
             }
-
-
-            // $empty = DB::table('sales_kwitansi')
-            // ->join('sales_kwitansi_item','sales_kwitansi_item.sales_kwitansi_id','sales_kwitansi.sales_kwitansi_id')
-            // ->where('sales_kwitansi_item.checked','=',0)
-            // ->where('sales_kwitansi.sales_kwitansi_id','=',$saleskwitansi_id['sales_kwitansi_id'])
-            // ->delete();
-            // SalesKwitansiItem::where("sales_kwitansi_id",$saleskwitansi_id['sales_kwitansi_id'])
-            // ->where('sales_kwitansi_item.checked','=',0)
-            // ->delete();
         }
-        // if($empty){
-        //     $msg = 'Tambah Kwitansi Tidak Tersimpan';
-        //     return redirect('/print-kwitansi')->with('msg',$msg);
-        // }else
          if($data){
             $msg = 'Tambah Kwitansi Penjualan Berhasil';
                 return redirect('/print-kwitansi')->with('msg',$msg);
@@ -216,6 +189,20 @@ class KwitansiController extends Controller
                 $msg = 'Tambah Kwitansi Penjualan Gagal';
                 return redirect('/print-kwitansi')->with('msg',$msg);
             }
+    }
+
+    public function  processDeleteKwitansi($sales_kwitansi_id)
+    {
+        $saleskwitansi = SalesKwitansi::findOrFail($sales_kwitansi_id);
+        $saleskwitansi->data_state = 1;
+
+        if ($saleskwitansi->save()) {
+            $msg = 'Hapus Kwitansi Berhasil';
+            return redirect('/print-kwitansi')->with('msg', $msg);
+        } else {
+            $msg = 'Hapus Kwitansi Gagal';
+            return redirect('/print-kwitansi')->with('msg', $msg);
+        }
     }
 
 
@@ -696,9 +683,6 @@ class KwitansiController extends Controller
         $filename = 'SK_'.$saleskwitansi['sales_kwitansi_no'].'.pdf';
         $pdf::Output($filename, 'I');
     }
-
-
-
 
     //Pengantar
     public function printKwitansiPengantar($sales_kwitansi_id){
@@ -1245,8 +1229,6 @@ class KwitansiController extends Controller
 
     }
 
-
-
     public function getCustomerName($customer_id)
     {
         $unit = CoreCustomer::select('customer_name')
@@ -1256,6 +1238,7 @@ class KwitansiController extends Controller
 
         return $unit['customer_name'] ?? '';
     }
+
     public function getInvItemTypeName($item_type_id){
         $item = InvItemType::select('item_type_name')
         ->where('item_type_id', $item_type_id)
@@ -1264,6 +1247,7 @@ class KwitansiController extends Controller
 
         return $item['item_type_name'];
     }
+    
     public function getNoteStokID($sales_delivery_note_item_id)
     {
         $unit = SalesDeliveryNoteItemStock::where('sales_delivery_note_item_id', $sales_delivery_note_item_id)
@@ -1272,6 +1256,7 @@ class KwitansiController extends Controller
 
         return $unit['item_stock_id'] ?? '';
     }
+    
     public function getItemBatchNumber($item_stock_id){
         $item = InvItemStock::select('item_batch_number')
         ->where('item_stock_id', $item_stock_id)
@@ -1280,6 +1265,7 @@ class KwitansiController extends Controller
 
         return $item['item_batch_number']?? '';
     }
+
     public function getItemUnitName($item_unit_id){
         $item = InvItemUnit::where('item_unit_id', $item_unit_id)
         ->where('data_state', 0)
