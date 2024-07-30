@@ -1522,6 +1522,9 @@ class SalesInvoiceController extends Controller
         $startDate = new DateTime($saleskwitansi['start_date']);
         $endDate = new DateTime($saleskwitansi['end_date']);
 
+        $salesKwitansiDate = $saleskwitansi['sales_kwitansi_date'];
+        $formattedDate = date('d-m-Y', strtotime($salesKwitansiDate));
+
         // Pilih salah satu metode di atas
         // Metode 1: Menggunakan setlocale dan strftime
         // setlocale(LC_TIME, 'id_ID.UTF-8');
@@ -1638,7 +1641,7 @@ class SalesInvoiceController extends Controller
                             <tr>
                                 <th style=\"text-align: left; font-size:12px;\"></th>
                                 <th style=\"text-align: left; font-size:12px; font-weight: bold\"></th>
-                                <th style=\"text-align: center; font-size:12px;\">Semarang , ".$saleskwitansi['sales_kwitansi_date']." &nbsp;&nbsp;</th>
+                                <th style=\"text-align: center; font-size:12px;\">Semarang , ".$formattedDate." &nbsp;&nbsp;</th>
                             </tr>
                             <tr>
                                 <th style=\"text-align: left; font-size:12px;\"></th>
