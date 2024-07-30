@@ -2,47 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use App\Models\CoreCustomer;
-use App\Models\CoreExpedition;
-use App\Models\InvGoodsReceivedNote;
+use DateTime;
+use stdClass;
+use App\Models\User;
 use App\Models\InvItem;
-use App\Models\InvItemCategory;
+use App\Models\SalesOrder;
+use App\Models\AcctAccount;
 use App\Models\InvItemType;
 use App\Models\InvItemUnit;
+use App\Models\CoreCustomer;
 use App\Models\InvItemStock;
-use App\Models\PreferenceCompany;
 use App\Models\SalesInvoice;
-use App\Models\SalesInvoiceItem;
-use App\Models\SalesDeliveryNote;
-use App\Models\SalesDeliveryNoteItem;
-use App\Models\SalesOrder;
-use App\Models\SalesOrderItem;
+use Illuminate\Http\Request;
 use App\Models\SalesKwitansi;
-use App\Models\SalesKwitansiItem;
-use App\Models\PurchaseOrderItem;
 use App\Models\SystemLogUser;
-use App\Models\SalesDeliveryNoteItemStock;
-use App\Models\PreferenceTransactionModule;
-use App\Models\AcctJournalVoucher;
-use App\Models\AcctAccount;
-use App\Models\AcctJournalVoucherItem;
-use App\Models\BuyersAcknowledgment;
-use App\Models\BuyersAcknowledgmentItem;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use PhpParser\Node\Expr\Cast\Object_;
-use stdClass;
-use Illuminate\Support\Facades\DB;
+use App\Models\CoreExpedition;
+use App\Models\SalesOrderItem;
+use App\Models\InvItemCategory;
 use Elibyy\TCPDF\Facades\TCPDF;
+use App\Models\SalesInvoiceItem;
+use App\Models\PreferenceCompany;
+use App\Models\PurchaseOrderItem;
+use App\Models\SalesDeliveryNote;
+use App\Models\SalesKwitansiItem;
+use App\Models\AcctJournalVoucher;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\BuyersAcknowledgment;
+use App\Models\InvGoodsReceivedNote;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\SalesDeliveryNoteItem;
+use PhpParser\Node\Expr\Cast\Object_;
+use App\Models\AcctJournalVoucherItem;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
+use App\Models\BuyersAcknowledgmentItem;
+use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Models\SalesDeliveryNoteItemStock;
+use App\Models\PreferenceTransactionModule;
 
 class SalesInvoiceController extends Controller
 {
@@ -534,12 +535,12 @@ class SalesInvoiceController extends Controller
 
     public function getCustomerName($customer_id)
     {
-        $customer = CoreCustomer::select('customer_name')
+        $customer = CoreCustomer::select('customer_code')
             ->where('data_state', 0)
             ->where('customer_id', $customer_id)
             ->first();
 
-        return $customer['customer_name'] ?? '';
+        return $customer['customer_code'] ?? '';
     }
 
     public function getCustomerNameSalesOrderId($sales_order_id)
@@ -1446,6 +1447,17 @@ class SalesInvoiceController extends Controller
         }
     }
 
+
+    // Metode 2: Mapping manual bulan
+    public function bulanIndo($month) {
+        $bulan = [
+            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        return $bulan[$month];
+    }
+
+
     //Pengantar
     public function printKwitansiPengantar(){
         $saleskwitansi = SalesKwitansi::select('*')
@@ -1505,6 +1517,21 @@ class SalesInvoiceController extends Controller
         }else{
             $materai = 0;
         }
+        
+        // Asumsi $saleskwitansi['start_date'] dan $saleskwitansi['end_date'] berformat 'YYYY-MM-DD'
+        $startDate = new DateTime($saleskwitansi['start_date']);
+        $endDate = new DateTime($saleskwitansi['end_date']);
+
+        // Pilih salah satu metode di atas
+        // Metode 1: Menggunakan setlocale dan strftime
+        // setlocale(LC_TIME, 'id_ID.UTF-8');
+        // $startFormatted = strftime('%d %B %Y', $startDate->getTimestamp());
+        // $endFormatted = strftime('%d %B %Y', $endDate->getTimestamp());
+
+
+        $startFormatted = $startDate->format('d') . ' ' . $this->bulanIndo($startDate->format('n')) . ' ' . $startDate->format('Y');
+        $endFormatted = $endDate->format('d') . ' ' . $this->bulanIndo($endDate->format('n')) . ' ' . $endDate->format('Y');
+
 
         $pdf::SetFont('helvetica', 'B', 20);
 
@@ -1593,9 +1620,7 @@ class SalesInvoiceController extends Controller
                 <td>
                     Guna Membayar
                 </td>
-                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal    ".
-                $saleskwitansi['start_date']." S/D ".
-                $saleskwitansi['end_date']." </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal  ".$startFormatted. "  s.d.  ".$endFormatted." </td>
                 <td style=\"text-align: left; font-size:10px;\"></td>
                 <td style=\"text-align: left; font-size:10px;\"></td>
                 <td style=\"text-align: left; font-size:10px;\"></td>
@@ -1882,13 +1907,13 @@ class SalesInvoiceController extends Controller
             <td>
                 Client
             </td>
-            <td colspan=\"4\" style=\"text-align: left; font-size:10px;\">:</td>
+            <td colspan=\"4\" style=\"text-align: left; font-size:10px;\">: ". $this->getCustomerName($saleskwitansi['customer_id']) ."</td>
         </tr>
         <tr>
             <td>
                 Periode
             </td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">:</td>
+            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">: ".$startFormatted. "  s.d.  ".$endFormatted."</td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>

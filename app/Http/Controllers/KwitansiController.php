@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BuyersAcknowledgment;
-use App\Models\CoreCustomer;
-use App\Models\InvItemStock;
+use DateTime;
 use App\Models\InvItemType;
 use App\Models\InvItemUnit;
-use App\Models\PreferenceCompany;
-use App\Models\SalesDeliveryNoteItemStock;
+use App\Models\CoreCustomer;
+use App\Models\InvItemStock;
 use App\Models\SalesInvoice;
-use App\Models\SalesInvoiceItem;
+use Illuminate\Http\Request;
 use App\Models\SalesKwitansi;
-use App\Models\SalesKwitansiItem;
-use App\Models\SalesDeliveryNoteItem;
 use App\Models\SalesOrderItem;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
 use Elibyy\TCPDF\Facades\TCPDF;
+use App\Models\SalesInvoiceItem;
+use App\Models\PreferenceCompany;
+use App\Models\SalesKwitansiItem;
+use Illuminate\Support\Facades\DB;
+use App\Models\BuyersAcknowledgment;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\SalesDeliveryNoteItem;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Illuminate\Http\Request;
+use App\Models\SalesDeliveryNoteItemStock;
 
 class KwitansiController extends Controller
 {
@@ -684,6 +685,16 @@ class KwitansiController extends Controller
         $pdf::Output($filename, 'I');
     }
 
+
+    // Metode 2: Mapping manual bulan
+    public function bulanIndo($month) {
+        $bulan = [
+            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        return $bulan[$month];
+    }
+
     //Pengantar
     public function printKwitansiPengantar($sales_kwitansi_id){
         $saleskwitansi = SalesKwitansi::select('*')
@@ -743,6 +754,21 @@ class KwitansiController extends Controller
         }else{
             $materai = 0;
         }
+
+        // Asumsi $saleskwitansi['start_date'] dan $saleskwitansi['end_date'] berformat 'YYYY-MM-DD'
+        $startDate = new DateTime($saleskwitansi['start_date']);
+        $endDate = new DateTime($saleskwitansi['end_date']);
+
+        // Pilih salah satu metode di atas
+        // Metode 1: Menggunakan setlocale dan strftime
+        // setlocale(LC_TIME, 'id_ID.UTF-8');
+        // $startFormatted = strftime('%d %B %Y', $startDate->getTimestamp());
+        // $endFormatted = strftime('%d %B %Y', $endDate->getTimestamp());
+
+
+        $startFormatted = $startDate->format('d') . ' ' . $this->bulanIndo($startDate->format('n')) . ' ' . $startDate->format('Y');
+        $endFormatted = $endDate->format('d') . ' ' . $this->bulanIndo($endDate->format('n')) . ' ' . $endDate->format('Y');
+
 
         $pdf::SetFont('helvetica', 'B', 20);
 
@@ -831,9 +857,7 @@ class KwitansiController extends Controller
                 <td>
                     Guna Membayar
                 </td>
-                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal    ".
-                $saleskwitansi['start_date']." S/D ".
-                $saleskwitansi['end_date']." </td>
+                <td  colspan=\"4\" style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Biaya Promosi Penjualan Obat Tanggal  ".$startFormatted. "  s.d.  ".$endFormatted."  </td>
                 <td style=\"text-align: left; font-size:10px;\"></td>
                 <td style=\"text-align: left; font-size:10px;\"></td>
                 <td style=\"text-align: left; font-size:10px;\"></td>
@@ -1120,13 +1144,13 @@ class KwitansiController extends Controller
             <td>
                 Client
             </td>
-            <td colspan=\"4\" style=\"text-align: left; font-size:10px;\">:</td>
+            <td colspan=\"4\" style=\"text-align: left; font-size:10px;\">:  ". $this->getCustomerName($saleskwitansi['customer_id']) ."</td>
         </tr>
         <tr>
             <td>
                 Periode
             </td>
-            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">:</td>
+            <td  colspan=\"4\" style=\"text-align: left; font-size:10px;\">: ".$startFormatted. "  s.d.  ".$endFormatted."</td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
             <td style=\"text-align: left; font-size:10px;\"></td>
@@ -1231,12 +1255,12 @@ class KwitansiController extends Controller
 
     public function getCustomerName($customer_id)
     {
-        $unit = CoreCustomer::select('customer_name')
+        $unit = CoreCustomer::select('customer_code')
             ->where('customer_id', $customer_id)
             ->where('data_state', 0)
             ->first();
 
-        return $unit['customer_name'] ?? '';
+        return $unit['customer_code'] ?? '';
     }
 
     public function getInvItemTypeName($item_type_id){
