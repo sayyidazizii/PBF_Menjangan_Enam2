@@ -59,9 +59,9 @@ class InvGoodsReceivedNoteController extends Controller
             $end_date = Session::get('end_date');
         }
 
-        $goodsreceivednote = InvGoodsReceivedNote::where('data_state','=',0)
-        ->where('created_at', '>=', $start_date)
-        ->where('created_at', '<=', $end_date)
+        $goodsreceivednote = InvGoodsReceivedNote::where('data_state', '=', 0)
+        ->where('goods_received_note_date', '>=', $start_date)
+        ->where('goods_received_note_date', '<=', $end_date)
         ->get();
 
         $preference_company = PreferenceCompany::select('account_inventory_trade_id')->first();
@@ -470,28 +470,23 @@ class InvGoodsReceivedNoteController extends Controller
 
                 $item_unit_id_default = $item_type['item_unit_1'];
 
+                $quantity_unit = 0; // Default value
+
                 if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_1']){
                     $quantity_unit = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_quantity_default_1'];
                     $default_quantity = $item_type['item_quantity_default_1'];
                     $item_weight = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_weight_1'];
                     $item_weight_default = $item_type['item_weight_1'];
-                    // dd($quantity_unit, $default_quantity, $item_weight, $item_weight_default);
                 }
                 else if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_2']){
                     $quantity_unit = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_quantity_default_2'];
                     $default_quantity = $item_type['item_quantity_default_2'];
-                    $item_weight = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_weight_2'];
-                    $item_weight_default = $item_type['item_weight_2'];
-
-                    // dd($quantity_unit, $default_quantity, $item_weight, $item_weight_default);
-                    
-                }else if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_3']){
+                    $item_weight = $item_weight_default = $item_type['item_weight_2'];
+                }
+                else if($invgoodsreceivednoteitem['item_unit_id'] == $item_type['item_unit_3']){
                     $quantity_unit = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_quantity_default_3'];
-                    $default_quantity = $item_type['item_quantity_default_3'];  
-                    $item_weight = $invgoodsreceivednoteitem['quantity_received'] * $item_type['item_weight_3'];
-                    $item_weight_default = $item_type['item_weight_3'];
-
-                // dd($quantity_unit, $default_quantity, $item_weight, $item_weight_default);
+                    $default_quantity = $item_type['item_quantity_default_3'];
+                    $item_weight = $item_weight_default = $item_type['item_weight_3'];
                 }
 
                 $invitemstock = array(
