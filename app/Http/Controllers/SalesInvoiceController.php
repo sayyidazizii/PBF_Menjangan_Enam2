@@ -1298,13 +1298,13 @@ class SalesInvoiceController extends Controller
         Session::forget('salesinvoiceitem');
         Session::forget('salesinvoiceelements');
 
-        $salesinvoice = SalesInvoice::select('sales_invoice.*', 'core_customer.customer_code','sales_invoice_item.*')
-            ->join('sales_invoice_item', 'sales_invoice_item.sales_invoice_id', 'sales_invoice.sales_invoice_id')
-            ->join('sales_order', 'sales_order.sales_order_id', 'sales_invoice.sales_order_id')
-            ->join('core_customer', 'core_customer.customer_id', 'sales_invoice.customer_id')
-            ->where('sales_invoice.data_state', '=', 0)
-            ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
-            ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
+        $salesinvoice = SalesInvoice::where('sales_invoice.data_state', '=', 0)
+        ->join('core_customer','core_customer.customer_id','sales_invoice.customer_id')
+        ->join('sales_invoice_item','sales_invoice_item.sales_invoice_id','sales_invoice.sales_invoice_id')
+        ->join('sales_order','sales_order.sales_order_id','sales_invoice.sales_order_id')
+        ->where('sales_invoice.data_state', '=', 0)
+        ->where('sales_invoice.sales_invoice_date', '>=', $start_date)
+        ->where('sales_invoice.sales_invoice_date', '<=', $end_date);
 
         if ($customer_code || $customer_code != null || $customer_code != '') {
             $salesinvoice = $salesinvoice->where('core_customer.customer_code', $customer_code);
@@ -1389,7 +1389,7 @@ class SalesInvoiceController extends Controller
 
                     $sheet->setCellValue('B'.$j, $no);
                     $sheet->setCellValue('C'.$j, $val['sales_invoice_date']);
-                    $sheet->setCellValue('D'.$j, $val['faktur_tax_no']);
+                    $sheet->setCellValue('D'.$j, $val['purchase_order_no']);
                     $sheet->setCellValue('E'.$j, $this->getCustomerName($val['customer_id']));
                     $sheet->setCellValue('F'.$j, $val['sales_invoice_no']);
                     $sheet->setCellValue('G'.$j, $this->getItemTypeName($val['item_type_id']));

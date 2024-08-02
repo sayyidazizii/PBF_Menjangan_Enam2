@@ -167,7 +167,7 @@
                     <tr>
                         <td style='text-align:center'>{{$no}}.</td>
                         <td>{{ $item['sales_invoice_date']}}</td>
-                        <td>{{ $item['faktur_tax_no']}}</td>
+                        <td>{{ $item['purchase_order_no']}}</td>
                         <td>{{ $SalesInvoice->getCustomerName($item['customer_id'])}}</td>
                         <td>{{ $item['sales_invoice_no']}}</td>
                         <td>{{ $SalesInvoice->getItemTypeName($item['item_type_id']) }}</td>
