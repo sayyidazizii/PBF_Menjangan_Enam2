@@ -1233,7 +1233,7 @@ class KwitansiController extends Controller
                 <th></th>
             </tr>
             <tr>
-                <th>".$path."</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
