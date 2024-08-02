@@ -1237,6 +1237,7 @@ class KwitansiController extends Controller
                 <th></th>
                 <th></th>
             </tr>
+            <br>
             <tr>
                 <th style=\"text-align: left; font-size:10px;border-bottom-width:0.1px;\">Isti Ramadhani S.Farm.,Apt</th>
                 <th></th>
