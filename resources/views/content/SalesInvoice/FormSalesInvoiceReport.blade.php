@@ -197,7 +197,9 @@
                         <td colspan="3" style='text-align:center'>
                             @if($checkbox == 1) 
                             @if(count($salesinvoice) > 0) 
+                            @if(isset($customer_code) > 0) 
                             <a href="{{ url('/sales-invoice-report/cetak-pengantar') }}" type="button" class="btn btn-sm btn-secondary"><i class="fa fa-file"> Cetak Pengantar</i></a>
+                            @endif
                             @endif
                             @endif
 
